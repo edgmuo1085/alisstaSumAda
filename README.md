@@ -1,6 +1,6 @@
 # alisstaSumAda
 
-This project was generated with [Ionic CLI](https://ionicframework.com/docs/cli) version 6.7.4
+This project was generated with [Ionic CLI](https://ionicframework.com/docs/cli) version 5.7.0
 
 ## Development server
 
