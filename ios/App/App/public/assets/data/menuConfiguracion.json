@@ -1,0 +1,29 @@
+[
+  {
+    "icon": "../../../assets/icon/icono_turoriales.svg",
+    "title": "Tutoriales",
+    "redirecTo" : "/tutorial"
+  },
+  {
+    "icon": "../../../assets/icon/icono_calificacion.svg",
+    "title": "Calificar el APP"
+  },
+  {
+    "icon": "../../../assets/icon/icono_acerca_de.svg",
+    "title": "Acerca de",
+    "redirecTo" : "/about"
+  },
+  {
+    "icon": "../../../assets/icon/icono_terminos.svg",
+    "title": "Terminos y condiciones",
+    "redirecTo": "/terms-and-conditions"
+  },
+  {
+    "icon": "../../../assets/icon/icono_password.svg",
+    "title": "Cambiar contraseña"
+  },
+  {
+    "icon": "../../../assets/icon/icono_cerrar_sesion.svg",
+    "title": "Cerrar sesión"
+  }
+]
