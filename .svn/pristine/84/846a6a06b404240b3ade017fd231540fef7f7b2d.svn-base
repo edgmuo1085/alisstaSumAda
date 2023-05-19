@@ -1,9 +1,0 @@
-const respuestaActa = await this.advisoryTopicService.saveActaAsesoria(actaAsesoriaGestionada).toPromise();
-
-
-const checkNetwork = await this.net.getNetworkStatus().toPromise();
-    this.valueNetwork = checkNetwork;
-    if (this.valueNetwork === false) {
-        this.presentToast();
-     }
-    return this.valueNetwork;

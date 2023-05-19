@@ -1,4 +1,0 @@
-<div class="ion-padding">
-  <span class="highlighted" *ngIf="highlightedText">{{ highlightedText }}</span>
-  <span class="regular">{{ text }}</span>
-</div>
