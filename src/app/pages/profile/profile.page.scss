@@ -1,0 +1,40 @@
+  ion-grid {
+    width: 100%;
+    padding: 0px;
+  
+    ion-row {
+      padding: 0px;
+      ion-col {
+        padding: 0px;
+        img{
+          margin-top:15px;
+        }
+        & .tituloPerfil{
+          margin-right: 40px;
+        }
+        & .tituloEmpresa{
+          margin-right: 100px;
+        }
+      }
+      ion-list{
+        ion-item{
+          --border-width: 0 !important;
+          --inner-border-width: 0 !important;
+          --background: none;
+        } 
+      }
+      & .labelTitulo {
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+      }
+    }
+  }
+ .iconColor{
+    color: #334b57;
+    margin-right: 15px;
+  }
+
+.colorRow {
+  background: #95a6b1;
+}

@@ -1,0 +1,31 @@
+<app-header></app-header>
+
+<ion-content class="backgroundContent">
+  <ion-grid>
+    <ion-row>
+      <!-- Sincronización de empresas -->
+      <ion-col>
+        <ion-card mode="ios">
+          <ion-card-content>
+            <a routerLink="./list">
+              <img src="../../../assets/icon/icono_visitas_pendientes.svg">
+              <h4>Sincronización empresas migradas</h4>
+            </a>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <!-- Empresas por enviar -->
+      <ion-col>
+        <ion-card>
+          <ion-card-content>
+            <a routerLink="./list-confirmed">
+              <img src="../../../assets/icon/icono_tareas_enviar.svg">
+              <h4>Empresas por enviar</h4>
+            </a>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

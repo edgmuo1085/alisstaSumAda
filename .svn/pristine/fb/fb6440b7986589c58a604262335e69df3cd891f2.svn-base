@@ -1,0 +1,24 @@
+ion-header {
+  ion-toolbar {
+    padding-top: 0px;
+  }
+  & .titulo {
+    width: 100% !important;
+    font-size: 12px !important;
+    text-align: center;
+  }
+}
+
+ion-content {
+  ion-list {
+    padding: 0px;
+    background: none;
+    ion-item {
+      margin-bottom: 10px;
+      border-radius: 15px;
+    }
+  }
+  ion-button {
+    --border-radius: 50px;
+  }
+}

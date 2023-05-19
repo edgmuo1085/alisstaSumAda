@@ -1,0 +1,87 @@
+ion-grid {
+  padding: 0px;
+  margin-top: 30px;
+  ion-row {
+    ion-col {
+      padding: 0px;
+      img {
+        margin-top: -10px;
+      }
+    }
+  } & .input{
+    // border: 1px solid var(--ion-color-light-shade);
+    margin-top: 10px;
+    border-radius: 50px;
+    border: 1px solid #516F7A;
+    // --background: white;
+  }
+  & .digitoVerificacion {
+    font-size: 13.5px;
+  }
+  & .mensajeError{
+    font-size: 15px;
+    margin-left: 10px;
+    color: red;
+  }
+  ion-row{
+    form{
+      padding: 30px;
+      margin-top: -35px;
+      //margin-top: -15px;
+    }
+  } & .logo{
+    width: 70%;
+    margin-left: 30px;
+    margin-top: 0px;
+    margin-bottom: 60px;
+  } & .showPassword{
+    --background: none;
+    margin-left: 0px !important;
+    
+  }
+  ion-row{
+    ion-button{
+      margin-top: 10px;
+      margin-left: 30px;
+      margin-right: 30px;
+      --border-radius: 50px;
+    } & .btnShowPassword{
+      margin: 0px;
+      --background: none;
+      --box-shadow: none;
+    } & .iconShowPassword{
+      color: #304b58;
+      margin: 0px;
+      margin-top: 4px;
+    }
+  }
+  ion-row{
+    & .olvidoPassword {
+      margin-top: 15px;
+      margin-left: 30px;
+      margin-right: 30px;
+      text-align: center;
+    } 
+  }
+}
+
+
+
+
+
+
+// #Deivis
+// ion-content {
+//   --background: var(--ion-color-light-shade);
+// }
+
+// .logo {
+//   width: 50%;
+//   max-width: 300px;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+
+// .item-interactive.item-has-focus {
+//   --highlight-background: var(--ion-color-light-shade);
+// }

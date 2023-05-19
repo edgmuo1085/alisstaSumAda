@@ -1,0 +1,125 @@
+ion-header {
+  & ion-toolbar {
+    padding: 10px;
+    --background: var(--ion-color-medium);
+    --color: var(--ion-color-medium-contrast);
+
+    & .title {
+      text-overflow: initial;
+      white-space: break-spaces;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+  }
+}
+
+ion-content {
+  & ion-card {
+    & ion-list {
+      padding: 0;
+      background-color: transparent;
+
+      & ion-item {
+        --padding-start: 0;
+        --inner-padding-end: 0;
+        --background: inherit;
+        --highlight-height: 0;
+        --background: transparent;
+
+        &.item-interactive-disabled {
+          & ion-input {
+            --background: var(--ion-color-medium);
+            --color: var(--ion-color-medium-contrast);
+          }
+        }
+
+        & ion-label {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          white-space: break-spaces;
+        }
+
+        & ion-input {
+          & ::ng-deep {
+            & .native-input {
+              opacity: 1;
+            }
+          }
+        }
+
+        & ion-input,
+        & ion-select {
+          border-radius: 5px;
+          border: 1px solid var(--ion-color-dark);
+          --padding-start: 1rem;
+          --padding-end: 1rem;
+          background-color: var(--ion-color-light);
+          color: var(--ion-color-light-contrast);
+        }
+
+        & .textarea-wrapper {
+          white-space: normal;
+          width: 100%;
+
+          & ion-textarea {
+            border-radius: 5px;
+            border: 1px solid var(--ion-color-dark);
+            --background: var(--ion-color-medium);
+            --color: var(--ion-color-medium-contrast);
+            --padding-start: 0.7rem;
+            --padding-end: 0.7rem;
+
+            & ::ng-deep {
+              & .native-textarea {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        & ion-radio-group {
+          display: flex;
+          width: 100%;
+          justify-content: space-around;
+        }
+
+        & .label-link-wrapper {
+          text-align: right;
+          width: 100%;
+
+          & .label-link {
+            margin-top: 5px;
+            font-weight: bold;
+            text-decoration: none;
+
+            &:focus-visible {
+              outline: none;
+            }
+          }
+        }
+
+        & .tooltip {
+          --background: var(--ion-color-secondary);
+          --color: var(--ion-color-secondary-contrast);
+          --padding-start: 1px;
+          --padding-end: 1px;
+          --padding-top: 1px;
+          --padding-bottom: 1px;
+          --border-radius: 1rem;
+          font-size: 0.6rem;
+          pointer-events: initial;
+        }
+
+        & .invalid-feedback {
+          color: var(--ion-color-danger);
+          margin-top: 0.5rem;
+        }
+      }
+    }
+
+    & .actions-wrapper {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}

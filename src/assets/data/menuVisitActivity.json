@@ -1,0 +1,32 @@
+[
+  {
+    "icon": "../../../assets/icon/icono_temas asesoria.svg",
+    "title": "Temas de la asesoria",
+    "redirecTo": "subjects",
+    "show": true
+  },
+  {
+    "icon": "../../../assets/icon/icono_tipo_asesoria.svg",
+    "title": "Tipo de asesoría",
+    "redirecTo":"type",
+    "show": false
+  },
+  {
+    "icon": "../../../assets/icon/icono_infromacion_empresa.svg",
+    "title": "Información de la empresa",
+    "redirecTo":"company-info",
+    "show": false
+  },
+  {
+    "icon": "../../../assets/icon/icono_observaciones.svg",
+    "title": "Observaciones y recomendaciones",
+    "redirecTo":"comments",
+    "show": false
+  },
+  {
+    "icon": "../../../assets/icon/icono_encuesta.svg",
+    "title": "Encuesta y firma de la empresa",
+    "redirecTo":"survey-signature",
+    "show": false
+  }
+]

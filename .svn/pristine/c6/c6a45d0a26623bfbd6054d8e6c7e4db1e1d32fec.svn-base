@@ -1,0 +1,38 @@
+async onKeyDownHandler(event) {
+    // tslint:disable-next-line: no-debugger
+    debugger;
+    const valorIngresado = event.target.value;
+    const arregloCadena = Array.from(valorIngresado);
+
+    const encontro = arregloCadena.find(item => item === '@');
+
+    if ( encontro ) {
+
+      const popover = await this.popoverController.create({
+        component: InactiveUsersTalkComponent,
+        cssClass: 'my-custom-class',
+        event,
+        mode: 'ios',
+        translucent: false
+      });
+
+      await popover.present();
+
+      const { data } = await popover.onWillDismiss();
+
+      console.log('Padre: ', data);
+
+      if (data) {
+        this.usuariosInactivosSeleccionados.push(data.item.FKUsuario);
+        this.mostrarUsuarioSeleccionado = true;
+        this.usuarioSeleccionado = data.item.UsuarioNombre;
+        if (this.formEnvioMensaje.get('send').value === '') {
+          this.formEnvioMensaje.get('send').setValue(`@${this.usuarioSeleccionado}`);
+        } else {
+          const dataIngresada = this.formEnvioMensaje.get('send').value;
+          this.formEnvioMensaje.get('send').setValue(`@${this.usuarioSeleccionado} ${dataIngresada}`);
+        }
+      }
+    }
+
+  }

@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-toolbar color="tertiary">
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" mode="md" defaultHref="/"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size="10">
+        <ion-label>Firma Actualización de Datos</ion-label>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formGroup" *ngIf="formGroup">
+    <ion-list lines="none">
+      <ion-item class="ion-margin-bottom">
+        <ion-label class="font-large text-center" position="stacked">
+          Responsable de la empresa
+        </ion-label>
+        <ion-select class="ion-margin-top" mode="ios" interface="action-sheet" cancelText="CANCELAR"
+          formControlName="responsable">
+          <ion-select-option [value]="r" *ngFor="let r of company.eDResponsableActualizacion">
+            {{ r.Nombre }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ng-container *ngIf="formGroup.controls.responsable.value">
+        <ion-item class="ion-margin-bottom">
+          <ion-label position="stacked">
+            Tipo de documento
+          </ion-label>
+          <ion-input formControlName="tipoDocumento"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom">
+          <ion-label position="stacked">
+            Documento de Identificación
+          </ion-label>
+          <ion-input formControlName="documento"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom">
+          <ion-label position="stacked">
+            Correo Electrónico
+          </ion-label>
+          <ion-input formControlName="correo"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom">
+          <ion-label position="stacked">
+            Cargo
+          </ion-label>
+          <ion-input formControlName="cargo"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-bottom">
+          <ion-label class="bold">
+            {{ formGroup.controls.qr.value ? 'SÍ' : 'NO' }} se va firmar con código QR
+          </ion-label>
+          <ion-toggle formControlName="qr"></ion-toggle>
+        </ion-item>
+
+        <h4 class="section-title">Firma responsable de la empresa</h4>
+
+        <ion-button class="ion-margin-bottom" color="tertiary" expand="block" routerLink="../../../summary">
+          Previsualización Datos Actualizados
+        </ion-button>
+
+        <ion-button expand="block" (click)="solicitarCodigoVerificacion()" *ngIf="!formGroup.controls.qr.value">
+          Firmar Actualización
+        </ion-button>
+
+        <ng-container *ngIf="formGroup.controls.qr.value; else noQr">
+          <ng-container *ngTemplateOutlet="qr"></ng-container>
+        </ng-container>
+
+        <div class="img-wrapper ion-text-center" *ngIf="formGroup.valid">
+          <img (click)="send()" src="../../../assets/icon/boton_enviar.png" alt="enviar">
+        </div>
+      </ng-container>
+    </ion-list>
+  </form>
+</ion-content>
+
+<ng-template #qr>
+  <h4 class="section-title">Responsable de ARL</h4>
+  <p>
+    <strong class="mr">Responsable ARL:</strong>
+    {{ responsableARL.nombres }} {{ responsableARL.apellidos }}
+  </p>
+
+  <h4 class="section-title">Razón social del proveedor</h4>
+  <p>
+    <strong class="mr">Nombre proveedor: </strong>
+    {{ responsableARL.nombreProveedor }}
+  </p>
+  <p>
+    <strong class="mr">Documento proveedor:</strong>
+    {{ responsableARL.idProveedor }}
+  </p>
+
+  <h4 class="section-title">Firma responsable de ARL</h4>
+  <div style="border:1px solid black; border-radius: 10px;">
+    <signature-pad #padARL [options]="SIGNATURE_PAD_OPTIONS" (onEndEvent)="drawComplete(padARL, 'firmaARL')">
+    </signature-pad>
+    <p class="leyenda ion-text-center">
+      {{ responsableARL.nombres }} {{ responsableARL.apellidos }}
+    </p>
+  </div>
+  <ion-button (click)="clear(padARL, 'firmaARL')" expand="block" fill="clear" shape="round">
+    Borrar
+  </ion-button>
+  <p class="ion-text-justify">
+    Al enviar, está autorizando el uso de la su firma ÚNICAMENTE para el registro de la ejecución de las actividades
+    relacionadas en el acta de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A.
+    La Política de tratamiento de la información la puede consultar en
+    <a class="positiva-link" (click)="openLink('https://www.positiva.gov.co')">https://www.positiva.gov.co</a>.
+  </p>
+</ng-template>
+
+<ng-template #noQr>
+  <ng-container *ngIf="formGroup.controls.codigoVerificacion.valid">
+    <h4 class="section-title">Firma responsable de empresa</h4>
+    <div style="border:1px solid black; border-radius: 10px;">
+      <signature-pad #padEmpresa [options]="SIGNATURE_PAD_OPTIONS"
+        (onEndEvent)="drawComplete(padEmpresa, 'firmaEmpresa')">
+      </signature-pad>
+      <p class="leyenda ion-text-center">
+        {{ formGroup.controls.responsable.value.Nombre }}
+      </p>
+    </div>
+    <ion-button (click)="clear(padEmpresa, 'firmaEmpresa')" expand="block" fill="clear" shape="round">
+      Borrar
+    </ion-button>
+
+    <h4 class="section-title">Responsable de ARL</h4>
+    <p>
+      <strong class="mr">Responsable ARL:</strong>
+      {{ responsableARL.nombres }} {{ responsableARL.apellidos }}
+    </p>
+
+    <h4 class="section-title">Razón social del proveedor</h4>
+    <p>
+      <strong class="mr">Nombre proveedor: </strong>
+      {{ responsableARL.nombreProveedor }}
+    </p>
+    <p>
+      <strong class="mr">Documento proveedor:</strong>
+      {{ responsableARL.idProveedor }}
+    </p>
+    <h4 class="section-title">Firma responsable de ARL</h4>
+    <div style="border:1px solid black; border-radius: 10px;">
+      <signature-pad #padARL [options]="SIGNATURE_PAD_OPTIONS" (onEndEvent)="drawComplete(padARL, 'firmaARL')">
+      </signature-pad>
+      <p class="leyenda ion-text-center">
+        {{ responsableARL.nombres }} {{ responsableARL.apellidos }}
+      </p>
+    </div>
+    <ion-button (click)="clear(padARL, 'firmaARL')" expand="block" fill="clear" shape="round">
+      Borrar
+    </ion-button>
+    <p class="ion-text-justify">
+      Al enviar, está autorizando el uso de la su firma ÚNICAMENTE para el registro de la ejecución de las actividades
+      relacionadas en el acta de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A.
+      La Política de tratamiento de la información la puede consultar en
+      <a class="positiva-link" (click)="openLink('https://www.positiva.gov.co')">https://www.positiva.gov.co</a>.
+    </p>
+  </ng-container>
+</ng-template>

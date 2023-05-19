@@ -1,0 +1,160 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="title">Actualización Datos Empresa</div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formGroup" (ngSubmit)="save()" *ngIf="formGroup">
+    <ion-card class="ion-margin">
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">TD/Número Identificación Empresa</ion-label>
+            <ion-input formControlName="identificacionEmpresa"></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Razón Social Empresa</ion-label>
+            <div class="textarea-wrapper">
+              <ion-textarea autoGrow="true" formControlName="razonSocialEmpresa"></ion-textarea>
+            </div>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">ID Sede</ion-label>
+            <ion-input formControlName="idSede"></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">
+              Dirección Empresa Sede Principal
+              <ion-button class="tooltip" (click)="showPopover($event, 'direccion')">
+                <ion-icon name="help-outline" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-label>
+            <div class="label-link-wrapper">
+              <a class="label-link" routerLink="./../../../edit-address">Actualizar Dirección</a>
+            </div>
+            <ion-input formControlName="direccionSede" readonly></ion-input>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.direccionSede.hasError('required')">
+              Dirección es obligatorio.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Indicador de zona</ion-label>
+            <ion-radio-group formControlName="indicadorZona">
+              <ion-item *ngFor="let tz of TIPOS_ZONA">
+                <ion-label>{{ tz.label }}</ion-label>
+                <ion-radio slot="start" [value]="tz.value"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.indicadorZona.hasError('required')">
+              Indicador de zona es obligatorio.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Departamento Sede Principal</ion-label>
+            <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="departamentoSede"
+              (ionChange)="changeDepartamento()" [compareWith]="compareWith('departamento')">
+              <ion-select-option [value]="d" *ngFor="let d of departamentos">
+                {{ d.Nombre_Departamento }}
+              </ion-select-option>
+            </ion-select>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.departamentoSede.hasError('required')">
+              Departamento es obligatorio.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Municipio Sede Principal</ion-label>
+            <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="municipioSede"
+              [compareWith]="compareWith('municipio')">
+              <ion-select-option [value]="m"
+                *ngFor="let m of municipios | municipiosFilter : formGroup.controls.departamentoSede.value">
+                {{ m.NombreMunicipio }}
+              </ion-select-option>
+            </ion-select>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.municipioSede.hasError('required')">
+              Municipio es obligatorio.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Estado Sede</ion-label>
+            <ion-input formControlName="estadoSede"></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Código/Nombre AE Ppal</ion-label>
+            <div class="textarea-wrapper">
+              <ion-textarea autoGrow="true" formControlName="actividadEconomica"></ion-textarea>
+            </div>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Sector Económico</ion-label>
+            <div class="textarea-wrapper">
+              <ion-textarea autoGrow="true" formControlName="sectorEconomico"></ion-textarea>
+            </div>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Celular Contacto</ion-label>
+            <ion-input type="tel"  maxlength="10" formControlName="celular"></ion-input>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.celular.hasError('pattern')">
+              Celular inválido.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Teléfono Notificación</ion-label>
+            <ion-input type="tel"  ngModel="60" maxlength="10" formControlName="telefonoNotificacion"></ion-input>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.telefonoNotificacion.hasError('pattern')">
+              Teléfono inválido.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Correo Notificación</ion-label>
+            <ion-input type="email" formControlName="correo"></ion-input>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('required')">
+              Correo es obligatorio.
+            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('pattern')">
+              Correo inválido.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Código Postal</ion-label>
+            <ion-input formControlName="codigoPostal"></ion-input>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.codigoPostal.hasError('required')">
+              Código postal es obligatorio.
+            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.codigoPostal.hasError('pattern')">
+              Código postal es inválido.
+            </p>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">TD/No. Identificación Rpte. Legal</ion-label>
+            <ion-input formControlName="identificacionRepresentante"></ion-input>
+          </ion-item>
+
+          <ion-item class="ion-margin-bottom">
+            <ion-label position="stacked">Nombre Rpte. Legal</ion-label>
+            <ion-input formControlName="representanteLegal"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <div class="actions-wrapper ion-margin-top">
+          <ion-button color="light" (click)="cancel()">Cancelar</ion-button>
+          <ion-button type="submit" color="primary">Actualizar</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

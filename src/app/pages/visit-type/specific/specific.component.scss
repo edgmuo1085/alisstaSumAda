@@ -1,0 +1,33 @@
+ion-content{
+  form{
+    ion-list{
+      background: none;
+      ion-item{
+        --background: none;
+      }
+      ion-button{
+        --border-radius: 40px;
+      }
+    }
+  }
+}
+
+
+
+.label-stacked {
+  &.sc-ion-label-md-h {
+    transform: none;
+  }
+}
+
+ion-list {
+  padding-left: var(--ion-padding, 16px);
+  padding-right: var(--ion-padding, 16px);
+}
+
+.ionDateTimeStart{
+  padding: 0px !important;
+  font-size: 20px;
+  font-weight: bolder;
+  text-align: center;
+}

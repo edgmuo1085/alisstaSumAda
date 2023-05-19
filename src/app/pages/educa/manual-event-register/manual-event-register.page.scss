@@ -1,0 +1,45 @@
+
+ion-header{
+  ion-grid{
+    padding: 0px;
+    background: #95a6b1;
+    color: white;
+    ion-row{
+      ion-col{
+        padding: 0px;
+        background: #95a6b1;
+      }
+      ion-toolbar{
+        padding: 0px;
+      }
+    }
+  }
+}
+
+.titulo{
+  width: 100% !important;
+  font-size: 25px !important;
+  text-align: left;
+  padding: 0px;
+  padding-top: 10px;
+}
+
+
+.tituloEvento {
+  font-size: 25px;
+  font-weight: bolder;
+}
+
+.formulario{
+  border-radius: 20px;
+  border: 1px solid #95a6b1;
+  padding: 5px;
+  margin-top: 30px;
+  background: white;
+  padding-bottom: 25px;
+}
+
+ion-label{
+  font-size: 20px !important;
+  font-weight: bold;
+}

@@ -1,0 +1,224 @@
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-toolbar color="tertiary">
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" mode="md" defaultHref="u/list-communications"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size="10">
+        <ion-title class="titulo">Conversación</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+
+<ion-content #content>
+
+  <ion-grid >
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item lines="none"
+                    color="secondary" 
+                    >
+            <!-- <img [src]="menuOpt.icon"> -->
+            <ion-avatar slot="start">
+              <img src="../../../../assets/icon/icono_comunicaciones.svg" class="imgMenu" alt="iconItem">
+            </ion-avatar>
+            <div class="ion-text-center" >
+              <ion-label>Comunicación</ion-label>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card mode="ios" colines="none"lor="tertiary">
+    <ion-item lines="none">
+      <ion-list>
+        <ion-item lines="none" style="padding-top: 35px;">
+          <strong><ion-label position="stacked">Razón Social</ion-label></strong>
+          <p>{{informacionConversacionSeleccionada.Empresa}}</p>
+        </ion-item>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked" >Tipo - Número documento</ion-label></strong>
+          <p>{{informacionConversacionSeleccionada.EmpresaTipoDocumento}} - {{informacionConversacionSeleccionada.EmpresaDocumento}}</p>
+        </ion-item>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked" >Tema de conversación</ion-label></strong>
+          <p>{{informacionConversacionSeleccionada.Tema}}</p>
+        </ion-item>
+      </ion-list>
+      <ion-icon start="end" (click)="activarUsuario()" [name]="iconHabilitarUsuario" ></ion-icon>
+    </ion-item>
+  </ion-card>
+
+  <ion-grid >
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item lines="none"
+                    color="secondary" 
+                    >
+            <!-- <img [src]="menuOpt.icon"> -->
+            <ion-avatar slot="start">
+              <img src="../../../../assets/icon/icono_comunicaciones.svg" class="imgMenu" alt="iconItem">
+            </ion-avatar>
+            <div class="ion-text-center">
+              <ion-label>Mensaje</ion-label>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-list *ngFor="let item of mensajes" #Lista>
+    <ion-item-sliding #slidingItem  >
+      <ion-item-options  side="start">
+        <ion-item-option  mode="ios" >
+          <svg style="width: 2rem; height: 2rem; color: white; " (click)="responderMensaje(item, slidingItem)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
+            <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z"/>
+          </svg>
+          <!--<ion-icon slot="icon-only" (click)="responderMensaje(item, slidingItem)" name="open-outline"></ion-icon>-->
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item-options (ionSwipe)="cambioOptions(item)" >
+        <ion-item-option  mode="ios" side="end" >
+            <ion-icon slot="icon-only" (click)="editarMensaje(item, slidingItem)" name="create-outline" ></ion-icon>
+            <ion-icon slot="icon-only" (click)="eliminarMensaje(item, slidingItem)" name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+  
+      <ion-item [color]="conversationColor(item)" [ngClass]="{ itemBackgroundPrivadoParaMi: item.EsPrivadoParaMi === true, itemBackgroundPrivadoPorMi: item.EsPrivadoPorMi === true } ">
+        <ion-grid [ngStyle]="{ 'text-align': textAlignConversation(item) }">
+          <ion-row>
+            <ion-col size="12">
+              <div class="parrafoMensaje">
+                <p>
+                  <i style="font-size: 0.8rem;">{{item.UsuarioNombre}}</i>
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <div class="parrafoMensaje">
+                <p>
+                  <i style="font-size: 0.8rem;">{{item.FechaCorta}}</i>
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="item.EsPrivadoParaMi || item.EsPrivadoPorMi ">
+            <ion-col size="12">
+              <div class="parrafoMensaje">
+                <p>
+                  <i style="font-size: 12px; color: #516F7A;" >Comunicación privada</i>
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="item.MensajePadre">
+            <ion-col size="12">
+              <div>
+                <p>
+                  <i style="font-size: 12px; color: #516F7A;">"{{item.MensajePadre.Mensaje}}"</i>
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <div>
+                <p>
+                  {{item.Mensaje}}
+                </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <div style="width: fit-content; height: fit-content; margin-left: 1rem;">
+          <div style="width: inherit; height: inherit; margin-bottom: 1rem;">
+            <svg (click)="mostrarInfoMensaje(item)" style="width: 2rem; height: 2rem; color: orange; " xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-text" viewBox="0 0 16 16">
+              <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
+              <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+           <!-- <ion-icon style="width: 2rem; height: 2rem;" slot="end" (click)="mostrarInfoMensaje(item)" name="add-circle-outline"></ion-icon>-->
+          </div>
+          <div style="width: inherit; height: inherit;">
+            <ion-icon style="width: 2rem; height: 2rem;" *ngIf="!allUsersReadMessage(item)" [ngStyle]="{'color': (item.LeidoPorMi || item.FKUsuario != idUsuario) ? 'orange':''}" slot="end" name="checkmark"></ion-icon>
+            <ion-icon style="width: 2rem; height: 2rem; color: orange;" *ngIf="allUsersReadMessage(item)" name="checkmark-done-outline" slot="end"></ion-icon>  
+          </div>
+        </div>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="ocultarFooterPorRolesHistoricos">
+  <form [formGroup]="formEnvioMensaje">
+    <!-- <ion-item lines="none">
+      <ion-label position="stacked">Personas para mensaje privado.</ion-label>
+      <ion-select  
+                  class="bg-light mt-3 rounded pl-1 pr-1" 
+                  mode="ios"
+                  formControlName="mensajePrivado"
+                  interface="action-sheet" 
+                  cancelText="CANCELAR"
+                  placeholder="Personas para mensajes privados">
+        <ion-select-option 
+                          value="prueba"> Prueba </ion-select-option>
+      </ion-select>
+    </ion-item> -->
+    <ion-item color="tertiary" class="itemResponder" *ngIf="mensajeAResponser">
+      <ion-label position="stacked">Respondiendo a {{mensajeAResponser.UsuarioNombre}}</ion-label>
+      <p>
+        {{mensajeAResponser.Mensaje}}
+      </p>
+      <ion-icon name="close-circle-outline" (click)="cerrarMensajeResponder()" size="small" slot="end"></ion-icon>
+    </ion-item>
+
+      <ion-item lines="none">
+        <ion-grid>
+          <ion-row *ngIf="usuarioPrivadoSelected">
+            <ion-col size="12">
+              <ion-item lines="none">
+                <p style="font-size: 13px; margin: 0px;" > <i>Mensaje privado a: {{usuarioPrivadoSelected}}</i> </p>
+                <ion-icon name="close-circle-outline"   (click)="cleanPrivateSelected()" size="small" slot="end"></ion-icon>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <!-- <textarea style="width: 300px; height: 100p;" formControlName="send" (keyup)="onKeyDownHandler($event)" class="bg-light mt-3 pl-1 textMensaje" rows="5"></textarea> -->
+              <textarea style="height: 100p; border-radius: 10px;" formControlName="send" (input)="onKeyDownHandler($event)"  class="bg-light mt-3 pl-1 textMensaje" rows="5"></textarea>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </form>
+
+    <ion-grid>
+      <ion-row justify-content-around>
+        <ion-col size="6">
+          <ion-button (click)="openModalUserPrivate()" expand="block"  color="tertiary">
+            Privado            
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="block"  color="primary" (click)="enviarMensaje(this.formEnvioMensaje.value)" >
+            Enviar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+</ion-footer>

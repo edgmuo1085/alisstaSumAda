@@ -1,0 +1,73 @@
+<ion-content>
+  <ion-grid class="backgroundContent">
+    <div class="colorRow">
+      <ion-row>
+        <ion-col size="12">
+          <ion-row>
+            <ion-col size="3"></ion-col>
+            <ion-col size="6" class="ion-text-center">
+              <img src="../../../assets/icon/avatar.svg" alt="">
+            </ion-col>
+            <ion-col size="3"></ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" color="tertiary">
+              <ion-item color="tertiary">
+                <ion-label class="labelTitulo">MI PERFIL</ion-label>
+              </ion-item>
+
+              <ion-item color="tertiary">
+                <!-- <div class="icon user" color="tertiary"></div> -->
+                <ion-icon class="iconColor"name="person" slot="start"></ion-icon>
+                <!-- <ion-label *ngIf="infoProfile">{{infoProfile.nombres}} {{infoProfile.apellidos }}</ion-label> -->
+                
+                <p *ngIf="infoProfile">{{infoProfile.nombres}} {{infoProfile.apellidos }}</p>
+              </ion-item>
+
+              <ion-item color="tertiary">
+                <!-- <div class="icon card-id"></div> -->
+                <ion-icon class="iconColor" name="card" slot="start"></ion-icon>
+                <ion-label *ngIf="infoProfile">{{infoProfile.tipoDocUser}} {{ infoProfile.idPersona }}</ion-label>
+              </ion-item>
+              <ion-item color="tertiary">
+                <!-- <div class="icon suitcase"></div> -->
+                <ion-icon class="iconColor" name="desktop" slot="start"></ion-icon>
+                <ion-label *ngIf="infoProfile">{{ infoProfile.cargo }}</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </div>
+
+      <ion-row>
+        <ion-col size="12" >
+          <ion-list class="backgroundContent">
+            <!-- Título de la lista -->
+            <ion-list-header class="color-primary">
+              <ion-label class="ion-text-uppercase bold tituloEmpresa">MI EMPRESA</ion-label>
+            </ion-list-header>
+            <!-- Nombre de la empresa -->
+            <ion-item>
+              <div class="icon business mr-3"></div>
+              <p *ngIf="infoProfile">{{ infoProfile.nombreProveedor }}</p>
+            </ion-item>
+  
+            <!-- Identificación de la empresa -->
+            <ion-item>
+              <div class="icon card-id mr-3"></div>
+              <ion-label *ngIf="infoProfile">{{infoProfile.tipoDocProveedor}} {{infoProfile.idProveedor}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <div class="icon phoneContact mr-3"></div>
+              <ion-label *ngIf="infoProfile">{{infoProfile.celular_Proveedor}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <div class="icon locationBussines mr-3"></div>
+              <ion-label *ngIf="infoProfile">{{infoProfile.direccion_Proveedor}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+  </ion-grid>
+</ion-content>

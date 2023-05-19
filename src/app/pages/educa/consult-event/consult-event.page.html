@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-toolbar color="tertiary">
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" mode="md" defaultHref="/"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size="10">
+        <ion-title class="titulo">Consultar Evento</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <form [formGroup]="formConsultEvent" *ngIf="formConsultEvent">
+
+    <ion-list>
+
+      <ion-item lines="none" class="item" mode="ios">
+        <ion-icon name="calendar" color="primary" slot="start"></ion-icon>
+        <ion-label position="stacked">Fecha evento</ion-label>
+      </ion-item>
+      <ion-datetime  
+                    mode="ios"
+                    [value]="dateEvent"
+                    display-format="DD MMM YYYY"
+                    monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+                    [min]="dateMin" [pickerOptions]="customPickerOption"
+                    class="bg-light mt-3 rounded pl-1 pr-1 ion-padding" 
+                    formControlName="dateEvent" 
+                    placeholder="DD MM AAAA">
+      </ion-datetime>
+
+      <!-- datapiker with angular material -->
+      <!-- <mat-form-field  color="primary" class="bg-light mt-3 rounded pl-1 pr-1 ion-padding">
+        <mat-label>Fecha evento</mat-label>
+        <input readonly 
+               matInput 
+               formControlName="dateEvent" 
+               [min]="dateEvent"  
+               [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker (selectedChanged)="DateChange($event)"></mat-datepicker>
+      </mat-form-field> -->
+
+        <ion-item lines="none" class="item" mode="ios">
+          <ion-icon name="business" color="primary" slot="start"></ion-icon>
+          <ion-label position="stacked">Sucursal</ion-label>
+        </ion-item>
+        <ion-select formControlName="branchOffice" 
+                    class="bg-light mt-3 rounded pl-1 pr-1" 
+                    mode="ios"
+                    interface="action-sheet" 
+                    cancelText="CANCELAR"
+                    (ionChange)="selectedBranchOffice($event)" 
+                    placeholder="Sucursal">
+          <ion-select-option *ngFor="let branchs of branchOffices" 
+                            [value]="branchs.FK_Id_Sucursal"> {{branchs.Sucursal}} </ion-select-option>
+        </ion-select>
+
+
+
+        <ion-item lines="none" class="item" mode="ios">
+          <ion-thumbnail class="ionthumbnail" slot="start">
+            <ion-img class="imgMunicipio" src="../../../assets/icon/mapa.svg"></ion-img>
+          </ion-thumbnail>
+          <ion-label position="stacked">Municipio</ion-label>
+        </ion-item>
+
+      <ion-select formControlName="municipality" 
+                  class="bg-light mt-3 rounded pl-1 pr-1"
+                  mode="ios"
+                  interface="action-sheet" 
+                  cancelText="CANCELAR"
+                  (ionChange)="selectedMunicipy($event)"
+                  placeholder="Municipio">
+        <ion-select-option *ngFor="let municipality of municipalities" 
+                           [value]="municipality.FK_Id_Municipio">{{municipality.Municipio}}</ion-select-option>
+      </ion-select>
+
+
+
+        <ion-item lines="none" class="item" mode="ios">
+          <ion-icon name="reader" color="primary" slot="start"></ion-icon>
+          <ion-label position="stacked">Evento</ion-label>
+        </ion-item>
+
+      <ion-select formControlName="event" 
+                  class="bg-light mt-3 rounded pl-1 pr-1" 
+                  mode="ios" 
+                  interface="action-sheet"
+                  cancelText="CANCELAR"
+                  placeholder="Evento">
+        <ion-select-option *ngFor="let event of eventsBranchOffice" 
+                           [value]="event"> {{event.Evento}} </ion-select-option>
+      </ion-select>
+
+
+        <ion-item lines="none" style="height: 50px;" mode="ios">
+          <ion-icon name="pin"  color="primary" slot="start"></ion-icon>
+          <ion-label > Geoposición </ion-label>
+          <ion-toggle color="primary"
+                      formControlName="geo"
+                      class="bg-light mt-3 rounded" 
+                      (ionChange)="changeGeo($event)">
+          </ion-toggle>
+        </ion-item>
+
+
+      <ion-item lines="none" mode="ios">
+        <ion-input type="hidden" formControlName="geoText"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+  </form>
+
+  <!-- <pre>{{ formConsultEvent.value | json }}</pre> -->
+
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3"></ion-col>
+      <ion-col size="6">
+        <ion-button (click)="selectEvent()" mode="ios" class="btn" expand="block">
+          Seleccionar
+        </ion-button>
+      </ion-col>
+      <ion-col size="3"></ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,11 @@
+{
+  "name": "Alissta SUM",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular",
+  "hooks": {
+    "build:after": "./attach-source-maps.js"
+  }
+}

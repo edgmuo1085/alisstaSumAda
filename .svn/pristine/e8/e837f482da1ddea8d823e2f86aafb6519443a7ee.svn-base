@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-toolbar color="tertiary">
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" mode="md" defaultHref="/"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size="10">
+        <ion-title class="titulo">Liberar Actividades</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+
+
+<ion-content class="ion-padding">
+
+  <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="search($event)"></ion-searchbar>
+
+  <ion-slides mode="ios" *ngIf="listActivity.length === 0">
+    <!-- <ion-slides mode="ios" *ngIf="showListPendingVisit"> -->
+    <ion-slide>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <div class="ion-text-center">
+              <img class="imgIcono" src="../../../assets/icon/icono_observaciones.svg" alt="">
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="12">
+            <strong>
+              <h1 class="tituloSlide">
+                No tiene actividades para liberar, debes de migrar actividades desde la web para poderlas liberar.
+              </h1>
+            </strong>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-list *ngIf="listActivity.length > 0">
+    <ion-row class="ion-margin-bottom"
+      *ngFor="let company of listActivity | searchCompanyList: textoBuscar : ['numeroDocumento', 'name']; let i = index">
+      <ion-col size="12">
+        <div class="ion-text-center">
+          <div class="bold">Nombre Empresa</div>
+          <div>{{company.name}}</div>
+        </div>
+        <div class="ion-text-center">
+          <div class="bold">Documento Identificación</div>
+          <div>{{company.numeroDocumento}}</div>
+        </div>
+      </ion-col>
+      <ion-col size="12" *ngFor="let activity of company.listaActividadesMigradas; let j = index">
+        <ion-card mode="ios">
+          <ion-card-content mode="ios">
+
+            <ion-list>
+              <ion-item lines="none">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-label><strong>código actividad</strong></ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="12">
+                      <p>{{activity.idActividad}}</p>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="12">
+                      <ion-label><strong>Descripción actividad</strong></ion-label>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col size="12">
+                      <p>{{activity.descripcionActividad}}</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label><strong>Seleccionar actividad</strong></ion-label>
+                <ion-checkbox slot="end" [value]="isSelectecActivity" color="primary"
+                  (click)="activitySelected(activity)"></ion-checkbox>
+              </ion-item>
+
+            </ion-list>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="liberarActividad()" expand="block" color="primary">
+          Liberar actividad
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+
+</ion-content>

@@ -1,0 +1,100 @@
+  <ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="2">
+        <ion-toolbar color="tertiary">
+          <ion-buttons slot="start">
+            <ion-back-button color="primary" mode="md" defaultHref="/"></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+      <ion-col size="10">
+        <ion-title class="titulo">Adjuntar Archivos</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<ion-content>
+  <ion-grid> 
+
+    <!-- Selector de tipo de archivo -->
+    <form [formGroup]="formSupportType">
+      <ion-row>
+        <div class="ion-text-center" style="width: 100%;">
+          <h3>Seleccione el tipo de soporte</h3>
+        </div>
+        <ion-col>
+              <ion-select [interfaceOptions]="ALERT_OPTIONS" 
+                          interface="action-sheet"
+                          mode="ios"
+                          placeholder = "Seleccione el tipo de soporte"
+                          color="primary"
+                          formControlName="type"
+                          (ionChange)="changeSupport($event)"
+                          class="full-width-select bg-light mt-3 rounded pl-1 pr-1"
+                          cancelText="Cancelar">
+                <ion-select-option class="custom-options"
+                                   *ngFor="let supportType of supportTypeTypes" 
+                                   [value]="supportType.valor">{{ supportType.nombre }}</ion-select-option>
+              </ion-select>
+        </ion-col>
+      </ion-row>
+    </form>
+
+    <div class="ion-text-center" style="width: 100%;">
+      <h3>Evidencias</h3>
+    </div>
+
+    <ion-row>
+      <ion-col size="12" *ngFor="let attach of fileAttach; let i = index">
+        <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <img class="imgThumbnail" src="../../../assets/icon/pdf_icon.svg">
+              <!-- <ion-icon slot="start" name="add-circle"></ion-icon> -->
+            </ion-thumbnail>
+          <ion-label>{{i+1}}.{{attach.file.name}}</ion-label>
+          <ion-icon slot="end" name="trash" (click)="deleteAttach(attach.id)" ></ion-icon>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" *ngFor="let photo of photoService.photos; let i = index">
+        <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <img [src]="photo.base64Imagen">
+            </ion-thumbnail>
+          <ion-label>{{i+1}}.{{photo.idFoto}}.jpeg</ion-label>
+          <ion-icon slot="end" name="trash" (click)="deletePhoto(photo, i)" ></ion-icon>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- Botones para adjuntar archivos o tomar fotos -->
+    <ion-row class="mt-5">
+      <ion-col size="12">
+        <ion-button expand="block" color="primary">
+          <ion-icon lazy="true" slot="start" name="image"></ion-icon>
+          <input #inputFile type="file"  (change)="loadImageFromDevice($event)" id="file-input" accept="application/pdf, image/png" >
+        </ion-button>  
+      </ion-col>
+      <ion-col size="12">
+        <ion-button (click)="addPhotoToGallery()" expand="block" color="primary">
+          <ion-icon slot="start" name="camera"></ion-icon>
+          <ion-label>Capturar Foto</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Botón de guardado -->
+    <ion-row class="mt-5">
+      <ion-col>
+        <div class="text-center">
+          <ion-button expand="block" (click)="save()" color="primary">Guardar</ion-button>
+        </div>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

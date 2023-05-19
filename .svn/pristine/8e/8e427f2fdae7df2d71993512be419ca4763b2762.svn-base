@@ -1,0 +1,227 @@
+<ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-title class="titulo">Verificación acta asesoría</ion-title>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="ion-text-center labelTitulo">
+    <h3><strong>Actividades</strong></h3>
+  </div>
+
+  <ion-card *ngFor="let subject of verification.activities" mode="ios">
+    <ion-card-header mode="ios">
+      <ion-card-title mode="ios">{{subject.idActividad}} contrato {{subject.firmamaQR === 1 ? '(Firma con QR)' : '(Firma sin QR)'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Descripción</ion-label></strong>
+          <ion-input class="rounded"
+                     readonly
+                     >
+                     {{subject.descripcionActividad}}
+                    </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Observaciones</ion-label></strong>
+          <ion-input class="rounded"
+                     readonly
+                     >
+                     {{subject.Observaciones}}
+                    </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Cobertura</ion-label></strong>
+          <ion-input class="rounded"
+                     readonly
+                     >
+                     {{subject.coverage}}
+                    </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Horas migradas - Unidad de medida</ion-label></strong>
+          <ion-input class="rounded"
+                     readonly
+                     >
+                     {{subject.horasAEjecutar}} - {{subject.unidadMedida}}
+                    </ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Horas ejecutadas</ion-label></strong>
+          <ion-input class="rounded"
+                     readonly
+                     >
+                     {{subject.horasEjecutadas}} - {{subject.unidadMedida}}
+                    </ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- tipo de asesoria -->
+  <div class="ion-text-center labelTitulo">
+    <h3><strong>Tipo de asesoría</strong></h3>
+  </div>
+
+  <ion-card mode="ios" *ngIf="verification.typeAdvisory.type === 'Especifica'" >
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Tipo de asesoría</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.type}} </ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Fecha Inicial Asesoria</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.fechaInicialAsesoria | date: 'dd/MMM/yyyy'}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Hora inicio de asesoría</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.startHour }} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Hora final de asesoría</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.endHour }} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Total horas de la  asesoría</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.totalHours}} </ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card mode="ios" *ngIf="verification.typeAdvisory.type === 'Proyecto'" >
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Tipo de asesoría</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.type}} </ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Fecha Inicial Asesoria</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.typeAdvisory.date | date: 'dd/MMMM/yyyy'}} </ion-input>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Información de la empresa -->
+  <div class="ion-text-center labelTitulo">
+    <h3><strong>Información de la empresa</strong></h3>
+  </div>
+  <ion-card mode="ios">
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Nombre</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.nombre}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Tipo de documento</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.tipoDocumento}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Documento</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.numeroDocumento}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Dirección</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.direccion}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Geoposición</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.latitud}}, {{verification.infoCompany.longitud}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Teléfono</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.telefono}} </ion-input>
+        </ion-item>
+
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Departamento</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.departamento}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Municipio/Ciudad</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.infoCompany.municipio}} </ion-input>
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Comentarios del acta de asesoría -->
+  <div class="ion-text-center labelTitulo">
+    <h3><strong>Comentarios</strong></h3>
+  </div>
+  <ion-card mode="ios" *ngIf="verification.commentsAdvice.type === 'Exitosa'">
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">¿Fue exitosa?</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.commentsAdvice.type}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Comentario</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.commentsAdvice.comment}} </ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card mode="ios" *ngIf="verification.commentsAdvice.type === 'Fallo'">
+    <ion-card-content mode="ios">
+      <ion-list>
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">¿Fue exitosa?</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.commentsAdvice.type}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Motivo</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.commentsAdvice.motive}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Justificación</ion-label></strong>
+          <ion-input *ngIf="verification"> {{verification.commentsAdvice.justify}} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <strong><ion-label position="stacked">Nueva fecha</ion-label></strong>
+          <ion-input *ngIf="verification.commentsAdvice.newDateActivity !== 'N/A'"> {{verification.commentsAdvice.newDateActivity | date: 'dd/MMMM/yyyy'}} </ion-input>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+
+<ion-footer no-border>
+  <ion-toolbar class="ion-no-border"  >
+    <ion-button color="primary" expand="block" (click)="regresar()">
+      <ion-label>Regresar</ion-label>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

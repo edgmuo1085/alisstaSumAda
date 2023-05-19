@@ -1,0 +1,119 @@
+ion-header {
+  & ion-grid {
+    padding: 0px;
+    background: #95a6b1;
+    color: white;
+
+    & ion-row {
+      & ion-col {
+        padding: 0px;
+        background: #95a6b1;
+
+        & ion-title {
+          width: 100% !important;
+          font-size: 25px !important;
+          padding: 0px;
+          text-align: left;
+          top: -50%;
+          transform: translateY(50%);
+        }
+      }
+
+      & ion-toolbar {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+ion-content {
+  & ion-list {
+    & ion-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --background: inherit;
+      --highlight-height: 0;
+
+      &.item-interactive-disabled {
+        & ion-input {
+          --background: var(--ion-color-medium);
+          --color: var(--ion-color-medium-contrast);
+        }
+
+        & ion-select {
+          background-color: var(--ion-color-medium);
+          color: var(--ion-color-medium-contrast);
+        }
+      }
+
+      & ion-label {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        white-space: break-spaces;
+      }
+
+      & ion-input {
+        & ::ng-deep {
+          & .native-input {
+            opacity: 1;
+          }
+        }
+      }
+
+      & ion-select {
+        &.select-disabled {
+          opacity: 1;
+        }
+      }
+
+      & ion-input,
+      & ion-select {
+        border-radius: 5px;
+        border: 1px solid var(--ion-color-dark);
+        --padding-start: 1rem;
+        --padding-end: 1rem;
+        background-color: var(--ion-color-light);
+        color: var(--ion-color-light-contrast);
+      }
+    }
+
+    & .section-title {
+      text-align: center;
+      margin: 2rem 0;
+    }
+  }
+}
+
+.font-large {
+  font-size: 1.3rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mr {
+  margin-right: 5px;
+}
+
+.leyenda {
+  border-top: 1px solid #95a6b1;
+  margin-right: 30px;
+  margin-left: 30px;
+  font-weight: bold;
+  color: gray;
+  font: unset;
+  font-size: 15px;
+  padding-top: 5px;
+}
+
+.img-wrapper {
+  & img {
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+.positiva-link {
+  color: var(--ion-color-primary);
+}
