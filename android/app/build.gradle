@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk compileSdkVersion
+    namespace "co.positiva.alisstasum"
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId 'co.positiva.alisstasum'
         minSdkVersion rootProject.ext.minSdkVersion
