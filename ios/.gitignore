@@ -4,10 +4,15 @@
 
 App/build
 App/Pods
-App/public
+App/output
 App/Podfile.lock
+App/App/public
+DerivedData
 xcuserdata
 
 # Cordova plugins for Capacitor
 capacitor-cordova-ios-plugins
 
+# Generated Config files
+App/App/capacitor.config.json
+App/App/config.xml
