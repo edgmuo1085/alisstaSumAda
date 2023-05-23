@@ -7,8 +7,8 @@ android {
         applicationId 'co.positiva.alisstasum'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 109024
-        versionName '1.9.5'
+        versionCode 109025
+        versionName '1.9.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
