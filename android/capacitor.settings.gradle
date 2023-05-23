@@ -19,6 +19,3 @@ project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
-
-include ':capacitor-dark-mode'
-project(':capacitor-dark-mode').projectDir = new File('../node_modules/capacitor-dark-mode/android')

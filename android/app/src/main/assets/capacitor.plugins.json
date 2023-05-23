@@ -22,9 +22,5 @@
 	{
 		"pkg": "@capacitor/status-bar",
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
-	},
-	{
-		"pkg": "capacitor-dark-mode",
-		"classpath": "com.bkon.capacitor.DarkMode.DarkMode"
 	}
 ]
