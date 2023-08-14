@@ -18,13 +18,12 @@ import { Directory, Filesystem } from '@capacitor/filesystem';
   styleUrls: ['./uploader.page.scss'],
 })
 export class UploaderPage implements OnInit {
-
   /**
    * Opciones para la ventana emergente para seleccionar el tipo de archivo.
    */
   readonly ALERT_OPTIONS = {
     header: 'Seleccione el tipo de soporte',
-    message: 'Los soportes marcados con (*) son obligatorios'
+    message: 'Los soportes marcados con (*) son obligatorios',
   };
 
   formSupportType: FormGroup;
@@ -75,7 +74,7 @@ export class UploaderPage implements OnInit {
     private storage: Storage,
     private cacheService: CacheService,
     public photoService: PhotoServiceService
-  ) { }
+  ) {}
 
   ionViewWillEnter() {
     this.cargarInformación();
@@ -102,7 +101,6 @@ export class UploaderPage implements OnInit {
           }
         });
       });
-
     }
     if (fotosAdjuntas.length > 0) {
       this.listaDocumentos = [];
@@ -120,7 +118,7 @@ export class UploaderPage implements OnInit {
 
   createFormSupportType() {
     this.formSupportType = this.formBuilder.group({
-      type: ['']
+      type: [''],
     });
   }
 
@@ -187,7 +185,7 @@ export class UploaderPage implements OnInit {
 
   getFileReader(): FileReader {
     const fileReader = new FileReader();
-    const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+    const zoneOriginalInstance = (fileReader as any)['__zone_symbol__originalInstance'];
     return zoneOriginalInstance || fileReader;
   }
 
@@ -195,6 +193,12 @@ export class UploaderPage implements OnInit {
     let objFile = {};
 
     const file = event.target.files[0];
+
+    if (file.type !== 'application/pdf') {
+      this.notification('Alerta', 'Señor usuario, solo se permiten subir archivos PDF');
+      return;
+    }
+
     const peso = file.size / 1048576;
     if (peso < 1) {
       this.disableButtons = true;
@@ -217,7 +221,7 @@ export class UploaderPage implements OnInit {
           blob: this.blob,
           extension: this.extensionFile,
           fileAsistenciaEventos: this.asistenteEventosPYP,
-          fileEvaluacionEventos: this.evaluacionEventos
+          fileEvaluacionEventos: this.evaluacionEventos,
         };
         this.archivo = objFile;
         this.fileAttach.push(objFile);
@@ -227,7 +231,6 @@ export class UploaderPage implements OnInit {
       this.inputFile.nativeElement.value = '';
       this.notification('Atención', 'El archivo supera el limite permitido de 1MB');
     }
-
   }
 
   b64toBlob(b64Data, contentType) {
@@ -249,20 +252,20 @@ export class UploaderPage implements OnInit {
 
   async createDirectoryForActivitieSelected(idActividad, blob, extensionBase64, idTipoArchivo) {
     try {
-      const UUID = `${idActividad}` + '-' + (new Date().getTime()).toString(16);
+      const UUID = `${idActividad}` + '-' + new Date().getTime().toString(16);
 
       await Filesystem.writeFile({
         path: `${idActividad}/${UUID}.pdf`,
         directory: Directory.Data,
         data: await this.blobToBase64(blob),
-        recursive: true
+        recursive: true,
       });
 
       const objetoActividad = {
         idActividad,
         nombreArchivo: UUID + '.pdf',
         tipoDocumento: idTipoArchivo,
-        extensionBase64
+        extensionBase64,
       };
 
       this.cacheService.saveAttachDocs(objetoActividad);
@@ -271,9 +274,7 @@ export class UploaderPage implements OnInit {
     }
   }
 
-
   adjuntar() {
-
     const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
 
     if (documentosAdjuntos.length < 6) {
@@ -281,17 +282,15 @@ export class UploaderPage implements OnInit {
 
       if (tipoArchivo) {
         if (this.accionARealizar === 'foto') {
-
           const objGuardar = {
             idActividad: this.infoActivity.id,
             tipoArchivo,
             idTipoArchivo: this.formSupportType.get('type').value,
-            foto: this.foto
+            foto: this.foto,
           };
           this.listaDocumentos.push(objGuardar);
           this.formSupportType.get('type').reset();
           return;
-
         }
 
         if (this.accionARealizar === 'documento') {
@@ -299,7 +298,7 @@ export class UploaderPage implements OnInit {
             idActividad: this.infoActivity.id,
             tipoArchivo,
             idTipoArchivo: this.formSupportType.get('type').value,
-            documento: this.archivo
+            documento: this.archivo,
           };
           this.filesAdjuntos.push(objGuardarDocumento);
           this.archivo = undefined;
@@ -309,8 +308,6 @@ export class UploaderPage implements OnInit {
       } else {
         this.notification('Atención', 'No puede adjuntar el documento sin seleccionar un tipo de archivo');
       }
-
-
     } else {
       this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
       this.formSupportType.get('type').reset();
@@ -319,12 +316,9 @@ export class UploaderPage implements OnInit {
         tag.value = '';
       }
     }
-
-
   }
 
   save() {
-
     this.filesAdjuntos.forEach(element => {
       this.createDirectoryForActivitieSelected(
         this.infoActivity.id,
@@ -338,9 +332,8 @@ export class UploaderPage implements OnInit {
 
     const objSoportesPorActividad = {
       idActividad: this.infoActivity.id,
-      cantidadDocumentosAdjuntos: documentosAdjuntos.length
+      cantidadDocumentosAdjuntos: documentosAdjuntos.length,
     };
-
 
     // this.cacheService.infoDocumentosPorActividad = [];
     this.cacheService.infoActividadPorDocumento(objSoportesPorActividad);
@@ -377,7 +370,6 @@ export class UploaderPage implements OnInit {
       default:
         break;
     }
-
   }
 
   async notification(titulo, notificacion) {
@@ -386,7 +378,7 @@ export class UploaderPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -406,7 +398,4 @@ export class UploaderPage implements OnInit {
       reader.readAsDataURL(blob);
     });
   }
-
 }
-
-
