@@ -46,7 +46,6 @@ import { PipesModule } from './pipes/pipes.module';
     MatFormFieldModule,
     MatInputModule,
     NgxMaterialTimepickerModule,
-    NgxMaterialTimepickerModule.setLocale('es-ES')
   ],
   providers: [
     StatusBar,

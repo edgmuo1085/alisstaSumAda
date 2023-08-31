@@ -54,7 +54,6 @@ export const MY_FORMATS = {
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxMaterialTimepickerModule.setLocale('es-ES')
   ],
   declarations: [
     VisitTypePage,
