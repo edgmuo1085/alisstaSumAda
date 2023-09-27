@@ -14,7 +14,6 @@ import { VisitSubject } from './visit-subjects.typings';
   styleUrls: ['./visit-subjects.page.scss'],
 })
 export class VisitSubjectsPage implements OnInit {
-
   subjectForm: FormGroup;
 
   /**
@@ -45,7 +44,7 @@ export class VisitSubjectsPage implements OnInit {
     title: 'Atención',
     mode: 'ios',
     message: 'Puede seleccionar un máximo de cuatro (4) actividades por formulario.',
-    okButtonText: 'Aceptar'
+    okButtonText: 'Aceptar',
   };
 
   /**
@@ -57,21 +56,21 @@ export class VisitSubjectsPage implements OnInit {
     title: 'Atención',
     mode: 'ios',
     message: 'Se debe seleccionar por lo menos (1) actividad para continuar.',
-    okButtonText: 'Aceptar'
+    okButtonText: 'Aceptar',
   };
 
   private readonly ALERT_TEXTS_MAXHOREJECUTAR = {
     title: 'Atención',
     mode: 'ios',
     message: 'No puede seleccionar las actividades, debido a que excede las horas permitidas a ejecutar. Las cuales son 10 horas por día',
-    okButtonText: 'Aceptar'
+    okButtonText: 'Aceptar',
   };
 
   private readonly ALERT_TEXTS_FIELDSEMPTY = {
     title: 'Atención',
     mode: 'ios',
     message: 'Todos los campos son obligatorios',
-    okButtonText: 'Aceptar'
+    okButtonText: 'Aceptar',
   };
 
   /**
@@ -91,10 +90,7 @@ export class VisitSubjectsPage implements OnInit {
 
   validarCoberturaHorasEjecutadas = true;
 
-  constructor(private alertController: AlertController,
-    private router: Router,
-    public cacheService: CacheService
-  ) { }
+  constructor(private alertController: AlertController, private router: Router, public cacheService: CacheService) {}
 
   ionViewWillEnter() {
     // tslint:disable-next-line: prefer-for-of
@@ -116,7 +112,6 @@ export class VisitSubjectsPage implements OnInit {
     this.updateListAdvisoryTopic();
   }
 
-
   /**
    * Muestra u oculta los detalles del tema proporcionado.
    * Si se está mostrando los detalles de un tema y existe otro abierto, lo cierra.
@@ -126,7 +121,7 @@ export class VisitSubjectsPage implements OnInit {
     subject.isOpen = !subject.isOpen;
     if (subject.isOpen) {
       const openedSubjects = this.subjects.filter(s => s !== subject && s.isOpen);
-      openedSubjects.forEach(s => s.isOpen = false);
+      openedSubjects.forEach(s => (s.isOpen = false));
     }
   }
 
@@ -218,7 +213,10 @@ export class VisitSubjectsPage implements OnInit {
             const showInputCode = this.subjectsSelected[i].showInputCode;
 
             if (attachments < 1 && !showInputCode) {
-              this.notification('Atención', 'Como la linea de acción es EDUCA, es obligatorio cargar los soportes Asistencia a eventos de PyP y Evaluación de eventos');
+              this.notification(
+                'Atención',
+                'Como la linea de acción es EDUCA, es obligatorio cargar los soportes Asistencia a eventos de PyP y Evaluación de eventos'
+              );
               this.attachDocs(subject);
 
               return;
@@ -232,9 +230,8 @@ export class VisitSubjectsPage implements OnInit {
           this.redirectTo = 'type';
         }
       } else {
-
         const elementRemove = subject;
-        const filteredItems = (this.subjectsSelected.filter(item => item !== elementRemove));
+        const filteredItems = this.subjectsSelected.filter(item => item !== elementRemove);
         this.subjectsSelected = filteredItems;
 
         if (this.subjectsSelected.length === 0) {
@@ -253,7 +250,7 @@ export class VisitSubjectsPage implements OnInit {
     } else {
       // subject.include = false;
       const elementRemove = subject;
-      const filteredItems = (this.subjectsSelected.filter(item => item !== elementRemove));
+      const filteredItems = this.subjectsSelected.filter(item => item !== elementRemove);
       this.subjectsSelected = filteredItems;
 
       if (this.subjectsSelected.length === 0) {
@@ -272,13 +269,13 @@ export class VisitSubjectsPage implements OnInit {
       // subject.include = false;
       const okButton = {
         text: this.ALERT_TEXTS_MINACTIVITY.okButtonText,
-        role: 'OK'
+        role: 'OK',
       };
       const alert = this.alertController.create({
         header: this.ALERT_TEXTS_MINACTIVITY.title,
         mode: 'ios',
         message: this.ALERT_TEXTS_MINACTIVITY.message,
-        buttons: [okButton]
+        buttons: [okButton],
       });
 
       (await alert).present();
@@ -295,14 +292,14 @@ export class VisitSubjectsPage implements OnInit {
       this.redirectTo = '';
       const okButton = {
         text: this.ALERT_TEXTS.okButtonText,
-        role: 'OK'
+        role: 'OK',
       };
 
       const alert = this.alertController.create({
         header: this.ALERT_TEXTS.title,
         mode: 'ios',
         message: this.ALERT_TEXTS.message,
-        buttons: [okButton]
+        buttons: [okButton],
       });
 
       (await alert).present();
@@ -336,7 +333,6 @@ export class VisitSubjectsPage implements OnInit {
     } else {
       return true;
     }
-
   }
 
   /**
@@ -348,7 +344,6 @@ export class VisitSubjectsPage implements OnInit {
     this.subjectForm = new FormGroup({});
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.subjects.length; i++) {
-
       const controlId = new FormControl(this.subjects[i].id);
       const controlIdActividad = new FormControl(this.subjects[i].idActividad);
       const descripcionActividad = new FormControl(this.subjects[i].descripcionActividad);
@@ -410,7 +405,7 @@ export class VisitSubjectsPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -451,9 +446,25 @@ export class VisitSubjectsPage implements OnInit {
 
   async next() {
     const formSubject = this.subjectForm.value;
-    const fields = ['include', 'id', 'idActividad', 'descripcionActividad', 'Observaciones',
-      'horasAEjecutar', 'unidadMedida', 'horasEjecutadas', 'coverage', 'registroCodigoEventosEduca',
-      'codeEduca', 'fechaFinContrato', 'firmaQR', 'estadoInterno', 'fkIdSiniestro', 'siniestro', 'siniestroOpActividad'];
+    const fields = [
+      'include',
+      'id',
+      'idActividad',
+      'descripcionActividad',
+      'Observaciones',
+      'horasAEjecutar',
+      'unidadMedida',
+      'horasEjecutadas',
+      'coverage',
+      'registroCodigoEventosEduca',
+      'codeEduca',
+      'fechaFinContrato',
+      'firmaQR',
+      'estadoInterno',
+      'fkIdSiniestro',
+      'siniestro',
+      'siniestroOpActividad',
+    ];
     let tarjetas = [];
     for (let i = 0; i < Object.keys(formSubject).length / fields.length; i++) {
       const tarjeta: any = {};
@@ -471,8 +482,7 @@ export class VisitSubjectsPage implements OnInit {
     for (let i = 0; i < tarjetas.length; i++) {
       const element = tarjetas[i];
       // tslint:disable-next-line: max-line-length
-      if ((element.coverage === null || element.coverage === '') ||
-        (element.horasEjecutadas === null || element.horasEjecutadas === '')) {
+      if (element.coverage === null || element.coverage === '' || element.horasEjecutadas === null || element.horasEjecutadas === '') {
         this.validarCoberturaHorasEjecutadas = false;
         this.notification('Atención', 'Debe ingresar el valor de la cobertura o el de las horas ejecutadas para la actividad seleccionada');
         break;
@@ -482,6 +492,12 @@ export class VisitSubjectsPage implements OnInit {
       if (parseInt(element.horasEjecutadas, 10) > element.horasAEjecutar) {
         this.validarCoberturaHorasEjecutadas = false;
         this.notification('Atención', 'La cantidad de horas a ejecutar es mayor a la de horas migradas para realizar la actividad');
+        break;
+      }
+
+      if (parseInt(element.horasEjecutadas, 10) < 1) {
+        this.validarCoberturaHorasEjecutadas = false;
+        this.notification('Atención', 'La hora estimada debe ser mayor a cero');
         break;
       }
 
@@ -524,13 +540,13 @@ export class VisitSubjectsPage implements OnInit {
         if (this.subjectsSelected.length === 0) {
           const okButton = {
             text: this.ALERT_TEXTS_MINACTIVITY.okButtonText,
-            role: 'OK'
+            role: 'OK',
           };
           const alert = this.alertController.create({
             header: this.ALERT_TEXTS_MINACTIVITY.title,
             mode: 'ios',
             message: this.ALERT_TEXTS_MINACTIVITY.message,
-            buttons: [okButton]
+            buttons: [okButton],
           });
 
           (await alert).present();
@@ -540,13 +556,13 @@ export class VisitSubjectsPage implements OnInit {
         if (this.subjectsSelected.length > this.MAX_SUBJECTS) {
           const okButton = {
             text: this.ALERT_TEXTS.okButtonText,
-            role: 'OK'
+            role: 'OK',
           };
           const alert = this.alertController.create({
             mode: 'ios',
             header: this.ALERT_TEXTS.title,
             message: this.ALERT_TEXTS.message,
-            buttons: [okButton]
+            buttons: [okButton],
           });
           (await alert).present();
           return;
@@ -560,14 +576,14 @@ export class VisitSubjectsPage implements OnInit {
       } else {
         const okButton = {
           text: this.ALERT_TEXTS.okButtonText,
-          role: 'OK'
+          role: 'OK',
         };
 
         const alert = this.alertController.create({
           mode: 'ios',
           header: this.ALERT_TEXTS_MAXHOREJECUTAR.title,
           message: this.ALERT_TEXTS_MAXHOREJECUTAR.message,
-          buttons: [okButton]
+          buttons: [okButton],
         });
 
         (await alert).present();
@@ -597,17 +613,15 @@ export class VisitSubjectsPage implements OnInit {
       const fotos = [];
       this.cacheService.fotosAdjuntas.forEach(arr => fotos.push(...arr));
 
-      const archivosActividad = archivos
-        .filter(f => f.idActividad === tarjeta.id && ['AEP', 'EE'].indexOf(f.idTipoArchivo) >= 0);
+      const archivosActividad = archivos.filter(f => f.idActividad === tarjeta.id && ['AEP', 'EE'].indexOf(f.idTipoArchivo) >= 0);
 
-      const fotosActividad = fotos
-        .filter(f => f.idActividad === tarjeta.id && ['AEP', 'EE'].indexOf(f.idTipoArchivo) >= 0);
+      const fotosActividad = fotos.filter(f => f.idActividad === tarjeta.id && ['AEP', 'EE'].indexOf(f.idTipoArchivo) >= 0);
 
-      const archivosAEP = archivosActividad.filter(f => f.idTipoArchivo === 'AEP').length +
-        fotosActividad.filter(f => f.idTipoArchivo === 'AEP').length;
+      const archivosAEP =
+        archivosActividad.filter(f => f.idTipoArchivo === 'AEP').length + fotosActividad.filter(f => f.idTipoArchivo === 'AEP').length;
 
-      const archivosEE = archivosActividad.filter(f => f.idTipoArchivo === 'EE').length +
-        fotosActividad.filter(f => f.idTipoArchivo === 'EE').length;
+      const archivosEE =
+        archivosActividad.filter(f => f.idTipoArchivo === 'EE').length + fotosActividad.filter(f => f.idTipoArchivo === 'EE').length;
 
       const hasFiles = archivosAEP >= 1 && archivosEE >= 1;
 
@@ -616,5 +630,4 @@ export class VisitSubjectsPage implements OnInit {
 
     return allValid;
   }
-
 }
