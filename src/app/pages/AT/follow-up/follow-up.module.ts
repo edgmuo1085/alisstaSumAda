@@ -9,13 +9,7 @@ import { FollowUpPageRoutingModule } from './follow-up-routing.module';
 import { FollowUpPage } from './follow-up.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    FollowUpPageRoutingModule
-  ],
-  declarations: [FollowUpPage]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, FollowUpPageRoutingModule],
+  declarations: [FollowUpPage],
 })
 export class FollowUpPageModule {}

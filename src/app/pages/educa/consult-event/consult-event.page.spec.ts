@@ -9,8 +9,8 @@ describe('ConsultEventPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ConsultEventPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ConsultEventPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ConsultEventPage);

@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
  */
 @Injectable()
 export class NavbarService {
-
   /**
    * Indica si la barra de navegación debe mostrarse u ocultarse.
    */
@@ -28,5 +27,4 @@ export class NavbarService {
   setVisibility(isVisible: boolean): void {
     this._show.next(isVisible);
   }
-
 }

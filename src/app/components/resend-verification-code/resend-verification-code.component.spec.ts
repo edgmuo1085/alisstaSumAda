@@ -9,8 +9,8 @@ describe('ResendVerificationCodeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResendVerificationCodeComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ResendVerificationCodeComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ResendVerificationCodeComponent);

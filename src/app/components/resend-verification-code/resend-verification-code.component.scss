@@ -1,26 +1,27 @@
-ion-header{
-  ion-toolbar{
+ion-header {
+  ion-toolbar {
     padding-top: 0px;
-  }& .titulo{
+  }
+  & .titulo {
     width: 100% !important;
     font-size: 14.5px !important;
     text-align: center;
   }
 }
 
-ion-content{
+ion-content {
   ion-searchbar {
     --border-radius: 30px;
   }
-  ion-slides{
+  ion-slides {
     height: 80%;
     border: 1px solid #344b56;
     border-radius: 50px;
     margin-top: 40px;
-    ion-slide{
-      ion-grid{
-        ion-row{
-          ion-col{
+    ion-slide {
+      ion-grid {
+        ion-row {
+          ion-col {
             & .tituloSlide {
               margin-top: -30px;
               font-weight: bold;
@@ -31,15 +32,15 @@ ion-content{
       }
     }
   }
-  ion-list{
+  ion-list {
     padding: 0px;
     background: none;
-    ion-item{
+    ion-item {
       margin-bottom: 10px;
       border-radius: 15px;
     }
   }
-  ion-button{
+  ion-button {
     --border-radius: 50px;
   }
 }

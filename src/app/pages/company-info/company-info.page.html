@@ -15,125 +15,106 @@
   </ion-grid>
 </ion-header>
 
-
-
 <ion-content>
-
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <strong><ion-label class="ion-text-center bold"
-          position="stacked" *ngIf="infoCompany">{{infoCompany.name}}</ion-label></strong>
+        <strong><ion-label class="ion-text-center bold" position="stacked" *ngIf="infoCompany">{{infoCompany.name}}</ion-label></strong>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12">
         <strong>
-          <ion-label class="ion-text-center bold"
-                   position="stacked" *ngIf="infoCompany">{{infoCompany.tipoDocumentoDescripcion}} {{infoCompany.numeroDocumento}}</ion-label>
+          <ion-label class="ion-text-center bold" position="stacked" *ngIf="infoCompany"
+            >{{infoCompany.tipoDocumentoDescripcion}} {{infoCompany.numeroDocumento}}</ion-label
+          >
         </strong>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-list lines="none">
-
     <form [formGroup]="formInfoCompany" *ngIf="formInfoCompany">
-
       <!-- Dirección de la empresa -->
-    <ion-item class="p-0 mt-3">
-      <ion-label position="stacked">Dirección donde se realiza la asesoría</ion-label>
-      <ion-input formControlName="addressCompany" 
-                 class="bg-light mt-3 rounded pl-1 pr-1"></ion-input>
-    </ion-item>
+      <ion-item class="p-0 mt-3">
+        <ion-label position="stacked">Dirección donde se realiza la asesoría</ion-label>
+        <ion-input formControlName="addressCompany" class="bg-light mt-3 rounded pl-1 pr-1"></ion-input>
+      </ion-item>
 
-    <!-- Coordenadas de la ubicación de la empresa -->
-    <ion-item class="p-0 mt-3">
-      <ion-label position="stacked">Ubicación donde se realiza la asesoría</ion-label>
-      <ion-grid class="m-0 w-100 p-0">
-        <ion-row>
-          <ion-col size="10">
-            <ion-input class="bg-light mt-3 rounded pl-1 pr-1"
-                       readonly
-                       formControlName="locationCompany"></ion-input>
-          </ion-col>
-          <!-- <ion-col size="2"> -->
+      <!-- Coordenadas de la ubicación de la empresa -->
+      <ion-item class="p-0 mt-3">
+        <ion-label position="stacked">Ubicación donde se realiza la asesoría</ion-label>
+        <ion-grid class="m-0 w-100 p-0">
+          <ion-row>
+            <ion-col size="10">
+              <ion-input class="bg-light mt-3 rounded pl-1 pr-1" readonly formControlName="locationCompany"></ion-input>
+            </ion-col>
+            <!-- <ion-col size="2"> -->
             <!-- <ion-button class="iconButton" (click)="getGeolocation()" expand="block" color="primary"> -->
-              <!-- <ion-icon name="locate-outline"></ion-icon> -->
-              <!-- <img src="../../../assets/icon/GPS.svg" alt="gps"> -->
-            <!-- </ion-button> -->
-          <!-- </ion-col> -->
-
-          <ion-col size="2">
             <!-- <ion-icon name="locate-outline"></ion-icon> -->
-            <img src="../../../assets/icon/GPS.svg" (click)="getGeolocation()" alt="gps">
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+            <!-- <img src="../../../assets/icon/GPS.svg" alt="gps"> -->
+            <!-- </ion-button> -->
+            <!-- </ion-col> -->
 
-    <!-- Teléfonos de contacto de la empresa -->
-    <ion-item class="p-0 mt-3">
-      <ion-label position="stacked">Teléfonos de contacto</ion-label>
-      <ion-input class="bg-light mt-3 rounded pl-1 pr-1"
-                 type="number" 
-                 inputmode="numeric"
-                 formControlName="phoneContact"></ion-input>
-    </ion-item>
+            <ion-col size="2">
+              <!-- <ion-icon name="locate-outline"></ion-icon> -->
+              <img src="../../../assets/icon/GPS.svg" (click)="getGeolocation()" alt="gps" />
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
 
-    
+      <!-- Teléfonos de contacto de la empresa -->
+      <ion-item class="p-0 mt-3">
+        <ion-label position="stacked">Teléfonos de contacto</ion-label>
+        <ion-input class="bg-light mt-3 rounded pl-1 pr-1" type="number" inputmode="numeric" formControlName="phoneContact"></ion-input>
+      </ion-item>
 
-    <!-- Departamento de la dirección de la empresa -->
-    <ion-item class="p-0 mt-3">
-      <ion-label position="stacked">Departamento</ion-label>
-      <!-- <ion-input class="bg-light mt-3 rounded pl-1 pr-1" formControlName="Department"></ion-input> -->
-      <ion-select placeholder="Departamento"
-                  type="text"
-                  class="bg-light mt-3 rounded pl-1 pr-1"
-                  name="department" 
-                  id="department"
-                  mode="ios"
-                  interface="action-sheet"
-                  cancelText="CANCELAR"
-                  (ionChange)="changeDepartment($event)" 
-                  formControlName="Department">
-        <ion-select-option [value]="department.Nombre"
-                           *ngFor="let department of departments"
-                           >{{department.Nombre}}</ion-select-option>
-        
-      </ion-select>
-    </ion-item>
+      <!-- Departamento de la dirección de la empresa -->
+      <ion-item class="p-0 mt-3">
+        <ion-label position="stacked">Departamento</ion-label>
+        <!-- <ion-input class="bg-light mt-3 rounded pl-1 pr-1" formControlName="Department"></ion-input> -->
+        <ion-select
+          placeholder="Departamento"
+          type="text"
+          class="bg-light mt-3 rounded pl-1 pr-1"
+          name="department"
+          id="department"
+          mode="ios"
+          interface="action-sheet"
+          cancelText="CANCELAR"
+          (ionChange)="changeDepartment($event)"
+          formControlName="Department"
+        >
+          <ion-select-option [value]="department.Nombre" *ngFor="let department of departments">{{department.Nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <!-- Ciudad o municipio de la dirección de la empresa -->
-    <ion-item class="p-0 mt-3">
-      <ion-label position="stacked">Ciudad/Municipio</ion-label>
-      <!-- <ion-input class="bg-light mt-3 rounded pl-1 pr-1"
+      <!-- Ciudad o municipio de la dirección de la empresa -->
+      <ion-item class="p-0 mt-3">
+        <ion-label position="stacked">Ciudad/Municipio</ion-label>
+        <!-- <ion-input class="bg-light mt-3 rounded pl-1 pr-1"
                  formControlName="municipality"></ion-input> -->
-                 <ion-select placeholder="Municipio/ciudad"
-                 type="text"
-                 class="bg-light mt-3 rounded pl-1 pr-1"
-                 name="municipality"
-                 mode="ios"
-                 interface="action-sheet"
-                 cancelText="CANCELAR" 
-                 id="municipality"
-                 formControlName="municipality">
-       <ion-select-option [value]="municipality.Nombre"
-                          *ngFor="let municipality of getCities"
-                          >{{municipality.Nombre}}</ion-select-option>
-       
-     </ion-select>
-    </ion-item>
-
+        <ion-select
+          placeholder="Municipio/ciudad"
+          type="text"
+          class="bg-light mt-3 rounded pl-1 pr-1"
+          name="municipality"
+          mode="ios"
+          interface="action-sheet"
+          cancelText="CANCELAR"
+          id="municipality"
+          formControlName="municipality"
+        >
+          <ion-select-option [value]="municipality.Nombre" *ngFor="let municipality of getCities"
+            >{{municipality.Nombre}}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
     </form>
-
   </ion-list>
   <!-- Botón de continuar -->
   <div class="ion-text-center">
-    <ion-button color="primary"
-                mode="ios"
-                expand="small"
-                class="btn"
-                (click)="next()">Continuar</ion-button>
+    <ion-button color="primary" mode="ios" expand="small" class="btn" (click)="next()">Continuar</ion-button>
   </div>
 </ion-content>

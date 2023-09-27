@@ -11,7 +11,6 @@ import { ConnectionStatusEnum, NetworkService } from '../../services/network/net
   styleUrls: ['./tasks-to-send.page.scss'],
 })
 export class TasksToSendPage implements OnInit {
-
   listAdvisory = [];
 
   loading: HTMLIonLoadingElement;
@@ -70,7 +69,7 @@ export class TasksToSendPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Verifique su conexión a internet.',
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -111,7 +110,7 @@ export class TasksToSendPage implements OnInit {
 
       const toast = await this.toastController.create({
         message: `Enviando acta ${i + 1} de ${totalActas}...`,
-        duration: 2000
+        duration: 2000,
       });
 
       toast.present();
@@ -157,7 +156,7 @@ export class TasksToSendPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -182,5 +181,4 @@ export class TasksToSendPage implements OnInit {
 
     return body;
   }
-
 }

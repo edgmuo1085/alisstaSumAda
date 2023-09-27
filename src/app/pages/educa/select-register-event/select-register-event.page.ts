@@ -7,7 +7,6 @@ import { RegistroAsistenteEvento } from '../../../intarfaces/interfaces';
 import { CacheService } from '../../../services/cache/cache.service';
 import { EventService } from '../../../services/event/event.service';
 
-
 @Component({
   selector: 'app-select-register-event',
   templateUrl: './select-register-event.page.html',
@@ -17,19 +16,20 @@ import { EventService } from '../../../services/event/event.service';
  * Este componente es el encargado de seleccionar la opción del registro
  */
 export class SelectRegisterEventPage implements OnInit {
-
   swiperOpts = {
     allowSlidePrev: false,
-    allowSlideNext: false
+    allowSlideNext: false,
   };
 
   nombreEvento: string;
 
-  constructor(private barcodeScanner: BarcodeScanner,
+  constructor(
+    private barcodeScanner: BarcodeScanner,
     private cacheService: CacheService,
     private alertController: AlertController,
     private eventService: EventService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.nombreEvento = sessionStorage.nombreEvento;
@@ -42,9 +42,9 @@ export class SelectRegisterEventPage implements OnInit {
 
   async codeQRRegister() {
     const eventIdSelected = await this.cacheService.newRegisterEvent.FK_ID_Evento.toString();
-    this.barcodeScanner.scan()
+    this.barcodeScanner
+      .scan()
       .then(data => {
-
         if (data.cancelled !== true) {
           const info = data.text.trim();
           const dataUsuarioQR = JSON.parse(info);
@@ -62,11 +62,12 @@ export class SelectRegisterEventPage implements OnInit {
             dtmFechaNacimiento: fechaNacimiento.format('MM/DD/YYYY'),
             strTelefono: dataUsuarioQR.tele,
             strEmail: dataUsuarioQR.email,
-            FK_ID_Evento: eventIdSelected
+            FK_ID_Evento: eventIdSelected,
           };
           this.registerUserQR(registroUsuarioAsistente);
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         this.confirmationRegister('Fallido.', 'No se pudo realizar el registro del asistente al evento');
       });
   }
@@ -83,12 +84,14 @@ export class SelectRegisterEventPage implements OnInit {
    * Método que permite enviar la petición al servicio para posteriormente realizar el registro.
    */
   registerUserQR(registroNuevoUsuarioAsistente: RegistroAsistenteEvento) {
-    this.eventService.registerResponsibleQR(registroNuevoUsuarioAsistente)
-      .subscribe(response => {
+    this.eventService.registerResponsibleQR(registroNuevoUsuarioAsistente).subscribe(
+      response => {
         this.confirmationRegister('Exitoso', 'El registro se realizó correctamente.');
-      }, err => {
+      },
+      err => {
         this.confirmationRegister('Error.', 'Falló la inscripción del asistente al evento.');
-      });
+      }
+    );
   }
 
   /**
@@ -99,10 +102,9 @@ export class SelectRegisterEventPage implements OnInit {
       header: resultadoAlerta,
       mode: 'ios',
       message: mensaje,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
   }
-
 }

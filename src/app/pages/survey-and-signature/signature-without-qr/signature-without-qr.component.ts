@@ -9,8 +9,6 @@ import { SignaturePad } from 'angular2-signaturepad';
   styleUrls: ['./signature-without-qr.component.scss'],
 })
 export class SignatureWithoutQRComponent implements OnInit {
-
-
   pollSelectedExce = false;
   pollSelectedBue = false;
   pollSelectedReg = false;
@@ -24,15 +22,13 @@ export class SignatureWithoutQRComponent implements OnInit {
 
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
 
-
   // tslint:disable-next-line: ban-types
   public signaturePadOptions: Object = {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
-    canvasHeight: 300
+    canvasHeight: 300,
   };
-
 
   @Input() namePersonSignature: any;
   @Input() verificationCodeInput: number;
@@ -44,10 +40,12 @@ export class SignatureWithoutQRComponent implements OnInit {
 
   enableBtnGuardar = false;
 
-  constructor(private alertController: AlertController, private storage: Storage) { }
+  constructor(
+    private alertController: AlertController,
+    private storage: Storage
+  ) {}
 
-  ionViewDidEnter() {
-  }
+  ionViewDidEnter() {}
 
   ngOnInit() {
     this.getInfoUser();
@@ -94,7 +92,6 @@ export class SignatureWithoutQRComponent implements OnInit {
       default:
         break;
     }
-
   }
 
   drawComplete() {
@@ -124,5 +121,4 @@ export class SignatureWithoutQRComponent implements OnInit {
     };
     this.infoSignatureWithoutQR.emit(infoWithoutQR);
   }
-
 }

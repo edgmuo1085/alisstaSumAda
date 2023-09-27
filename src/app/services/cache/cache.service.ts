@@ -5,11 +5,10 @@ import { RegistroAsistenteEvento, responsableEvento } from 'src/app/intarfaces/i
 import { actaAsesoria } from '../../intarfaces/interfaces';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CacheService {
-
-  // Variablel para almacenar la información de las actividades a 
+  // Variablel para almacenar la información de las actividades a
   // las cuales se les adjuntara los documentos
   infoActivityAtachSelected: any = {};
 
@@ -80,22 +79,18 @@ export class CacheService {
   // Variable para guardar la ip adress
   ipAddress: any;
 
-  constructor(private storage: Storage) { }
-
+  constructor(private storage: Storage) {}
 
   // --------------------------- MÓDULO EJECUCIÓN ACTIVIDADES --------------------\\
-
 
   saveActivities(listActivitiesSelectedForExec: any) {
     this.activitiesSelectedForExec = [];
     this.activitiesSelectedForExec = listActivitiesSelectedForExec;
-
   }
 
   getSaveActivitiesSelected() {
     return this.activitiesSelectedForExec;
   }
-
 
   saveMigratedHours(migratedHourSelected) {
     this.migratedHours = 0;
@@ -103,7 +98,6 @@ export class CacheService {
   }
 
   // save Info temas de asesoria
-
 
   // save info tipos de asesoria
   saveTypeAdvice(typeAdvice) {
@@ -171,11 +165,10 @@ export class CacheService {
       commentsAdvice: this.commentAdvice,
       infoSurveyQR: this.infoSurveyQR,
       infoSurveyARL: this.infoSurveyARL,
-      ip: this.ipAddress
+      ip: this.ipAddress,
     };
     return verificationAdvisory;
   }
-
 
   // Metodo que permite almacenar la información de la actividad al momento de redireccionarla a los documentos
   InfoActivityAttachDocs(attachDocs) {
@@ -231,9 +224,7 @@ export class CacheService {
         return;
       }
 
-      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ?
-        registry.cantidadDocumentosAdjuntos - 1 :
-        0;
+      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
     });
   }
 
@@ -261,9 +252,7 @@ export class CacheService {
         return;
       }
 
-      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ?
-        registry.cantidadDocumentosAdjuntos - 1 :
-        0;
+      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
     });
   }
 
@@ -272,7 +261,6 @@ export class CacheService {
   }
 
   createActaAsesoria(idProveedor) {
-
     const TTA_LISTA = [];
 
     // tslint:disable-next-line: prefer-for-of
@@ -294,7 +282,7 @@ export class CacheService {
           tipoFuente: r.tipoFuente,
           tipoMedio: r.tipoMedio,
           tipoTrabajo: r.tipoTrabajo,
-          InformacionEnvidencia: r.InformacionEnvidencia ?? null
+          InformacionEnvidencia: r.InformacionEnvidencia ?? null,
         }));
       }
 
@@ -311,14 +299,13 @@ export class CacheService {
         ObservacionesSeguimiento: element.siniestro?.Observaciones ?? null,
         Recomendaciones: recomendaciones,
         AdjuntarDocumentosTecnicos: element.AdjuntarDocumentosTecnicos,
-        CodigoeventoPositiva: element.CodigoeventoPositiva
+        CodigoeventoPositiva: element.CodigoeventoPositiva,
       };
 
       TTA_LISTA.push(element);
     }
 
     if (this.typeAdvice.type === 'Especifica') {
-
       let fechaInicioAsesoria = this.typeAdvice.fechaInicialAsesoria;
       fechaInicioAsesoria = fechaInicioAsesoria.split('-');
       fechaInicioAsesoria = fechaInicioAsesoria[2].concat('/').concat(fechaInicioAsesoria[1]).concat('/').concat(fechaInicioAsesoria[0]);
@@ -336,23 +323,20 @@ export class CacheService {
         AE_Fecha: fechaInicioAsesoria,
         AE_HoraInicio: horaInicial,
         AE_HoraFin: horaFinal,
-        AE_HorasTotales: this.typeAdvice.totalHours
+        AE_HorasTotales: this.typeAdvice.totalHours,
       };
       const infoProyecto = {
         AP: false,
         AP_Mes: '',
-        AP_Anio: ''
+        AP_Anio: '',
       };
       this.typeAdviceSelectedEspec = infoEspecifica;
       this.typeAdviceSelectedProject = infoProyecto;
-
-
     } else {
-
       const infoProyecto = {
         AP: this.typeAdvice.typeSelected,
         AP_Mes: this.typeAdvice.month,
-        AP_Anio: this.typeAdvice.year
+        AP_Anio: this.typeAdvice.year,
       };
 
       const infoEspecifica = {
@@ -360,7 +344,7 @@ export class CacheService {
         AE_Fecha: '',
         AE_HoraInicio: '',
         AE_HoraFin: '',
-        AE_HorasTotales: ''
+        AE_HorasTotales: '',
       };
 
       this.typeAdviceSelectedEspec = infoEspecifica;
@@ -380,34 +364,31 @@ export class CacheService {
         Observaciones: this.commentAdvice.description,
         RV_Motivo: this.commentAdvice.motive,
         RV_FechaServicio: fecha,
-        RV_JustificacionMotivo: this.commentAdvice.justify
+        RV_JustificacionMotivo: this.commentAdvice.justify,
       };
 
       const commentSuccess = {
         RV_Exitosa: '',
-        Observaciones: ''
+        Observaciones: '',
       };
 
       this.commentSucces = commentSuccess;
       this.commentFailed = commentFail;
-
     } else {
-
       const commentSuccess = {
         RV_Exitosa: this.commentAdvice.type,
-        Observaciones: this.commentAdvice.comment
+        Observaciones: this.commentAdvice.comment,
       };
 
       const commentFail = {
         RV_Exitosa: '',
         RV_Motivo: '',
         RV_FechaServicio: '',
-        RV_JustificacionMotivo: ''
+        RV_JustificacionMotivo: '',
       };
 
       this.commentFailed = commentFail;
       this.commentSucces = commentSuccess;
-
     }
 
     if (this.infoSurveyQR.firmaQR === false) {
@@ -465,8 +446,7 @@ export class CacheService {
 
         DocumentoUsuario: this.infoSurveyARL.responsableDocumento,
         strIp: this.ipAddress,
-        strNitEmpresaActividades: idProveedor
-
+        strNitEmpresaActividades: idProveedor,
       };
     } else {
       this.informacionActaAsesoria = {
@@ -522,13 +502,11 @@ export class CacheService {
 
         DocumentoUsuario: this.infoSurveyQR.documentoResponsableARL,
         strIp: this.ipAddress,
-        strNitEmpresaActividades: idProveedor
-
+        strNitEmpresaActividades: idProveedor,
       };
     }
 
     return this.informacionActaAsesoria;
-
   }
 
   async saveActasAsesoria(files: any[] = []) {
@@ -572,7 +550,7 @@ export class CacheService {
 
     this.storage.set('listaActividades', listaActividades);
     // this.storage.set('listaActividades', nuevasActividades);
-    const actasGuardadas = await this.storage.get('actasAsesoriaSinInternet') || [];
+    const actasGuardadas = (await this.storage.get('actasAsesoriaSinInternet')) || [];
     actasGuardadas.push({ ...createdAdvisory, files });
     await this.storage.set('actasAsesoriaSinInternet', actasGuardadas);
 
@@ -604,7 +582,6 @@ export class CacheService {
     this.informacionActaAsesoria = {};
   }
 
-
   // ---------------------------- MÓDULO EVENTOS POSITIVA ------------------------ \\
   /**
    * Este metodo permite guardar en una variable la información del evento al cual se va a seleccionar
@@ -615,7 +592,7 @@ export class CacheService {
       FK_ID_Evento: null,
       dtmFechaRegistro: '',
       strDocumentoUsuario: '',
-      strGeoposicionamiento: ''
+      strGeoposicionamiento: '',
     };
     this.newRegisterEvent = registerNewEvent;
   }
@@ -630,11 +607,10 @@ export class CacheService {
     this.saveRegisterNew();
   }
 
-
   saveRegisterNew() {
     const registroEvento = {
       eventInfo: this.newRegisterEvent,
-      userInfo: this.newRegisterEventManual[0]
+      userInfo: this.newRegisterEventManual[0],
     };
     return registroEvento;
   }
@@ -676,5 +652,4 @@ export class CacheService {
     const registeredTime = { date: moment().startOf('day').toISOString(), minutes: registeredMinutes };
     await this.storage.set('registeredTime', registeredTime);
   }
-
 }

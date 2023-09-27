@@ -8,14 +8,7 @@ import { ListPageRoutingModule } from './list-routing.module';
 import { ListPage } from './list.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ListPageRoutingModule,
-    PipesModule,
-    ScrollingModule
-  ],
-  declarations: [ListPage]
+  imports: [CommonModule, FormsModule, IonicModule, ListPageRoutingModule, PipesModule, ScrollingModule],
+  declarations: [ListPage],
 })
-export class ListPageModule { }
+export class ListPageModule {}

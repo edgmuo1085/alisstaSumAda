@@ -1,16 +1,16 @@
-ion-content{
-  ion-slides{
+ion-content {
+  ion-slides {
     margin-top: 110px;
-    ion-slide{
-      ion-card{
-        ion-card-header{
+    ion-slide {
+      ion-card {
+        ion-card-header {
           padding: 0px;
         }
       }
-      ion-fab{
+      ion-fab {
         transform: translate(8px, -30px);
         outline: none;
-        ion-fab-button{
+        ion-fab-button {
           transform: rotate(180deg);
           --background: none;
           --box-shadow: none;
@@ -30,9 +30,9 @@ ion-content{
   font-weight: bold;
 }
 
-.labelProducto{
+.labelProducto {
   transform: translate(10px, 80px);
-    font-size: 11px;
+  font-size: 11px;
 }
 
 .imgFooter {

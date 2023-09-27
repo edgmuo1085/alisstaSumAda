@@ -10,13 +10,7 @@ import { ReleaseActivitiesPage } from './release-activities.page';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PipesModule,
-    ReleaseActivitiesPageRoutingModule
-  ],
-  declarations: [ReleaseActivitiesPage]
+  imports: [CommonModule, FormsModule, IonicModule, PipesModule, ReleaseActivitiesPageRoutingModule],
+  declarations: [ReleaseActivitiesPage],
 })
 export class ReleaseActivitiesPageModule {}

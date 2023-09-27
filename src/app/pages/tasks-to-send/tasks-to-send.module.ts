@@ -10,13 +10,7 @@ import { TasksToSendPage } from './tasks-to-send.page';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PipesModule,
-    TasksToSendPageRoutingModule
-  ],
-  declarations: [TasksToSendPage]
+  imports: [CommonModule, FormsModule, IonicModule, PipesModule, TasksToSendPageRoutingModule],
+  declarations: [TasksToSendPage],
 })
 export class TasksToSendPageModule {}

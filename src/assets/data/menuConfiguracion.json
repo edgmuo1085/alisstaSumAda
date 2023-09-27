@@ -2,7 +2,7 @@
   {
     "icon": "../../../assets/icon/icono_turoriales.svg",
     "title": "Tutoriales",
-    "redirecTo" : "/tutorial"
+    "redirecTo": "/tutorial"
   },
   {
     "icon": "../../../assets/icon/icono_calificacion.svg",
@@ -11,7 +11,7 @@
   {
     "icon": "../../../assets/icon/icono_acerca_de.svg",
     "title": "Acerca de",
-    "redirecTo" : "/about"
+    "redirecTo": "/about"
   },
   {
     "icon": "../../../assets/icon/icono_terminos.svg",

@@ -8,19 +8,8 @@ import { SignaturePageRoutingModule } from './signature-routing.module';
 import { SignaturePage } from './signature.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    SignaturePadModule,
-    SignaturePageRoutingModule
-  ],
-  declarations: [
-    SignaturePage
-  ],
-  providers: [
-    InAppBrowser
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, SignaturePadModule, SignaturePageRoutingModule],
+  declarations: [SignaturePage],
+  providers: [InAppBrowser],
 })
-export class SignaturePageModule { }
+export class SignaturePageModule {}

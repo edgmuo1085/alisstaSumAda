@@ -9,8 +9,8 @@ describe('ListConfirmedPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListConfirmedPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ListConfirmedPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListConfirmedPage);

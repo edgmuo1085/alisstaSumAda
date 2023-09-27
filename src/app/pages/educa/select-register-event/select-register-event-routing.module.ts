@@ -6,12 +6,12 @@ import { SelectRegisterEventPage } from './select-register-event.page';
 const routes: Routes = [
   {
     path: '',
-    component: SelectRegisterEventPage
+    component: SelectRegisterEventPage,
   },
   {
     path: 'registerEventManual',
-    loadChildren: () => import('../manual-event-register/manual-event-register.module').then(m => m.ManualEventRegisterPageModule)
-  }
+    loadChildren: () => import('../manual-event-register/manual-event-register.module').then(m => m.ManualEventRegisterPageModule),
+  },
 ];
 
 @NgModule({

@@ -1,10 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filterCompanies'
+  name: 'filterCompanies',
 })
 export class FilterCompaniesPipe implements PipeTransform {
-
   transform(value: any[], properties: string[], term: string) {
     return value.filter(v => properties.some(p => this.matchItem(v, p, term)));
   }
@@ -16,10 +15,10 @@ export class FilterCompaniesPipe implements PipeTransform {
    * por lo que si la propiedad es un objeto complejo la búsqueda no se efectuará y se omitirá
    * esta búsqueda.
    *
-   * @param item 
-   * @param property 
-   * @param term 
-   * @returns 
+   * @param item
+   * @param property
+   * @param term
+   * @returns
    */
   private matchItem(item: { [key: string]: any }, property: string, term: string): boolean {
     if (!term) {
@@ -34,5 +33,4 @@ export class FilterCompaniesPipe implements PipeTransform {
 
     return value.includes(term.toLowerCase());
   }
-
 }

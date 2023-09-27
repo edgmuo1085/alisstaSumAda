@@ -11,20 +11,19 @@ import { MenuConfiguracionService } from '../../services/menu-configuracion.serv
   styleUrls: ['./visit.page.scss'],
 })
 export class VisitPage implements OnInit {
-
   /**
    * Array de opciones del menú de ejecución de actividades
    */
   optMenuOptions: Observable<any[]>;
 
-  constructor( private menuConfOptions: MenuConfiguracionService ) { }
+  constructor(private menuConfOptions: MenuConfiguracionService) {}
 
   ngOnInit() {
     this.optMenuOptions = this.menuConfOptions.getMenuActivitySelected();
   }
 
-  optionSelectedMenu( itemSelected ) {
-    switch ( itemSelected.title ) {
+  optionSelectedMenu(itemSelected) {
+    switch (itemSelected.title) {
       case '':
         break;
       case '':
@@ -39,6 +38,4 @@ export class VisitPage implements OnInit {
         break;
     }
   }
-
-
 }

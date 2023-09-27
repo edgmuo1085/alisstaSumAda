@@ -16,7 +16,9 @@
     "run:ios": "ionic cap run ios -l --external --open",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "format:write": "prettier --write \"**/src/**/*.{ts,js,json,html,css,scss,md}\"",
+    "format:check": "prettier --check \"**/src/**/*.{ts,js,json,html,css,scss,md}\""
   },
   "dependencies": {
     "@angular/animations": "^9.1.13",
@@ -89,6 +91,7 @@
     "ngx-material-timepicker": "^5.5.3",
     "onesignal-cordova-plugin": "^2.11.4",
     "phonegap-plugin-barcodescanner": "^8.1.0",
+    "prettier": "^3.0.3",
     "rxjs": "~6.5.1",
     "shadow-dom-inject-styles": "^1.0.3",
     "tslib": "^1.10.0",

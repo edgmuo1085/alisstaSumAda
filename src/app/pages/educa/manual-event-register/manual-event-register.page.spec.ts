@@ -9,8 +9,8 @@ describe('ManualEventRegisterPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ManualEventRegisterPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ManualEventRegisterPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ManualEventRegisterPage);

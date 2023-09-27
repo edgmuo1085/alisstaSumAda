@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./list-communications.page.scss'],
 })
 export class ListCommunicationsPage implements OnInit, OnDestroy {
-
   /**
    * formConsultEvent, es el formulario de consultar el evento.
    */
@@ -21,31 +20,32 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
    * Este componente carga la lista de las comunicaciones vigentes para el dia de hoy
    */
 
-  minDate = new  Date();
+  minDate = new Date();
 
   customActionSheetOptions: any = {
     header: 'Temas de conversaciín',
-    subHeader: 'Seleccione el tema de conversación'
+    subHeader: 'Seleccione el tema de conversación',
   };
 
   talks: any;
 
   temasComunicacion: any;
-  temaSeleccionado: string ;
+  temaSeleccionado: string;
   infoUser: any;
 
   rolesVisualizarHistoricos: any[] = [];
 
   private paramsSubscription: Subscription;
 
-  constructor(private router: Router,
-              private formBuilder: FormBuilder,
-              private storage: Storage,
-              private talkService: TalkService,
-              private route: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private storage: Storage,
+    private talkService: TalkService,
+    private route: ActivatedRoute
+  ) {}
 
   async ngOnInit() {
-
     this.createFormConsultComunication();
     this.infoUser = await this.storage.get('sesion');
     this.getTemasComunicacion();
@@ -59,16 +59,14 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
     this.paramsSubscription.unsubscribe();
   }
 
-  ngOnDestroy(): void {
-
-  }
+  ngOnDestroy(): void {}
 
   createFormConsultComunication() {
     this.formConsultComunicaciones = this.formBuilder.group({
       razonSocial: [''],
       temaComunicacion: [''],
       fechaInicial: [''],
-      fechaFinal: ['']
+      fechaFinal: [''],
     });
   }
 
@@ -104,7 +102,7 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
     } else {
       temaComunicacion = informacion.temaComunicacion;
     }
-    if ( informacion.fechaInicial === '' ) {
+    if (informacion.fechaInicial === '') {
       fechaInicio = '';
     } else {
       const fechaInicioIngresada = informacion.fechaInicial._d.toISOString().split('T')[0];
@@ -113,7 +111,7 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
       fechaInicio = fechaModificada;
     }
 
-    if ( informacion.fechaFinal === '' ) {
+    if (informacion.fechaFinal === '') {
       fechaFinal = '';
     } else {
       const fechaFinalIngresada = informacion.fechaFinal._d.toISOString().split('T')[0];
@@ -122,18 +120,24 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
       fechaFinal = fechaModificada;
     }
 
-    this.talkService.searchComunicacion(informacion.razonSocial, temaComunicacion,
-                                        // tslint:disable-next-line: max-line-length
-                                        fechaInicio, fechaFinal, this.infoUser.idRegistro, this.infoUser.idRol).subscribe(response => {
+    this.talkService
+      .searchComunicacion(
+        informacion.razonSocial,
+        temaComunicacion,
+        // tslint:disable-next-line: max-line-length
+        fechaInicio,
+        fechaFinal,
+        this.infoUser.idRegistro,
+        this.infoUser.idRol
+      )
+      .subscribe(response => {
         if (response.IsOk === true) {
-
           this.talks = response.Respuesta;
 
           // this.formConsultComunicaciones.get('fechaInicial').reset();
           // this.formConsultComunicaciones.get('fechaFinal').reset();
-
         }
-    });
+      });
   }
 
   /**
@@ -147,11 +151,18 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
     } else {
       temaComunicacion = informacion.temaComunicacion;
     }
-    let startDate: string = ''; //this.dateToString(informacion.fechaInicial); 
+    let startDate: string = ''; //this.dateToString(informacion.fechaInicial);
     let endDate: string = ''; //this.dateToString(informacion.fechaFinal);
-    this.talkService.searchComunicacion(informacion.razonSocial, temaComunicacion,
-                                        // tslint:disable-next-line: max-line-length
-                                        startDate, endDate, this.infoUser.idRegistro, this.infoUser.idRol)
+    this.talkService
+      .searchComunicacion(
+        informacion.razonSocial,
+        temaComunicacion,
+        // tslint:disable-next-line: max-line-length
+        startDate,
+        endDate,
+        this.infoUser.idRegistro,
+        this.infoUser.idRol
+      )
       .subscribe(response => {
         if (response.IsOk === true) {
           this.talks = response.Respuesta;
@@ -165,13 +176,12 @@ export class ListCommunicationsPage implements OnInit, OnDestroy {
             }
           });
         }
-    });
+      });
   }
 
   private dateToString(date: Date): string {
     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
   }
-
 
   /**
    * @param selectedTalk este es el metodo que permite seleccionar una conversación para ver los diferentes

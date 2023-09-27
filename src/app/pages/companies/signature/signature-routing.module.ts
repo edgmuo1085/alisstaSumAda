@@ -5,12 +5,12 @@ import { SignaturePage } from './signature.page';
 const routes: Routes = [
   {
     path: '',
-    component: SignaturePage
-  }
+    component: SignaturePage,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SignaturePageRoutingModule { }
+export class SignaturePageRoutingModule {}

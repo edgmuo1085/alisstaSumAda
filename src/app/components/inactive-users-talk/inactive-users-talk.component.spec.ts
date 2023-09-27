@@ -9,8 +9,8 @@ describe('InactiveUsersTalkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InactiveUsersTalkComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [InactiveUsersTalkComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InactiveUsersTalkComponent);

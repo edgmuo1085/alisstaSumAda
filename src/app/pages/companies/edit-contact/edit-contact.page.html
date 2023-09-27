@@ -12,41 +12,29 @@
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Papel/Representación</ion-label>
             <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="representacion">
-              <ion-select-option [value]="t" *ngFor="let t of TIPOS_REPRESENTACION">
-                {{ t.label }}
-              </ion-select-option>
+              <ion-select-option [value]="t" *ngFor="let t of TIPOS_REPRESENTACION"> {{ t.label }} </ion-select-option>
             </ion-select>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.representacion.hasError('required')">
-              Representación es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.representacion.hasError('required')">Representación es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Tipo Documento</ion-label>
             <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="tipoDocumento">
-              <ion-select-option [value]="t" *ngFor="let t of TIPOS_DOCUMENTO">
-                {{ t.label }}
-              </ion-select-option>
+              <ion-select-option [value]="t" *ngFor="let t of TIPOS_DOCUMENTO"> {{ t.label }} </ion-select-option>
             </ion-select>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.tipoDocumento.hasError('required')">
-              Tipo documento es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.tipoDocumento.hasError('required')">Tipo documento es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Número Documento</ion-label>
             <ion-input formControlName="numeroDocumento"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.numeroDocumento.hasError('required')">
-              Número documento es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.numeroDocumento.hasError('required')">Número documento es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Primer Nombre</ion-label>
             <ion-input formControlName="primerNombre"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.primerNombre.hasError('required')">
-              Primer nombre es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.primerNombre.hasError('required')">Primer nombre es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
@@ -57,9 +45,7 @@
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Primer Apellido</ion-label>
             <ion-input formControlName="primerApellido"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.primerApellido.hasError('required')">
-              Primer apellido es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.primerApellido.hasError('required')">Primer apellido es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
@@ -70,46 +56,30 @@
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Sexo</ion-label>
             <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="sexo">
-              <ion-select-option [value]="t" *ngFor="let t of TIPOS_SEXO">
-                {{ t.label }}
-              </ion-select-option>
+              <ion-select-option [value]="t" *ngFor="let t of TIPOS_SEXO"> {{ t.label }} </ion-select-option>
             </ion-select>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.sexo.hasError('required')">
-              Sexo es obligatorio.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.sexo.hasError('required')">Sexo es obligatorio.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Email Notificación</ion-label>
             <ion-input type="email" formControlName="correo"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('required')">
-              Email notificación es obligatorio.
-            </p>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('pattern')">
-              Email notificación es inválido.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('required')">Email notificación es obligatorio.</p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.correo.hasError('pattern')">Email notificación es inválido.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Celular</ion-label>
             <ion-input type="tel" formControlName="celular"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.celular.hasError('required')">
-              Celular es obligatorio.
-            </p>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.celular.hasError('pattern')">
-              Celular es inválido.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.celular.hasError('required')">Celular es obligatorio.</p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.celular.hasError('pattern')">Celular es inválido.</p>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Teléfono Notificación</ion-label>
             <ion-input type="tel" formControlName="telefono"></ion-input>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.telefono.hasError('required')">
-              Teléfono notificación es obligatorio.
-            </p>
-            <p class="invalid-feedback" *ngIf="formGroup.controls.telefono.hasError('pattern')">
-              Teléfono notificación es inválido.
-            </p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.telefono.hasError('required')">Teléfono notificación es obligatorio.</p>
+            <p class="invalid-feedback" *ngIf="formGroup.controls.telefono.hasError('pattern')">Teléfono notificación es inválido.</p>
           </ion-item>
         </ion-list>
 

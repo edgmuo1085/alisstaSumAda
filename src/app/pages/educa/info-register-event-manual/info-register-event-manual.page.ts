@@ -1,4 +1,4 @@
-import { Component, OnInit,  ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CacheService } from '../../../services/cache/cache.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EventService } from '../../../services/event/event.service';
@@ -6,19 +6,12 @@ import { AlertController } from '@ionic/angular';
 import { RegistroAsistenteEvento } from '../../../intarfaces/interfaces';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-info-register-event-manual',
   templateUrl: './info-register-event-manual.page.html',
   styleUrls: ['./info-register-event-manual.page.scss'],
 })
-
-
-
-
 export class InfoRegisterEventManualPage implements OnInit {
-
-
   /**
    * Se crea esta variable porque crea un formulario cuando trae información al momento de consultar
    * al invitado
@@ -27,7 +20,7 @@ export class InfoRegisterEventManualPage implements OnInit {
 
   /**
    * Se crea esta variable porque crea un formulario cuando NO trae información al momento de consultar
-   * al invitado 
+   * al invitado
    */
   formInfoUserRegisterEventEmpty: FormGroup;
 
@@ -63,22 +56,21 @@ export class InfoRegisterEventManualPage implements OnInit {
    */
   isResponsibleEmpty: boolean;
 
-
-  
-
-  constructor( private cacheService: CacheService,
-               private eventService: EventService,
-               private router: Router,
-               private alertController: AlertController,
-               private formBuilder: FormBuilder ) { }
+  constructor(
+    private cacheService: CacheService,
+    private eventService: EventService,
+    private router: Router,
+    private alertController: AlertController,
+    private formBuilder: FormBuilder
+  ) {}
 
   /**
    * Este metodo tiene varias cosas a tener en cuenta, las cuales son:
    * 1. Carga los documentos, los tipos de cargo y los sexos al momento de cargar la pagina.
    * 2. valida que valor viene en la variable sessionStorage.infoResponsibleManualEvent para posteriormente
-   *    armar el formulario. Si viene null lo arma vacio si viene con datos crea el formulario con datos y 
+   *    armar el formulario. Si viene null lo arma vacio si viene con datos crea el formulario con datos y
    *    bloquea unos campos que no son editables.
-   * 
+   *
    */
   ngOnInit() {
     this.getDocumentsTypeUser();
@@ -104,7 +96,7 @@ export class InfoRegisterEventManualPage implements OnInit {
           edad: this.infoUser.dtmFechaNacimiento,
           sexo: this.infoUser.FK_ID_Sexo,
           telefono: this.infoUser.strTelefono,
-          email: this.infoUser.strEmail
+          email: this.infoUser.strEmail,
         });
       }, 1000);
     }
@@ -113,33 +105,33 @@ export class InfoRegisterEventManualPage implements OnInit {
 
   createFormInfoUserRegister() {
     this.formInfoUserRegisterEventEmpty = this.formBuilder.group({
-      tipoDocEmp: [ '', Validators.required ],
-      documentoEmp: [ '', Validators.required ],
+      tipoDocEmp: ['', Validators.required],
+      documentoEmp: ['', Validators.required],
       razonSocial: ['', Validators.required],
-      tipoDoc: [ '', Validators.required ],
-      idPersona: [ '', Validators.required ],
-      nombre: ['', Validators.required ],
+      tipoDoc: ['', Validators.required],
+      idPersona: ['', Validators.required],
+      nombre: ['', Validators.required],
       sexo: ['', Validators.required],
       edad: ['', Validators.required],
       cargo: ['', Validators.required],
       telefono: ['', Validators.required],
-      email: ['', Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$')]
+      email: ['', Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$')],
     });
   }
 
   createFormInfoUserRegisterWithInformation() {
     this.formInfoUserRegisterEvent = this.formBuilder.group({
-      tipoDocEmp: [ {value: '', disabled: true},  ],
-      documentoEmp: [ {value: '', disabled: true} ],
-      razonSocial: [{value: '', disabled: true}],
-      tipoDoc: [ {value: '', disabled: true} ],
-      idPersona: [ {value: '', disabled: true} ],
-      nombre: [ {value: '', disabled: true} ],
+      tipoDocEmp: [{ value: '', disabled: true }],
+      documentoEmp: [{ value: '', disabled: true }],
+      razonSocial: [{ value: '', disabled: true }],
+      tipoDoc: [{ value: '', disabled: true }],
+      idPersona: [{ value: '', disabled: true }],
+      nombre: [{ value: '', disabled: true }],
       sexo: [''],
       edad: [''],
       cargo: [''],
       telefono: [''],
-      email: ['', Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$')]
+      email: ['', Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$')],
     });
   }
 
@@ -147,32 +139,28 @@ export class InfoRegisterEventManualPage implements OnInit {
    * Metodo para obtener los documentos permitidos para la selección de tipo de documentos
    */
   getDocumentsTypeUser() {
-    this.eventService.getDocumentType()
-      .subscribe(response => {
-        this.documentsType = response.Documentos;
-      });
+    this.eventService.getDocumentType().subscribe(response => {
+      this.documentsType = response.Documentos;
+    });
   }
 
   /**
    * Metodo para obtener los cargos permitidos para la selección de cargo
    */
   getTypesCharge() {
-    this.eventService.getDocumentType()
-      .subscribe(response => {
-        this.typeCharges = response.Cargos;
-      });
+    this.eventService.getDocumentType().subscribe(response => {
+      this.typeCharges = response.Cargos;
+    });
   }
 
   /**
-   * Metodo para obtener el tipo de sexo permitidos 
+   * Metodo para obtener el tipo de sexo permitidos
    */
   getTypesSex() {
-    this.eventService.getDocumentType()
-      .subscribe(response => {
-        this.typeSex = response.Sexos;
-      });
+    this.eventService.getDocumentType().subscribe(response => {
+      this.typeSex = response.Sexos;
+    });
   }
-
 
   /**
    *
@@ -196,11 +184,10 @@ export class InfoRegisterEventManualPage implements OnInit {
         FK_ID_Cargo: newResponsible.value.cargo,
         FK_ID_Evento: eventoId,
         strRazonSocial: newResponsible.value.razonSocial,
-        strEmail: newResponsible.value.email
+        strEmail: newResponsible.value.email,
       };
       this.registerNewResponsibleWhenIsEmpty(newRegister);
     } else {
-
       const documentTypeCompany = this.validateDocumentType(newResponsible.controls.tipoDocEmp.value);
 
       const newRegister: RegistroAsistenteEvento = {
@@ -215,11 +202,10 @@ export class InfoRegisterEventManualPage implements OnInit {
         FK_ID_Cargo: newResponsible.value.cargo,
         FK_ID_Evento: eventoId,
         strRazonSocial: newResponsible.controls.razonSocial.value,
-        strEmail: newResponsible.value.email
+        strEmail: newResponsible.value.email,
       };
 
       this.registerNewResponsibleWhenIsEmpty(newRegister);
-
     }
   }
 
@@ -227,19 +213,20 @@ export class InfoRegisterEventManualPage implements OnInit {
    * Este metodo lanza el registro como tal del invitado al evento.
    */
   registerNewResponsibleWhenIsEmpty(newResponsibleEvent: RegistroAsistenteEvento) {
-    this.eventService.registerResponsibleManual(newResponsibleEvent)
-      .subscribe( response => {
+    this.eventService.registerResponsibleManual(newResponsibleEvent).subscribe(
+      response => {
         this.confirmationRegister('Exitoso', 'El registro se realizó correctamente.');
         this.router.navigateByUrl('u/consultEvent/selectRegisterEvent');
-      }, err => {
+      },
+      err => {
         this.confirmationRegister('Fallido.', 'No se pudo realizar el registro del asistente al evento');
-      });
+      }
+    );
   }
 
-
   /**
-   * 
-   * Este metodo se encarga de validar el tipo del documento para que no exista un error cuando 
+   *
+   * Este metodo se encarga de validar el tipo del documento para que no exista un error cuando
    * consultan la información que viene del asistente, puede que no venga con el dato como tal, ejemplo
    * NIT y no NI, como se reconoce en la BD
    */
@@ -271,7 +258,6 @@ export class InfoRegisterEventManualPage implements OnInit {
     }
   }
 
-
   /**
    * Alerta que confirma el exito o fallido del registro manual
    */
@@ -280,11 +266,8 @@ export class InfoRegisterEventManualPage implements OnInit {
       header: resultadoAlerta,
       mode: 'ios',
       message: mensaje,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
     await alert.present();
   }
-
-
-
 }

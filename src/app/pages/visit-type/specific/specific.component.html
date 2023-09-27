@@ -6,10 +6,18 @@
         <ion-icon name="calendar-outline" slot="start"></ion-icon>
         <strong><label class="d-block">Fecha de asesoría específica</label></strong>
       </ion-item>
-      <ion-datetime placeholder="DD MMMM YYYY" display-format="DD MMM YYYY"
+      <ion-datetime
+        placeholder="DD MMMM YYYY"
+        display-format="DD MMM YYYY"
         monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-        color="primary" formControlName="startTodaySecific" mode="ios" disabled *ngIf="showStartTodaySpecificAdvice"
-        class="ionDateTimeStart" cancelText="Cancelar">
+        color="primary"
+        formControlName="startTodaySecific"
+        mode="ios"
+        disabled
+        *ngIf="showStartTodaySpecificAdvice"
+        class="ionDateTimeStart"
+        cancelText="Cancelar"
+      >
       </ion-datetime>
 
       <ion-button expand="block" color="primary" [disabled]="disabledBtnDateStart" (click)="startTodaySpecific()">
@@ -23,8 +31,16 @@
           <ion-label>Hora de Inicio</ion-label>
         </strong>
       </ion-item>
-      <ion-datetime (ionChange)="changeHourStar($event)" placeholder="Hora Inicial" displayFormat="hh:mm A"
-        cancelText="CANCELAR" doneText="ACEPTAR" mode="ios" formControlName="startHour" class="ionDateTimeStart">
+      <ion-datetime
+        (ionChange)="changeHourStar($event)"
+        placeholder="Hora Inicial"
+        displayFormat="hh:mm A"
+        cancelText="CANCELAR"
+        doneText="ACEPTAR"
+        mode="ios"
+        formControlName="startHour"
+        class="ionDateTimeStart"
+      >
       </ion-datetime>
 
       <ion-item class="mt-3">
@@ -33,10 +49,17 @@
           <ion-label>Hora Finalización</ion-label>
         </strong>
       </ion-item>
-      <ion-datetime [disabled]="!customStartDate" placeholder="Hora Final" cancelText="CANCELAR" doneText="ACEPTAR"
-        mode="ios" class="ionDateTimeStart" formControlName="endHour" (ionChange)="changeHourEnd($event)"
-        displayFormat="hh:mm A"></ion-datetime>
-
+      <ion-datetime
+        [disabled]="!customStartDate"
+        placeholder="Hora Final"
+        cancelText="CANCELAR"
+        doneText="ACEPTAR"
+        mode="ios"
+        class="ionDateTimeStart"
+        formControlName="endHour"
+        (ionChange)="changeHourEnd($event)"
+        displayFormat="hh:mm A"
+      ></ion-datetime>
 
       <!-- Contador de horas totales -->
       <ion-item class="mt-3">
@@ -44,7 +67,7 @@
           <ion-label *ngIf="!totalHours">Horas totales: 0</ion-label>
         </strong>
         <strong>
-          <ion-label *ngIf="totalHours">Horas totales: {{totalHours}}</ion-label>
+          <ion-label *ngIf="totalHours">Horas totales: {{ totalHours }}</ion-label>
         </strong>
       </ion-item>
     </ion-list>

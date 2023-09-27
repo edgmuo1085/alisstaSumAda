@@ -6,15 +6,7 @@ import { VisitSubjectsPageRoutingModule } from './visit-subjects-routing.module'
 import { VisitSubjectsPage } from './visit-subjects.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    VisitSubjectsPageRoutingModule
-  ],
-  declarations: [
-    VisitSubjectsPage
-  ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, VisitSubjectsPageRoutingModule],
+  declarations: [VisitSubjectsPage],
 })
 export class VisitSubjectsPageModule {}

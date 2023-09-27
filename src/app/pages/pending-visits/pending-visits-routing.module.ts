@@ -5,12 +5,12 @@ import { PendingVisitsPage } from './pending-visits.page';
 const routes: Routes = [
   {
     path: '',
-    component: PendingVisitsPage
+    component: PendingVisitsPage,
   },
   {
     path: ':id',
-    loadChildren: () => import('../visit/visit.module').then(m => m.VisitPageModule)
-  }
+    loadChildren: () => import('../visit/visit.module').then(m => m.VisitPageModule),
+  },
 ];
 
 @NgModule({

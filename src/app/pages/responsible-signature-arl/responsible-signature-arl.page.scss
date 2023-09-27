@@ -1,21 +1,21 @@
-ion-header{
-  ion-grid{
+ion-header {
+  ion-grid {
     padding: 0px;
     background: #95a6b1;
     color: white;
-    ion-row{
-      ion-col{
+    ion-row {
+      ion-col {
         padding: 0px;
         background: #95a6b1;
       }
-      ion-toolbar{
+      ion-toolbar {
         padding: 0px;
       }
     }
   }
 }
 
-.titulo{
+.titulo {
   width: 100% !important;
   font-size: 20px !important;
   text-align: left;
@@ -25,13 +25,13 @@ ion-header{
 
 .firma {
   border-top: 1px solid #95a6b1;
-    margin-right: 30px;
-    margin-left: 30px;
-    font-weight: bold;
-    color: gray;
-    font: unset;
-    font-size: 15px;
-    padding-top: 5px;
+  margin-right: 30px;
+  margin-left: 30px;
+  font-weight: bold;
+  color: gray;
+  font: unset;
+  font-size: 15px;
+  padding-top: 5px;
 }
 
 h3 {

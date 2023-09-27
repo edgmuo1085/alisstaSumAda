@@ -6,16 +6,16 @@ import { SettingsPage } from './settings.page';
 const routes: Routes = [
   {
     path: '',
-    component: SettingsPage
+    component: SettingsPage,
   },
   {
     path: 'about',
-    loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
+    loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule),
   },
   {
     path: 'termAndConditions',
-    loadChildren: () => import('../terms-and-conditions/terms-and-conditions.module').then(m => m.TermsAndConditionsPageModule)
-  }
+    loadChildren: () => import('../terms-and-conditions/terms-and-conditions.module').then(m => m.TermsAndConditionsPageModule),
+  },
 ];
 
 @NgModule({

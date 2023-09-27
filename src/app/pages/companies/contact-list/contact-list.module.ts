@@ -9,12 +9,7 @@ import { ContactListPageRoutingModule } from './contact-list-routing.module';
 import { ContactListPage } from './contact-list.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ContactListPageRoutingModule
-  ],
-  declarations: [ContactListPage]
+  imports: [CommonModule, FormsModule, IonicModule, ContactListPageRoutingModule],
+  declarations: [ContactListPage],
 })
 export class ContactListPageModule {}

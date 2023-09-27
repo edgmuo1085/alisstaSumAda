@@ -90,7 +90,11 @@ export class VisitSubjectsPage implements OnInit {
 
   validarCoberturaHorasEjecutadas = true;
 
-  constructor(private alertController: AlertController, private router: Router, public cacheService: CacheService) {}
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    public cacheService: CacheService
+  ) {}
 
   ionViewWillEnter() {
     // tslint:disable-next-line: prefer-for-of

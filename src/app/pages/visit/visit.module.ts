@@ -6,14 +6,7 @@ import { VisitPageRoutingModule } from './visit-routing.module';
 import { VisitPage } from './visit.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    VisitPageRoutingModule
-  ],
-  declarations: [
-    VisitPage
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, VisitPageRoutingModule],
+  declarations: [VisitPage],
 })
 export class VisitPageModule {}

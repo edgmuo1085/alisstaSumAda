@@ -9,8 +9,8 @@ describe('ExecLogPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExecLogPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ExecLogPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExecLogPage);

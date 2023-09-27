@@ -13,7 +13,6 @@ import { CacheService } from '../../../services/cache/cache.service';
   styleUrls: ['./fail.component.scss'],
 })
 export class FailComponent implements OnInit {
-
   formCommentFail: FormGroup;
   minDate = new Date();
   contador = 0;
@@ -25,27 +24,29 @@ export class FailComponent implements OnInit {
    * Opciones para la ventana emergente para seleccionar el motivo de la visita fallida.
    */
   readonly ALERT_OPTIONS = {
-    header: 'Seleccione el motivo'
+    header: 'Seleccione el motivo',
   };
 
   motivos: any[] = [
     {
-      valor: 'Reprogramación'
+      valor: 'Reprogramación',
     },
     {
-      valor: 'Cancelación de la empresa'
+      valor: 'Cancelación de la empresa',
     },
     {
-      valor: 'Otro motivo'
-    }
+      valor: 'Otro motivo',
+    },
   ];
 
   enablenewDateField = true;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private alertController: AlertController,
     private cacheService: CacheService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.initFormCommentFail();
@@ -55,7 +56,7 @@ export class FailComponent implements OnInit {
       this.formCommentFail.patchValue({
         description: informacionVisita.description,
         justify: informacionVisita.justify,
-        newDateActivity: informacionVisita.newDateActivity
+        newDateActivity: informacionVisita.newDateActivity,
       });
 
       setTimeout(() => {
@@ -63,7 +64,6 @@ export class FailComponent implements OnInit {
         this.formCommentFail.controls.motive.setValue(motivo);
       }, 500);
     }
-
   }
 
   // Formulario cuando la asesoría no fue exitosa.
@@ -72,7 +72,7 @@ export class FailComponent implements OnInit {
       description: ['', Validators.required],
       motive: ['', Validators.required],
       justify: ['', Validators.required],
-      newDateActivity: ['', Validators.required]
+      newDateActivity: ['', Validators.required],
     });
 
     this.formCommentFail.controls.description.valueChanges.subscribe(v => {
@@ -82,7 +82,6 @@ export class FailComponent implements OnInit {
   }
 
   validarMotivo(motivo) {
-
     switch (motivo) {
       case 'R':
         return 'Reprogramación';
@@ -96,7 +95,6 @@ export class FailComponent implements OnInit {
       default:
         break;
     }
-
   }
 
   // Oculta el campo fecha cuando el motivo es diferente a reprogramación.
@@ -115,7 +113,7 @@ export class FailComponent implements OnInit {
 
   /**
    * Valida en las actividades seleccionadas de la gestión de la asesoria no sea mayor a 1 ya que no se debe
-   * permitir que la asesoria no sea exitosa y pedirle al usuario que firme, si no es exitosa se redirecciona 
+   * permitir que la asesoria no sea exitosa y pedirle al usuario que firme, si no es exitosa se redirecciona
    * a la parte inicial (Lista de actividades)
    */
   next() {
@@ -135,9 +133,9 @@ export class FailComponent implements OnInit {
       return;
     }
 
-    const newDateActivity = this.formCommentFail.controls.newDateActivity.value._d ?
-      this.formCommentFail.controls.newDateActivity.value._d.toISOString() :
-      this.formCommentFail.controls.newDateActivity.value;
+    const newDateActivity = this.formCommentFail.controls.newDateActivity.value._d
+      ? this.formCommentFail.controls.newDateActivity.value._d.toISOString()
+      : this.formCommentFail.controls.newDateActivity.value;
 
     const infoCommentFail = {
       type: this.typeMenu,
@@ -146,7 +144,7 @@ export class FailComponent implements OnInit {
       motive: this.formCommentFail.controls.motive.value.charAt(0),
       justify: this.formCommentFail.controls.justify.value,
       newDateActivity: this.enablenewDateField ? 'N/A' : newDateActivity,
-      redireccionar: true
+      redireccionar: true,
     };
 
     this.infoCommentFail.emit(infoCommentFail);
@@ -158,13 +156,12 @@ export class FailComponent implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
 
     alert.onDidDismiss();
-
   }
 
   async notificationHorasEjecutadas(notificacion) {
@@ -173,7 +170,7 @@ export class FailComponent implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
@@ -182,5 +179,4 @@ export class FailComponent implements OnInit {
 
     this.router.navigateByUrl('u/execLog/pending-visits/visit-id/subjects');
   }
-
 }

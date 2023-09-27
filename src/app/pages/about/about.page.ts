@@ -11,7 +11,6 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
   styleUrls: ['./about.page.scss'],
 })
 export class AboutPage implements OnInit, OnDestroy {
-
   /**
    * Versión actual de la aplicación.
    */
@@ -21,7 +20,7 @@ export class AboutPage implements OnInit, OnDestroy {
     private appVersion: AppVersion,
     private navbarService: NavbarService
   ) {
-    this.appVersion.getVersionNumber().then(v => this.versionNumber = v);
+    this.appVersion.getVersionNumber().then(v => (this.versionNumber = v));
   }
 
   ngOnInit(): void {
@@ -31,5 +30,4 @@ export class AboutPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.navbarService.setVisibility(true);
   }
-
 }

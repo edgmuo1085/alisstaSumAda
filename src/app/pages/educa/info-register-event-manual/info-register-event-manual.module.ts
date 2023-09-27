@@ -7,9 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { InfoRegisterEventManualPageRoutingModule } from './info-register-event-manual-routing.module';
 
 import { InfoRegisterEventManualPage } from './info-register-event-manual.page';
-import {MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-
 
 export const MY_FORMATS = {
   parse: {
@@ -23,17 +22,7 @@ export const MY_FORMATS = {
   },
 };
 
-
-
-
-import { MatDatepickerModule,
-  MatNativeDateModule,
-  MatFormFieldModule,
-  MatInputModule } from '@angular/material';
-
-
-
-
+import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -46,16 +35,18 @@ import { MatDatepickerModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatInputModule
+    MatInputModule,
   ],
   declarations: [InfoRegisterEventManualPage],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-              {
-                provide: DateAdapter,
-                useClass: MomentDateAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
 
-              {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}]
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 export class InfoRegisterEventManualPageModule {}

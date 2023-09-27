@@ -9,10 +9,9 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
   infoProfile: any;
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {}
 
   ngOnInit() {
     this.uploadInfoProfile();

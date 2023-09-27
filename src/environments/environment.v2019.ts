@@ -41,5 +41,5 @@ export const environment = {
   RECUPERAR_PASSWORD: 'http://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
-  ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c'
+  ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c',
 };

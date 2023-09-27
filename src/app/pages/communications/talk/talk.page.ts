@@ -15,7 +15,6 @@ import { injectStyles } from 'shadow-dom-inject-styles';
   styleUrls: ['./talk.page.scss'],
 })
 export class TalkPage implements OnInit, AfterViewInit {
-
   formEnvioMensaje: FormGroup;
 
   @ViewChild('content') private content: any;
@@ -40,14 +39,16 @@ export class TalkPage implements OnInit, AfterViewInit {
 
   @ViewChildren(IonItem) ionItems: QueryList<IonItem>;
 
-  constructor(public alertController: AlertController,
-              private talkService: TalkService,
-              private cacheService: CacheService,
-              private formBuilder: FormBuilder,
-              private storage: Storage,
-              public popoverController: PopoverController,
-              private toastCtrl: ToastController,
-              private elemRef: ElementRef) { }
+  constructor(
+    public alertController: AlertController,
+    private talkService: TalkService,
+    private cacheService: CacheService,
+    private formBuilder: FormBuilder,
+    private storage: Storage,
+    public popoverController: PopoverController,
+    private toastCtrl: ToastController,
+    private elemRef: ElementRef
+  ) {}
 
   async ionViewWillEnter() {
     const rolesHistoricos = this.talkService.getRolesHistoricos();
@@ -61,11 +62,8 @@ export class TalkPage implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       debugger;
-      let shadow = document.querySelector(".conversation-color") as HTMLElement;
+      let shadow = document.querySelector('.conversation-color') as HTMLElement;
     }, 200);
-      
-
-
   }
 
   ngOnInit() {
@@ -79,12 +77,7 @@ export class TalkPage implements OnInit, AfterViewInit {
     debugger;
     let y = this.ionItems;
 
-
-    let shadow = document.querySelector(".conversation-color") as HTMLElement;
-
-
-
-
+    let shadow = document.querySelector('.conversation-color') as HTMLElement;
 
     let elements = this.elemRef.nativeElement.querySelectorAll('.conversation-color');
     let x = document.getElementsByClassName('conversation-color');
@@ -97,38 +90,32 @@ export class TalkPage implements OnInit, AfterViewInit {
 
     let y = this.ionItems;
 
-    let shadow = document.querySelector(".conversation-color") as HTMLElement;
-
+    let shadow = document.querySelector('.conversation-color') as HTMLElement;
 
     let elements = this.elemRef.nativeElement.querySelectorAll('.conversation-color');
     let x = document.getElementsByClassName('conversation-color');
   }
 
-
-
-
   createFormSend() {
     this.formEnvioMensaje = this.formBuilder.group({
       send: [''],
-      mensajePrivado: ['']
+      mensajePrivado: [''],
     });
   }
 
   async getInfoConversation() {
-
     const pPKConversacion = this.informacionConversacionSeleccionada.PKConversacion;
     const infoUsuarioIngresado = await this.storage.get('sesion');
     const idUSuario = infoUsuarioIngresado.idRegistro;
     debugger;
     // tslint:disable-next-line: deprecation
-    this.talkService.getMensajes(pPKConversacion, idUSuario).subscribe( async response => {
+    this.talkService.getMensajes(pPKConversacion, idUSuario).subscribe(async response => {
       debugger;
       if (response.IsOk === true) {
         const mensajesConversacion = await this.mostrarMensajes(response.Respuesta);
         this.mensajes = mensajesConversacion;
       }
     });
-
   }
 
   async mostrarMensajes(mensajes) {
@@ -141,7 +128,6 @@ export class TalkPage implements OnInit, AfterViewInit {
       if (mensaje.Privado.length === 0) {
         mensajesConversacion.push(mensaje);
       } else {
-
         if (mensaje.EsPrivadoPorMi) {
           mensajesConversacion.push(mensaje);
         } else {
@@ -154,13 +140,12 @@ export class TalkPage implements OnInit, AfterViewInit {
     });
 
     return mensajesConversacion;
-
   }
 
   async cambioOptions(item) {
     const infoUsuarioIngresado = await this.storage.get('sesion');
     const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
-    if ( item.FKUsuario !== idUSuario ) {
+    if (item.FKUsuario !== idUSuario) {
       this.lista.closeSlidingItems();
     }
   }
@@ -187,40 +172,38 @@ export class TalkPage implements OnInit, AfterViewInit {
     const encontro = this.informacionConversacionSeleccionada.Usuarios.find(item => item.FKUsuario === idUSuario);
 
     if (encontro) {
-
       if (encontro.Estado === 'A') {
         this.iconHabilitarUsuario = 'lock-open-outline';
         // tslint:disable-next-line: max-line-length
-        this.talkService.changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'I', ip, idUSuario).subscribe(response => {
-          if (response.IsOk === true) {
-            this.iconHabilitarUsuario = 'lock-closed-outline';
-            this.notification('Atención', 'Se actualizó el estado del usuario');
-          }
-        });
+        this.talkService
+          .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'I', ip, idUSuario)
+          .subscribe(response => {
+            if (response.IsOk === true) {
+              this.iconHabilitarUsuario = 'lock-closed-outline';
+              this.notification('Atención', 'Se actualizó el estado del usuario');
+            }
+          });
       } else {
         this.iconHabilitarUsuario = 'lock-closed-outline';
         // tslint:disable-next-line: max-line-length
-        this.talkService.changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'A', ip, idUSuario).subscribe(response => {
-          if (response.IsOk === true) {
-            this.iconHabilitarUsuario = 'lock-open-outline';
-            this.notification('Atención', 'Se actualizó el estado del usuario');
-          }
-        });
+        this.talkService
+          .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'A', ip, idUSuario)
+          .subscribe(response => {
+            if (response.IsOk === true) {
+              this.iconHabilitarUsuario = 'lock-open-outline';
+              this.notification('Atención', 'Se actualizó el estado del usuario');
+            }
+          });
       }
-
     }
-
   }
-
 
   async onKeyDownHandler(event) {
     let valorIngresado = event.data;
-    if ( valorIngresado === '@' ) {
-
+    if (valorIngresado === '@') {
       const usuariosInactivos = this.getUsuariosInactivos();
 
-      if ( usuariosInactivos.length > 0 ) {
-
+      if (usuariosInactivos.length > 0) {
         const alert = await this.alertController.create({
           cssClass: 'my-custom-class',
           header: 'Usuarios Inactivos',
@@ -232,14 +215,15 @@ export class TalkPage implements OnInit, AfterViewInit {
               cssClass: 'secondary',
               handler: () => {
                 console.log('Confirm Cancel');
-              }
-            }, {
+              },
+            },
+            {
               text: 'Aceptar',
               handler: () => {
                 console.log('Confirm Aceptar');
-              }
-            }
-          ]
+              },
+            },
+          ],
         });
 
         await alert.present();
@@ -258,13 +242,11 @@ export class TalkPage implements OnInit, AfterViewInit {
       } else {
         this.notification('Atención', 'La comunicación seleccionada no tiene usuarios inactivos');
       }
-
     }
     valorIngresado = '';
   }
 
   getUsuariosInactivos() {
-
     const usuariosInactivos = [];
     const usuariosConversacion = this.talkService.getSelectedConversation();
     usuariosConversacion.Usuarios.forEach(element => {
@@ -280,15 +262,12 @@ export class TalkPage implements OnInit, AfterViewInit {
     });
 
     return usuariosInactivos;
-
   }
 
-
   async openModalUserPrivate() {
-
     let data2: any;
     // tslint:disable-next-line: no-shadowed-variable
-    const handlerData = (data) => {
+    const handlerData = data => {
       data2 = data;
     };
     const usuarios = [];
@@ -298,11 +277,10 @@ export class TalkPage implements OnInit, AfterViewInit {
         type: 'checkbox',
         label: `${element.UsuarioNombre}`,
         value: `${element.UsuarioNombre}`,
-        valor: `${element}`
+        valor: `${element}`,
       };
       usuarios.push(objUsuarios);
     });
-
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -315,18 +293,18 @@ export class TalkPage implements OnInit, AfterViewInit {
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel');
-          }
-        }, {
+          },
+        },
+        {
           text: 'Aceptar',
-          handler: handlerData
-        }
-      ]
+          handler: handlerData,
+        },
+      ],
     });
 
     await alert.present();
 
     const { data } = await alert.onWillDismiss();
-
 
     if (data.values.length >= 1) {
       const usuariosSeleccionados = data.values;
@@ -340,15 +318,13 @@ export class TalkPage implements OnInit, AfterViewInit {
 
         const encontro = usuariosSeleccionados.find(item => item === usuario.UsuarioNombre);
 
-        if ( encontro ) {
+        if (encontro) {
           this.idsÜsuariosPrivadosSeleccionados.push(usuario.FKUsuario);
         }
-
       }
 
       this.usuarioPrivadoSelected = usuariosSeleccionados.toString();
-      }
-
+    }
   }
 
   cleanPrivateSelected() {
@@ -364,7 +340,7 @@ export class TalkPage implements OnInit, AfterViewInit {
   private async presentToastEmptyConversation() {
     const toast = await this.toastCtrl.create({
       message: 'Debes diligenciar el cuerpo de la comunicación.',
-      duration: 3000
+      duration: 3000,
     });
     toast.present();
   }
@@ -378,16 +354,16 @@ export class TalkPage implements OnInit, AfterViewInit {
 
     const idUsuario = await this.getInfoUser();
     let usuariosPrivados = this.idsÜsuariosPrivadosSeleccionados;
-    if ( usuariosPrivados.length >= 1  ) {
+    if (usuariosPrivados.length >= 1) {
       usuariosPrivados = this.idsÜsuariosPrivadosSeleccionados;
     } else {
       usuariosPrivados = [];
     }
 
     let idMensajePadre = 0;
-    if ( this.mensajeAResponser ) {
+    if (this.mensajeAResponser) {
       idMensajePadre = this.mensajeAResponser.PKConversacionMensaje;
-      if ( this.mensajeAResponser.Privado.length >= 1 ) {
+      if (this.mensajeAResponser.Privado.length >= 1) {
         const usuariosPrivadosRespuesta = [];
         this.mensajeAResponser.Privado.forEach(element => {
           usuariosPrivadosRespuesta.push(element.FKUsuario);
@@ -396,32 +372,27 @@ export class TalkPage implements OnInit, AfterViewInit {
       }
     }
 
-    if ( this.usuariosInactivosSeleccionados.length >= 1 ) {
-
+    if (this.usuariosInactivosSeleccionados.length >= 1) {
       const usuariosConversacion = this.informacionConversacionSeleccionada.Usuarios;
 
-
       usuariosConversacion.forEach(element => {
-
-        const encontro = this.usuariosInactivosSeleccionados.find(item => item === element.UsuarioNombre );
+        const encontro = this.usuariosInactivosSeleccionados.find(item => item === element.UsuarioNombre);
 
         if (encontro) {
           this.idsUsuariosInactivosSeleccionados.push(element.FKUsuario);
         }
-
       });
-
     }
 
     const mensaje = {
-       PKConversacionMensaje: -1,
-       PKConversacion: this.informacionConversacionSeleccionada.PKConversacion,
-       PKUsuario: idUsuario,
-       Mensaje: nuevoMensaje.send,
-       UidMensajeRespuesta: idMensajePadre,
-       LstUsuariosMensajePrivado: usuariosPrivados,
-       LstUsuariosActivar: this.idsUsuariosInactivosSeleccionados,
-       IP: '000.000.000.000'
+      PKConversacionMensaje: -1,
+      PKConversacion: this.informacionConversacionSeleccionada.PKConversacion,
+      PKUsuario: idUsuario,
+      Mensaje: nuevoMensaje.send,
+      UidMensajeRespuesta: idMensajePadre,
+      LstUsuariosMensajePrivado: usuariosPrivados,
+      LstUsuariosActivar: this.idsUsuariosInactivosSeleccionados,
+      IP: '000.000.000.000',
     };
 
     // tslint:disable-next-line: deprecation
@@ -458,7 +429,7 @@ export class TalkPage implements OnInit, AfterViewInit {
       <strong style="color:blue">Leido por: </strong> ${usuariosLeidos}
       <strong>Pendiente por leer: </strong> ${usuariosSinLeer}
       </p>`,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
@@ -473,50 +444,42 @@ export class TalkPage implements OnInit, AfterViewInit {
         usuariosLeidos.push(nombre);
       }
     });
-    return (usuariosLeidos.toString() == '') 
-      ? 'Ninguno.'
-      : usuariosLeidos.toString();
+    return usuariosLeidos.toString() == '' ? 'Ninguno.' : usuariosLeidos.toString();
   }
 
   allUsersReadMessage(message): boolean {
     return this.informacionConversacionSeleccionada.Usuarios.length == message.Leido.length;
-  }  
+  }
 
   conversationColor(message): string {
     if (this.idUsuario == message.FKUsuario) {
       if (message.EsPrivadoPorMi) return 'chatgreen';
       else return 'chatblue';
-    }
-    else {
+    } else {
       if (message.EsPrivadoParaMi) return 'chatgreen';
       else return 'chatwhite';
     }
   }
 
   textAlignConversation(message): string {
-    return (this.idUsuario == message.FKUsuario)
-      ? 'left'
-      : 'right';
+    return this.idUsuario == message.FKUsuario ? 'left' : 'right';
   }
 
   mostrarUsuariosNoLeidos(idUser, usuarios) {
     let usuariosSinLeer = [];
     const usuariosConversacion = this.informacionConversacionSeleccionada.Usuarios;
-  
+
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < usuariosConversacion.length; i++) {
       const usuario = usuariosConversacion[i];
       const encontro = usuarios.find(item => item.FKUsuario === usuario.FKUsuario);
-      if ( !encontro ) {
+      if (!encontro) {
         usuariosSinLeer.push(usuario.UsuarioNombre);
       }
     }
-    usuariosSinLeer.filter((user) => user.FKUsuario != idUser);
+    usuariosSinLeer.filter(user => user.FKUsuario != idUser);
 
-    return (usuariosSinLeer.toString() == '')
-      ? 'Ninguno.'
-      : usuariosSinLeer.toString();
-
+    return usuariosSinLeer.toString() == '' ? 'Ninguno.' : usuariosSinLeer.toString();
   }
 
   async eliminarMensaje(mensaje, slidingItem: IonItemSliding) {
@@ -527,39 +490,40 @@ export class TalkPage implements OnInit, AfterViewInit {
         mode: 'ios',
         header: 'Eliminar Mensaje',
         message: `Esta seguro que desea eliminar el mensaje de esta conversación`,
-        buttons: [{
-          text: 'CANCELAR'
-        }, {
-          text: 'ACEPTAR',
-          handler: () => {
-            const objEliminarMensaje = {
-              PKConversacionMensaje: mensaje.PKConversacionMensaje,
-              PKUsuario: idUsuario,
-              Mensaje: mensaje.Mensaje,
-              Eliminar: true
-            };
-            // tslint:disable-next-line: deprecation
-            this.talkService.deleteMessage(objEliminarMensaje).subscribe(response => {
-              if (response.IsOk === true) {
-                this.notification('Atención', 'Mensaje eliminado con exito');
-                this.getInfoConversation();
-              }
-            });
-          }
-        }]
+        buttons: [
+          {
+            text: 'CANCELAR',
+          },
+          {
+            text: 'ACEPTAR',
+            handler: () => {
+              const objEliminarMensaje = {
+                PKConversacionMensaje: mensaje.PKConversacionMensaje,
+                PKUsuario: idUsuario,
+                Mensaje: mensaje.Mensaje,
+                Eliminar: true,
+              };
+              // tslint:disable-next-line: deprecation
+              this.talkService.deleteMessage(objEliminarMensaje).subscribe(response => {
+                if (response.IsOk === true) {
+                  this.notification('Atención', 'Mensaje eliminado con exito');
+                  this.getInfoConversation();
+                }
+              });
+            },
+          },
+        ],
       });
       await alert.present();
-
     } else {
       const alertNoSePudoEliminar = await this.alertController.create({
         mode: 'ios',
         header: 'Eliminar Mensaje',
         message: `No se puede eliminar este mensaje, ya fue visto por algun integrante de la conversación.`,
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
       await alertNoSePudoEliminar.present();
     }
-
   }
 
   async editarMensaje(mensaje, slidingItem: IonItemSliding) {
@@ -576,34 +540,36 @@ export class TalkPage implements OnInit, AfterViewInit {
             name: 'editarMensaje',
             id: 'editarMensaje',
             type: 'textarea',
-            placeholder: 'Editar Mensaje'
-          }
+            placeholder: 'Editar Mensaje',
+          },
         ],
-        buttons: [{
-          text: 'Cancelar',
-          handler: () => {
-            console.log('editar Cancel');
-          }
-        },
-        {
-          text: 'Aceptar',
-          handler: (data) => {
-            const nuevoMensaje = data.editarMensaje;
-            const objMensajeAEditar = {
-              PKConversacionMensaje: mensaje.PKConversacionMensaje,
-              PKUsuario: idUsuario,
-              Mensaje: nuevoMensaje,
-              Eliminar: false
-            };
-            // tslint:disable-next-line: deprecation
-            this.talkService.deleteMessage(objMensajeAEditar).subscribe(response => {
-              if (response.IsOk === true) {
-                this.notification('Atención', 'Mensaje editado con exito');
-                this.getInfoConversation();
-              }
-            });
-          }
-        }]
+        buttons: [
+          {
+            text: 'Cancelar',
+            handler: () => {
+              console.log('editar Cancel');
+            },
+          },
+          {
+            text: 'Aceptar',
+            handler: data => {
+              const nuevoMensaje = data.editarMensaje;
+              const objMensajeAEditar = {
+                PKConversacionMensaje: mensaje.PKConversacionMensaje,
+                PKUsuario: idUsuario,
+                Mensaje: nuevoMensaje,
+                Eliminar: false,
+              };
+              // tslint:disable-next-line: deprecation
+              this.talkService.deleteMessage(objMensajeAEditar).subscribe(response => {
+                if (response.IsOk === true) {
+                  this.notification('Atención', 'Mensaje editado con exito');
+                  this.getInfoConversation();
+                }
+              });
+            },
+          },
+        ],
       });
 
       await alert.present();
@@ -612,11 +578,10 @@ export class TalkPage implements OnInit, AfterViewInit {
         mode: 'ios',
         header: 'Editar Mensaje',
         message: `No se puede editar este mensaje, ya fue visto por algún integrante de la conversación.`,
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
       await alertNoSePudoEditar.present();
     }
-
   }
 
   async notification(titulo, notificacion) {
@@ -625,21 +590,16 @@ export class TalkPage implements OnInit, AfterViewInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
     alert.onDidDismiss();
-
   }
-
 
   async getInfoUser(): Promise<number> {
     const infoUsuarioIngresado = await this.storage.get('sesion');
     const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
     return idUSuario;
   }
-
-
-
 }

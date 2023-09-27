@@ -15,7 +15,6 @@ import { StorageService } from 'src/app/storage.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-
   /**
    * Array de opciones del menú de configuración
    */
@@ -27,58 +26,71 @@ export class HomePage implements OnInit {
 
   isAutologin = false;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private toastController: ToastController,
     private alertController: AlertController,
     private menuService: MenuConfiguracionService,
     private faio: FingerprintAIO,
     private platform: Platform,
     private storageService: StorageService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.optMenuMain = this.menuService.getMenuMain();
 
-    this.platform.ready()
-      .then(() => {
-        this.faio.isAvailable().then((ava: any) => {
-          this.storageService.get('isLoginWithFinger').then(result => {
-            if (result != null) {
-              this.isLoginWithFinger = result;
-            }
-          }).catch(e => {
-            console.log('error: ' + e);
-          });
-          this.storageService.get('showLoginWithFinger').then(result => {
-            if (result != null) {
-              this.isLoginWithFinger = result;
-            }
-          }).catch(e => {
-            console.log('error: ' + e);
-          });
-          this.storageService.get('autologin').then(result => {
-            if (result != null) {
-              this.isAutologin = result;
-            } else {
-              this.storageService.set('autologin', true);
-            }
-            if (!this.isShowLoginWithFinger && !this.isLoginWithFinger && !this.isAutologin) {
-              this.presentAlertConfirm();
-            }
-          }).catch(e => {
-            console.log('error: ' + e);
-          });
-        }).catch((error: any) => {
+    this.platform.ready().then(() => {
+      this.faio
+        .isAvailable()
+        .then((ava: any) => {
+          this.storageService
+            .get('isLoginWithFinger')
+            .then(result => {
+              if (result != null) {
+                this.isLoginWithFinger = result;
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
+          this.storageService
+            .get('showLoginWithFinger')
+            .then(result => {
+              if (result != null) {
+                this.isLoginWithFinger = result;
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
+          this.storageService
+            .get('autologin')
+            .then(result => {
+              if (result != null) {
+                this.isAutologin = result;
+              } else {
+                this.storageService.set('autologin', true);
+              }
+              if (!this.isShowLoginWithFinger && !this.isLoginWithFinger && !this.isAutologin) {
+                this.presentAlertConfirm();
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
+        })
+        .catch((error: any) => {
           console.log(error);
         });
-      });
+    });
   }
 
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       header: '¡Bienvenido!',
       mode: 'ios',
-      message: '<strong>Hola! </strong>Detectamos ' +
+      message:
+        '<strong>Hola! </strong>Detectamos ' +
         'que tu dispositivo cuenta con TouchID/FaceID ' +
         '¿Te gustaría iniciar sesión la próxima vez con esta tecnología?',
       buttons: [
@@ -88,8 +100,9 @@ export class HomePage implements OnInit {
             this.storageService.set('showLoginWithFinger', true);
             this.storageService.set('activateFinger', true);
             this.toastConfirmBiometric();
-          }
-        }, {
+          },
+        },
+        {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
@@ -99,9 +112,9 @@ export class HomePage implements OnInit {
             this.storageService.remove('valueTwo');
             this.storageService.remove('valueThree');
             this.alertCancelBiometric();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     await alert.present();
   }
@@ -109,7 +122,7 @@ export class HomePage implements OnInit {
   async toastConfirmBiometric() {
     const toast = await this.toastController.create({
       message: 'TouchID/FaceID Activado',
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -120,9 +133,9 @@ export class HomePage implements OnInit {
       message: 'Puedes cambiar tus ajustes desde el menú configuración.',
       buttons: [
         {
-          text: 'Aceptar'
-        }
-      ]
+          text: 'Aceptar',
+        },
+      ],
     });
     await alert.present();
   }
@@ -147,5 +160,4 @@ export class HomePage implements OnInit {
         break;
     }
   }
-
 }

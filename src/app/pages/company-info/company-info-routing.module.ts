@@ -4,12 +4,12 @@ import { CompanyInfoPage } from './company-info.page';
 const routes: Routes = [
   {
     path: '',
-    component: CompanyInfoPage
+    component: CompanyInfoPage,
   },
   {
     path: 'comments',
-    loadChildren: () => import('../comments/comments.module').then(m => m.CommentsPageModule)
-  }
+    loadChildren: () => import('../comments/comments.module').then(m => m.CommentsPageModule),
+  },
 ];
 
 @NgModule({

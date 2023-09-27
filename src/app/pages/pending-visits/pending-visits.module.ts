@@ -8,16 +8,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PipesModule,
-    ScrollingModule,
-    PendingVisitsPageRoutingModule
-  ],
-  declarations: [
-    PendingVisitsPage
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, PipesModule, ScrollingModule, PendingVisitsPageRoutingModule],
+  declarations: [PendingVisitsPage],
 })
 export class PendingVisitsPageModule {}

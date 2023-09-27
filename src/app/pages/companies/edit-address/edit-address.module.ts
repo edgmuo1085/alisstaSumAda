@@ -6,13 +6,7 @@ import { EditAddressPageRoutingModule } from './edit-address-routing.module';
 import { EditAddressPage } from './edit-address.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    EditAddressPageRoutingModule
-  ],
-  declarations: [EditAddressPage]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, EditAddressPageRoutingModule],
+  declarations: [EditAddressPage],
 })
-export class EditAddressPageModule { }
+export class EditAddressPageModule {}

@@ -9,13 +9,13 @@
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 
 //const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 //const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/;
 
-const ambiente =  'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 
 export const environment = {
   production: false,
@@ -55,5 +55,5 @@ export const environment = {
   RECUPERAR_PASSWORD: 'http://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
-  ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c'
+  ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c',
 };

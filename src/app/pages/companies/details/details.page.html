@@ -26,8 +26,7 @@
             </ion-item>
             <ion-item lines="none">{{ company.str_Sigla_Documento }}: {{ company.strNumeroDcto }}</ion-item>
           </div>
-          <ion-icon [attr.name]="showDetails ? 'chevron-up-outline' : 'chevron-down-outline'"
-            (click)="showDetails = !showDetails">
+          <ion-icon [attr.name]="showDetails ? 'chevron-up-outline' : 'chevron-down-outline'" (click)="showDetails = !showDetails">
           </ion-icon>
         </div>
       </ion-card-header>
@@ -144,8 +143,12 @@
         <ion-radio-group formControlName="nextPage">
           <ion-item lines="none">
             <ion-label class="radio-label">
-              <ion-icon class="icon-updated" name="checkmark-circle-outline" slot="start"
-                *ngIf="hasChangedModule('company-data')"></ion-icon>
+              <ion-icon
+                class="icon-updated"
+                name="checkmark-circle-outline"
+                slot="start"
+                *ngIf="hasChangedModule('company-data')"
+              ></ion-icon>
               Actualizar Datos Empresas
             </ion-label>
             <ion-radio slot="end" value="companyData"></ion-radio>
@@ -158,17 +161,13 @@
             </ion-label>
             <ion-radio slot="end" value="contactData"></ion-radio>
           </ion-item>
-
         </ion-radio-group>
       </ion-card-content>
     </ion-card>
 
-    <ion-button class="ion-margin-bottom" expand="block" (click)="confirm()">
-      Confirmar Datos
-    </ion-button>
+    <ion-button class="ion-margin-bottom" expand="block" (click)="confirm()"> Confirmar Datos </ion-button>
 
-    <ion-button class="ion-margin-bottom" expand="block" (click)="nextPage()"
-      *ngIf="!!formGroup.controls.nextPage.value">
+    <ion-button class="ion-margin-bottom" expand="block" (click)="nextPage()" *ngIf="!!formGroup.controls.nextPage.value">
       Continuar Proceso
     </ion-button>
   </form>

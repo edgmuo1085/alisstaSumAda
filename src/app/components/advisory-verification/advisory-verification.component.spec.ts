@@ -9,8 +9,8 @@ describe('AdvisoryVerificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdvisoryVerificationComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [AdvisoryVerificationComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdvisoryVerificationComponent);

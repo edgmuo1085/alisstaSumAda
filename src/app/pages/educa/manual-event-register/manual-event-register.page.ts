@@ -14,7 +14,6 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./manual-event-register.page.scss'],
 })
 export class ManualEventRegisterPage implements OnInit {
-
   // Variable para la creación del formulario
   formConsultUser: FormGroup;
   // Contiene el nombre de evento
@@ -22,12 +21,14 @@ export class ManualEventRegisterPage implements OnInit {
   // Es un array con los diferentes tipos de documento que se permiten seleccionar
   documentsType: [] = [];
 
-  constructor( private formbuilder: FormBuilder,
-               private alertController: AlertController,
-               private eventService: EventService,
-               private barcodeScanner: BarcodeScanner,
-               private cacheService: CacheService,
-               private router: Router ) { }
+  constructor(
+    private formbuilder: FormBuilder,
+    private alertController: AlertController,
+    private eventService: EventService,
+    private barcodeScanner: BarcodeScanner,
+    private cacheService: CacheService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.nombreEvento = sessionStorage.nombreEvento;
@@ -43,19 +44,18 @@ export class ManualEventRegisterPage implements OnInit {
       identificationTypeCompany: ['', Validators.required],
       identificationNumberCompany: ['', Validators.required],
       identificationTypeUser: ['', Validators.required],
-      identificationNumberUser: ['', Validators.required]
+      identificationNumberUser: ['', Validators.required],
     });
   }
 
   /**
-   * Este método permite ir a consultar el servicio cuales son los tipos de documentos 
+   * Este método permite ir a consultar el servicio cuales son los tipos de documentos
    * existentes en la BD
    */
   getDocumentsTypeUser() {
-    this.eventService.getDocumentType()
-      .subscribe(response => {
-        this.documentsType = response.Documentos;
-      });
+    this.eventService.getDocumentType().subscribe(response => {
+      this.documentsType = response.Documentos;
+    });
   }
 
   /**
@@ -69,18 +69,20 @@ export class ManualEventRegisterPage implements OnInit {
    * Por eso en la variable infoResponsibleManualEvent se guarda el err.error equivalente a 'null'.
    */
   search() {
-    if ( this.formConsultUser.valid ) {
+    if (this.formConsultUser.valid) {
       const eventIdSelected = this.cacheService.newRegisterEvent.FK_ID_Evento;
       const documentoAsistente = this.formConsultUser.value.identificationNumberUser;
-      this.eventService.getSearchResponsibleEventManual(documentoAsistente, eventIdSelected)
-        .subscribe(response => {
+      this.eventService.getSearchResponsibleEventManual(documentoAsistente, eventIdSelected).subscribe(
+        response => {
           const infoResponsibleManualEvent = JSON.stringify(response);
           sessionStorage.infoResponsibleManualEvent = infoResponsibleManualEvent;
           this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent/registerEventManual/infoRegisterUserManual');
-        }, err => {
+        },
+        err => {
           sessionStorage.infoResponsibleManualEvent = err.error;
           this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent/registerEventManual/infoRegisterUserManual');
-        });
+        }
+      );
     } else {
       this.Alert();
     }
@@ -92,8 +94,9 @@ export class ManualEventRegisterPage implements OnInit {
    */
   async openScanQr() {
     const eventIdSelected = await this.cacheService.newRegisterEvent.FK_ID_Evento.toString();
-    this.barcodeScanner.scan()
-      .then( data => {
+    this.barcodeScanner
+      .scan()
+      .then(data => {
         if (data.cancelled !== true) {
           const dataUsuarioQR = JSON.parse(data.text);
           const registroUsuarioAsistente: RegistroAsistenteEvento = {
@@ -108,30 +111,33 @@ export class ManualEventRegisterPage implements OnInit {
             dtmFechaNacimiento: dataUsuarioQR.fchnac,
             strTelefono: dataUsuarioQR.tele,
             strEmail: dataUsuarioQR.email,
-            FK_ID_Evento: eventIdSelected
+            FK_ID_Evento: eventIdSelected,
           };
           this.registerUserQR(registroUsuarioAsistente);
         }
-      }).catch( error => {
+      })
+      .catch(error => {
         this.confirmationRegister('Error.', 'Falló la inscripción del asistente al evento.');
       });
   }
 
   /**
-   * 
+   *
    * Este metodo es el encargado de lanzar la petición para realizar el registro como tal
    */
   registerUserQR(registroNuevoUsuarioAsistente: RegistroAsistenteEvento) {
-    this.eventService.registerResponsibleQR(registroNuevoUsuarioAsistente)
-      .subscribe(response => {
+    this.eventService.registerResponsibleQR(registroNuevoUsuarioAsistente).subscribe(
+      response => {
         this.confirmationRegister('Exitoso', 'El registro se realizó correctamente.');
-      }, err => {
+      },
+      err => {
         this.confirmationRegister('Fallido.', 'No se pudo realizar el registro del asistente al evento');
-      });
+      }
+    );
   }
 
   /**
-   * Este metodo basicamente muestra la alerta de exito o fallido segun sea el caso al momento de 
+   * Este metodo basicamente muestra la alerta de exito o fallido segun sea el caso al momento de
    * ejecutar el servicio
    */
   async confirmationRegister(resultadoAlerta: string, mensaje: string) {
@@ -139,11 +145,10 @@ export class ManualEventRegisterPage implements OnInit {
       header: resultadoAlerta,
       mode: 'ios',
       message: mensaje,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
     await alert.present();
   }
-
 
   /**
    * Este muestra la alerta cuando se lanza la petición y hay algun campo en el formulario vacio.
@@ -152,15 +157,9 @@ export class ManualEventRegisterPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Atención',
       message: 'Todos los campos son obligatorios.',
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
   }
-
-
-
-
-
-
 }

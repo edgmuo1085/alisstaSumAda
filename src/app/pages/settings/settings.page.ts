@@ -12,7 +12,6 @@ import { ToastController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 
-
 /**
  * Componente de la vista de configuraciones.
  */
@@ -22,7 +21,6 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-
   /**
    * Array de opciones del menú de configuración
    */
@@ -41,7 +39,7 @@ export class SettingsPage implements OnInit {
     message: `Si te gusta Alissta SUM, ¿podrías escribirnos una reseña? No tomará más de un minuto. ¡Gracias por tu apoyo!`,
     rateButtonLabel: 'Escribir reseña ahora',
     cancelButtonLabel: 'No, gracias',
-    laterButtonLabel: 'Recordarme más tarde'
+    laterButtonLabel: 'Recordarme más tarde',
   };
 
   /**
@@ -49,7 +47,7 @@ export class SettingsPage implements OnInit {
    */
   private readonly RATE_APP_IDS = {
     ios: `<${this.config.iosAppID}>`,
-    android: `market://details?id=<${this.config.androidAppID}>`
+    android: `market://details?id=<${this.config.androidAppID}>`,
   };
 
   public static readonly NOTIFICATIONS_KEY: string = 'notifications';
@@ -75,30 +73,39 @@ export class SettingsPage implements OnInit {
 
   ngOnInit(): void {
     this.optMenuOptions = this.menuConfOptions.getMenuOpts();
-    this.storageService.get('autologin').then(result => {
-      if (result != null) {
-        this.autologin = result;
-      }
-    }).catch(e => {
-      console.log('error: ' + e);
-    });
-    this.storageService.get('activateFinger').then(result => {
-      if (result != null) {
-        this.touchfaceid = result;
-      }
-    }).catch(e => {
-      console.log('error: ' + e);
-    });
-    this.storageService.get('isFingerFaceAvailable').then(result => {
-      if (result != null) {
-        this.isFingerFaceAvailable = result;
-      }
-    }).catch(e => {
-      console.log('error: ' + e);
-    });
+    this.storageService
+      .get('autologin')
+      .then(result => {
+        if (result != null) {
+          this.autologin = result;
+        }
+      })
+      .catch(e => {
+        console.log('error: ' + e);
+      });
+    this.storageService
+      .get('activateFinger')
+      .then(result => {
+        if (result != null) {
+          this.touchfaceid = result;
+        }
+      })
+      .catch(e => {
+        console.log('error: ' + e);
+      });
+    this.storageService
+      .get('isFingerFaceAvailable')
+      .then(result => {
+        if (result != null) {
+          this.isFingerFaceAvailable = result;
+        }
+      })
+      .catch(e => {
+        console.log('error: ' + e);
+      });
 
     let localStorageNotifications: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
-    this.notifications = (localStorageNotifications == 'true');
+    this.notifications = localStorageNotifications == 'true';
   }
 
   /**
@@ -138,7 +145,7 @@ export class SettingsPage implements OnInit {
 
   switchNotifications(): void {
     this.notifications = !this.notifications;
-    localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, (this.notifications) ? 'true' : 'false');
+    localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
     if (this.notifications) this.oneSignal.setSubscription(true);
     else this.oneSignal.setSubscription(false);
   }
@@ -151,7 +158,7 @@ export class SettingsPage implements OnInit {
     this.appRate.setPreferences({
       storeAppURL: this.RATE_APP_IDS,
       customLocale: this.RATE_APP_TEXTS,
-      simpleMode: true
+      simpleMode: true,
     });
 
     this.appRate.promptForRating(true);
@@ -163,7 +170,6 @@ export class SettingsPage implements OnInit {
   async changePassword(): Promise<void> {
     // this.iab.create(this.config.alisstaChangePasswordURL, '_system');
     this.iab.create(environment.RECUPERAR_PASSWORD, '_system');
-
   }
 
   /**
@@ -181,7 +187,7 @@ export class SettingsPage implements OnInit {
   async toastBiometric(mensaje: string) {
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -189,7 +195,7 @@ export class SettingsPage implements OnInit {
   async toastAutologin(mensaje: string) {
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -211,5 +217,4 @@ export class SettingsPage implements OnInit {
       this.toastAutologin('¡Autologin activado!');
     }
   }
-
 }

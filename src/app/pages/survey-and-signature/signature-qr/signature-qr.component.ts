@@ -13,7 +13,6 @@ import { NetworkService } from '../../../services/network/network.service';
   styleUrls: ['./signature-qr.component.scss'],
 })
 export class SignatureQRComponent implements OnInit {
-
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
 
   // tslint:disable-next-line: ban-types
@@ -21,7 +20,7 @@ export class SignatureQRComponent implements OnInit {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
-    canvasHeight: 300
+    canvasHeight: 300,
   };
 
   disableBtnSendTask = false;
@@ -35,19 +34,19 @@ export class SignatureQRComponent implements OnInit {
 
   @Output() infoEnteredSignatureQR = new EventEmitter();
 
-
-  constructor(private storage: Storage,
+  constructor(
+    private storage: Storage,
     private cacheService: CacheService,
     private router: Router,
     private net: NetworkService,
     private toastController: ToastController,
     private modalCtrl: ModalController,
-    private alertController: AlertController) { }
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.getInfoUser();
   }
-
 
   async getInfoUser() {
     this.infoUserARL = await this.storage.get('sesion');
@@ -83,7 +82,7 @@ export class SignatureQRComponent implements OnInit {
       numeroDocumentoEmpresa: this.infoUserARL.idProveedor,
       nombreProveedor: this.infoUserARL.nombreProveedor,
       documentoUsuarioARL: this.infoUserARL.idPersona,
-      signatureEntered: this.signatureEntered
+      signatureEntered: this.signatureEntered,
     };
     this.infoEnteredSignatureQR.emit(infoSignatureQR);
   }
@@ -94,13 +93,10 @@ export class SignatureQRComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AdvisoryVerificationComponent,
       componentProps: {
-        info: infoActa
-      }
+        info: infoActa,
+      },
     });
 
     modal.present();
-
   }
-
-
 }

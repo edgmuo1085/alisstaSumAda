@@ -6,8 +6,8 @@ import { TalkPage } from './talk.page';
 const routes: Routes = [
   {
     path: '',
-    component: TalkPage
-  }
+    component: TalkPage,
+  },
 ];
 
 @NgModule({

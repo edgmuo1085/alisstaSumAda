@@ -1,22 +1,21 @@
-
-ion-header{
-  ion-grid{
+ion-header {
+  ion-grid {
     padding: 0px;
     background: #95a6b1;
     color: white;
-    ion-row{
-      ion-col{
+    ion-row {
+      ion-col {
         padding: 0px;
         background: #95a6b1;
       }
-      ion-toolbar{
+      ion-toolbar {
         padding: 0px;
       }
     }
   }
 }
 
-.titulo{
+.titulo {
   width: 100% !important;
   font-size: 25px !important;
   text-align: left;
@@ -24,16 +23,16 @@ ion-header{
   padding-top: 10px;
 }
 
-ion-card{
+ion-card {
   margin-bottom: 30px;
-  ion-card-title{
+  ion-card-title {
     padding: 5px;
   }
-  ion-card-header{
+  ion-card-header {
     padding: 5px;
     margin-top: 10pxs;
   }
-  ion-card-content{
+  ion-card-content {
     padding: 0px;
     padding-bottom: 30px;
   }

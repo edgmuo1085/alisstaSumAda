@@ -6,13 +6,13 @@ import { ManualEventRegisterPage } from './manual-event-register.page';
 const routes: Routes = [
   {
     path: '',
-    component: ManualEventRegisterPage
+    component: ManualEventRegisterPage,
   },
   {
     path: 'infoRegisterUserManual',
-    loadChildren: () => import('../info-register-event-manual/info-register-event-manual.module').
-                                then(m => m.InfoRegisterEventManualPageModule)
-  }
+    loadChildren: () =>
+      import('../info-register-event-manual/info-register-event-manual.module').then(m => m.InfoRegisterEventManualPageModule),
+  },
 ];
 
 @NgModule({

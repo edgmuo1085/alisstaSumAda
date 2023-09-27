@@ -8,7 +8,6 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
   /**
    * El headerComponent es el encargado de mostrar la información del usuario logueado en la aplicación
    */
@@ -23,11 +22,12 @@ export class HeaderComponent implements OnInit {
    */
   nameUserRegister: string;
 
-
-  constructor( private device: Device,
-               private storage: Storage ) {
-                this.deviceUUID = this.device.uuid;
-                }
+  constructor(
+    private device: Device,
+    private storage: Storage
+  ) {
+    this.deviceUUID = this.device.uuid;
+  }
 
   ngOnInit() {
     this.uploadInfoUser();
@@ -38,5 +38,4 @@ export class HeaderComponent implements OnInit {
     const nombreCompleto = nameUser.nombres + ' ' + nameUser.apellidos;
     this.nameUserRegister = nombreCompleto;
   }
-
 }

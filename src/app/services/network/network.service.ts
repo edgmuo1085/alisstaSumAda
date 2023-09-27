@@ -9,14 +9,13 @@ import { environment } from './../../../environments/environment';
 
 export enum ConnectionStatusEnum {
   Online,
-  Offline
+  Offline,
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NetworkService {
-
   private hasConnection = new BehaviorSubject(false);
 
   ipAddress: any;
@@ -34,7 +33,7 @@ export class NetworkService {
   }
 
   showIPAddress() {
-    this.http.get('https://api.ipify.org/?format=json').subscribe((ip) => {
+    this.http.get('https://api.ipify.org/?format=json').subscribe(ip => {
       this.connectionStatus = ConnectionStatusEnum.Online;
       this.ipAddress = ip;
       this.cacheService.saveIpAddress(this.ipAddress.ip);
@@ -59,10 +58,12 @@ export class NetworkService {
         success => {
           this.hasConnection.next(true);
           return;
-        }, error => {
+        },
+        error => {
           this.hasConnection.next(false);
           return;
-        });
+        }
+      );
     } catch (err) {
       console.log('err testNetworkConnection', err);
       this.hasConnection.next(false);
@@ -72,8 +73,8 @@ export class NetworkService {
 
   initializeNetworkEvents(): void {
     if (this.plt.is('cordova')) {
-      this.network.onConnect().subscribe(() => this.connectionStatus = ConnectionStatusEnum.Online);
-      this.network.onDisconnect().subscribe(() => this.connectionStatus = ConnectionStatusEnum.Offline);
+      this.network.onConnect().subscribe(() => (this.connectionStatus = ConnectionStatusEnum.Online));
+      this.network.onDisconnect().subscribe(() => (this.connectionStatus = ConnectionStatusEnum.Offline));
 
       return;
     }
@@ -84,7 +85,6 @@ export class NetworkService {
       fromEvent(window, 'offline').pipe(mapTo(ConnectionStatusEnum.Offline))
     );
 
-    connectionEvents.subscribe((status: ConnectionStatusEnum) => this.connectionStatus = status);
+    connectionEvents.subscribe((status: ConnectionStatusEnum) => (this.connectionStatus = status));
   }
-
 }

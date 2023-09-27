@@ -12,7 +12,6 @@ import { NetworkService } from '../../services/network/network.service';
   styleUrls: ['./release-activities.page.scss'],
 })
 export class ReleaseActivitiesPage implements OnInit {
-
   response: any[] = [
     {
       numeroDocumento: '123456',
@@ -20,13 +19,13 @@ export class ReleaseActivitiesPage implements OnInit {
       listaActividades: [
         {
           id: 1,
-          codigo: 'Codigo 1'
+          codigo: 'Codigo 1',
         },
         {
           id: 2,
-          codigo: 'Codigo 2'
-        }
-      ]
+          codigo: 'Codigo 2',
+        },
+      ],
     },
     {
       numeroDocumento: '789012',
@@ -34,11 +33,10 @@ export class ReleaseActivitiesPage implements OnInit {
       listaActividades: [
         {
           id: 3,
-          codigo: 'Codigo 3'
-        }
-      ]
+          codigo: 'Codigo 3',
+        },
+      ],
     },
-
   ];
 
   listActivity: any[] = [];
@@ -55,15 +53,16 @@ export class ReleaseActivitiesPage implements OnInit {
 
   informacionUsuario: any;
 
-
-  constructor(private loadingCtlr: LoadingController,
-              private cacheService: CacheService,
-              private alertController: AlertController,
-              private listActivitiesCompany: ActivityListCompanyService,
-              private net: NetworkService,
-              private storage: Storage) {
+  constructor(
+    private loadingCtlr: LoadingController,
+    private cacheService: CacheService,
+    private alertController: AlertController,
+    private listActivitiesCompany: ActivityListCompanyService,
+    private net: NetworkService,
+    private storage: Storage
+  ) {
     this.lines = 'none';
-   }
+  }
 
   ionViewWillEnter() {
     this.listActivities();
@@ -80,17 +79,17 @@ export class ReleaseActivitiesPage implements OnInit {
     this.loading.dismiss();
   }
 
-  search( event ) {
+  search(event) {
     this.textoBuscar = event.detail.value;
   }
 
   activitySelected(actividadSeleccionada) {
     const idSelected = actividadSeleccionada.id;
     const existe = this.actividadesSeleccionadas.find(item => item.id === idSelected);
-    if ( existe ) {
+    if (existe) {
       this.actividadesSeleccionadas.forEach(element => {
         const item = element;
-        if ( item === existe ) {
+        if (item === existe) {
           this.actividadesSeleccionadas.splice(existe, 1);
         }
       });
@@ -108,7 +107,7 @@ export class ReleaseActivitiesPage implements OnInit {
     const objLiberar: liberarActividades = {
       ListaIdsActividades: idActividadesSeleccionadas,
       direccionIP: this.cacheService.ipAddress,
-      CedulaUsuarioModifica: this.informacionUsuario.idPersona
+      CedulaUsuarioModifica: this.informacionUsuario.idPersona,
     };
     const siLiberoActividades = await this.listActivitiesCompany.liberarActivities(objLiberar).toPromise();
     if (siLiberoActividades) {
@@ -134,13 +133,11 @@ export class ReleaseActivitiesPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
 
     await alert.present();
   }
-
-
 }

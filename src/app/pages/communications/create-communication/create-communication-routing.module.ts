@@ -6,8 +6,8 @@ import { CreateCommunicationPage } from './create-communication.page';
 const routes: Routes = [
   {
     path: '',
-    component: CreateCommunicationPage
-  }
+    component: CreateCommunicationPage,
+  },
 ];
 
 @NgModule({

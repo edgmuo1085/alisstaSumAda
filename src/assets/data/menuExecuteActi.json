@@ -2,17 +2,16 @@
   {
     "icon": "../../../assets/icon/icono_visitas_pendientes.svg",
     "title": "Visitas pendientes",
-    "redirecTo":"pending-visits"
+    "redirecTo": "pending-visits"
   },
   {
     "icon": "../../../assets/icon/icono_tareas_enviar.svg",
     "title": "Actas por enviar",
-    "redirecTo":"tasks-to-send"
+    "redirecTo": "tasks-to-send"
   },
   {
     "icon": "../../../assets/icon/icono_liberar_actividades.svg",
     "title": "Liberar actividades",
-    "redirecTo":"releaseActivities"
+    "redirecTo": "releaseActivities"
   }
-  
 ]

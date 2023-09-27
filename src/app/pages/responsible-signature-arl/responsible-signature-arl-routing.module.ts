@@ -6,8 +6,8 @@ import { ResponsibleSignatureARLPage } from './responsible-signature-arl.page';
 const routes: Routes = [
   {
     path: '',
-    component: ResponsibleSignatureARLPage
-  }
+    component: ResponsibleSignatureARLPage,
+  },
 ];
 
 @NgModule({

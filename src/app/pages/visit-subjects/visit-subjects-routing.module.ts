@@ -5,16 +5,16 @@ import { VisitSubjectsPage } from './visit-subjects.page';
 const routes: Routes = [
   {
     path: '',
-    component: VisitSubjectsPage
+    component: VisitSubjectsPage,
   },
   {
     path: 'upload',
-    loadChildren: () => import('../uploader/uploader.module').then(m => m.UploaderPageModule)
+    loadChildren: () => import('../uploader/uploader.module').then(m => m.UploaderPageModule),
   },
   {
     path: 'type',
-    loadChildren: () => import('../visit-type/visit-type.module').then(m => m.VisitTypePageModule)
-  }
+    loadChildren: () => import('../visit-type/visit-type.module').then(m => m.VisitTypePageModule),
+  },
 ];
 
 @NgModule({

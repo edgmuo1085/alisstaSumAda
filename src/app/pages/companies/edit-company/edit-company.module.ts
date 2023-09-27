@@ -8,14 +8,7 @@ import { EditCompanyPageRoutingModule } from './edit-company-routing.module';
 import { EditCompanyPage } from './edit-company.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    PipesModule,
-    EditCompanyPageRoutingModule
-  ],
-  declarations: [EditCompanyPage]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, PipesModule, EditCompanyPageRoutingModule],
+  declarations: [EditCompanyPage],
 })
-export class EditCompanyPageModule { }
+export class EditCompanyPageModule {}

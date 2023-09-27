@@ -9,8 +9,8 @@ describe('TalkPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TalkPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TalkPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TalkPage);

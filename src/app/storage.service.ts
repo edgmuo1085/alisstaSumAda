@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StorageService {
-
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage) {}
 
   async set(key: string, value: any): Promise<boolean> {
     let result: any;
@@ -25,7 +24,7 @@ export class StorageService {
 
     try {
       result = await this.storage.get(key);
-    } catch { }
+    } catch {}
 
     return result;
   }
@@ -37,5 +36,4 @@ export class StorageService {
   clear() {
     this.storage.clear();
   }
-
 }

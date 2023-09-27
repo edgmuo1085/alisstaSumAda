@@ -11,7 +11,6 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./recommendation-detail.component.scss'],
 })
 export class RecommendationDetailComponent implements OnInit {
-
   /**
    * Este componente es el encargado de mostrar la información de las recomendaciones que estan en el modulo
    * de recomendaciones AT, esta se activa al momento de seleccionar una recomendación
@@ -26,10 +25,12 @@ export class RecommendationDetailComponent implements OnInit {
   saveRecommendationDetail: recommendationDetail;
   maxDateImplementation: any;
 
-  constructor(private modalCtrl: ModalController,
-              private alertController: AlertController,
-              private recommendationService: RecommendationATService,
-              private formBuilder: FormBuilder) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private alertController: AlertController,
+    private recommendationService: RecommendationATService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     const date = this.dateRadication.split('T')[0].split('-');
@@ -38,7 +39,6 @@ export class RecommendationDetailComponent implements OnInit {
     this.createFormRecomemendation();
   }
 
-
   /**
    * Método que permite crear el formulario de la recomendación seleccionada
    */
@@ -46,10 +46,10 @@ export class RecommendationDetailComponent implements OnInit {
   createFormRecomemendation() {
     this.formRegisterRecommendationDetail = this.formBuilder.group({
       checkRecomendation: ['', Validators.required],
-      implementationDate: [ '' ],
-      wasEffective: [ '' ],
-      notImplementation: [ '' ],
-      nameSupport: [ '' ]
+      implementationDate: [''],
+      wasEffective: [''],
+      notImplementation: [''],
+      nameSupport: [''],
     });
   }
 
@@ -60,7 +60,7 @@ export class RecommendationDetailComponent implements OnInit {
 
   changeOptionCheckRecommendation(event) {
     const optionSelected = event.detail.value;
-    if ( optionSelected === 'true' ) {
+    if (optionSelected === 'true') {
       this.disabledField = false;
       this.formRegisterRecommendationDetail.controls.implementationDate.enable();
       this.formRegisterRecommendationDetail.controls.notImplementation.disable();
@@ -74,7 +74,7 @@ export class RecommendationDetailComponent implements OnInit {
   }
 
   /**
-   * Este metodo basicamente muestra la alerta de exito o fallido segun sea el caso al momento de 
+   * Este metodo basicamente muestra la alerta de exito o fallido segun sea el caso al momento de
    * ejecutar el servicio
    */
   async confirmationRegister(resultadoAlerta: string, mensaje: string) {
@@ -87,9 +87,9 @@ export class RecommendationDetailComponent implements OnInit {
           text: 'ACEPTAR',
           handler: () => {
             this.modalCtrl.dismiss();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     await alert.present();
   }
@@ -97,7 +97,6 @@ export class RecommendationDetailComponent implements OnInit {
   regresar() {
     this.modalCtrl.dismiss();
   }
-
 
   /**
    * register(), permite consumir un servicio el cual guarda el detalle de la recomendación seleccionada.
@@ -112,7 +111,7 @@ export class RecommendationDetailComponent implements OnInit {
         fueImplementada: checkRecommendation,
         fueEficaz: wasEffective,
         causaDeLaNoImplementacion: this.formRegisterRecommendationDetail.value.notImplementation,
-        nombreSoporte: this.formRegisterRecommendationDetail.value.nameSupport
+        nombreSoporte: this.formRegisterRecommendationDetail.value.nameSupport,
       };
     } else {
       const recommendationDate = this.formRegisterRecommendationDetail.value.implementationDate.toISOString().split('T')[0];
@@ -124,16 +123,17 @@ export class RecommendationDetailComponent implements OnInit {
         fechaImplementacion: dateString,
         fueEficaz: wasEffective,
         causaDeLaNoImplementacion: this.formRegisterRecommendationDetail.value.notImplementation,
-        nombreSoporte: this.formRegisterRecommendationDetail.value.nameSupport
+        nombreSoporte: this.formRegisterRecommendationDetail.value.nameSupport,
       };
     }
-    this.recommendationService.saveRecommendationSelected(this.saveRecommendationDetail)
-      .subscribe(response => {
+    this.recommendationService.saveRecommendationSelected(this.saveRecommendationDetail).subscribe(
+      response => {
         this.confirmationRegister('Exitoso', 'El registro se realizó correctamente.');
-      }, err => {
+      },
+      err => {
         console.error('No fue exitoso el registro', err);
         this.confirmationRegister('Error.', 'No se pudo realizar el registro para el detalle de la recomendación');
-      });
+      }
+    );
   }
-
 }

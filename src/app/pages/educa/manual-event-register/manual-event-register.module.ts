@@ -9,13 +9,7 @@ import { ManualEventRegisterPageRoutingModule } from './manual-event-register-ro
 import { ManualEventRegisterPage } from './manual-event-register.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    ManualEventRegisterPageRoutingModule
-  ],
-  declarations: [ManualEventRegisterPage]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, ManualEventRegisterPageRoutingModule],
+  declarations: [ManualEventRegisterPage],
 })
 export class ManualEventRegisterPageModule {}

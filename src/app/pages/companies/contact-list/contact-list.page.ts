@@ -12,7 +12,6 @@ import { CompaniesService } from 'src/app/services/companies/companies.service';
   styleUrls: ['./contact-list.page.scss'],
 })
 export class ContactListPage {
-
   /**
    * Listado de contactos.
    */
@@ -29,7 +28,7 @@ export class ContactListPage {
     private router: Router,
     private alertCtrl: AlertController,
     private ref: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.getContacts();
@@ -54,7 +53,7 @@ export class ContactListPage {
   /**
    * Elimina el contacto indicado de la lista de contactos para esta empresa.
    *
-   * @param contact 
+   * @param contact
    */
   async remove(contact: any): Promise<void> {
     const drop = (): void => {
@@ -78,8 +77,8 @@ export class ContactListPage {
       message: '¿Realmente desea eliminar este contacto?',
       buttons: [
         { text: 'Eliminar', role: 'drop', handler: drop },
-        { text: 'Cancelar', role: 'cancel' }
-      ]
+        { text: 'Cancelar', role: 'cancel' },
+      ],
     });
 
     await alert.present();
@@ -101,7 +100,7 @@ export class ContactListPage {
   getContactName(contact: any): string {
     const primerNombre = contact.strPrimerNombre ?? '';
     const segundoNombre = contact.strSegundoNombre ?? '';
-    const primerApellido =  contact.strPrimerApellido ?? '';
+    const primerApellido = contact.strPrimerApellido ?? '';
     const segundoApellido = contact.strSegundoApellido ?? '';
     let name = `${primerNombre} ${segundoNombre} ${primerApellido} ${segundoApellido}`;
     name = name.replace(/\s+/g, ' ');
@@ -130,5 +129,4 @@ export class ContactListPage {
 
     this.contacts = this.company.listaPersonasContacto;
   }
-
 }

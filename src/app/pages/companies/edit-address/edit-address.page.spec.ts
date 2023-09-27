@@ -9,8 +9,8 @@ describe('EditAddressPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditAddressPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [EditAddressPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditAddressPage);

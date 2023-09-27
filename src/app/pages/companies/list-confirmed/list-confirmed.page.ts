@@ -12,7 +12,6 @@ import { CompaniesService } from 'src/app/services/companies/companies.service';
   styleUrls: ['./list-confirmed.page.scss'],
 })
 export class ListConfirmedPage {
-
   /**
    * Listado de empresas confirmadas.
    */
@@ -27,7 +26,7 @@ export class ListConfirmedPage {
     private companiesService: CompaniesService,
     private alertService: AlertService,
     private ngZone: NgZone
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.retrieveCompanies();
@@ -66,10 +65,11 @@ export class ListConfirmedPage {
     const loading = await this.alertService.showLoading();
     await this.companiesService.prepareCompany(id);
 
-    this.companiesService.save()
+    this.companiesService
+      .save()
       .pipe(finalize(() => this.alertService.hideLoading(loading)))
       .subscribe({
-        next: (r) => {
+        next: r => {
           this.ngZone.run(async () => {
             const result = r.split(';')[0];
 
@@ -79,16 +79,13 @@ export class ListConfirmedPage {
               return;
             }
 
-            const alert = await this.alertService.showAlert(
-              'Empresa actualizada',
-              'Los datos se han registrado exitosamente.'
-            );
+            const alert = await this.alertService.showAlert('Empresa actualizada', 'Los datos se han registrado exitosamente.');
 
             await alert.present();
             await this.retrieveCompanies();
           });
         },
-        error: onError
+        error: onError,
       });
   }
 
@@ -100,5 +97,4 @@ export class ListConfirmedPage {
 
     this.companies = companies.filter(c => c.__confirmed);
   }
-
 }

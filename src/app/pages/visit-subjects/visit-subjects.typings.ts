@@ -2,7 +2,6 @@
  * Tema de una visita.
  */
 export interface VisitSubject {
-
   /**
    * Identificador del registro
    */
@@ -29,57 +28,57 @@ export interface VisitSubject {
   include?: boolean;
 
   /**
-   * 
+   *
    */
   cantidadHorasEjecutar?: number;
 
   /**
-   * 
+   *
    */
   cobertura?: number;
 
   /**
-   * 
+   *
    */
   descripcionActividad?: string;
 
   /**
-   * 
+   *
    */
   estadoInterno?: string;
 
   /**
-   * 
+   *
    */
   firmamaQR?: number;
 
   /**
-   * 
+   *
    */
   observaciones?: string;
 
   /**
-   * 
+   *
    */
   registroCodigoEventosEduca?: number;
 
   /**
-   * 
+   *
    */
   uniadMedidaDescripcion?: string;
 
   /**
-   * 
+   *
    */
   uniadMedidaId?: number;
 
   /**
-   * 
+   *
    */
   fechaFinContrato: Date;
 
   /**
-   * 
+   *
    */
   cantidadDocumentos: number;
 
@@ -97,5 +96,4 @@ export interface VisitSubject {
    * Identificador de la actividad asociada al siniestro.
    */
   SiniestroOpsActividad: number;
-
 }

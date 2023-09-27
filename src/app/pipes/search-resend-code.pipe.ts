@@ -1,13 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'searchResendCode'
+  name: 'searchResendCode',
 })
 export class SearchResendCodePipe implements PipeTransform {
-
   transform(listResponsables: any[], texto: any, properties: string[]): any {
-    if (!listResponsables) { return []; }
-    if (!texto) { return listResponsables; }
+    if (!listResponsables) {
+      return [];
+    }
+    if (!texto) {
+      return listResponsables;
+    }
 
     return listResponsables.filter(item => {
       let itemFound = false;
@@ -21,5 +24,4 @@ export class SearchResendCodePipe implements PipeTransform {
       return itemFound;
     });
   }
-
 }

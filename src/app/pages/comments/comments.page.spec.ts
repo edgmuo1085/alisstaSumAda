@@ -9,8 +9,8 @@ describe('CommentsPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CommentsPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [CommentsPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CommentsPage);

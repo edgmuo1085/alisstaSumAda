@@ -9,7 +9,6 @@ import { CacheService } from '../../../services/cache/cache.service';
   styleUrls: ['./success.component.scss'],
 })
 export class SuccessComponent implements OnInit {
-
   @Input()
   typeMenu: any;
 
@@ -20,7 +19,11 @@ export class SuccessComponent implements OnInit {
 
   contador = 0;
 
-  constructor(private formBuilder: FormBuilder, private router: Router, private cacheService: CacheService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit() {
     this.createFormSuccessComments();
@@ -28,14 +31,14 @@ export class SuccessComponent implements OnInit {
 
     if (Object.keys(informacionVisita).length !== 0) {
       this.formSuccessComments.patchValue({
-        descriptionSuccess: informacionVisita.comment
+        descriptionSuccess: informacionVisita.comment,
       });
     }
   }
 
   createFormSuccessComments() {
     this.formSuccessComments = this.formBuilder.group({
-      descriptionSuccess: ['', Validators.required]
+      descriptionSuccess: ['', Validators.required],
     });
 
     this.formSuccessComments.controls.descriptionSuccess.valueChanges.subscribe(v => {
@@ -50,10 +53,9 @@ export class SuccessComponent implements OnInit {
         type: this.typeMenu,
         typeSelected: true,
         comment: this.formSuccessComments.controls.descriptionSuccess.value,
-        redireccionar: true
+        redireccionar: true,
       };
       this.infoCommentSuccess.emit(infoCommentSuccess);
     }
   }
-
 }

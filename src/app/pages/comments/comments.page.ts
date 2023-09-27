@@ -12,7 +12,6 @@ import { CacheService } from '../../services/cache/cache.service';
   styleUrls: ['./comments.page.scss'],
 })
 export class CommentsPage implements OnInit {
-
   /**
    * Nombre del tipo de visita actualmente activo.
    */
@@ -49,7 +48,6 @@ export class CommentsPage implements OnInit {
         this.switchFrame('Exitosa');
       }
     }
-
   }
 
   /**
@@ -82,12 +80,11 @@ export class CommentsPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
 
     await alert.present();
   }
-
 }

@@ -12,7 +12,6 @@ import { CacheService } from 'src/app/services/cache/cache.service';
   styleUrls: ['./follow-up.page.scss'],
 })
 export class FollowUpPage implements OnInit {
-
   /**
    * Recomendación.
    */
@@ -34,10 +33,9 @@ export class FollowUpPage implements OnInit {
     private route: ActivatedRoute,
     private alertController: AlertController,
     private location: Location
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewWillEnter(): void {
     this.establecerRecomendacion();
@@ -53,7 +51,7 @@ export class FollowUpPage implements OnInit {
         header: 'Datos incompletos',
         mode: 'ios',
         message: 'Todos los campos son obligatorios.',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
 
       alert.present();
@@ -118,7 +116,7 @@ export class FollowUpPage implements OnInit {
       fechaImplementacion: fechaImplementacionControl,
       eficacia: eficaciaControl,
       causa: causaControl,
-      nombreSoporte: nombreSoporteControl
+      nombreSoporte: nombreSoporteControl,
     });
 
     this.setupForm();
@@ -156,5 +154,4 @@ export class FollowUpPage implements OnInit {
     // Para forzar la validación de estado previamente establecida
     controls.implementada.setValue(controls.implementada.value);
   }
-
 }

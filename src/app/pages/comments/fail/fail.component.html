@@ -1,21 +1,31 @@
 <ion-content>
-
   <form class="formularioFallo" [formGroup]="formCommentFail">
     <ion-list lines="none">
-
       <ion-item class="p-0">
         <ion-label position="stacked">Observaciones y recomendaciones</ion-label>
-        <ion-textarea type="text" maxlength="2000" placeholder="Observaciones y/o recomendaciones ..."
-          formControlName="description" class="bg-light mt-3 pl-1" rows="5"></ion-textarea>
-        <span style="margin-bottom: 15px;">{{contador}}/2000</span>
+        <ion-textarea
+          type="text"
+          maxlength="2000"
+          placeholder="Observaciones y/o recomendaciones ..."
+          formControlName="description"
+          class="bg-light mt-3 pl-1"
+          rows="5"
+        ></ion-textarea>
+        <span style="margin-bottom: 15px">{{ contador }}/2000</span>
       </ion-item>
 
       <!-- Motivo de la visita fallida -->
       <ion-item class="p-0">
         <ion-label position="stacked">Motivo</ion-label>
-        <ion-select mode="ios" interface="action-sheet" class="bg-light mt-3 rounded pl-1 pr-1" formControlName="motive"
-          (ionChange)="changeValueMotive($event)" cancelText="CANCELAR">
-          <ion-select-option *ngFor="let value of motivos" [value]="value.valor">{{value.valor}}</ion-select-option>
+        <ion-select
+          mode="ios"
+          interface="action-sheet"
+          class="bg-light mt-3 rounded pl-1 pr-1"
+          formControlName="motive"
+          (ionChange)="changeValueMotive($event)"
+          cancelText="CANCELAR"
+        >
+          <ion-select-option *ngFor="let value of motivos" [value]="value.valor">{{ value.valor }}</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -28,21 +38,24 @@
       <!-- Fecha de la visita reprogramada -->
       <ion-item class="p-0 mt-3" *ngIf="showFieldNewDateRepro">
         <ion-label position="stacked">Nueva fecha de la actividad</ion-label>
-        <mat-form-field style="width: 100%;" class="bg-light mt-3 rounded pl-1 pr-1">
-          <input readonly matInput [matDatepicker]="picker" [min]="minDate" [disabled]="enablenewDateField"
-            formControlName="newDateActivity">
+        <mat-form-field style="width: 100%" class="bg-light mt-3 rounded pl-1 pr-1">
+          <input
+            readonly
+            matInput
+            [matDatepicker]="picker"
+            [min]="minDate"
+            [disabled]="enablenewDateField"
+            formControlName="newDateActivity"
+          />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </ion-item>
 
-
       <!-- Botón de continuar -->
       <div class="ion-text-center mt-5">
         <ion-button color="primary" (click)="next()">Continuar</ion-button>
       </div>
-
     </ion-list>
   </form>
-
 </ion-content>

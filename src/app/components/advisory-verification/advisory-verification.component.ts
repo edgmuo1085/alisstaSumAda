@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CacheService } from '../../services/cache/cache.service';
 
@@ -8,7 +8,6 @@ import { CacheService } from '../../services/cache/cache.service';
   styleUrls: ['./advisory-verification.component.scss'],
 })
 export class AdvisoryVerificationComponent implements OnInit {
-
   /**
    * Este componente es el que arma toda la información cuando se le da clic en ver el acta
    * el boton ver acta esta en la ruta pages/survey-and-signature/signature-qr ó signature-without-qr.
@@ -16,8 +15,10 @@ export class AdvisoryVerificationComponent implements OnInit {
 
   verification: any;
 
-  constructor( private modalCtrl: ModalController,
-               private cacheService: CacheService ) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit() {
     this.getInfoAdvisory();
@@ -36,5 +37,4 @@ export class AdvisoryVerificationComponent implements OnInit {
   regresar() {
     this.modalCtrl.dismiss();
   }
-
 }

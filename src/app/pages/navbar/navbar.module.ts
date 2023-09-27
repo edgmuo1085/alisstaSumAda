@@ -6,19 +6,9 @@ import { NavbarPageRoutingModule } from './navbar-routing.module';
 import { NavbarPage } from './navbar.page';
 import { NavbarService } from './navbar.service';
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    NavbarPageRoutingModule
-  ],
-  declarations: [
-    NavbarPage
-  ],
-  providers: [
-    NavbarService
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, NavbarPageRoutingModule],
+  declarations: [NavbarPage],
+  providers: [NavbarService],
 })
 export class NavbarPageModule {}

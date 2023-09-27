@@ -6,13 +6,13 @@ import { SurveyAndSignaturePage } from './survey-and-signature.page';
 const routes: Routes = [
   {
     path: '',
-    component: SurveyAndSignaturePage
+    component: SurveyAndSignaturePage,
   },
   {
     path: 'responsibleSignatureARL',
     loadChildren: () =>
-      import('../responsible-signature-arl/responsible-signature-arl.module').then(m => m.ResponsibleSignatureARLPageModule)
-  }
+      import('../responsible-signature-arl/responsible-signature-arl.module').then(m => m.ResponsibleSignatureARLPageModule),
+  },
 ];
 
 @NgModule({

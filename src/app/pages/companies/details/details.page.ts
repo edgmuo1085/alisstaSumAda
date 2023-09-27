@@ -14,7 +14,6 @@ import { CompaniesService } from 'src/app/services/companies/companies.service';
   styleUrls: ['./details.page.scss'],
 })
 export class DetailsPage {
-
   /**
    * Formulario.
    */
@@ -43,16 +42,16 @@ export class DetailsPage {
   private readonly HINTS = {
     direccion: {
       text: 'al dar clic tendrá la posibilidad de actualizar la dirección de la sede principal.',
-      highlightedText: 'Estimado usuario: '
+      highlightedText: 'Estimado usuario: ',
     },
     actividad: {
       text: 'Para la modificación de la actividad económica de la empresa, se debe realizar a través de un proceso de reclasificación de empresa ante POSITIVA.',
-      highlightedText: 'Recuerde: '
+      highlightedText: 'Recuerde: ',
     },
     sector: {
       text: 'Para la modificación del sector económico de la empresa, se debe realizar a través de un proceso de reclasificación de empresa ante POSITIVA.',
-      highlightedText: 'Recuerde: '
-    }
+      highlightedText: 'Recuerde: ',
+    },
   };
 
   constructor(
@@ -62,7 +61,7 @@ export class DetailsPage {
     private alertCtrl: AlertController,
     private ngZone: NgZone,
     private popoverCtrl: PopoverController
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.bypass = false;
@@ -120,7 +119,7 @@ export class DetailsPage {
           header: 'Atención',
           mode: 'ios',
           message: 'No tiene espacio suficiente en el dispositivo. Intente liberar memoria.',
-          buttons: ['ACEPTAR']
+          buttons: ['ACEPTAR'],
         });
 
         await _alert.present();
@@ -134,7 +133,7 @@ export class DetailsPage {
 
     let result: boolean;
 
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
       const alert = await this.alertCtrl.create({
         header: 'Atención',
         mode: 'ios',
@@ -151,7 +150,7 @@ export class DetailsPage {
 
               return false;
             },
-            role: 'save'
+            role: 'save',
           },
           {
             text: 'Descartar',
@@ -163,9 +162,9 @@ export class DetailsPage {
 
               return false;
             },
-            role: 'cancel'
-          }
-        ]
+            role: 'cancel',
+          },
+        ],
       });
 
       await alert.present();
@@ -201,8 +200,8 @@ export class DetailsPage {
       message: '¿Está seguro de la confirmación de sus datos?',
       buttons: [
         { text: 'Aceptar', role: 'accept', handler: _confirm },
-        { text: 'Cancelar', role: 'cancel' }
-      ]
+        { text: 'Cancelar', role: 'cancel' },
+      ],
     });
 
     await alert.present();
@@ -212,7 +211,7 @@ export class DetailsPage {
     const popover = await this.popoverCtrl.create({
       event,
       component: PopoverComponent,
-      componentProps: { text: this.HINTS[field].text, highlightedText: this.HINTS[field].highlightedText }
+      componentProps: { text: this.HINTS[field].text, highlightedText: this.HINTS[field].highlightedText },
     });
 
     await popover.present();
@@ -246,5 +245,4 @@ export class DetailsPage {
     const nextPageControl = new FormControl();
     this.formGroup = new FormGroup({ nextPage: nextPageControl });
   }
-
 }

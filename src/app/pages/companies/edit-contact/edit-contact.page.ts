@@ -14,7 +14,6 @@ import { NavbarService } from '../../navbar/navbar.service';
   styleUrls: ['./edit-contact.page.scss'],
 })
 export class EditContactPage {
-
   /**
    * Formulario.
    */
@@ -48,7 +47,7 @@ export class EditContactPage {
     { label: 'CE', value: 'CE' },
     { label: 'PA', value: 'PA' },
     { label: 'PE', value: 'PE' },
-    { label: 'PT', value: 'PT' }
+    { label: 'PT', value: 'PT' },
   ];
 
   /**
@@ -56,7 +55,7 @@ export class EditContactPage {
    */
   readonly TIPOS_SEXO = [
     { label: 'Masculino', value: 'Masculino' },
-    { label: 'Femenino', value: 'Femenino' }
+    { label: 'Femenino', value: 'Femenino' },
   ];
 
   constructor(
@@ -65,7 +64,7 @@ export class EditContactPage {
     private companiesService: CompaniesService,
     private router: Router,
     private alertCtrl: AlertController
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.navbarService.setVisibility(false);
@@ -86,7 +85,7 @@ export class EditContactPage {
         header: 'Atención',
         mode: 'ios',
         message: 'Compruebe el correcto diligenciamiento de TODOS los campos obligatorios.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await alert.present();
@@ -108,7 +107,7 @@ export class EditContactPage {
       strCelular: value.celular,
       strTelefono: value.telefono,
       strEmail: value.correo,
-      intTipoDocumento: value.tipoDocumento.value
+      intTipoDocumento: value.tipoDocumento.value,
     };
 
     const contactos = this.company.listaPersonasContacto ?? [];
@@ -198,7 +197,7 @@ export class EditContactPage {
       sexo: sexoControl,
       correo: correoControl,
       celular: celularControl,
-      telefono: telefonoControl
+      telefono: telefonoControl,
     });
   }
 
@@ -217,5 +216,4 @@ export class EditContactPage {
 
     return contacto || {};
   }
-
 }

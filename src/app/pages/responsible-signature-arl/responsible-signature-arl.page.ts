@@ -17,7 +17,6 @@ import { ConnectionStatusEnum, NetworkService } from '../../services/network/net
   styleUrls: ['./responsible-signature-arl.page.scss'],
 })
 export class ResponsibleSignatureARLPage implements OnInit {
-
   private promise: Promise<string>;
 
   @ViewChild(SignaturePad) signaturePad: SignaturePad;
@@ -27,7 +26,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
-    canvasHeight: 300
+    canvasHeight: 300,
   };
 
   /**
@@ -66,10 +65,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
    */
   actaAsesoriaGestionada: any;
 
-
-
-
-  constructor(private storage: Storage,
+  constructor(
+    private storage: Storage,
     private net: NetworkService,
     private modalCtrl: ModalController,
     private photoService: PhotoServiceService,
@@ -80,7 +77,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private alertController: AlertController,
     private cacheService: CacheService,
     private advisoryTopicService: AdvisoryTopicService,
-    private toastController: ToastController) { }
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
     this.getInfoUser();
@@ -89,7 +87,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
   async ionViewWillEnter() {
     await this.readFile();
   }
-
 
   async getInfoUser() {
     this.infoUserARL = await this.storage.get('sesion');
@@ -115,12 +112,11 @@ export class ResponsibleSignatureARLPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AdvisoryVerificationComponent,
       componentProps: {
-        info: infoActa
-      }
+        info: infoActa,
+      },
     });
 
     modal.present();
-
   }
 
   validateNetwork() {
@@ -134,7 +130,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
   }
 
   async sendTask() {
-
     const infoSurveyResponsibleARL = {
       responsableId: this.infoUserARL.idPersona,
       responsableDocumento: this.infoUserARL.idPersona,
@@ -142,7 +137,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
       responsableNumeroLicenciaSST: this.infoUserARL.idLicenciaSst,
       responsableCargo: this.infoUserARL.cargo,
       responsableRazonSocial: this.infoUserARL.nombreProveedor,
-      responsableFirma: this.signatureEntered
+      responsableFirma: this.signatureEntered,
     };
 
     this.cacheService.saveSurveyARL(infoSurveyResponsibleARL);
@@ -187,7 +182,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
       }
       this.loading.dismiss();
     } else {
-
       const activitiesChange = [];
       const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
       const actSelec = JSON.parse(sessionStorage.companySelected);
@@ -224,17 +218,17 @@ export class ResponsibleSignatureARLPage implements OnInit {
       try {
         await Filesystem.readFile({
           path: `${idActividad}/${nombreArchivo}`,
-          directory: Directory.Data
+          directory: Directory.Data,
         }).then(data => {
           const base64 = extensionBase.concat(',').concat(data.data);
           const objUploadFile = {
             UidActividadMigradaXUSuario: idActividad,
             TipoSoporte: documentosAdjuntados[i].tipoDocumento,
-            Base64: base64
+            Base64: base64,
           };
           this.filesBase64.push(objUploadFile);
         });
-      } catch { }
+      } catch {}
     }
   }
 
@@ -248,9 +242,9 @@ export class ResponsibleSignatureARLPage implements OnInit {
       try {
         Filesystem.deleteFile({
           path: `${idActividad}/${nombreArchivo}`,
-          directory: Directory.Data
+          directory: Directory.Data,
         });
-      } catch { }
+      } catch {}
     }
   }
 
@@ -265,7 +259,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Verifique su conexión a internet.',
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -276,7 +270,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -300,7 +294,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
         const objAdjuntarImg = {
           UidActividadMigradaXUSuario: documento.idActividad,
           TipoSoporte: documento.idTipoArchivo,
-          base64: documento.foto.base64Imagen
+          base64: documento.foto.base64Imagen,
         };
 
         files.push(objAdjuntarImg);
@@ -311,5 +305,4 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
     return files;
   }
-
 }

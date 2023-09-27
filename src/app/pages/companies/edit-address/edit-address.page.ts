@@ -14,7 +14,6 @@ import { NavbarService } from '../../navbar/navbar.service';
   styleUrls: ['./edit-address.page.scss'],
 })
 export class EditAddressPage {
-
   /**
    * Formulario.
    */
@@ -76,7 +75,7 @@ export class EditAddressPage {
     private router: Router,
     private navbarService: NavbarService,
     private companiesService: CompaniesService
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.navbarService.setVisibility(false);
@@ -97,7 +96,7 @@ export class EditAddressPage {
         header: 'Atención',
         mode: 'ios',
         message: 'Compruebe el correcto diligenciamiento de TODOS los campos obligatorios.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await alert.present();
@@ -136,8 +135,8 @@ export class EditAddressPage {
       message: direccion,
       buttons: [
         { text: 'Confirmar', role: 'confirm', handler: () => this.save(direccion) },
-        { text: 'Cancelar', role: 'cancel' }
-      ]
+        { text: 'Cancelar', role: 'cancel' },
+      ],
     });
 
     await alert.present();
@@ -248,8 +247,7 @@ export class EditAddressPage {
       vereda: veredaControl,
       corregimiento: corregimientoControl,
       tipoPredio: tipoPredioControl,
-      nombrePredio: nombrePredioControl
+      nombrePredio: nombrePredioControl,
     });
   }
-
 }

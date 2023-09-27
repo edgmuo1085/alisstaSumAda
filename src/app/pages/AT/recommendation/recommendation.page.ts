@@ -11,7 +11,6 @@ import { CacheService } from 'src/app/services/cache/cache.service';
   styleUrls: ['./recommendation.page.scss'],
 })
 export class RecommendationPage implements OnInit {
-
   /**
    * Formulario.
    */
@@ -37,10 +36,9 @@ export class RecommendationPage implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private alertController: AlertController
-  ) { }
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewWillEnter(): void {
     this.establecerActividad();
@@ -58,7 +56,7 @@ export class RecommendationPage implements OnInit {
         header: 'Datos incompletos',
         mode: 'ios',
         message: 'Debe completar todas las recomendaciones y añadir observaciones.',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
 
       alert.present();
@@ -102,17 +100,17 @@ export class RecommendationPage implements OnInit {
   private initForm(): void {
     const numeroSiniestroControl = new FormControl({
       value: this.actividad.siniestro.Id_Siniestro,
-      disabled: true
+      disabled: true,
     });
 
     const numeroIdentificacionControl = new FormControl({
       value: this.actividad.siniestro.Doc_Empleado,
-      disabled: true
+      disabled: true,
     });
 
     const nombreTrabajadorControl = new FormControl({
       value: `${this.actividad.siniestro.Primer_Nombre} ${this.actividad.siniestro.Primer_Apellido}`,
-      disabled: true
+      disabled: true,
     });
 
     const fechaOcurrencia = moment(this.actividad.siniestro.Fecha_AT);
@@ -120,7 +118,7 @@ export class RecommendationPage implements OnInit {
 
     const fechaOcurrenciaControl = new FormControl({
       value: isInvalid ? 'Sin información' : fechaOcurrencia.format('DD/MM/YYYY'),
-      disabled: true
+      disabled: true,
     });
 
     const fechaRadicacion = moment(this.actividad.siniestro.FechaRadicacionInvestigacionEmpresa);
@@ -128,7 +126,7 @@ export class RecommendationPage implements OnInit {
 
     const fechaRadicacionControl = new FormControl({
       value: isInvalid ? 'Sin información' : fechaRadicacion.format('DD/MM/YYYY'),
-      disabled: true
+      disabled: true,
     });
 
     const fechaRemision = moment(this.actividad.siniestro.FechaRemisionRecomendacionEmpresa);
@@ -136,7 +134,7 @@ export class RecommendationPage implements OnInit {
 
     const fechaRemisionControl = new FormControl({
       value: isInvalid ? 'Sin información' : fechaRemision.format('DD/MM/YYYY'),
-      disabled: true
+      disabled: true,
     });
 
     const fechaProyectada = moment(this.actividad.siniestro.fechaProyectadaSeguimientoEmpresa);
@@ -144,7 +142,7 @@ export class RecommendationPage implements OnInit {
 
     const fechaProyectadaControl = new FormControl({
       value: isInvalid ? 'Sin información' : fechaProyectada.format('DD/MM/YYYY'),
-      disabled: true
+      disabled: true,
     });
 
     const observacionesControl = new FormControl(this.actividad.siniestro.Observaciones, [Validators.required]);
@@ -157,8 +155,7 @@ export class RecommendationPage implements OnInit {
       fechaRadicacion: fechaRadicacionControl,
       fechaRemision: fechaRemisionControl,
       fechaProyectada: fechaProyectadaControl,
-      observaciones: observacionesControl
+      observaciones: observacionesControl,
     });
   }
-
 }
