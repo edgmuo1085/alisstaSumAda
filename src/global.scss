@@ -507,3 +507,8 @@ ion-header {
   --ion-color-shade: var(--ion-color-chatwhite-shade);
   --ion-color-tint: var(--ion-color-chatwhite-tint);
 }
+
+body.scanner-active {
+  --background: transparent;
+  --ion-background-color: transparent;
+}

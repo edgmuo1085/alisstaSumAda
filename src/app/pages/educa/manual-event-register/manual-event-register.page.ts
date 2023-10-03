@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormGroup, FormBuilder, Validator, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EventService } from '../../../services/event/event.service';
 import { RegistroAsistenteEvento } from '../../../intarfaces/interfaces';
 import { CacheService } from '../../../services/cache/cache.service';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
+import { ScannerQrComponent } from 'src/app/components/scanner-qr/scanner-qr.component';
 
 @Component({
   selector: 'app-manual-event-register',
@@ -20,14 +20,15 @@ export class ManualEventRegisterPage implements OnInit {
   nombreEvento: string;
   // Es un array con los diferentes tipos de documento que se permiten seleccionar
   documentsType: [] = [];
+  hiddenForm: boolean = false;
 
   constructor(
     private formbuilder: FormBuilder,
     private alertController: AlertController,
     private eventService: EventService,
-    private barcodeScanner: BarcodeScanner,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -93,32 +94,37 @@ export class ManualEventRegisterPage implements OnInit {
    * abre la camara, lee el QR, arma el objeto y lanza la petición para realizar el registro del invitado
    */
   async openScanQr() {
+    this.hiddenForm = true;
     const eventIdSelected = await this.cacheService.newRegisterEvent.FK_ID_Evento.toString();
-    this.barcodeScanner
-      .scan()
-      .then(data => {
-        if (data.cancelled !== true) {
-          const dataUsuarioQR = JSON.parse(data.text);
-          const registroUsuarioAsistente: RegistroAsistenteEvento = {
-            strTipoIdentificacionEmpresa: dataUsuarioQR.tiEmpr,
-            strNumeroDocumentoEmpresa: dataUsuarioQR.numEmpr,
-            strRazonSocial: dataUsuarioQR.razonEmpr,
-            strTipoDocumentoEmpleado: dataUsuarioQR.tiAsistente,
-            strNumeroDocumentoEmpleado: dataUsuarioQR.tiAsistente,
-            strNombreEmpleado: dataUsuarioQR.numAsistente,
-            FK_ID_Cargo: dataUsuarioQR.cargo,
-            FK_ID_Sexo: dataUsuarioQR.sexo,
-            dtmFechaNacimiento: dataUsuarioQR.fchnac,
-            strTelefono: dataUsuarioQR.tele,
-            strEmail: dataUsuarioQR.email,
-            FK_ID_Evento: eventIdSelected,
-          };
-          this.registerUserQR(registroUsuarioAsistente);
-        }
-      })
-      .catch(error => {
-        this.confirmationRegister('Error.', 'Falló la inscripción del asistente al evento.');
-      });
+
+    const modal = await this.modalCtrl.create({
+      component: ScannerQrComponent,
+    });
+    modal.present();
+    const result = await modal.onWillDismiss();
+    this.hiddenForm = false;
+    const info = result.data.response;
+    if (!info) {
+      this.confirmationRegister('Error.', 'Falló la inscripción del asistente al evento.');
+      return;
+    }
+    const dataUsuarioQR = JSON.parse(info);
+
+    const registroUsuarioAsistente: RegistroAsistenteEvento = {
+      strTipoIdentificacionEmpresa: dataUsuarioQR.tiEmpr,
+      strNumeroDocumentoEmpresa: dataUsuarioQR.numEmpr,
+      strRazonSocial: dataUsuarioQR.razonEmpr,
+      strTipoDocumentoEmpleado: dataUsuarioQR.tiAsistente,
+      strNumeroDocumentoEmpleado: dataUsuarioQR.tiAsistente,
+      strNombreEmpleado: dataUsuarioQR.numAsistente,
+      FK_ID_Cargo: dataUsuarioQR.cargo,
+      FK_ID_Sexo: dataUsuarioQR.sexo,
+      dtmFechaNacimiento: dataUsuarioQR.fchnac,
+      strTelefono: dataUsuarioQR.tele,
+      strEmail: dataUsuarioQR.email,
+      FK_ID_Evento: eventIdSelected,
+    };
+    this.registerUserQR(registroUsuarioAsistente);
   }
 
   /**

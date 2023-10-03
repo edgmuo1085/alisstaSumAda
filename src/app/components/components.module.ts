@@ -34,6 +34,7 @@ import { ResendVerificationCodeComponent } from './resend-verification-code/rese
 import { PipesModule } from '../pipes/pipes.module';
 import { InactiveUsersTalkComponent } from './inactive-users-talk/inactive-users-talk.component';
 import { PopoverComponent } from './popover/popover.component';
+import { ScannerQrComponent } from './scanner-qr/scanner-qr.component';
 
 // registrar los locales con el nombre que quieras utilizar a la hora de proveer
 registerLocaleData(localePy, 'es');
@@ -48,6 +49,7 @@ registerLocaleData(localeEn, 'en');
     ResendVerificationCodeComponent,
     InactiveUsersTalkComponent,
     PopoverComponent,
+    ScannerQrComponent,
   ],
   exports: [
     HeaderComponent,
@@ -56,6 +58,7 @@ registerLocaleData(localeEn, 'en');
     ResendVerificationCodeComponent,
     InactiveUsersTalkComponent,
     PopoverComponent,
+    ScannerQrComponent,
   ],
   imports: [
     CommonModule,

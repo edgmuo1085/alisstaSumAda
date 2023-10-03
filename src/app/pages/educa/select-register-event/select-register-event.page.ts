@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { RegistroAsistenteEvento } from '../../../intarfaces/interfaces';
 import { CacheService } from '../../../services/cache/cache.service';
 import { EventService } from '../../../services/event/event.service';
+import { ScannerQrComponent } from 'src/app/components/scanner-qr/scanner-qr.component';
 
 @Component({
   selector: 'app-select-register-event',
@@ -22,13 +22,14 @@ export class SelectRegisterEventPage implements OnInit {
   };
 
   nombreEvento: string;
+  hiddenForm: boolean = false;
 
   constructor(
-    private barcodeScanner: BarcodeScanner,
     private cacheService: CacheService,
     private alertController: AlertController,
     private eventService: EventService,
-    private router: Router
+    private router: Router,
+    private modalCtrl: ModalController
   ) {}
 
   ngOnInit() {
@@ -41,35 +42,38 @@ export class SelectRegisterEventPage implements OnInit {
    */
 
   async codeQRRegister() {
+    this.hiddenForm = true;
     const eventIdSelected = await this.cacheService.newRegisterEvent.FK_ID_Evento.toString();
-    this.barcodeScanner
-      .scan()
-      .then(data => {
-        if (data.cancelled !== true) {
-          const info = data.text.trim();
-          const dataUsuarioQR = JSON.parse(info);
-          const fechaNacimiento = moment(dataUsuarioQR.fchnac || dataUsuarioQR.fchNac, 'DD/MM/YYYY');
 
-          const registroUsuarioAsistente: RegistroAsistenteEvento = {
-            strTipoIdentificacionEmpresa: dataUsuarioQR.tiEmpr,
-            strNumeroDocumentoEmpresa: dataUsuarioQR.numEmpr,
-            strRazonSocial: dataUsuarioQR.razonEmpr,
-            strTipoDocumentoEmpleado: dataUsuarioQR.tiAsistente,
-            strNumeroDocumentoEmpleado: dataUsuarioQR.numAsistente,
-            strNombreEmpleado: dataUsuarioQR.nomAsist,
-            FK_ID_Cargo: dataUsuarioQR.cargo,
-            FK_ID_Sexo: dataUsuarioQR.sexo,
-            dtmFechaNacimiento: fechaNacimiento.format('MM/DD/YYYY'),
-            strTelefono: dataUsuarioQR.tele,
-            strEmail: dataUsuarioQR.email,
-            FK_ID_Evento: eventIdSelected,
-          };
-          this.registerUserQR(registroUsuarioAsistente);
-        }
-      })
-      .catch(error => {
-        this.confirmationRegister('Fallido.', 'No se pudo realizar el registro del asistente al evento');
-      });
+    const modal = await this.modalCtrl.create({
+      component: ScannerQrComponent,
+    });
+    modal.present();
+    const result = await modal.onWillDismiss();
+    this.hiddenForm = false;
+    const info = result.data.response;
+    if (!info) {
+      this.confirmationRegister('Fallido.', 'No se pudo realizar el registro del asistente al evento');
+      return;
+    }
+    const dataUsuarioQR = JSON.parse(info);
+    const fechaNacimiento = moment(dataUsuarioQR.fchnac || dataUsuarioQR.fchNac, 'DD/MM/YYYY');
+
+    const registroUsuarioAsistente: RegistroAsistenteEvento = {
+      strTipoIdentificacionEmpresa: dataUsuarioQR.tiEmpr,
+      strNumeroDocumentoEmpresa: dataUsuarioQR.numEmpr,
+      strRazonSocial: dataUsuarioQR.razonEmpr,
+      strTipoDocumentoEmpleado: dataUsuarioQR.tiAsistente,
+      strNumeroDocumentoEmpleado: dataUsuarioQR.numAsistente,
+      strNombreEmpleado: dataUsuarioQR.nomAsist,
+      FK_ID_Cargo: dataUsuarioQR.cargo,
+      FK_ID_Sexo: dataUsuarioQR.sexo,
+      dtmFechaNacimiento: fechaNacimiento.format('MM/DD/YYYY'),
+      strTelefono: dataUsuarioQR.tele,
+      strEmail: dataUsuarioQR.email,
+      FK_ID_Evento: eventIdSelected,
+    };
+    this.registerUserQR(registroUsuarioAsistente);
   }
 
   /**

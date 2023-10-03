@@ -15,7 +15,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="ion-padding backgroundContent">
+<ion-content class="ion-padding backgroundContent" [hidden]="hiddenForm">
   <div class="ion-text-center">
     <ion-label class="tituloEvento" *ngIf="nombreEvento">{{nombreEvento}}</ion-label>
   </div>
