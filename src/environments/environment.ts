@@ -16,6 +16,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/;
 
 const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+//const ambiente = 'https://v2019sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
   production: false,
