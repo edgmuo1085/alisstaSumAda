@@ -31,3 +31,6 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/new_android
+/old_android
+/v2.android

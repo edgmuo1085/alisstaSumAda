@@ -5,48 +5,46 @@
   }
 }
 
-
-ion-header{
-  ion-grid{
+ion-header {
+  ion-grid {
     padding: 0px;
     background: #95a6b1;
     color: white;
-    ion-row{
-      ion-col{
+    ion-row {
+      ion-col {
         padding: 0px;
         background: #95a6b1;
-        ion-button{
+        ion-button {
           --border-radius: 50px;
         }
       }
-      ion-toolbar{
+      ion-toolbar {
         padding: 0px;
       }
     }
   }
 }
 
-
-ion-content{
-  ion-grid{
-    ion-row{
-      ion-col{
+ion-content {
+  ion-grid {
+    ion-row {
+      ion-col {
         padding: 0px;
-        ion-item{
+        ion-item {
           width: 100%;
           border-radius: 15px;
           font-size: 16.4px;
           font-weight: bold;
           --min-height: 70px;
-          ion-thumbnail{
+          ion-thumbnail {
             margin-left: -20px;
-            & .imgThumbnail{
+            & .imgThumbnail {
               padding: 12px;
               height: 61px;
             }
           }
         }
-        ion-button{
+        ion-button {
           --border-radius: 50px;
         }
       }
@@ -58,12 +56,12 @@ ion-content{
   }
 }
 
-ion-footer{
-  ion-toolbar{
-    ion-grid{
-      ion-row{
-        ion-col{
-          ion-button{
+ion-footer {
+  ion-toolbar {
+    ion-grid {
+      ion-row {
+        ion-col {
+          ion-button {
             --border-radius: 50px;
           }
         }
@@ -73,10 +71,10 @@ ion-footer{
 }
 
 .btnAdjuntar {
-  --background: #516F7A ;
+  --background: #516f7a;
 }
 
-.titulo{
+.titulo {
   width: 100% !important;
   font-size: 25px !important;
   text-align: left;

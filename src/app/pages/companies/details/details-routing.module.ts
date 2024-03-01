@@ -7,12 +7,12 @@ const routes: Routes = [
   {
     path: '',
     canDeactivate: [CheckChangesGuard],
-    component: DetailsPage
-  }
+    component: DetailsPage,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DetailsPageRoutingModule { }
+export class DetailsPageRoutingModule {}

@@ -25,13 +25,12 @@ const { App } = Plugins;
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
   options: InAppBrowserOptions = {
     location: 'yes', // Or 'no'
     hidden: 'no', // Or  'yes'
     clearcache: 'yes',
     clearsessioncache: 'yes',
-    zoom: 'yes', // Android only ,shows browser zoom controls 
+    zoom: 'yes', // Android only ,shows browser zoom controls
     hardwareback: 'yes',
     mediaPlaybackRequiresUserAction: 'no',
     shouldPauseOnSuspend: 'no', // Android only
@@ -43,7 +42,6 @@ export class LoginPage implements OnInit {
     presentationstyle: 'fullscreen', // iOS only
     fullscreen: 'yes', // Windows only
   };
-
 
   /**
    * Ícono que acompaña al control de usuario de contraseña para permitir al usuario revelar y
@@ -92,7 +90,7 @@ export class LoginPage implements OnInit {
     llevará directamente a la página www.alissta.gov.co donde podrá realizar el cambio. Es necesario
     tener conexión a internet. ¿Desea realizar la recuperación de contraseña?`,
     okButtonText: 'Sí',
-    cancelButtonText: 'No'
+    cancelButtonText: 'No',
   };
 
   infoUserAuth: userAuth;
@@ -120,50 +118,62 @@ export class LoginPage implements OnInit {
     this.initForm();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.platform.ready().then(() => {
-      this.faio.isAvailable().then((ava: any) => {
-        this.storageService.set('isFingerFaceAvailable', true);
+      this.faio
+        .isAvailable()
+        .then((ava: any) => {
+          this.storageService.set('isFingerFaceAvailable', true);
 
-        this.storageService.get('showLoginWithFinger').then(result => {
-          if (result != null) {
-            this.showFinger = result;
-          }
-        }).catch(e => {
-          console.log('error: ' + e);
-        });
+          this.storageService
+            .get('showLoginWithFinger')
+            .then(result => {
+              if (result != null) {
+                this.showFinger = result;
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
 
-        this.storageService.get('activateFinger').then(result => {
-          if (result != null) {
-            this.activateFinger = result;
-          }
-        }).catch(e => {
-          console.log('error: ' + e);
-        });
+          this.storageService
+            .get('activateFinger')
+            .then(result => {
+              if (result != null) {
+                this.activateFinger = result;
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
 
-        this.storageService.get('autologin').then(result => {
-          if (result != null) {
+          this.storageService
+            .get('autologin')
+            .then(result => {
+              if (result != null) {
+                if (result) {
+                  this.autoLogin();
+                } else {
+                  if (this.showFinger && this.activateFinger && ava === 'face') {
+                    this.launchFingerprintModal();
+                  }
+                }
+              }
+            })
+            .catch(e => {
+              console.log('error: ' + e);
+            });
+        })
+        .catch((error: any) => {
+          this.storageService.get('autologin').then(result => {
             if (result) {
               this.autoLogin();
-            } else {
-              if (this.showFinger && this.activateFinger && ava === 'face') {
-                this.launchFingerprintModal();
-              }
             }
-          }
-        }).catch(e => {
-          console.log('error: ' + e);
+          });
         });
-      }).catch((error: any) => {
-        this.storageService.get('autologin').then(result => {
-          if (result) {
-            this.autoLogin();
-          }
-        });
-      });
-    })
+    });
 
     this.validateShowFinger();
   }
@@ -177,10 +187,15 @@ export class LoginPage implements OnInit {
     this.form = this.formBuilder.group({
       employerID: ['', Validators.required],
       userID: ['', Validators.required],
-      password: ['', [Validators.required,
-      Validators.minLength(8),
-      Validators.maxLength(15),
-      Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$')]]
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(15),
+          Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{6,}$'),
+        ],
+      ],
     });
   }
 
@@ -218,13 +233,12 @@ export class LoginPage implements OnInit {
     this.infoUserAuth = {
       documentoEmpleador: employerId,
       documentoUsuario: userID,
-      password
+      password,
     };
     const validForm = this.validateForm();
     if (validForm) {
       this.autentication(employerId, userID, password);
     }
-
   }
 
   async autoLogin() {
@@ -252,16 +266,15 @@ export class LoginPage implements OnInit {
     await this.presentLoading();
 
     setTimeout(() => {
-      this.authService.login(employerId, userID, password)
-        .subscribe(async (response) => {
+      this.authService.login(employerId, userID, password).subscribe(
+        async response => {
           console.log('respuesta del login', response);
           let localStorageNotification: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
           let notification: boolean;
           if (localStorageNotification) {
             console.log('localStorageNotification', localStorageNotification);
-            notification = (localStorageNotification == 'true');
-          }
-          else {
+            notification = localStorageNotification == 'true';
+          } else {
             console.log('ELSE');
             notification = true;
             localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, 'true');
@@ -281,12 +294,14 @@ export class LoginPage implements OnInit {
           this.loading.dismiss();
           console.log('no llega2');
           this.form.reset();
-        }, error => {
+        },
+        error => {
           this.config.isLogged = false;
           this.errorLogin();
           this.form.reset();
           this.loading.dismiss();
-        });
+        }
+      );
     }, 2000);
   }
 
@@ -316,8 +331,9 @@ export class LoginPage implements OnInit {
       header: 'Usuario o contraseña inválida',
       mode: 'ios',
       // tslint:disable-next-line: max-line-length
-      message: 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?',
-      buttons: ['ACEPTAR']
+      message:
+        'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?',
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
@@ -332,13 +348,10 @@ export class LoginPage implements OnInit {
       // this.iab.create(this.config.allistaPasswordRecoveryURL, '_system');
       // this.iab.create(this.config.allistaPasswordRecoveryURL, '_blank', this.options);
 
-
       let inAppBrowser: InAppBrowserObject = this.iab.create(environment.RECUPERAR_PASSWORD, '_blank', this.options);
-      inAppBrowser.on('message').subscribe(
-        (event) => {
-          inAppBrowser.close();
-        }
-      );
+      inAppBrowser.on('message').subscribe(event => {
+        inAppBrowser.close();
+      });
     };
 
     const cancelButton = {
@@ -349,39 +362,41 @@ export class LoginPage implements OnInit {
     const okButton = {
       text: this.FORGOT_PASSWORD_ALERT_TEXTS.okButtonText,
       role: 'OK',
-      handler: okHandler
+      handler: okHandler,
     };
 
     const alert = this.alertController.create({
       header: this.FORGOT_PASSWORD_ALERT_TEXTS.title,
       mode: 'ios',
       message: this.FORGOT_PASSWORD_ALERT_TEXTS.message,
-      buttons: [cancelButton, okButton]
+      buttons: [cancelButton, okButton],
     });
 
     (await alert).present();
   }
 
-
   /**
    * Este método abre la opción para ingresar con huella dactilar
    */
   launchFingerprintModal() {
-    this.faio.isAvailable().then((result: any) => {
-      console.log(result);
-      this.faio.show({
-        cancelButtonTitle: 'Cancelar',
-        disableBackup: true,
-        title: 'INGRESAR CON HUELLA'
+    this.faio
+      .isAvailable()
+      .then((result: any) => {
+        console.log(result);
+        this.faio
+          .show({
+            cancelButtonTitle: 'Cancelar',
+            disableBackup: true,
+            title: 'INGRESAR CON HUELLA',
+          })
+          .then((result: any) => {
+            console.log('Authenticacion exitosa');
+            this.loginByFinger();
+          })
+          .catch((error: any) => {
+            console.log('Authenticacion erronea');
+          });
       })
-        .then((result: any) => {
-          console.log('Authenticacion exitosa');
-          this.loginByFinger();
-        })
-        .catch((error: any) => {
-          console.log('Authenticacion erronea');
-        });
-    })
       .catch((error: any) => {
         console.log(error);
       });
@@ -394,23 +409,25 @@ export class LoginPage implements OnInit {
       if (this.decryptInfoUser) {
         await this.presentLoading();
         this.decryptInfoUser = JSON.parse(this.decryptInfoUser);
-        this.authService.login(this.decryptInfoUser.documentoEmpleador,
-          this.decryptInfoUser.documentoUsuario,
-          this.decryptInfoUser.password)
-          .subscribe((response: any) => {
-            if (response.length === 0) {
-              this.loading.dismiss();
+        this.authService
+          .login(this.decryptInfoUser.documentoEmpleador, this.decryptInfoUser.documentoUsuario, this.decryptInfoUser.password)
+          .subscribe(
+            (response: any) => {
+              if (response.length === 0) {
+                this.loading.dismiss();
+                this.errorLogin();
+              } else {
+                this.afterLoginSuccess(response[0]);
+                this.loading.dismiss();
+              }
+            },
+            (error: any) => {
+              this.config.isLogged = false;
               this.errorLogin();
-            } else {
-              this.afterLoginSuccess(response[0]);
+              this.form.reset();
               this.loading.dismiss();
             }
-          }, (error: any) => {
-            this.config.isLogged = false;
-            this.errorLogin();
-            this.form.reset();
-            this.loading.dismiss();
-          });
+          );
       }
     } else {
       console.log('No sirvio');
@@ -418,26 +435,32 @@ export class LoginPage implements OnInit {
   }
 
   validateShowFinger() {
-    this.storageService.get('showLoginWithFinger').then(result => {
-      if (result != null) {
-        this.showFinger = result;
-      } else {
+    this.storageService
+      .get('showLoginWithFinger')
+      .then(result => {
+        if (result != null) {
+          this.showFinger = result;
+        } else {
+          this.showFinger = false;
+        }
+      })
+      .catch(e => {
+        console.log(e);
         this.showFinger = false;
-      }
-    }).catch(e => {
-      console.log(e);
-      this.showFinger = false;
-    });
-    this.storageService.get('activateFinger').then(result => {
-      if (result != null) {
-        this.activateFinger = result;
-      } else {
+      });
+    this.storageService
+      .get('activateFinger')
+      .then(result => {
+        if (result != null) {
+          this.activateFinger = result;
+        } else {
+          this.activateFinger = false;
+        }
+      })
+      .catch(e => {
+        console.log(e);
         this.activateFinger = false;
-      }
-    }).catch(e => {
-      console.log(e);
-      this.activateFinger = false;
-    });
+      });
   }
 
   async afterLoginSuccess(response: any): Promise<void> {
@@ -455,5 +478,4 @@ export class LoginPage implements OnInit {
     });
     return this.loading.present();
   }
-
 }

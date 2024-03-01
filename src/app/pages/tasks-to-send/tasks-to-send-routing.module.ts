@@ -6,8 +6,8 @@ import { TasksToSendPage } from './tasks-to-send.page';
 const routes: Routes = [
   {
     path: '',
-    component: TasksToSendPage
-  }
+    component: TasksToSendPage,
+  },
 ];
 
 @NgModule({

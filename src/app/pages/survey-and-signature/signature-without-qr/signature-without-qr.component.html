@@ -3,10 +3,7 @@
     <h3>Encuesta</h3>
   </div>
   <div class="ion-text-justify">
-    <p>
-      De acuerdo a su percepción del servicio recibido por POSITIVA COMPAÑIA DE SEGUROS S.A, agradecemos su
-      calificación.
-    </p>
+    <p>De acuerdo a su percepción del servicio recibido por POSITIVA COMPAÑIA DE SEGUROS S.A, agradecemos su calificación.</p>
   </div>
   <div>
     <!-- <ion-radio-group (ionChange)="radioSelected($event)"  [(ngModel)]="something"> -->
@@ -18,8 +15,11 @@
             <!-- <ion-radio mode="md" item-left value="Excelente"></ion-radio> -->
             <ion-avatar>
               <!-- <img class="imgSinSeleccionar" src="../../../assets/icon/img1.png" alt="imgExcelente"> -->
-              <img [ngClass]="pollSelectedExce ? 'imgSeleccionadaExcBue':'imgSinSeleccionar'"
-                src="../../../assets/icon/img1.png" alt="imgExcelente">
+              <img
+                [ngClass]="pollSelectedExce ? 'imgSeleccionadaExcBue' : 'imgSinSeleccionar'"
+                src="../../../assets/icon/img1.png"
+                alt="imgExcelente"
+              />
             </ion-avatar>
           </ion-item>
         </ion-col>
@@ -30,8 +30,11 @@
             <!-- <ion-radio mode="md" item-left value="Bueno"></ion-radio> -->
             <ion-avatar>
               <!-- <img class="imgSinSeleccionar" src="../../../assets/icon/img2.png" alt="imgBueno"> -->
-              <img [ngClass]="pollSelectedBue ? 'imgSeleccionadaExcBue':'imgSinSeleccionar'"
-                src="../../../assets/icon/img2.png" alt="imgBueno">
+              <img
+                [ngClass]="pollSelectedBue ? 'imgSeleccionadaExcBue' : 'imgSinSeleccionar'"
+                src="../../../assets/icon/img2.png"
+                alt="imgBueno"
+              />
             </ion-avatar>
           </ion-item>
         </ion-col>
@@ -42,8 +45,11 @@
             <!-- <ion-radio mode="md" item-left value="Regular"></ion-radio> -->
             <ion-avatar>
               <!-- <img class="imgSinSeleccionar" src="../../../assets/icon/img3.png" alt="imgRegular"> -->
-              <img [ngClass]="pollSelectedReg ? 'imgSeleccionadaRegDef':'imgSinSeleccionar'"
-                src="../../../assets/icon/img3.png" alt="imgRegular">
+              <img
+                [ngClass]="pollSelectedReg ? 'imgSeleccionadaRegDef' : 'imgSinSeleccionar'"
+                src="../../../assets/icon/img3.png"
+                alt="imgRegular"
+              />
             </ion-avatar>
           </ion-item>
         </ion-col>
@@ -54,48 +60,42 @@
             <!-- <ion-radio mode="md" item-left value="Deficiente"></ion-radio> -->
             <ion-avatar>
               <!-- <img class="imgSinSeleccionar" src="../../../assets/icon/img4.png" alt="imgDeficiente"> -->
-              <img [ngClass]="pollSelectedDef ? 'imgSeleccionadaRegDef':'imgSinSeleccionar'"
-                src="../../../assets/icon/img4.png" alt="imgDeficiente">
+              <img
+                [ngClass]="pollSelectedDef ? 'imgSeleccionadaRegDef' : 'imgSinSeleccionar'"
+                src="../../../assets/icon/img4.png"
+                alt="imgDeficiente"
+              />
             </ion-avatar>
           </ion-item>
         </ion-col>
-
       </ion-row>
     </ion-radio-group>
   </div>
 </div>
 
-<div style="border:1px solid black; border-radius: 10px;" *ngIf="showSignature">
-  <signature-pad [options]="signaturePadOptions" 
-                 (onBeginEvent)="drawStart()" 
-                 (onEndEvent)="drawComplete()">
-  </signature-pad>
+<div style="border: 1px solid black; border-radius: 10px" *ngIf="showSignature">
+  <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"> </signature-pad>
   <div class="ion-text-center">
     <p class="firma" *ngIf="namePersonSignature">
-      {{namePersonSignature.Nombre}}
+      {{ namePersonSignature.Nombre }}
     </p>
   </div>
 </div>
-<ion-button (click)="clear()"
-            expand="block"
-            *ngIf="showSignature" 
-            fill="clear" 
-            shape="round">
-  Borrar
-</ion-button>
+<ion-button (click)="clear()" expand="block" *ngIf="showSignature" fill="clear" shape="round"> Borrar </ion-button>
 
 <div class="ion-text-justify" *ngIf="showSignature">
   <p>
-    Mi calificación del servicio fue: <strong>{{answerPoll}}</strong>
+    Mi calificación del servicio fue: <strong>{{ answerPoll }}</strong>
   </p>
   <p>
-    Al guardar, está autorizando el uso de su firma ÚNICAMENTE para el registro de la ejecución de las actividades relacionadas en el acta de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A.
-    La política de tratamiento de la Política de tratamiento de la información la puede consultar en https://www.positiva.gov.co
-    Una vez las actividades sean validadas por POSITIVA COMPAÑÍA DE SEGUROS S.A. se enviarán los soportes en PDF a través del correo electrónico registrado en las actividades.
+    Al guardar, está autorizando el uso de su firma ÚNICAMENTE para el registro de la ejecución de las actividades relacionadas en el acta
+    de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A. La política de tratamiento de la Política de tratamiento de
+    la información la puede consultar en https://www.positiva.gov.co Una vez las actividades sean validadas por POSITIVA COMPAÑÍA DE SEGUROS
+    S.A. se enviarán los soportes en PDF a través del correo electrónico registrado en las actividades.
   </p>
 </div>
 
-<div class="ion-text-center" style="margin-bottom: 30px;">
+<div class="ion-text-center" style="margin-bottom: 30px">
   <ion-grid>
     <ion-row>
       <ion-col size="3"></ion-col>
@@ -108,4 +108,3 @@
     </ion-row>
   </ion-grid>
 </div>
-

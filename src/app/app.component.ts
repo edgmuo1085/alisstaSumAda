@@ -9,15 +9,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { environment } from '../environments/environment';
 import { NetworkService } from './services/network/network.service';
-const { DarkMode } = Plugins
+const { DarkMode } = Plugins;
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-
   constructor(
     private platform: Platform,
     private router: Router,
@@ -54,7 +53,7 @@ export class AppComponent {
       });
     } else {
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-      prefersDark.addEventListener('change', (mediaQuery) => this.toggleDarkTheme(mediaQuery.matches));
+      prefersDark.addEventListener('change', mediaQuery => this.toggleDarkTheme(mediaQuery.matches));
       shouldAdd = prefersDark.matches;
     }
 
@@ -73,15 +72,14 @@ export class AppComponent {
     this.oneSignal.endInit();
   }
 
-  onNotificationReceived(notification: OSNotification): void {
-  }
+  onNotificationReceived(notification: OSNotification): void {}
 
   async onNotificationOpened(result: OSNotificationOpenedResult) {
     const alert = await this.alertCtrl.create({
       header: 'Alissta SUM Comunicaciones',
       mode: 'ios',
       message: result.notification.payload.body,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
     await alert.present();
     let communicationId = result.notification.payload.additionalData.PKConversacion;
@@ -149,16 +147,15 @@ export class AppComponent {
           text: 'ACEPTAR',
           handler: () => {
             App.exitApp();
-          }
+          },
         },
         {
           text: 'CANCELAR',
-          handler: () => { }
-        }
-      ]
+          handler: () => {},
+        },
+      ],
     });
 
     await alert.present();
   }
-
 }

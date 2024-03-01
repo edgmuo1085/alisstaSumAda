@@ -9,10 +9,9 @@ import { environment } from 'src/environments/environment';
  * Manejo de empresas migradas.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompaniesService {
-
   /**
    * Listado de empresas migradas.
    */
@@ -103,8 +102,8 @@ export class CompaniesService {
   }
 
   /**
-  * Empresa que está siendo actualmente manipulada.
-  */
+   * Empresa que está siendo actualmente manipulada.
+   */
   get company() {
     return this._company;
   }
@@ -136,7 +135,7 @@ export class CompaniesService {
   constructor(
     private http: HttpClient,
     private storageService: StorageService
-  ) { }
+  ) {}
 
   /**
    * Obtiene el listado de empresas migradas desde el servidor.
@@ -148,17 +147,16 @@ export class CompaniesService {
   fetchCompanies(idUsuario: number): Observable<any> {
     const url = `${environment.API_LISTAR_EMPRESAS_MIGRADAS}?id_Usuario=${idUsuario}`;
 
-    return this.http.post(url, null)
-      .pipe(
-        concatMap((r: any) => defer(() => from(this.setCompanies(r)))),
-        map(r => {
-          if (r) {
-            return this._companies;
-          }
+    return this.http.post(url, null).pipe(
+      concatMap((r: any) => defer(() => from(this.setCompanies(r)))),
+      map(r => {
+        if (r) {
+          return this._companies;
+        }
 
-          throw new Error('Full memory.');
-        })
-      );
+        throw new Error('Full memory.');
+      })
+    );
   }
 
   /**
@@ -237,28 +235,31 @@ export class CompaniesService {
     }
 
     const url = environment.API_GUARDAR_EMPRESA_MIGRADA;
-     console.log('uel de update', url);
-     
-    return this.http.post(url, this.company)
-      .pipe(
-        tap(async (r: any) => {
-          const result = r.split(';')[0];
+    console.log('uel de update', url);
 
-          if (result !== 'true') {
-            return;
-          }
+    return this.http.post(url, this.company).pipe(
+      tap(async (r: any) => {
+        const result = r.split(';')[0];
 
-          const indexC = (await this.companies).findIndex(c => c.Pk_Id_AS_004_Empresas_AMigrar === this.company.Pk_Id_AS_004_Empresas_AMigrar);
-          this._companies.splice(indexC, 1);
-          await this.setCompanies(this._companies);
+        if (result !== 'true') {
+          return;
+        }
 
-          const indexM = (await this.updatedCompanies).find(m => m.Pk_Id_AS_004_Empresas_AMigrar === this.company.Pk_Id_AS_004_Empresas_AMigrar);
-          this._udpatedCompanies.splice(indexM, 1);
-          await this.setUpdatedCompanies(this._udpatedCompanies);
+        const indexC = (await this.companies).findIndex(
+          c => c.Pk_Id_AS_004_Empresas_AMigrar === this.company.Pk_Id_AS_004_Empresas_AMigrar
+        );
+        this._companies.splice(indexC, 1);
+        await this.setCompanies(this._companies);
 
-          this.discardChanges();
-        })
-      );
+        const indexM = (await this.updatedCompanies).find(
+          m => m.Pk_Id_AS_004_Empresas_AMigrar === this.company.Pk_Id_AS_004_Empresas_AMigrar
+        );
+        this._udpatedCompanies.splice(indexM, 1);
+        await this.setUpdatedCompanies(this._udpatedCompanies);
+
+        this.discardChanges();
+      })
+    );
   }
 
   /**
@@ -354,5 +355,4 @@ export class CompaniesService {
 
     return result;
   }
-
 }

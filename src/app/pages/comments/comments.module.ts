@@ -8,14 +8,10 @@ import { CommentsPage } from './comments.page';
 import { FailComponent } from './fail/fail.component';
 import { SuccessComponent } from './success/success.component';
 
-import { MatDatepickerModule,
-  MatNativeDateModule,
-  MatFormFieldModule,
-  MatInputModule } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
-import {MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-
 
 export const MY_FORMATS = {
   parse: {
@@ -29,7 +25,6 @@ export const MY_FORMATS = {
   },
 };
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -42,18 +37,16 @@ export const MY_FORMATS = {
     MatNativeDateModule,
     MatInputModule,
   ],
-  declarations: [
-    CommentsPage,
-    SuccessComponent,
-    FailComponent
-  ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-              {
-                provide: DateAdapter,
-                useClass: MomentDateAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
+  declarations: [CommentsPage, SuccessComponent, FailComponent],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
 
-              {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}]
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
 })
 export class CommentsPageModule {}

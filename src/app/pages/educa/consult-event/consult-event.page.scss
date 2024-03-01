@@ -1,32 +1,30 @@
-ion-header{
-  ion-grid{
+ion-header {
+  ion-grid {
     padding: 0px;
     background: #95a6b1;
     color: white;
-    ion-row{
-      ion-col{
+    ion-row {
+      ion-col {
         padding: 0px;
         background: #95a6b1;
       }
-      ion-toolbar{
+      ion-toolbar {
         padding: 0px;
       }
     }
   }
 }
 
-ion-content{
-  form{
+ion-content {
+  form {
     margin-top: 30px;
-    ion-list{
+    ion-list {
       border-radius: 20px;
       border: 1px solid #95a6b1;
       padding: 5px;
     }
   }
 }
-
-
 
 .ionthumbnail {
   margin-right: -10px;
@@ -37,12 +35,11 @@ ion-content{
   height: 33px;
 }
 
-.item{
+.item {
   height: 35px;
 }
 
-
-.titulo{
+.titulo {
   width: 100% !important;
   font-size: 25px !important;
   text-align: left;
@@ -50,7 +47,7 @@ ion-content{
   padding-top: 10px;
 }
 
-ion-label{
+ion-label {
   font-size: 20px !important;
   font-weight: bold;
 }

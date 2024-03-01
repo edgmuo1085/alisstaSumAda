@@ -16,15 +16,12 @@ import { ConnectionStatusEnum, NetworkService } from '../../services/network/net
   styleUrls: ['./survey-and-signature.page.scss'],
 })
 export class SurveyAndSignaturePage implements OnInit {
-
   data: any[] = [];
   selectedVal: any;
   showSignature = false;
   verificationCode: number;
 
-
   responsibleList: any[] = [];
-
 
   textCheckFirma: any = 'NO';
   disabledFirma = false;
@@ -36,7 +33,6 @@ export class SurveyAndSignaturePage implements OnInit {
   valueNetwork: any;
 
   actasAsesoria = [];
-
 
   infoUserARL: any;
 
@@ -50,9 +46,8 @@ export class SurveyAndSignaturePage implements OnInit {
 
   filesConcat: any = '';
 
-
-
-  constructor(private platform: Platform,
+  constructor(
+    private platform: Platform,
     private cacheService: CacheService,
     private router: Router,
     private storage: Storage,
@@ -63,8 +58,8 @@ export class SurveyAndSignaturePage implements OnInit {
     private activityListCompany: ActivityListCompanyService,
     private toastController: ToastController,
     private modalCtrl: ModalController,
-    private alertController: AlertController) { }
-
+    private alertController: AlertController
+  ) {}
 
   async ionViewWillEnter() {
     const leerArchivos = await this.readFile();
@@ -85,7 +80,7 @@ export class SurveyAndSignaturePage implements OnInit {
   async confirmVerificationCode() {
     let data2: any;
     let verification: any;
-    const handlerVerification = (data) => {
+    const handlerVerification = data => {
       data2 = data;
     };
 
@@ -103,31 +98,30 @@ export class SurveyAndSignaturePage implements OnInit {
         {
           name: 'verificationCodeInput',
           type: 'tel',
-          placeholder: 'Código de verificación'
-        }
+          placeholder: 'Código de verificación',
+        },
       ],
       buttons: [
         {
           text: 'Reenviar código',
-          handler: handlerVerificationCode
+          handler: handlerVerificationCode,
         },
         {
           text: 'Aceptar',
-          handler: handlerVerification
-        }
-        , {
+          handler: handlerVerification,
+        },
+        {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
             console.log('Confirm Cancel');
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     alert.onDidDismiss().then(async () => {
-
       if (data2) {
         if (this.selectedVal) {
           this.disabledFirma = true;
@@ -165,8 +159,6 @@ export class SurveyAndSignaturePage implements OnInit {
           }
         }
       }
-
-
     });
 
     await alert.present();
@@ -192,7 +184,7 @@ export class SurveyAndSignaturePage implements OnInit {
         firmaQR: this.textCheckFirma,
         answerPool: answerPoll,
         signature: infoQR.signatureEntered,
-        dateCreatedSurvey: fechaCreaciónActa
+        dateCreatedSurvey: fechaCreaciónActa,
       };
       this.cacheService.saveSurveyQR(this.infoSurveyQR);
       this.router.navigateByUrl('/u/execLog/pending-visits/visit-id/company-info/comments/survey-signature/responsibleSignatureARL');
@@ -213,13 +205,12 @@ export class SurveyAndSignaturePage implements OnInit {
         cargoARL: infoQR.cargo,
         licenciaSSTARL: infoQR.licenciaSST,
         signature: infoQR.signatureEntered,
-        dateCreatedSurvey: fechaCreaciónActa
+        dateCreatedSurvey: fechaCreaciónActa,
       };
       this.cacheService.saveSurveyQR(this.infoSurveyQR);
       this.sendTask();
     }
   }
-
 
   changeOptSignature(event) {
     if (event.detail.checked === true) {
@@ -237,12 +228,11 @@ export class SurveyAndSignaturePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: AdvisoryVerificationComponent,
       componentProps: {
-        info: infoActa
-      }
+        info: infoActa,
+      },
     });
 
     modal.present();
-
   }
 
   async sendTask() {
@@ -336,13 +326,13 @@ export class SurveyAndSignaturePage implements OnInit {
       try {
         await Filesystem.readFile({
           path: `${idActividad}/${nombreArchivo}`,
-          directory: Directory.Data
+          directory: Directory.Data,
         }).then(data => {
           const base64 = extensionBase.concat(',').concat(data.data);
           const objUploadFile = {
             UidActividadMigradaXUSuario: idActividad,
             TipoSoporte: documentosAdjuntados[i].tipoDocumento,
-            Base64: base64
+            Base64: base64,
           };
           this.filesBase64.push(objUploadFile);
         });
@@ -362,9 +352,9 @@ export class SurveyAndSignaturePage implements OnInit {
       try {
         Filesystem.deleteFile({
           path: `${idActividad}/${nombreArchivo}`,
-          directory: Directory.Data
+          directory: Directory.Data,
         });
-      } catch { }
+      } catch {}
     }
   }
 
@@ -389,7 +379,7 @@ export class SurveyAndSignaturePage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Verifique su conexión a internet.',
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -400,7 +390,7 @@ export class SurveyAndSignaturePage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -421,7 +411,7 @@ export class SurveyAndSignaturePage implements OnInit {
       return;
     }
 
-    const minutes = (+results[1] * 60) + +results[3];
+    const minutes = +results[1] * 60 + +results[3];
     await this.cacheService.setRegisteredTime(minutes);
   }
 
@@ -441,7 +431,7 @@ export class SurveyAndSignaturePage implements OnInit {
         const objAdjuntarImg = {
           UidActividadMigradaXUSuario: documento.idActividad,
           TipoSoporte: documento.idTipoArchivo,
-          base64: documento.foto.base64Imagen
+          base64: documento.foto.base64Imagen,
         };
 
         files.push(objAdjuntarImg);
@@ -452,5 +442,4 @@ export class SurveyAndSignaturePage implements OnInit {
 
     return files;
   }
-
 }

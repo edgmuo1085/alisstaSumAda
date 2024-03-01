@@ -7,15 +7,7 @@ import { ExecLogPage } from './exec-log.page';
 import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ComponentsModule,
-    ExecLogPageRoutingModule
-  ],
-  declarations: [
-    ExecLogPage
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, ComponentsModule, ExecLogPageRoutingModule],
+  declarations: [ExecLogPage],
 })
 export class ExecLogPageModule {}

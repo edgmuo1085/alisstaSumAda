@@ -10,18 +10,7 @@ import { SurveyAndSignaturePageRoutingModule } from './survey-and-signature-rout
 import { SurveyAndSignaturePage } from './survey-and-signature.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SignaturePadModule,
-    SurveyAndSignaturePageRoutingModule,
-    ComponentsModule
-  ],
-  declarations: [
-    SurveyAndSignaturePage,
-    SignatureQRComponent,
-    SignatureWithoutQRComponent
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, SignaturePadModule, SurveyAndSignaturePageRoutingModule, ComponentsModule],
+  declarations: [SurveyAndSignaturePage, SignatureQRComponent, SignatureWithoutQRComponent],
 })
-export class SurveyAndSignaturePageModule { }
+export class SurveyAndSignaturePageModule {}

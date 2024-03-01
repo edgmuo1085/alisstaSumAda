@@ -7,13 +7,7 @@ import { ListConfirmedPageRoutingModule } from './list-confirmed-routing.module'
 import { ListConfirmedPage } from './list-confirmed.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ListConfirmedPageRoutingModule,
-    PipesModule
-  ],
-  declarations: [ListConfirmedPage]
+  imports: [CommonModule, FormsModule, IonicModule, ListConfirmedPageRoutingModule, PipesModule],
+  declarations: [ListConfirmedPage],
 })
 export class ListConfirmedPageModule {}

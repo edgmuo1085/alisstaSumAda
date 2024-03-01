@@ -6,12 +6,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { userAuth } from '../../intarfaces/interfaces';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   API_LOGIN = environment.API_AUTH;
   httpHeaders: HttpHeaders;
 
@@ -19,16 +17,18 @@ export class AuthService {
 
   encryptInfoUser: string;
 
-  constructor(private http: HttpClient,
-    private storage: Storage) { }
+  constructor(
+    private http: HttpClient,
+    private storage: Storage
+  ) {}
 
   login(employerID: number, userID: string, password: string): Observable<any> {
     const rq = {
       nitEmpresa: employerID,
       documentoEmpleado: userID,
-      pass: password
+      pass: password,
     };
-    console.log('Url Login',this.API_LOGIN);
+    console.log('Url Login', this.API_LOGIN);
     return this.http.post(this.API_LOGIN, rq);
   }
 
@@ -67,5 +67,4 @@ export class AuthService {
   decrypt(textToDecrypt: string) {
     return CryptoJS.AES.decrypt(textToDecrypt, this.secretKey.trim()).toString(CryptoJS.enc.Utf8);
   }
-
 }

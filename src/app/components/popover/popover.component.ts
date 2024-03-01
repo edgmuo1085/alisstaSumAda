@@ -6,11 +6,9 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent {
-
   @Input()
   text: string;
 
   @Input()
   highlightedText: string;
-
 }

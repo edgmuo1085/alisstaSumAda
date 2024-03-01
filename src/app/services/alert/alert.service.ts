@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AlertButton, AlertController, LoadingController } from '@ionic/angular';
 
-type HandlerButton = (value: any) => boolean | void | { [key: string]: any; };
+type HandlerButton = (value: any) => boolean | void | { [key: string]: any };
 
 /**
  * Servicio general de alertas.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AlertService {
-
   constructor(
     private loadingCtlr: LoadingController,
     private alertCtrl: AlertController
-  ) { }
+  ) {}
 
   /**
    * Muestra una alerta con opciones de aceptar y cancelar.
@@ -46,7 +45,7 @@ export class AlertService {
       mode: 'ios',
       header,
       message,
-      buttons
+      buttons,
     });
 
     await alert.present();
@@ -81,5 +80,4 @@ export class AlertService {
   async hideLoading(alert: HTMLIonLoadingElement): Promise<boolean> {
     return await alert.dismiss();
   }
-
 }

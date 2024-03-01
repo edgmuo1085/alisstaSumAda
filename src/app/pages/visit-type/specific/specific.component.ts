@@ -14,8 +14,6 @@ import { CacheService } from '../../../services/cache/cache.service';
   styleUrls: ['./specific.component.scss'],
 })
 export class SpecificComponent implements OnInit {
-
-
   formDateSpecific: FormGroup;
 
   /**
@@ -33,7 +31,6 @@ export class SpecificComponent implements OnInit {
   @Output() specificTotalHour = new EventEmitter();
   @Output() showButtonNext = new EventEmitter();
 
-
   /**
    * Estas tres variables se encargan de interpolar los valores por medio del [(ngModel)] en el html
    * para cada una de las horas, fecha inicial, hora inicial, hora final y total de horas.
@@ -48,11 +45,12 @@ export class SpecificComponent implements OnInit {
 
   date: string;
 
-  constructor(private datePicker: DatePicker,
+  constructor(
+    private datePicker: DatePicker,
     private cacheService: CacheService,
     private formBuilder: FormBuilder,
     private alertController: AlertController
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.initFormDateSpecific();
@@ -63,7 +61,7 @@ export class SpecificComponent implements OnInit {
         this.formDateSpecific.patchValue({
           startTodaySecific: moment(infoVisitType.fechaInicialAsesoria, 'YYYY-MM-DD').toISOString(),
           startHour: moment(infoVisitType.startHour, 'hh:mm A').toISOString(),
-          endHour: moment(infoVisitType.endHour, 'hh:mm A').toISOString()
+          endHour: moment(infoVisitType.endHour, 'hh:mm A').toISOString(),
         });
 
         this.setVisitDate(infoVisitType.fechaInicialAsesoria);
@@ -77,7 +75,7 @@ export class SpecificComponent implements OnInit {
     this.formDateSpecific = this.formBuilder.group({
       startTodaySecific: ['', Validators.required],
       startHour: ['', Validators.required],
-      endHour: ['', Validators.required]
+      endHour: ['', Validators.required],
     });
   }
 
@@ -118,7 +116,7 @@ export class SpecificComponent implements OnInit {
       const resultMinutes = +this.validateMinutes(hourStart, hourEnd, hourMigrated);
       const registeredMinutes = await this.cacheService.getRegisteredTime();
 
-      if ((resultHour * 60) + resultMinutes + registeredMinutes <= 600) {
+      if (resultHour * 60 + resultMinutes + registeredMinutes <= 600) {
         if (resultHour >= hourMigrated) {
           return resultHour.toString();
         } else {
@@ -131,8 +129,6 @@ export class SpecificComponent implements OnInit {
       this.totalHours = 0;
       this.notification('La hora final no puede ser menor a la hora inicial');
     }
-
-
   }
 
   validateMinutes(hourStart, hourEnd, hourMigrated): string {
@@ -157,7 +153,7 @@ export class SpecificComponent implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     alert.onDidDismiss();
@@ -260,5 +256,4 @@ export class SpecificComponent implements OnInit {
     this.specificTotalHour.emit(this.totalHours);
     this.showButtonNext.emit(showButton);
   }
-
 }

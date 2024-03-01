@@ -38,5 +38,5 @@ export const environment = {
   RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
-  ONE_SIGNAL_APP_ID: '6109fadd-da30-4364-8a6c-950ad936c01e'
+  ONE_SIGNAL_APP_ID: '6109fadd-da30-4364-8a6c-950ad936c01e',
 };

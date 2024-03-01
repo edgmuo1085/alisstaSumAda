@@ -9,12 +9,7 @@ import { CreateCommunicationPageRoutingModule } from './create-communication-rou
 import { CreateCommunicationPage } from './create-communication.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    CreateCommunicationPageRoutingModule
-  ],
-  declarations: [CreateCommunicationPage]
+  imports: [CommonModule, FormsModule, IonicModule, CreateCommunicationPageRoutingModule],
+  declarations: [CreateCommunicationPage],
 })
 export class CreateCommunicationPageModule {}

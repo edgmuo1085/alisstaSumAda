@@ -6,12 +6,12 @@ import { CommentsPage } from './comments.page';
 const routes: Routes = [
   {
     path: '',
-    component: CommentsPage
+    component: CommentsPage,
   },
   {
     path: 'survey-signature',
-    loadChildren: () => import('../survey-and-signature/survey-and-signature.module').then(m => m.SurveyAndSignaturePageModule)
-  }
+    loadChildren: () => import('../survey-and-signature/survey-and-signature.module').then(m => m.SurveyAndSignaturePageModule),
+  },
 ];
 
 @NgModule({

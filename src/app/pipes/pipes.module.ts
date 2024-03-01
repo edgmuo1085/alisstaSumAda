@@ -6,19 +6,7 @@ import { SearchCompanyListPipe } from './search-company-list.pipe';
 import { SearchResendCodePipe } from './search-resend-code.pipe';
 
 @NgModule({
-  declarations: [
-    SearchCompanyListPipe,
-    RecommendationTypePipe,
-    SearchResendCodePipe,
-    FilterCompaniesPipe,
-    MunicipiosFilterPipe
-  ],
-  exports: [
-    SearchCompanyListPipe,
-    RecommendationTypePipe,
-    SearchResendCodePipe,
-    FilterCompaniesPipe,
-    MunicipiosFilterPipe
-  ]
+  declarations: [SearchCompanyListPipe, RecommendationTypePipe, SearchResendCodePipe, FilterCompaniesPipe, MunicipiosFilterPipe],
+  exports: [SearchCompanyListPipe, RecommendationTypePipe, SearchResendCodePipe, FilterCompaniesPipe, MunicipiosFilterPipe],
 })
-export class PipesModule { }
+export class PipesModule {}

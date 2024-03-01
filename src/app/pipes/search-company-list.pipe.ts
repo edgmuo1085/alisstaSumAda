@@ -1,11 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'searchCompanyList'
+  name: 'searchCompanyList',
 })
 export class SearchCompanyListPipe implements PipeTransform {
   transform(companyXActivities: any[], texto: any, properties: string[], modulo?: string): any[] {
-    if (!companyXActivities) { return []; }
+    if (!companyXActivities) {
+      return [];
+    }
     texto = texto ?? '';
     modulo = modulo ?? '';
     // if (!texto) { return companyXActivities; }
@@ -29,5 +31,4 @@ export class SearchCompanyListPipe implements PipeTransform {
       return itemFound;
     });
   }
-
 }

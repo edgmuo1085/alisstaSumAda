@@ -6,11 +6,21 @@
           <strong><label class="d-block">Fecha de asesoría del proyecto (Mes/año) </label></strong>
         </div>
         <div class="mt-3">
-          <ion-datetime placeholder="Seleccione (MES - AÑO)" display-format="MMM YYYY"
+          <ion-datetime
+            placeholder="Seleccione (MES - AÑO)"
+            display-format="MMM YYYY"
             monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-            color="primary" [pickerOptions]="customPickerOptionsProjectDate" [min]="currentYear" cancelText="CANCELAR"
-            (ionChange)="dateSelectec($event)" doneText="ACEPTAR" class="ionDateTimeStart" [max]="currentYear"
-            cancelText="Cancelar" [value]="date"></ion-datetime>
+            color="primary"
+            [pickerOptions]="customPickerOptionsProjectDate"
+            [min]="currentYear"
+            cancelText="CANCELAR"
+            (ionChange)="dateSelectec($event)"
+            doneText="ACEPTAR"
+            class="ionDateTimeStart"
+            [max]="currentYear"
+            cancelText="Cancelar"
+            [value]="date"
+          ></ion-datetime>
         </div>
       </div>
     </ion-item>

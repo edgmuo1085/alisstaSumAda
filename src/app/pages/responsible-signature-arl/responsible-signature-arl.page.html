@@ -15,62 +15,48 @@
   </ion-grid>
 </ion-header>
 
-
 <ion-content>
-
-  <div class="ion-padding ">
-
+  <div class="ion-padding">
     <div>
       <h3>Responsable de ARL</h3>
-      <p *ngIf="infoUserARL"> <strong>Responsable ARL: </strong>  {{infoUserARL.nombres}}  {{infoUserARL.apellidos}}</p>
+      <p *ngIf="infoUserARL"><strong>Responsable ARL: </strong> {{infoUserARL.nombres}} {{infoUserARL.apellidos}}</p>
     </div>
-  
+
     <div>
       <h3>Razón social del proveedor</h3>
-      <p *ngIf="infoUserARL"> <strong>Nombre proveedor</strong> {{infoUserARL.nombreProveedor}}</p>
-      <p *ngIf="infoUserARL"> <strong>Documento proveedor </strong> {{infoUserARL.idProveedor}}</p>
+      <p *ngIf="infoUserARL"><strong>Nombre proveedor</strong> {{infoUserARL.nombreProveedor}}</p>
+      <p *ngIf="infoUserARL"><strong>Documento proveedor </strong> {{infoUserARL.idProveedor}}</p>
     </div>
-  
+
     <div class="ion-text-center">
       <h4>Firma responsable de ARL</h4>
     </div>
-      <div style="border:1px solid black">
-        <signature-pad [options]="signaturePadOptions"
-                     (onBeginEvent)="drawStart()" 
-                     (onEndEvent)="drawComplete()">
-        </signature-pad>
-        <div class="ion-text-center">
-          <p class="firma" *ngIf="infoUserARL" >
-            {{infoUserARL.nombres}}  {{infoUserARL.apellidos}}
-          </p>
-        </div>
+    <div style="border: 1px solid black">
+      <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"> </signature-pad>
+      <div class="ion-text-center">
+        <p class="firma" *ngIf="infoUserARL">{{infoUserARL.nombres}} {{infoUserARL.apellidos}}</p>
       </div>
-      <ion-button (click)="clear()" 
-                    expand="block"
-                    fill="clear" 
-                    shape="round">
-          Borrar
-        </ion-button>
+    </div>
+    <ion-button (click)="clear()" expand="block" fill="clear" shape="round"> Borrar </ion-button>
   </div>
 
   <div class="ion-text-justify ion-padding">
     <p>
-      Al enviar, está autorizando el uso de la su firma ÚNICAMENTE para el registro de la ejecución de las actividades relacionadas en el acta de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A.
-      La Política de tratamiento de la información la puede consultar en https://www.positiva.gov.co
-      Una vez sea enviado el formulario, recibirá correo electrónico con los soportes de ejecución.
+      Al enviar, está autorizando el uso de la su firma ÚNICAMENTE para el registro de la ejecución de las actividades relacionadas en el
+      acta de asesoría en promoción y prevención de POSITIVA COMPAÑÍA DE SEGUROS S.A. La Política de tratamiento de la información la puede
+      consultar en https://www.positiva.gov.co Una vez sea enviado el formulario, recibirá correo electrónico con los soportes de ejecución.
     </p>
   </div>
 
-   <div class="ion-text-center" style="margin-bottom: 30px;">
+  <div class="ion-text-center" style="margin-bottom: 30px">
     <ion-grid>
       <ion-row>
         <ion-col size="3"></ion-col>
         <ion-col size="6">
-          <img class="btnEnviar"  (click)="sendTask()" src="../../../assets/icon/boton_enviar.png" alt="enviar">
+          <img class="btnEnviar" (click)="sendTask()" src="../../../assets/icon/boton_enviar.png" alt="enviar" />
         </ion-col>
         <ion-col size="3"></ion-col>
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>

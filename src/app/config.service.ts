@@ -6,10 +6,9 @@ import { Injectable } from '@angular/core';
  * Maneja parámetros de configuración que no cambian de acuerdo al entorno de ejecución.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigService {
-
   /**
    * Dirección URL de la web de _Alissta_ para la recuperación de contraseña.
    */
@@ -22,7 +21,7 @@ export class ConfigService {
    */
   // private readonly ALISSTA_CHANGE_PASSWORD_URL = 'https://test-alissta-sum.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
   private readonly ALISSTA_CHANGE_PASSWORD_URL = 'http://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
-  
+
   /**
    * Dirección URL en el que se encuentra el módulo de autenticación.
    */
@@ -77,5 +76,4 @@ export class ConfigService {
   get androidAppID(): string {
     return this.ANDROID_APP_ID;
   }
-
 }

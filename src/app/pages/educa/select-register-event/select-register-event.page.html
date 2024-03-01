@@ -15,8 +15,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="ion-padding backgroundContent">
-
+<ion-content class="ion-padding backgroundContent" [hidden]="hiddenForm">
   <ion-slides mode="ios" [options]="swiperOpts">
     <ion-slide>
       <ion-card>
@@ -25,25 +24,10 @@
           <ion-card-title *ngIf="nombreEvento">{{nombreEvento}}</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-button mode="ios"
-                      class="btn" 
-                      color="primary" 
-                      (click)="codeQRRegister()" 
-                      expand="block">
-            Código QR
-          </ion-button>
-          <ion-button mode="ios" 
-                      color="secondary"
-                      class="btn" 
-                      (click)="registerManual()" 
-                      expand="block">
-            Manual
-          </ion-button>
+          <ion-button mode="ios" class="btn" color="primary" (click)="codeQRRegister()" expand="block"> Código QR </ion-button>
+          <ion-button mode="ios" color="secondary" class="btn" (click)="registerManual()" expand="block"> Manual </ion-button>
         </ion-card-content>
       </ion-card>
     </ion-slide>
   </ion-slides>
-
-  
-
 </ion-content>

@@ -9,7 +9,6 @@ import { ActivityListCompanyService } from 'src/app/services/activities/activity
   styleUrls: ['./resend-verification-code.component.scss'],
 })
 export class ResendVerificationCodeComponent implements OnInit {
-
   /**
    * Este componente es la popup que esta en el menú luego de ingresar en la opción de registro de ejecución de actividades
    */
@@ -19,19 +18,20 @@ export class ResendVerificationCodeComponent implements OnInit {
   loading: any;
   textoBuscar = '';
 
-  constructor(private modalCtrl: ModalController,
-              private listActivitiesCompany: ActivityListCompanyService,
-              private storage: Storage,
-              private activityListCompany: ActivityListCompanyService,
-              private loadingCtlr: LoadingController,
-              private alertController: AlertController) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private listActivitiesCompany: ActivityListCompanyService,
+    private storage: Storage,
+    private activityListCompany: ActivityListCompanyService,
+    private loadingCtlr: LoadingController,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
     this.listActivities();
   }
-
 
   /**
    * listActivities() lista las actividades dependiendo de las actividades migradas al usuario que se logueo en la app
@@ -49,9 +49,9 @@ export class ResendVerificationCodeComponent implements OnInit {
       for (let j = 0; j < this.listaResponsables[i].listaReposables.length; j++) {
         const element = this.listaResponsables[i].listaReposables[j];
         const objResponsables = {
-              idEmpresa,
-              listaResponsables: element
-            };
+          idEmpresa,
+          listaResponsables: element,
+        };
         responsablesList.push(objResponsables);
       }
     }
@@ -66,14 +66,13 @@ export class ResendVerificationCodeComponent implements OnInit {
     this.textoBuscar = event.detail.value;
   }
 
-
-  selectResponsible( responsableSelected ) {
+  selectResponsible(responsableSelected) {
     const idSelected = responsableSelected.listaResponsables.id;
     const existe = this.responsablesSeleccionados.find(item => item.listaResponsables.id === idSelected);
-    if ( existe ) {
+    if (existe) {
       this.responsablesSeleccionados.forEach(element => {
         const item = element;
-        if ( item === existe ) {
+        if (item === existe) {
           this.responsablesSeleccionados.splice(existe, 1);
         }
       });
@@ -91,7 +90,9 @@ export class ResendVerificationCodeComponent implements OnInit {
       const usuarioAEnviarCodigo = this.responsablesSeleccionados[0];
       this.presentLoading('Reenviando código ...');
       // tslint:disable-next-line: max-line-length
-      const siEnvioCorreo = await this.activityListCompany.recordarCodigoVerificacion(usuarioAEnviarCodigo.listaResponsables.id, usuarioAEnviarCodigo.idEmpresa).toPromise();
+      const siEnvioCorreo = await this.activityListCompany
+        .recordarCodigoVerificacion(usuarioAEnviarCodigo.listaResponsables.id, usuarioAEnviarCodigo.idEmpresa)
+        .toPromise();
       if (siEnvioCorreo) {
         this.notification('Atención', `Se reenvío el código de verificación al usuario:${usuarioAEnviarCodigo.listaResponsables.correo} `);
       } else {
@@ -117,8 +118,6 @@ export class ResendVerificationCodeComponent implements OnInit {
     return this.loading.present();
   }
 
-
-
   // Cargar la notificación cuando se envía o no el código de verificación.
   async notification(titulo, notificacion) {
     const alert = await this.alertController.create({
@@ -126,12 +125,10 @@ export class ResendVerificationCodeComponent implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message: notificacion,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
     alert.onDidDismiss();
-
   }
-
 }

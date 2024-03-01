@@ -5,8 +5,8 @@ import { ListConfirmedPage } from './list-confirmed.page';
 const routes: Routes = [
   {
     path: '',
-    component: ListConfirmedPage
-  }
+    component: ListConfirmedPage,
+  },
 ];
 
 @NgModule({

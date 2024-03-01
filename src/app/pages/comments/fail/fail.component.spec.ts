@@ -9,8 +9,8 @@ describe('FailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FailComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [FailComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(FailComponent);

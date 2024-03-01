@@ -7,18 +7,8 @@ import { File } from '@ionic-native/file/ngx';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    UploaderPageRoutingModule
-  ],
-  declarations: [
-    UploaderPage
-  ],
-  providers:[
-    File
-  ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, UploaderPageRoutingModule],
+  declarations: [UploaderPage],
+  providers: [File],
 })
 export class UploaderPageModule {}

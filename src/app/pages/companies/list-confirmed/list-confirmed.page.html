@@ -5,8 +5,7 @@
         <ion-back-button mode="md" color="primary" defaultHref="/"></ion-back-button>
       </ion-col>
       <ion-col size="10">
-        <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="term = $event.detail.value">
-        </ion-searchbar>
+        <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="term = $event.detail.value"> </ion-searchbar>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -15,8 +14,7 @@
 <ion-content class="ion-padding">
   <!-- Listado de empresas confirmadas -->
   <ng-container *ngIf="companies?.length; else noCompaniesTmp">
-    <ng-container
-      *ngFor="let c of companies | filterCompanies : ['strRazonSocial', 'strNumeroDcto', 'stringObservaciones']: term">
+    <ng-container *ngFor="let c of companies | filterCompanies : ['strRazonSocial', 'strNumeroDcto', 'stringObservaciones']: term">
       <ng-container *ngTemplateOutlet="companyTmp; context: { company: c }"></ng-container>
     </ng-container>
   </ng-container>
@@ -26,7 +24,7 @@
 <ng-template #noCompaniesTmp>
   <div class="no-companies-wrapper">
     <div class="message ion-padding">
-      <img src="../../../assets/icon/icono_observaciones.svg">
+      <img src="../../../assets/icon/icono_observaciones.svg" />
       <h3>No tiene empresas para enviar.</h3>
     </div>
   </div>
@@ -41,8 +39,10 @@
           <ion-item lines="none">{{ company.strRazonSocial }}</ion-item>
           <ion-item lines="none">{{ company.str_Sigla_Documento }}: {{ company.strNumeroDcto }}</ion-item>
         </div>
-        <ion-icon [attr.name]="company.__showDetails ? 'chevron-up-outline' : 'chevron-down-outline'"
-          (click)="company.__showDetails = !company.__showDetails">
+        <ion-icon
+          [attr.name]="company.__showDetails ? 'chevron-up-outline' : 'chevron-down-outline'"
+          (click)="company.__showDetails = !company.__showDetails"
+        >
         </ion-icon>
       </div>
     </ion-card-header>
@@ -141,12 +141,8 @@
       </ng-container>
 
       <ion-item lines="none">
-        <ion-button fill="clear" slot="start" (click)="edit(company.Pk_Id_AS_004_Empresas_AMigrar)">
-          Editar
-        </ion-button>
-        <ion-button fill="clear" slot="end" (click)="send(company.Pk_Id_AS_004_Empresas_AMigrar)">
-          Enviar
-        </ion-button>
+        <ion-button fill="clear" slot="start" (click)="edit(company.Pk_Id_AS_004_Empresas_AMigrar)"> Editar </ion-button>
+        <ion-button fill="clear" slot="end" (click)="send(company.Pk_Id_AS_004_Empresas_AMigrar)"> Enviar </ion-button>
       </ion-item>
     </ion-card-content>
   </ion-card>

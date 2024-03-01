@@ -9,17 +9,8 @@ import { SettingsPageRoutingModule } from './settings-routing.module';
 import { SettingsPage } from './settings.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    FontAwesomeModule,
-    SettingsPageRoutingModule
-  ],
+  imports: [CommonModule, FormsModule, IonicModule, FontAwesomeModule, SettingsPageRoutingModule],
   declarations: [SettingsPage],
-  providers: [
-    AppRate,
-    InAppBrowser
-  ]
+  providers: [AppRate, InAppBrowser],
 })
 export class SettingsPageModule {}

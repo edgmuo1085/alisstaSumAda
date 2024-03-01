@@ -6,8 +6,8 @@ import { ReleaseActivitiesPage } from './release-activities.page';
 const routes: Routes = [
   {
     path: '',
-    component: ReleaseActivitiesPage
-  }
+    component: ReleaseActivitiesPage,
+  },
 ];
 
 @NgModule({

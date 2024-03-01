@@ -9,8 +9,8 @@ describe('PerProjectComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PerProjectComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [PerProjectComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PerProjectComponent);

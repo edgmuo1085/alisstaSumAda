@@ -6,12 +6,12 @@ import { ConsultEventPage } from './consult-event.page';
 const routes: Routes = [
   {
     path: '',
-    component: ConsultEventPage
+    component: ConsultEventPage,
   },
   {
     path: 'selectRegisterEvent',
-    loadChildren: () => import('../select-register-event/select-register-event.module').then(m => m.SelectRegisterEventPageModule)
-  }
+    loadChildren: () => import('../select-register-event/select-register-event.module').then(m => m.SelectRegisterEventPageModule),
+  },
 ];
 
 @NgModule({

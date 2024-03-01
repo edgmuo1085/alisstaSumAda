@@ -7,15 +7,7 @@ import { CompaniesPageRoutingModule } from './companies-routing.module';
 import { CompaniesPage } from './companies.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ComponentsModule,
-    CompaniesPageRoutingModule
-  ],
-  declarations: [
-    CompaniesPage
-  ]
+  imports: [CommonModule, FormsModule, IonicModule, ComponentsModule, CompaniesPageRoutingModule],
+  declarations: [CompaniesPage],
 })
-export class CompaniesPageModule { }
+export class CompaniesPageModule {}

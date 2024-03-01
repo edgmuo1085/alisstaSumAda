@@ -9,8 +9,8 @@ describe('UploaderPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploaderPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [UploaderPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UploaderPage);

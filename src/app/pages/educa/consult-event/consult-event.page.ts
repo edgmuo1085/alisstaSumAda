@@ -14,8 +14,6 @@ import { EventService } from '../../../services/event/event.service';
   styleUrls: ['./consult-event.page.scss'],
 })
 export class ConsultEventPage implements OnInit {
-
-
   /**
    * formConsultEvent, es el formulario de consultar el evento.
    */
@@ -29,8 +27,7 @@ export class ConsultEventPage implements OnInit {
   dateEvent;
   dateMin = Date();
   customPickerOption: any;
-  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-
+  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   /**
    * Variable que almacenara las sucursales
@@ -50,15 +47,16 @@ export class ConsultEventPage implements OnInit {
 
   loading: any;
 
-
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private eventService: EventService,
     private cacheService: CacheService,
     private loadingCtlr: LoadingController,
     private storage: Storage,
     private alertController: AlertController,
     private geolocation: Geolocation,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ionViewWillEnter() {
     this.dateEvent = new Date().toISOString();
@@ -70,9 +68,7 @@ export class ConsultEventPage implements OnInit {
     this.getBranchsEvent();
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   /**
    * Método para crear el formulario para consultar el evento
@@ -85,10 +81,9 @@ export class ConsultEventPage implements OnInit {
       municipality: ['', Validators.required],
       event: ['', Validators.required],
       geo: [false, Validators.required],
-      geoText: ['']
+      geoText: [''],
     });
   }
-
 
   /**
    * Cargar las sucursales de los eventos acorde a la fecha del sistema
@@ -97,13 +92,15 @@ export class ConsultEventPage implements OnInit {
     await this.presentLoading();
 
     setTimeout(() => {
-      this.eventService.getBranchOfficeEvent()
-        .subscribe((response) => {
+      this.eventService.getBranchOfficeEvent().subscribe(
+        response => {
           this.branchOffices = response.Sucursales;
           this.loading.dismiss();
-        }, err => {
+        },
+        err => {
           this.loading.dismiss();
-        });
+        }
+      );
     }, 1500);
   }
 
@@ -120,17 +117,18 @@ export class ConsultEventPage implements OnInit {
     await this.presentLoading();
 
     setTimeout(() => {
-      this.eventService.getMunicipyBrachOffice(branchOfficeId)
-        .subscribe((response) => {
+      this.eventService.getMunicipyBrachOffice(branchOfficeId).subscribe(
+        response => {
           this.municipalities = [];
           this.municipalities = response.Municipios;
           this.loading.dismiss();
-        }, err => {
+        },
+        err => {
           this.loading.dismiss();
-        });
+        }
+      );
     }, 1500);
   }
-
 
   /**
    * Cuando selecciona un municipio y de esta manera cargan los eventos que hay en el municipio.
@@ -144,18 +142,17 @@ export class ConsultEventPage implements OnInit {
 
     await this.presentLoading();
 
-    this.eventService.getEventForMunicipy(municipyId)
-      .subscribe((response) => {
+    this.eventService.getEventForMunicipy(municipyId).subscribe(
+      response => {
         this.eventsBranchOffice = [];
         this.eventsBranchOffice = response.Eventos;
         this.loading.dismiss();
-      }, err => {
+      },
+      err => {
         this.loading.dismiss();
-      });
-
+      }
+    );
   }
-
-
 
   /**
    * Cuando se se da click a seleccionar al evento para realizar el registro
@@ -172,22 +169,23 @@ export class ConsultEventPage implements OnInit {
           FK_ID_Evento: this.formConsultEvent.controls.event.value.Fk_Id_Evento,
           strDocumentoUsuario: documentUsuarioRegistrado.idPersona,
           dtmFechaRegistro: this.formConsultEvent.controls.dateEvent.value,
-          strGeoposicionamiento: this.formConsultEvent.controls.geoText.value
+          strGeoposicionamiento: this.formConsultEvent.controls.geoText.value,
         };
         this.cacheService.saveRegisterEvent(newRegisterResponsibleEvent);
-        this.eventService.createEventResponsible(newRegisterResponsibleEvent)
-          .subscribe((response) => {
+        this.eventService.createEventResponsible(newRegisterResponsibleEvent).subscribe(
+          response => {
             this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent');
-          }, err => {
+          },
+          err => {
             this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent');
-          });
+          }
+        );
         this.formConsultEvent.reset();
       } else {
         this.Alert();
       }
     }, 1000);
   }
-
 
   /**
    * Al seleccionar el posicionamiento de geolocalización
@@ -196,20 +194,20 @@ export class ConsultEventPage implements OnInit {
     if (event.detail.checked) {
       await this.presentLoading();
 
-      this.geolocation.getCurrentPosition()
-        .then((response) => {
+      this.geolocation
+        .getCurrentPosition()
+        .then(response => {
           const coords = response.coords.latitude + ',' + response.coords.longitude;
           this.formConsultEvent.controls.geoText.setValue(coords);
           this.loading.dismiss();
         })
-        .catch((error) => {
+        .catch(error => {
           this.loading.dismiss();
         });
     } else {
       this.formConsultEvent.controls.geoText.setValue('');
     }
   }
-
 
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
@@ -219,17 +217,14 @@ export class ConsultEventPage implements OnInit {
     return this.loading.present();
   }
 
-
-
   async Alert() {
     const alert = await this.alertController.create({
       header: 'Atención',
       mode: 'ios',
       message: 'Todos los campos son obligatorios.',
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
   }
-
 }

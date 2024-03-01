@@ -12,7 +12,6 @@ import { CacheService } from '../../services/cache/cache.service';
   styleUrls: ['./company-info.page.scss'],
 })
 export class CompanyInfoPage implements OnInit {
-
   infoCompany: any = {};
 
   formInfoCompany: FormGroup;
@@ -44,7 +43,7 @@ export class CompanyInfoPage implements OnInit {
     private storage: Storage,
     public alertController: AlertController,
     private router: Router
-  ) { }
+  ) {}
 
   async ionViewWillEnter() {
     this.infoCompany = JSON.parse(sessionStorage.companySelected);
@@ -52,8 +51,8 @@ export class CompanyInfoPage implements OnInit {
     this.cities = await this.storage.get('municipios');
     const departamento = {
       detail: {
-        value: this.infoCompany.departamentoDescripcion
-      }
+        value: this.infoCompany.departamentoDescripcion,
+      },
     };
     this.changeDepartment(departamento);
   }
@@ -66,7 +65,7 @@ export class CompanyInfoPage implements OnInit {
       addressCompany: this.infoCompany.direccion,
       phoneContact: this.infoCompany.telefonoContacto,
       Department: this.infoCompany.departamentoDescripcion,
-      municipality: this.infoCompany.minicipioDescripcion
+      municipality: this.infoCompany.minicipioDescripcion,
     });
 
     if (!!infoCompany.latitud && !!infoCompany.longitud) {
@@ -74,7 +73,7 @@ export class CompanyInfoPage implements OnInit {
     }
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   createFormInfoCompany() {
     this.formInfoCompany = this.formBuilder.group({
@@ -82,17 +81,18 @@ export class CompanyInfoPage implements OnInit {
       phoneContact: ['', Validators.required],
       Department: ['', Validators.required],
       municipality: ['', Validators.required],
-      locationCompany: ['', Validators.required]
+      locationCompany: ['', Validators.required],
     });
   }
 
   getGeolocation() {
-    this.geolocation.getCurrentPosition()
-      .then((response) => {
+    this.geolocation
+      .getCurrentPosition()
+      .then(response => {
         this.coords = response.coords.latitude + ',' + response.coords.longitude;
         this.formInfoCompany.controls.locationCompany.setValue(this.coords);
       })
-      .catch(async (error) => {
+      .catch(async error => {
         if (error.code === 1) {
           // Si se produce un error de este tipo es porque se está intentando acceder al servicio
           // de ubicación desde un origen inseguro. Se asume que entonces se está ejecutando la aplicación
@@ -110,7 +110,7 @@ export class CompanyInfoPage implements OnInit {
           backdropDismiss: false,
           mode: 'ios',
           message: 'No se ha podido determinar la ubicación de su dispositivo. Intente nuevamente.',
-          buttons: ['ACEPTAR']
+          buttons: ['ACEPTAR'],
         });
 
         alert.present();
@@ -129,7 +129,7 @@ export class CompanyInfoPage implements OnInit {
       mode: 'ios',
       header: 'Alerta',
       message: 'Todos los campos son obligatorios.',
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     await alert.present();
@@ -160,7 +160,7 @@ export class CompanyInfoPage implements OnInit {
       departamento: this.formInfoCompany.value.Department,
       departamentoId: departId,
       municipio: this.formInfoCompany.value.municipality,
-      municipioId: municipioId
+      municipioId: municipioId,
     };
 
     this.cacheService.saveInfoCompany(infoCompanySelected);
@@ -180,5 +180,4 @@ export class CompanyInfoPage implements OnInit {
 
     return path;
   }
-
 }

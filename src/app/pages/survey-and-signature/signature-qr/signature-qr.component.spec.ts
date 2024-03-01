@@ -9,8 +9,8 @@ describe('SignatureQRComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SignatureQRComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SignatureQRComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignatureQRComponent);

@@ -13,7 +13,6 @@ import { NavbarService } from '../../navbar/navbar.service';
   styleUrls: ['./summary.page.scss'],
 })
 export class SummaryPage {
-
   /**
    * Formulario.
    */
@@ -39,7 +38,7 @@ export class SummaryPage {
    */
   readonly TIPOS_ZONA = [
     { label: 'Urbana', value: 'U' },
-    { label: 'Rural', value: 'R' }
+    { label: 'Rural', value: 'R' },
   ];
 
   /**
@@ -48,7 +47,7 @@ export class SummaryPage {
   readonly TIPOS_REPRESENTACION = [
     { label: 'Representante Legal', value: 'Representante Legal' },
     { label: 'Reponsable SG-SST', value: 'Reponsable SG-SST' },
-    { label: 'Talento Humano', value: 'Talento Humano' }
+    { label: 'Talento Humano', value: 'Talento Humano' },
   ];
 
   /**
@@ -58,7 +57,7 @@ export class SummaryPage {
     { label: 'CC', value: 'CC' },
     { label: 'CE', value: 'CE' },
     { label: 'PA', value: 'PA' },
-    { label: 'PE', value: 'PE' }
+    { label: 'PE', value: 'PE' },
   ];
 
   /**
@@ -66,7 +65,7 @@ export class SummaryPage {
    */
   readonly TIPOS_SEXO = [
     { label: 'Masculino', value: 'Masculino' },
-    { label: 'Femenino', value: 'Femenino' }
+    { label: 'Femenino', value: 'Femenino' },
   ];
 
   /**
@@ -79,7 +78,7 @@ export class SummaryPage {
     private route: ActivatedRoute,
     private companiesService: CompaniesService,
     private router: Router
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.navbarService.setVisibility(false);
@@ -158,14 +157,14 @@ export class SummaryPage {
 
     const departamento = {
       Pk_Id_Departamento: this.company.eDSedesActualizadas.Fk_Id_Departamento,
-      Nombre_Departamento: this.company.eDSedesActualizadas.Nombre_Departamento_Sede
+      Nombre_Departamento: this.company.eDSedesActualizadas.Nombre_Departamento_Sede,
     };
 
     const departamentoSedeControl = new FormControl({ value: departamento, disabled: true });
 
     const municipio = {
       IdMunicipio: this.company.eDSedesActualizadas.Fk_Id_Municipio,
-      NombreMunicipio: this.company.eDSedesActualizadas.Nombre_Municipio_Sede
+      NombreMunicipio: this.company.eDSedesActualizadas.Nombre_Municipio_Sede,
     };
 
     const municipioSedeControl = new FormControl({ value: municipio, disabled: true });
@@ -206,7 +205,7 @@ export class SummaryPage {
       correo: correoControl,
       codigoPostal: codigoPostalControl,
       identificacionRepresentante: identificacionRepresentanteControl,
-      representanteLegal: representanteLegalControl
+      representanteLegal: representanteLegalControl,
     });
 
     const contacts: any[] = this.company.listaPersonasContacto ?? [];
@@ -253,5 +252,4 @@ export class SummaryPage {
     this.contacts = Array.from(Array(contacts.length).keys());
     this.formGroup = formGroup;
   }
-
 }

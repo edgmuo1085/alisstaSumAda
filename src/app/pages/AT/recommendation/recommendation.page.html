@@ -17,7 +17,6 @@
 
 <ion-content>
   <form [formGroup]="formGroup" (ngSubmit)="save()" *ngIf="formGroup">
-
     <!-- Datos del accidente -->
     <ion-card class="background-secondary">
       <ion-card-header>
@@ -53,9 +52,7 @@
       </ion-card-header>
 
       <ion-card-content>
-        <p class="ion-text-justify">
-          {{ this.actividad.siniestro.Descripcion_AT }}
-        </p>
+        <p class="ion-text-justify">{{ this.actividad.siniestro.Descripcion_AT }}</p>
       </ion-card-content>
     </ion-card>
 
@@ -102,15 +99,12 @@
     <div class="text-center ion-margin">
       <ion-button type="submit">Continuar</ion-button>
     </div>
-
   </form>
 </ion-content>
 
 <ng-template #recommendation let-recomendacion="recomendacion">
   <div class="recommendation">
-    <div class="recommendation-text">
-      {{ recomendacion.Recomendacion }}
-    </div>
+    <div class="recommendation-text">{{ recomendacion.Recomendacion }}</div>
     <div class="recommendation-type">
       <span class="label">Tipo</span>
       <ion-item lines="none">
@@ -129,8 +123,7 @@
         <ion-button [routerLink]="'./follow-up/' + recomendacion.Pk_Id_SiniestroRecomendaciones" *ngSwitchCase="true">
           <ion-checkbox color="success" checked="true" disabled="true"></ion-checkbox>
         </ion-button>
-        <ion-button [routerLink]="'./follow-up/' + recomendacion.Pk_Id_SiniestroRecomendaciones" *ngSwitchDefault
-          class="arrowIcon">
+        <ion-button [routerLink]="'./follow-up/' + recomendacion.Pk_Id_SiniestroRecomendaciones" *ngSwitchDefault class="arrowIcon">
           <ion-icon slot="icon-only" name="arrow-forward-circle-outline"></ion-icon>
         </ion-button>
       </ion-item>

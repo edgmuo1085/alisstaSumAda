@@ -14,7 +14,6 @@ import { StorageService } from 'src/app/storage.service';
   styleUrls: ['./list.page.scss'],
 })
 export class ListPage {
-
   /**
    * Listado de empresas migradas.
    */
@@ -29,7 +28,7 @@ export class ListPage {
     private companiesService: CompaniesService,
     private storageService: StorageService,
     private alertService: AlertService
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.retrieveCompanies();
@@ -66,9 +65,13 @@ export class ListPage {
     const loading = await this.alertService.showLoading();
     const session = await this.storageService.get('sesion');
 
-    this.companiesService.fetchCompanies(session.idRegistro)
+    this.companiesService
+      .fetchCompanies(session.idRegistro)
       .pipe(finalize(() => this.alertService.hideLoading(loading)))
-      .subscribe(r => onSuccess(r), e => onError(e));
+      .subscribe(
+        r => onSuccess(r),
+        e => onError(e)
+      );
   }
 
   /**
@@ -80,7 +83,7 @@ export class ListPage {
 
   /**
    * Excluye del listado las compañías que ya hayan sido editadas y confirmadas.
-   * 
+   *
    * Estas compañías solo tienen pendiente el envío de datos, y pueden verse en el módulo
    * _Empresas por enviar_.
    */
@@ -91,5 +94,4 @@ export class ListPage {
 
     return editables;
   }
-
 }

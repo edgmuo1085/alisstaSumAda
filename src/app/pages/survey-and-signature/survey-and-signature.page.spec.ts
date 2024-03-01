@@ -9,8 +9,8 @@ describe('SurveyAndSignaturePage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SurveyAndSignaturePage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SurveyAndSignaturePage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SurveyAndSignaturePage);

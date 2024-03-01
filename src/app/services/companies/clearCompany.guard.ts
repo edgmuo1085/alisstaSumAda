@@ -7,16 +7,14 @@ import { CompaniesService } from './companies.service';
  * Descarta los cambios de la empresa actualmente en edición.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClearCompanyGuard implements CanDeactivate<SignaturePage> {
-
-  constructor(private companiesService: CompaniesService) { }
+  constructor(private companiesService: CompaniesService) {}
 
   canDeactivate(): boolean {
     this.companiesService.discardChanges();
 
     return true;
   }
-
 }

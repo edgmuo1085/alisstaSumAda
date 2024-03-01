@@ -10,7 +10,6 @@ import { CacheService } from 'src/app/services/cache/cache.service';
   styleUrls: ['./per-project.component.scss'],
 })
 export class PerProjectComponent implements OnInit {
-
   date;
 
   dateSelected: any;
@@ -28,11 +27,11 @@ export class PerProjectComponent implements OnInit {
    * date, es la variable con la que se valida que no se pueda seleccionar una fecha que ya paso.
    */
   dateSelectedProject: Date = new Date();
-  currentYear: any = (new Date()).getFullYear();
+  currentYear: any = new Date().getFullYear();
 
   rangeYear: any;
 
-  constructor(private cacheService: CacheService) { }
+  constructor(private cacheService: CacheService) {}
 
   ngOnInit() {
     const infoVisitType = this.cacheService.getSaveTypeAdvice();
@@ -53,5 +52,4 @@ export class PerProjectComponent implements OnInit {
     this.projectDateSelected.emit(this.date);
     this.showButtonNext.emit(true);
   }
-
 }

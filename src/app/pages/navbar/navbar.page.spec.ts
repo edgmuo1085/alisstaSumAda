@@ -9,8 +9,8 @@ describe('NavbarPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavbarPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [NavbarPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavbarPage);

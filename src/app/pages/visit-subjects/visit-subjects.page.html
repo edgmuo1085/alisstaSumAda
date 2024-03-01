@@ -15,58 +15,56 @@
   </ion-grid>
 </ion-header>
 
-
 <ion-content class="backgroundContent">
   <ion-card *ngFor="let subject of subjects; let i = index" mode="ios">
     <!-- Código del tema -->
     <ion-card-header>
       <ion-item class="p-0" lines="none">
-        <ion-icon [name]="subject.isOpen ? CLOSE_TOGGLER : OPEN_TOGGLER" slot="end" (click)="toggleCard(subject)">
-        </ion-icon>
-        <ion-card-title class="cardTitle">{{subject.idActividad}} contrato {{subject.firmamaQR === 1 ? '(Firma con QR)'
-          : '(Firma sin QR)'}}</ion-card-title>
+        <ion-icon [name]="subject.isOpen ? CLOSE_TOGGLER : OPEN_TOGGLER" slot="end" (click)="toggleCard(subject)"> </ion-icon>
+        <ion-card-title class="cardTitle"
+          >{{subject.idActividad}} contrato {{subject.firmamaQR === 1 ? '(Firma con QR)' : '(Firma sin QR)'}}</ion-card-title
+        >
       </ion-item>
     </ion-card-header>
 
     <!-- Detalles del tema -->
     <ion-card-content [class.ion-hide]="!subject.isOpen">
-
       <form [formGroup]="subjectForm">
         <ion-list class="p-0" lines="none">
-
           <!-- Descripción -->
           <ion-item class="p-0">{{subject.descripcionActividad}}</ion-item>
 
           <!-- Observaciones -->
           <ion-item class="p-0 mt-5">
             <ion-label position="stacked">Observaciones</ion-label>
-            <ion-input class="bg-light mt-3 rounded pl-1 pr-1" readonly>
-              {{subject.observaciones}}
-            </ion-input>
+            <ion-input class="bg-light mt-3 rounded pl-1 pr-1" readonly> {{subject.observaciones}} </ion-input>
           </ion-item>
 
           <ion-item class="p-0 mt-3">
             <ion-grid>
               <ion-row>
-                <ion-col size="6" style="padding: 5px;">
+                <ion-col size="6" style="padding: 5px">
                   <!-- Total de personas, muestras, puntos... -->
-                  <p style="font-size: 12px;" position="stacked">Total de {{subject.uniadMedidaDescripcion}}/ Actividad
-                    (Estimada {{subject.cantidadHorasEjecutar}})</p>
-                  <ion-input type="tel" [formControlName]="i+'horasEjecutadas'" id="horasEjecutadas"
-                    class="bg-light  rounded pl-1 pr-1">
-
+                  <p style="font-size: 12px" position="stacked">
+                    Total de {{subject.uniadMedidaDescripcion}}/ Actividad (Estimada {{subject.cantidadHorasEjecutar}})
+                  </p>
+                  <ion-input type="tel" [formControlName]="i+'horasEjecutadas'" id="horasEjecutadas" class="bg-light rounded pl-1 pr-1">
                   </ion-input>
                 </ion-col>
-                <ion-col size="6" style="padding: 5px;">
+                <ion-col size="6" style="padding: 5px">
                   <!-- Cobertura -->
                   <p position="stacked">Cobertura</p>
-                  <ion-input style="margin-top: 15px;" class="bg-light  rounded pl-1 pr-1" type="number" id="cobertura"
-                    [formControlName]="i+'coverage'"></ion-input>
+                  <ion-input
+                    style="margin-top: 15px"
+                    class="bg-light rounded pl-1 pr-1"
+                    type="number"
+                    id="cobertura"
+                    [formControlName]="i+'coverage'"
+                  ></ion-input>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>
-
 
           <!-- Soportes -->
           <ion-item class="p-0 mt-3 rounded" color="light">
@@ -74,8 +72,7 @@
               <ion-row (click)="attachDocs(subject)">
                 <ion-col>
                   <ion-item class="ion-float-start" color="light">
-                    <ion-badge *ngIf="subject.cantidadDocumentos" slot="start">{{subject.cantidadDocumentos}}
-                    </ion-badge>
+                    <ion-badge *ngIf="subject.cantidadDocumentos" slot="start">{{subject.cantidadDocumentos}} </ion-badge>
                     <ion-label color="danger">Soportes</ion-label>
                   </ion-item>
                 </ion-col>
@@ -90,41 +87,33 @@
 
           <ion-item class="mt-3 rounded" color="light">
             <ion-label class="no-wrap">{{textSoporte}} se van a adjuntar documentos técnicos por Alissta Web</ion-label>
-            <ion-toggle color="primary" (ionChange)="toggleAttachDocs($event, subject)">
-            </ion-toggle>
+            <ion-toggle color="primary" (ionChange)="toggleAttachDocs($event, subject)"> </ion-toggle>
           </ion-item>
 
           <ion-item class="mt-3 rounded" color="light" *ngIf="subject.lineaAccion === 'ED'">
             <ion-label class="no-wrap">Registrar código de evento Educa</ion-label>
-            <ion-toggle color="primary" (ionChange)="showInputCodeEdu($event, subject)">
-            </ion-toggle>
+            <ion-toggle color="primary" (ionChange)="showInputCodeEdu($event, subject)"> </ion-toggle>
           </ion-item>
 
           <ion-item class="mt-3 rounded" color="light" *ngIf="subject.showInputCode">
             <ion-label position="stacked">Código de evento Educa</ion-label>
-            <ion-input placeholder="Ingrese código de evento Educa" [formControlName]="i+'codeEduca'"
-              class="bg-light mt-3 rounded">
+            <ion-input placeholder="Ingrese código de evento Educa" [formControlName]="i+'codeEduca'" class="bg-light mt-3 rounded">
             </ion-input>
           </ion-item>
 
           <ion-item class="ion-float-end no-effects mt-5" lines="none">
             <ion-label class="ion-text-right">Incluir esta actividad</ion-label>
-            <ion-checkbox slot="end" color="primary" [formControlName]="i+'included'">
-            </ion-checkbox>
+            <ion-checkbox slot="end" color="primary" [formControlName]="i+'included'"> </ion-checkbox>
           </ion-item>
         </ion-list>
       </form>
-
     </ion-card-content>
 
     <!-- Vista contraída de los detalles tema -->
     <ion-card-content class="pt-0" [class.ion-hide]="subject.isOpen">
       <ion-list class="p-0" lines="none">
-
         <!-- Descripción -->
-        <ion-item class="p-0 no-effects">
-          {{subject.descripcionActividad}}
-        </ion-item>
+        <ion-item class="p-0 no-effects"> {{subject.descripcionActividad}} </ion-item>
 
         <!-- Acciones -->
         <ion-item (click)="attachDocs(subject)" lines="none">
@@ -135,20 +124,20 @@
 
         <ion-item class="ion-float-end no-effects" lines="none">
           <ion-label class="ion-text-right">Incluir esta actividad</ion-label>
-          <ion-checkbox slot="end" color="primary" [(ngModel)]="subject.include"
-            (ngModelChange)="emitIncludedOnReactive(subject, i+'included')">
+          <ion-checkbox
+            slot="end"
+            color="primary"
+            [(ngModel)]="subject.include"
+            (ngModelChange)="emitIncludedOnReactive(subject, i+'included')"
+          >
           </ion-checkbox>
         </ion-item>
       </ion-list>
     </ion-card-content>
-
   </ion-card>
 
   <!-- Botón continuar -->
   <ion-fab vertical="bottom" *ngIf="redirectTo" horizontal="center" slot="fixed" (click)="next()">
-    <ion-button color="primary" mode="ios" expand="block" class="btn">
-      Continuar
-    </ion-button>
+    <ion-button color="primary" mode="ios" expand="block" class="btn"> Continuar </ion-button>
   </ion-fab>
-
 </ion-content>

@@ -8,7 +8,6 @@ import { TalkService } from '../../services/talk/talk.service';
   styleUrls: ['./inactive-users-talk.component.scss'],
 })
 export class InactiveUsersTalkComponent implements OnInit {
-
   /**
    * La idea de InactiveUsersTalkComponent es mostrar los usuarios de la conversación, cuando se llame el popover
    * (Pero esta en construcción, esto es llamado desde page/communications/talk)
@@ -16,23 +15,22 @@ export class InactiveUsersTalkComponent implements OnInit {
 
   items: any[];
 
-
-
-  constructor(private popoverCtrl: PopoverController, private talkService: TalkService) { }
+  constructor(
+    private popoverCtrl: PopoverController,
+    private talkService: TalkService
+  ) {}
 
   ngOnInit() {
     this.getUsuariosInactivos();
   }
 
   onClick(valor) {
-
     this.popoverCtrl.dismiss({
-      item: valor
+      item: valor,
     });
   }
 
   getUsuariosInactivos() {
-
     const usuariosInactivos = [];
     const usuariosConversacion = this.talkService.getSelectedConversation();
     usuariosConversacion.Usuarios.forEach(element => {
@@ -42,7 +40,5 @@ export class InactiveUsersTalkComponent implements OnInit {
     });
 
     this.items = usuariosInactivos;
-
   }
-
 }

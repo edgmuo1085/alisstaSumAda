@@ -9,8 +9,8 @@ describe('SignatureWithoutQRComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SignatureWithoutQRComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [SignatureWithoutQRComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignatureWithoutQRComponent);

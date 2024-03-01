@@ -9,8 +9,8 @@ describe('ResponsibleSignatureARLPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResponsibleSignatureARLPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ResponsibleSignatureARLPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ResponsibleSignatureARLPage);

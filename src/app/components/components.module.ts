@@ -7,14 +7,10 @@ import { Device } from '@ionic-native/device/ngx';
 import { RecommendationDetailComponent } from './recommendation-detail/recommendation-detail.component';
 import { AdvisoryVerificationComponent } from './advisory-verification/advisory-verification.component';
 
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatDatepickerModule,
-  MatNativeDateModule,
-  MatFormFieldModule,
-  MatInputModule } from '@angular/material';
+import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
-import {MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter} from '@angular/material';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 export const MY_FORMATS = {
@@ -38,14 +34,12 @@ import { ResendVerificationCodeComponent } from './resend-verification-code/rese
 import { PipesModule } from '../pipes/pipes.module';
 import { InactiveUsersTalkComponent } from './inactive-users-talk/inactive-users-talk.component';
 import { PopoverComponent } from './popover/popover.component';
-
+import { ScannerQrComponent } from './scanner-qr/scanner-qr.component';
 
 // registrar los locales con el nombre que quieras utilizar a la hora de proveer
 registerLocaleData(localePy, 'es');
 registerLocaleData(localePt, 'pt');
 registerLocaleData(localeEn, 'en');
-
-
 
 @NgModule({
   declarations: [
@@ -54,7 +48,8 @@ registerLocaleData(localeEn, 'en');
     AdvisoryVerificationComponent,
     ResendVerificationCodeComponent,
     InactiveUsersTalkComponent,
-    PopoverComponent
+    PopoverComponent,
+    ScannerQrComponent,
   ],
   exports: [
     HeaderComponent,
@@ -62,7 +57,8 @@ registerLocaleData(localeEn, 'en');
     AdvisoryVerificationComponent,
     ResendVerificationCodeComponent,
     InactiveUsersTalkComponent,
-    PopoverComponent
+    PopoverComponent,
+    ScannerQrComponent,
   ],
   imports: [
     CommonModule,
@@ -74,25 +70,25 @@ registerLocaleData(localeEn, 'en');
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,
   ],
   providers: [
     Device,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-              {
-                provide: DateAdapter,
-                useClass: MomentDateAdapter,
-                deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-              },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
 
-              {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
-              { provide: LOCALE_ID, useValue: 'es' }
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+    { provide: LOCALE_ID, useValue: 'es' },
   ],
   entryComponents: [
     RecommendationDetailComponent,
     AdvisoryVerificationComponent,
     ResendVerificationCodeComponent,
-    InactiveUsersTalkComponent
-  ]
+    InactiveUsersTalkComponent,
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

@@ -41,20 +41,27 @@
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Departamento Sede Principal</ion-label>
-            <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="departamentoSede"
-              [compareWith]="compareWith('departamento')">
-              <ion-select-option [value]="d" *ngFor="let d of departamentos">
-                {{ d.Nombre_Departamento }}
-              </ion-select-option>
+            <ion-select
+              mode="ios"
+              interface="action-sheet"
+              cancelText="CANCELAR"
+              formControlName="departamentoSede"
+              [compareWith]="compareWith('departamento')"
+            >
+              <ion-select-option [value]="d" *ngFor="let d of departamentos"> {{ d.Nombre_Departamento }} </ion-select-option>
             </ion-select>
           </ion-item>
 
           <ion-item class="ion-margin-bottom">
             <ion-label position="stacked">Municipio Sede Principal</ion-label>
-            <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" formControlName="municipioSede"
-              [compareWith]="compareWith('municipio')">
-              <ion-select-option [value]="m"
-                *ngFor="let m of municipios | municipiosFilter : formGroup.controls.departamentoSede.value">
+            <ion-select
+              mode="ios"
+              interface="action-sheet"
+              cancelText="CANCELAR"
+              formControlName="municipioSede"
+              [compareWith]="compareWith('municipio')"
+            >
+              <ion-select-option [value]="m" *ngFor="let m of municipios | municipiosFilter : formGroup.controls.departamentoSede.value">
                 {{ m.NombreMunicipio }}
               </ion-select-option>
             </ion-select>
@@ -111,21 +118,15 @@
             <ng-container *ngFor="let c of contacts; last as isLast">
               <ion-item class="ion-margin-bottom">
                 <ion-label position="stacked">Papel/Representación</ion-label>
-                <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR"
-                  [formControlName]="'representacion_' + c">
-                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_REPRESENTACION">
-                    {{ t.label }}
-                  </ion-select-option>
+                <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" [formControlName]="'representacion_' + c">
+                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_REPRESENTACION"> {{ t.label }} </ion-select-option>
                 </ion-select>
               </ion-item>
 
               <ion-item class="ion-margin-bottom">
                 <ion-label position="stacked">Tipo Documento</ion-label>
-                <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR"
-                  [formControlName]="'tipoDocumento_' + c">
-                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_DOCUMENTO">
-                    {{ t.label }}
-                  </ion-select-option>
+                <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" [formControlName]="'tipoDocumento_' + c">
+                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_DOCUMENTO"> {{ t.label }} </ion-select-option>
                 </ion-select>
               </ion-item>
 
@@ -157,9 +158,7 @@
               <ion-item class="ion-margin-bottom">
                 <ion-label position="stacked">Sexo</ion-label>
                 <ion-select mode="ios" interface="action-sheet" cancelText="CANCELAR" [formControlName]="'sexo_' + c">
-                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_SEXO">
-                    {{ t.label }}
-                  </ion-select-option>
+                  <ion-select-option [value]="t" *ngFor="let t of TIPOS_SEXO"> {{ t.label }} </ion-select-option>
                 </ion-select>
               </ion-item>
 
@@ -178,8 +177,7 @@
                 <ion-input [formControlName]="'telefono_' + c"></ion-input>
               </ion-item>
 
-              <ion-item-divider *ngIf="!isLast">
-              </ion-item-divider>
+              <ion-item-divider *ngIf="!isLast"> </ion-item-divider>
             </ng-container>
           </ng-container>
         </ion-list>

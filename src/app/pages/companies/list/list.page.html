@@ -5,8 +5,7 @@
         <ion-back-button mode="md" color="primary" defaultHref="/"></ion-back-button>
       </ion-col>
       <ion-col size="10">
-        <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="term = $event.detail.value">
-        </ion-searchbar>
+        <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="term = $event.detail.value"> </ion-searchbar>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -17,8 +16,10 @@
   <ng-container *ngIf="companies?.length; else noCompaniesTmp">
     <cdk-virtual-scroll-viewport itemSize="150" minBufferPx="750" maxBufferPx="1500">
       <ion-list class="companies" lines="none">
-        <ion-item class="company ion-margin-bottom"
-          *cdkVirtualFor="let c of companies | filterCompanies : ['strRazonSocial', 'strNumeroDcto', 'stringObservaciones']: term">
+        <ion-item
+          class="company ion-margin-bottom"
+          *cdkVirtualFor="let c of companies | filterCompanies : ['strRazonSocial', 'strNumeroDcto', 'stringObservaciones']: term"
+        >
           <ng-container *ngTemplateOutlet="companyTmp; context: { company: c }"></ng-container>
         </ion-item>
       </ion-list>
@@ -31,17 +32,14 @@
       <ion-icon name="cloud-download-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>
 
 <!-- Plantilla para vista sin empresas -->
 <ng-template #noCompaniesTmp>
   <div class="no-companies-wrapper">
     <div class="message ion-padding">
-      <img src="../../../assets/icon/icono_observaciones.svg">
-      <h3>
-        Recuerde sincronizar la empresas que se van actualizar aquí.
-      </h3>
+      <img src="../../../assets/icon/icono_observaciones.svg" />
+      <h3>Recuerde sincronizar la empresas que se van actualizar aquí.</h3>
       <ion-icon name="arrow-down-outline"></ion-icon>
     </div>
   </div>

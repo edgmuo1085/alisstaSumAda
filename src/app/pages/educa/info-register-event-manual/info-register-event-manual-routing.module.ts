@@ -6,8 +6,8 @@ import { InfoRegisterEventManualPage } from './info-register-event-manual.page';
 const routes: Routes = [
   {
     path: '',
-    component: InfoRegisterEventManualPage
-  }
+    component: InfoRegisterEventManualPage,
+  },
 ];
 
 @NgModule({

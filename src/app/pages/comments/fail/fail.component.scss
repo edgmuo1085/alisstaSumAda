@@ -1,16 +1,16 @@
-ion-content{
+ion-content {
   & .formularioFallo {
     margin-bottom: 150px;
   }
-  ion-list{
+  ion-list {
     background: none;
-    ion-item{
+    ion-item {
       --background: none;
-      ion-textarea{
+      ion-textarea {
         border-radius: 10px;
       }
     }
-    ion-button{
+    ion-button {
       --border-radius: 50px;
     }
   }

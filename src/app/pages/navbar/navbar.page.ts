@@ -11,7 +11,6 @@ import { NavbarService } from './navbar.service';
   styleUrls: ['./navbar.page.scss'],
 })
 export class NavbarPage implements OnInit, OnDestroy {
-
   /**
    * Indica si mostrar u ocultar la barra de navegación.
    */
@@ -27,11 +26,10 @@ export class NavbarPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.navbarServiceSub = this.navbarService.show.subscribe(v => this.show = v);
+    this.navbarServiceSub = this.navbarService.show.subscribe(v => (this.show = v));
   }
 
   ngOnDestroy(): void {
     this.navbarServiceSub.unsubscribe();
   }
-
 }

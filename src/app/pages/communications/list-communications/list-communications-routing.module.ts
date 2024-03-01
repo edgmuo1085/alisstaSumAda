@@ -6,8 +6,8 @@ import { ListCommunicationsPage } from './list-communications.page';
 const routes: Routes = [
   {
     path: '',
-    component: ListCommunicationsPage
-  }
+    component: ListCommunicationsPage,
+  },
 ];
 
 @NgModule({

@@ -13,16 +13,8 @@ import { SignaturePadModule } from 'angular2-signaturepad';
 import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    SignaturePadModule,
-    IonicModule,
-    ResponsibleSignatureARLPageRoutingModule
-  ],
+  imports: [CommonModule, FormsModule, SignaturePadModule, IonicModule, ResponsibleSignatureARLPageRoutingModule],
   declarations: [ResponsibleSignatureARLPage],
-  providers:[
-    File
-  ]
+  providers: [File],
 })
 export class ResponsibleSignatureARLPageModule {}

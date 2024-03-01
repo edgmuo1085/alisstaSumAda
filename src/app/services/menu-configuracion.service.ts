@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MenuConfiguracionService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Este metodo permite hacer la petición al archivo donde estan las opciones para el menú de
@@ -27,23 +26,23 @@ export class MenuConfiguracionService {
    * Este método permite consultar las opciones que existen en el menú de ejecución de
    * actividades
    */
-   getMenuExceActivities() {
-     return this.http.get<any[]>('/assets/data/menuExecuteActi.json');
-   }
+  getMenuExceActivities() {
+    return this.http.get<any[]>('/assets/data/menuExecuteActi.json');
+  }
 
-   /**
-    * Este método permitre consultar las opciones de ayuda en el menú de ejecución de
-    * actividades
-    */
+  /**
+   * Este método permitre consultar las opciones de ayuda en el menú de ejecución de
+   * actividades
+   */
 
-   getMenuHelpExceActivities() {
+  getMenuHelpExceActivities() {
     return this.http.get<any[]>('/assets/data/menuHelpExecuteActi.json');
   }
 
-   /**
-    * Este método permite consultar las opciones cuando se selecciona una visita
-    */
-   getMenuActivitySelected() {
-     return this.http.get<any[]>('/assets/data/menuVisitActivity.json');
-   }
+  /**
+   * Este método permite consultar las opciones cuando se selecciona una visita
+   */
+  getMenuActivitySelected() {
+    return this.http.get<any[]>('/assets/data/menuVisitActivity.json');
+  }
 }

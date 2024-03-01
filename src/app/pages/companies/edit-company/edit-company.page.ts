@@ -15,7 +15,6 @@ import { NavbarService } from '../../navbar/navbar.service';
   styleUrls: ['./edit-company.page.scss'],
 })
 export class EditCompanyPage {
-
   /**
    * Formulario.
    */
@@ -46,7 +45,7 @@ export class EditCompanyPage {
    */
   readonly TIPOS_ZONA = [
     { label: 'Urbana', value: 'U' },
-    { label: 'Rural', value: 'R' }
+    { label: 'Rural', value: 'R' },
   ];
 
   /**
@@ -54,11 +53,10 @@ export class EditCompanyPage {
    */
   private readonly CELLPHONE_REGEX = /^3[\d]{9}$/;
 
-   /**
+  /**
    * Expresión regular para validar solo números.
    */
-    private readonly NUMBER_ONLY = /^[0-9]{10}$/;
-
+  private readonly NUMBER_ONLY = /^[0-9]{10}$/;
 
   /**
    * Expresión regular para validar números de teléfono fijo.
@@ -73,11 +71,11 @@ export class EditCompanyPage {
   /**
    * Textos de ayuda.
    */
-   private readonly HINTS = {
+  private readonly HINTS = {
     direccion: {
       text: 'al dar clic tendrá la posibilidad de actualizar la dirección de la sede principal.',
-      highlightedText: 'Estimado usuario: '
-    }
+      highlightedText: 'Estimado usuario: ',
+    },
   };
 
   constructor(
@@ -87,7 +85,7 @@ export class EditCompanyPage {
     private router: Router,
     private alertCtrl: AlertController,
     private popoverCtrl: PopoverController
-  ) { }
+  ) {}
 
   ionViewWillEnter(): void {
     this.navbarService.setVisibility(false);
@@ -108,7 +106,7 @@ export class EditCompanyPage {
         header: 'Atención',
         mode: 'ios',
         message: 'Compruebe el correcto diligenciamiento de TODOS los campos obligatorios.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await alert.present();
@@ -178,7 +176,7 @@ export class EditCompanyPage {
     const popover = await this.popoverCtrl.create({
       event,
       component: PopoverComponent,
-      componentProps: { text: this.HINTS[field].text, highlightedText: this.HINTS[field].highlightedText }
+      componentProps: { text: this.HINTS[field].text, highlightedText: this.HINTS[field].highlightedText },
     });
 
     await popover.present();
@@ -224,14 +222,14 @@ export class EditCompanyPage {
 
     const departamento = {
       Pk_Id_Departamento: this.company.eDSedesActualizadas.Fk_Id_Departamento,
-      Nombre_Departamento: this.company.eDSedesActualizadas.Nombre_Departamento_Sede
+      Nombre_Departamento: this.company.eDSedesActualizadas.Nombre_Departamento_Sede,
     };
 
     const departamentoSedeControl = new FormControl(departamento, [Validators.required]);
 
     const municipio = {
       IdMunicipio: this.company.eDSedesActualizadas.Fk_Id_Municipio,
-      NombreMunicipio: this.company.eDSedesActualizadas.Nombre_Municipio_Sede
+      NombreMunicipio: this.company.eDSedesActualizadas.Nombre_Municipio_Sede,
     };
 
     const municipioSedeControl = new FormControl(municipio, [Validators.required]);
@@ -243,9 +241,17 @@ export class EditCompanyPage {
 
     const sectorEconomicoControl = new FormControl({ value: this.company.strDescripcionSectorEconomico, disabled: true });
 
-    const celularControl = new FormControl(this.company.strCelular, [Validators.pattern(this.CELLPHONE_REGEX), Validators.pattern(this.NUMBER_ONLY), Validators.maxLength(10)]);
+    const celularControl = new FormControl(this.company.strCelular, [
+      Validators.pattern(this.CELLPHONE_REGEX),
+      Validators.pattern(this.NUMBER_ONLY),
+      Validators.maxLength(10),
+    ]);
 
-    const telefonoNotificacionControl = new FormControl(this.company.strTelefono, [Validators.pattern(this.TEL_REGEX), Validators.pattern(this.NUMBER_ONLY), Validators.maxLength(10)]);
+    const telefonoNotificacionControl = new FormControl(this.company.strTelefono, [
+      Validators.pattern(this.TEL_REGEX),
+      Validators.pattern(this.NUMBER_ONLY),
+      Validators.maxLength(10),
+    ]);
 
     const correoControl = new FormControl(this.company.strCorreoElectronico, [Validators.required, Validators.pattern(this.EMAIL_REGEX)]);
 
@@ -272,8 +278,7 @@ export class EditCompanyPage {
       correo: correoControl,
       codigoPostal: codigoPostalControl,
       identificacionRepresentante: identificacionRepresentanteControl,
-      representanteLegal: representanteLegalControl
+      representanteLegal: representanteLegalControl,
     });
   }
-
 }

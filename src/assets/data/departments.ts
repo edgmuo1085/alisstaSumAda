@@ -1,4 +1,4 @@
-export const DEPARTMENTS: string [] = [
+export const DEPARTMENTS: string[] = [
   'Amazonas',
   'Antioquia',
   'Arauca',
@@ -30,5 +30,5 @@ export const DEPARTMENTS: string [] = [
   'Tolima',
   'Valle del Cauca',
   'Vaupés',
-  'Vichada'
+  'Vichada',
 ];

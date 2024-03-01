@@ -20,7 +20,6 @@ import { ConnectionStatusEnum, NetworkService } from 'src/app/services/network/n
   styleUrls: ['./signature.page.scss'],
 })
 export class SignaturePage implements OnInit {
-
   /**
    * Referencia del componente de firma.
    */
@@ -49,7 +48,7 @@ export class SignaturePage implements OnInit {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
-    canvasHeight: 300
+    canvasHeight: 300,
   };
 
   /**
@@ -70,7 +69,7 @@ export class SignaturePage implements OnInit {
     enableViewportScale: 'no',
     allowInlineMediaPlayback: 'no',
     presentationstyle: 'fullscreen',
-    fullscreen: 'yes'
+    fullscreen: 'yes',
   };
 
   /**
@@ -90,7 +89,7 @@ export class SignaturePage implements OnInit {
     private alertService: AlertService,
     private iab: InAppBrowser,
     private geolocation: Geolocation
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getGeolocation();
@@ -138,22 +137,23 @@ export class SignaturePage implements OnInit {
         message: 'Ha ocurrido un error en el servidor y no se pudieron guardar los datos. ¿Desea guardarlos para más tarde?',
         buttons: [
           {
-            text: 'Guardar para más tarde', handler: () => {
+            text: 'Guardar para más tarde',
+            handler: () => {
               this.ngZone.run(async () => {
                 await this.guardar();
                 this.router.navigate(['../../../../'], { relativeTo: this.route });
               });
-            }
+            },
           },
-          { text: 'Seguir editando', role: 'cancel' }
-        ]
+          { text: 'Seguir editando', role: 'cancel' },
+        ],
       });
 
       await alert.present();
     };
 
     const value = this.formGroup.value;
-//this.responsableARL.idLicenciaSst
+    //this.responsableARL.idLicenciaSst
 
     this.company.edActa_Actualizacion_Empresa = {
       RA_ResposableId: this.responsableARL.idRegistro,
@@ -171,7 +171,7 @@ export class SignaturePage implements OnInit {
       FirmaQR: value.qr,
       strIp: this.net.ipAddress.ip ? this.net.ipAddress.ip : '',
       Latitud: this.coords?.lat ?? '',
-      Longitud: this.coords?.lat ?? ''
+      Longitud: this.coords?.lat ?? '',
     };
 
     if (this.net.getNetworkStatus() !== ConnectionStatusEnum.Online) {
@@ -189,28 +189,26 @@ export class SignaturePage implements OnInit {
 
     const loading = await this.alertService.showLoading();
 
-    this.companiesService.save()
+    this.companiesService
+      .save()
       .pipe(finalize(() => this.alertService.hideLoading(loading)))
       .subscribe({
-        next: async (r) => {
+        next: async r => {
           const result = JSON.stringify(r).includes('false');
           console.log('REsultado de save compañia', r);
           console.log('REsultado de save compañia result', result);
 
-          if (result == true) {  
+          if (result == true) {
             onError();
             return;
           }
 
-          const alert = await this.alertService.showAlert(
-            'Empresa actualizada',
-            'Los datos se han registrado exitosamente.'
-          );
+          const alert = await this.alertService.showAlert('Empresa actualizada', 'Los datos se han registrado exitosamente.');
 
           alert.present();
           this.router.navigate(['../../../../'], { relativeTo: this.route });
         },
-        error: onError
+        error: onError,
       });
   }
 
@@ -227,7 +225,7 @@ export class SignaturePage implements OnInit {
         header: 'Atención',
         mode: 'ios',
         message: 'No tiene espacio suficiente en el dispositivo. Intente liberar memoria.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await _alert.present();
@@ -245,16 +243,28 @@ export class SignaturePage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       header: `Ingrese el código de verificación. Si selecciona la opción reenviar código, se enviará al siguiente correo: ${correo}.`,
-      inputs: [{
-        name: 'verificationCode',
-        type: 'number',
-        placeholder: 'Código de verificación'
-      }],
+      inputs: [
+        {
+          name: 'verificationCode',
+          type: 'number',
+          placeholder: 'Código de verificación',
+        },
+      ],
       buttons: [
-        { text: 'Reenviar código', handler: () => { this.reenviarCodigo(this); } },
-        { text: 'Aceptar', handler: (codigo) => { this.comprobarCodigoVerificacion(codigo, this); } },
-        { text: 'Cancelar', role: 'cancel' }
-      ]
+        {
+          text: 'Reenviar código',
+          handler: () => {
+            this.reenviarCodigo(this);
+          },
+        },
+        {
+          text: 'Aceptar',
+          handler: codigo => {
+            this.comprobarCodigoVerificacion(codigo, this);
+          },
+        },
+        { text: 'Cancelar', role: 'cancel' },
+      ],
     });
 
     await alert.present();
@@ -275,16 +285,17 @@ export class SignaturePage implements OnInit {
   private async getGeolocation(): Promise<void> {
     const loading = await this.alertService.showLoading();
 
-    this.geolocation.getCurrentPosition()
-      .then((response) => {
+    this.geolocation
+      .getCurrentPosition()
+      .then(response => {
         this.coords = {
           lat: `${response.coords.latitude}`,
-          lng: `${response.coords.longitude}`
+          lng: `${response.coords.longitude}`,
         };
 
         this.getCompany();
       })
-      .catch(async (error) => {
+      .catch(async error => {
         if (error.code === 1) {
           // Si se produce un error de este tipo es porque se está intentando acceder al servicio
           // de ubicación desde un origen inseguro. Se asume que entonces se está ejecutando la aplicación
@@ -292,7 +303,7 @@ export class SignaturePage implements OnInit {
 
           this.coords = {
             lat: '0',
-            lng: '0'
+            lng: '0',
           };
 
           this.getCompany();
@@ -305,7 +316,7 @@ export class SignaturePage implements OnInit {
           backdropDismiss: false,
           mode: 'ios',
           message: 'Debe conceder permisos de ubicación a la aplicación para poder continuar.',
-          buttons: ['ACEPTAR']
+          buttons: ['ACEPTAR'],
         });
 
         alert.present();
@@ -361,7 +372,7 @@ export class SignaturePage implements OnInit {
       qr: qrControl,
       firmaARL: firmaARLControl,
       codigoVerificacion: codigoVerificacionControl,
-      firmaEmpresa: firmaEmpresaControl
+      firmaEmpresa: firmaEmpresaControl,
     });
 
     this.formGroup.controls.responsable.valueChanges.subscribe(v => {
@@ -410,7 +421,7 @@ export class SignaturePage implements OnInit {
         backdropDismiss: false,
         mode: 'ios',
         message: 'No tienes conexión a internet para utilizar esta funcionalidad.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await alert.present();
@@ -452,7 +463,7 @@ export class SignaturePage implements OnInit {
       backdropDismiss: false,
       mode: 'ios',
       message,
-      buttons: ['ACEPTAR']
+      buttons: ['ACEPTAR'],
     });
 
     loading.dismiss();
@@ -477,7 +488,7 @@ export class SignaturePage implements OnInit {
         backdropDismiss: false,
         mode: 'ios',
         message: 'El código ingresado no es válido. Por favor intente nuevamente.',
-        buttons: ['ACEPTAR']
+        buttons: ['ACEPTAR'],
       });
 
       await alert.present();
@@ -1050,8 +1061,4 @@ export class SignaturePage implements OnInit {
   //     "strIp": "181.143.29.58"
   //   }, "listaPersonasContacto": null
   // }
- 
-
 }
-
-

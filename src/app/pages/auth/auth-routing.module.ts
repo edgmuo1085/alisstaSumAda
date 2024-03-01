@@ -7,22 +7,19 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
-      }
-      ,
+        loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
+      },
       {
         path: '**',
         redirectTo: 'login',
-        pathMatch: 'full'
-      }
-    ]
-  }
+        pathMatch: 'full',
+      },
+    ],
+  },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
+export class AuthRoutingModule {}

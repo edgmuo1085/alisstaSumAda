@@ -9,8 +9,8 @@ describe('TasksToSendPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TasksToSendPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [TasksToSendPage],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TasksToSendPage);

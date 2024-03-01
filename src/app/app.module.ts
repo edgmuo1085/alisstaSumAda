@@ -1,11 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import {
-  MatDatepickerModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatNativeDateModule
-} from '@angular/material';
+import { MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
@@ -28,9 +23,7 @@ import { ComponentsModule } from './components/components.module';
 import { PipesModule } from './pipes/pipes.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -46,7 +39,6 @@ import { PipesModule } from './pipes/pipes.module';
     MatFormFieldModule,
     MatInputModule,
     NgxMaterialTimepickerModule,
-    NgxMaterialTimepickerModule.setLocale('es-ES')
   ],
   providers: [
     StatusBar,
@@ -59,12 +51,10 @@ import { PipesModule } from './pipes/pipes.module';
     FingerprintAIO,
     {
       provide: RouteReuseStrategy,
-      useClass: IonicRouteStrategy
+      useClass: IonicRouteStrategy,
     },
-    OneSignal
+    OneSignal,
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

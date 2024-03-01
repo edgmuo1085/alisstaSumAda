@@ -9,12 +9,7 @@ import { TermsAndConditionsPageRoutingModule } from './terms-and-conditions-rout
 import { TermsAndConditionsPage } from './terms-and-conditions.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    TermsAndConditionsPageRoutingModule
-  ],
-  declarations: [TermsAndConditionsPage]
+  imports: [CommonModule, FormsModule, IonicModule, TermsAndConditionsPageRoutingModule],
+  declarations: [TermsAndConditionsPage],
 })
 export class TermsAndConditionsPageModule {}

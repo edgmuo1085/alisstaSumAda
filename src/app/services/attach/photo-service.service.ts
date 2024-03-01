@@ -2,27 +2,25 @@ import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PhotoServiceService {
-
   photos: any[] = [];
 
-  constructor() { }
+  constructor() {}
 
   public async addNewToGallery(): Promise<any> {
-
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.DataUrl,
       source: CameraSource.Camera,
-      quality: 60
+      quality: 60,
     });
 
     const fotoIngresada = {
       format: capturedPhoto.format,
       base64Imagen: capturedPhoto.dataUrl,
-      idFoto: new Date().getTime().toString(16)
+      idFoto: new Date().getTime().toString(16),
     };
     // this.photos.push(fotoIngresada);
     return fotoIngresada;
@@ -35,5 +33,4 @@ export class PhotoServiceService {
       this.photos.splice(encontro, 1);
     }
   }
-
 }

@@ -16,26 +16,28 @@
 </ion-header>
 
 <ion-content>
-
   <!-- Selector del resultado de la visita -->
   <div class="mt-5 text-center result-selector">
-
-    <div class="ion-text-center" style="width: 100%;">
+    <div class="ion-text-center" style="width: 100%">
       <h3>¿La asesoría fue exitosa?</h3>
     </div>
 
     <span class="result-wrapper d-inline-block rounded">
       <!-- Exitosa -->
-      <button class="btn transparent rounded ion-text-md-uppercase"
+      <button
+        class="btn transparent rounded ion-text-md-uppercase"
         [ngClass]="{primary: subframe === SUCCESS_FRAME, transparent: subframe !== SUCCESS_FRAME}"
-        (click)="switchFrame(SUCCESS_FRAME)">
+        (click)="switchFrame(SUCCESS_FRAME)"
+      >
         Sí
       </button>
 
       <!-- Fallida -->
-      <button class="btn primary rounded ion-text-md-uppercase"
+      <button
+        class="btn primary rounded ion-text-md-uppercase"
         [ngClass]="{primary: subframe === FAIL_FRAME, transparent: subframe !== FAIL_FRAME}"
-        (click)="switchFrame(FAIL_FRAME)">
+        (click)="switchFrame(FAIL_FRAME)"
+      >
         No
       </button>
     </span>
@@ -44,11 +46,9 @@
   <!-- Resultados de la visita -->
   <ng-container [ngSwitch]="subframe">
     <!-- Exitosa -->
-    <app-success [typeMenu]="subframe" (infoCommentSuccess)="getInfoComment($event)" *ngSwitchCase="SUCCESS_FRAME">
-    </app-success>
+    <app-success [typeMenu]="subframe" (infoCommentSuccess)="getInfoComment($event)" *ngSwitchCase="SUCCESS_FRAME"> </app-success>
 
     <!-- Fallida -->
     <app-fail [typeMenu]="subframe" (infoCommentFail)="getInfoComment($event)" *ngSwitchCase="FAIL_FRAME"></app-fail>
   </ng-container>
-
 </ion-content>

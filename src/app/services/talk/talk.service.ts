@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TalkService {
-
-  constructor( private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   API_LIST_TEMAS_COMUNICACION = environment.API_LIST_TEMAS_COMUNICACION;
 
@@ -26,7 +24,7 @@ export class TalkService {
 
   rolesVisualizadosHistoricos: any[] = [];
 
-  changeStateUser(pPKConversacionUsuario: number, pPKConversacion: number, pEstado: string, pIP: string, pPKUidUsuario: number ) {
+  changeStateUser(pPKConversacionUsuario: number, pPKConversacion: number, pEstado: string, pIP: string, pPKUidUsuario: number) {
     let url = '';
     // tslint:disable-next-line: max-line-length
     url = `${this.API_CAMBIAR_ESTADO_USUARIO}?pPKConversacionUsuario=${pPKConversacionUsuario}&pPKConversacion=${pPKConversacion}&pEstado=${pEstado}&pIP=${pIP}&pPKUidUsuario=${pPKUidUsuario}`;
@@ -38,7 +36,14 @@ export class TalkService {
   }
 
   // tslint:disable-next-line: max-line-length
-  searchComunicacion(pRazonSocialNit?: string, tema?: string, fechaInicial?: string, fechaFinal?: string, usuario?: string, idRol?: string ) {
+  searchComunicacion(
+    pRazonSocialNit?: string,
+    tema?: string,
+    fechaInicial?: string,
+    fechaFinal?: string,
+    usuario?: string,
+    idRol?: string
+  ) {
     let url = '';
     // tslint:disable-next-line: max-line-length
     url = `${this.API_BUSCAR_COMUNICACION}?pRazonSocialNit=${pRazonSocialNit}&pPKTema=${tema}&pFechaInicio=${fechaInicial}&pFechaFin=${fechaFinal}&pUidUsuario=${usuario}&pUidRol=${idRol}`;
@@ -51,21 +56,13 @@ export class TalkService {
     return this.http.post<any>(url, null);
   }
 
-
   saveMessageConversation(mensaje) {
-
     return this.http.post<any>(this.API_GUARDAR_MENSAJE, mensaje);
-
   }
-
 
   deleteMessage(mensaje) {
     return this.http.post<any>(this.API_EDITAR_ELIMINAR_MENSAJE, mensaje);
   }
-
-
-
-
 
   saveSelectedCoversation(talk) {
     this.talkSelected = talk;
@@ -82,6 +79,4 @@ export class TalkService {
   getRolesHistoricos() {
     return this.rolesVisualizadosHistoricos;
   }
-
-
 }

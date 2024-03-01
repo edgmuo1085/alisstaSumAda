@@ -14,8 +14,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -27,8 +25,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
   ],
-  declarations: [ConsultEventPage]
+  declarations: [ConsultEventPage],
 })
 export class ConsultEventPageModule {}

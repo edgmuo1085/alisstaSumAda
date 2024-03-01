@@ -15,18 +15,21 @@
   </ion-grid>
 </ion-header>
 <ion-content class="backgroundContent">
-  <ion-grid >
+  <ion-grid>
     <ion-row>
       <ion-col size="12" *ngFor="let menuOpt of optMenuOptions | async; let i = index">
         <ion-list>
-          <ion-item lines="none"
-                    color="secondary" 
-                    (click)="optionSelectedMenu(menuOpt)"
-                    *ngIf="menuOpt.show" 
-                    [routerLink]="menuOpt.redirecTo" detail >
+          <ion-item
+            lines="none"
+            color="secondary"
+            (click)="optionSelectedMenu(menuOpt)"
+            *ngIf="menuOpt.show"
+            [routerLink]="menuOpt.redirecTo"
+            detail
+          >
             <!-- <img [src]="menuOpt.icon"> -->
             <ion-avatar slot="start">
-              <img [src]="menuOpt.icon" class="imgMenu" alt="iconItem">
+              <img [src]="menuOpt.icon" class="imgMenu" alt="iconItem" />
             </ion-avatar>
             <ion-label>{{menuOpt.title}}</ion-label>
           </ion-item>
@@ -34,5 +37,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

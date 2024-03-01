@@ -15,7 +15,6 @@ import { NetworkService } from '../../services/network/network.service';
   styleUrls: ['./pending-visits.page.scss'],
 })
 export class PendingVisitsPage implements OnInit {
-
   listActivity: any[] = [];
 
   textoBuscar = '';
@@ -27,12 +26,14 @@ export class PendingVisitsPage implements OnInit {
 
   isConnected = false;
 
-  constructor(private listActivitiesCompany: ActivityListCompanyService,
+  constructor(
+    private listActivitiesCompany: ActivityListCompanyService,
     private network: Network,
     private storage: Storage,
     private net: NetworkService,
     private loadingCtlr: LoadingController,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.validateDataListActivities();
@@ -63,7 +64,6 @@ export class PendingVisitsPage implements OnInit {
       activity.listaActividadesMigradas[i].estadoInterno = 'Migradas';
     }
     sessionStorage.companySelected = JSON.stringify(activity);
-
   }
 
   async listActivities() {
@@ -71,30 +71,34 @@ export class PendingVisitsPage implements OnInit {
     const documentoUsuario = await this.storage.get('sesion');
 
     setTimeout(() => {
-      this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).subscribe(async (response) => {
-        console.log('Respuesta de actividade', response );
-        
-        const listActivity = response.listActivitiesCompany || [];
-        const actasGuardadas: any[] = await this.storage.get('actasAsesoriaSinInternet') || [];
+      this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).subscribe(
+        async response => {
+          console.log('Respuesta de actividade', response);
 
-        listActivity.forEach((a: any) => {
-          a.listaActividadesMigradas = a.listaActividadesMigradas
-            .filter((aa: any) => actasGuardadas.find(aaa => aaa.activities.find((aaaa: any) => aaaa.id === aa.id)) === undefined);
-        });
+          const listActivity = response.listActivitiesCompany || [];
+          const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
 
-        this.storage.set('departamentos', response.listDepartamentos);
-        this.storage.set('municipios', response.listMunicipios);
-        this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+          listActivity.forEach((a: any) => {
+            a.listaActividadesMigradas = a.listaActividadesMigradas.filter(
+              (aa: any) => actasGuardadas.find(aaa => aaa.activities.find((aaaa: any) => aaaa.id === aa.id)) === undefined
+            );
+          });
 
-        // Guardar las actividades en un BD local.
-        this.storage.set('listaActividades', listActivity);
-        this.validateDataListActivities();
-        this.showListPendingVisit = false;
-        this.loading.dismiss();
-      }, err => {
-        this.loading.dismiss();
-        this.showListPendingVisit = false;
-      });
+          this.storage.set('departamentos', response.listDepartamentos);
+          this.storage.set('municipios', response.listMunicipios);
+          this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+
+          // Guardar las actividades en un BD local.
+          this.storage.set('listaActividades', listActivity);
+          this.validateDataListActivities();
+          this.showListPendingVisit = false;
+          this.loading.dismiss();
+        },
+        err => {
+          this.loading.dismiss();
+          this.showListPendingVisit = false;
+        }
+      );
     }, 2000);
   }
 
@@ -115,5 +119,4 @@ export class PendingVisitsPage implements OnInit {
       this.listActivity = [];
     }
   }
-
 }

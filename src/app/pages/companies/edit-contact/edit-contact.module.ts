@@ -9,13 +9,7 @@ import { EditContactPageRoutingModule } from './edit-contact-routing.module';
 import { EditContactPage } from './edit-contact.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    EditContactPageRoutingModule
-  ],
-  declarations: [EditContactPage]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, EditContactPageRoutingModule],
+  declarations: [EditContactPage],
 })
 export class EditContactPageModule {}

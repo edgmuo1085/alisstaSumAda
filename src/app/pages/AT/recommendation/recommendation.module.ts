@@ -6,13 +6,7 @@ import { RecommendationPageRoutingModule } from './recommendation-routing.module
 import { RecommendationPage } from './recommendation.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    IonicModule,
-    RecommendationPageRoutingModule
-  ],
-  declarations: [RecommendationPage]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule, RecommendationPageRoutingModule],
+  declarations: [RecommendationPage],
 })
-export class RecommendationPageModule { }
+export class RecommendationPageModule {}

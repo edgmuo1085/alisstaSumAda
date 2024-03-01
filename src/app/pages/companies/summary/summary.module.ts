@@ -7,14 +7,7 @@ import { SummaryPageRoutingModule } from './summary-routing.module';
 import { SummaryPage } from './summary.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    PipesModule,
-    SummaryPageRoutingModule
-  ],
-  declarations: [SummaryPage]
+  imports: [CommonModule, FormsModule, IonicModule, ReactiveFormsModule, PipesModule, SummaryPageRoutingModule],
+  declarations: [SummaryPage],
 })
 export class SummaryPageModule {}

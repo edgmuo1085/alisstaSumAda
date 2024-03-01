@@ -16,40 +16,47 @@
 </ion-header>
 
 <ion-content>
-
   <!-- Selector de tipo de visita -->
   <div class="mt-5 text-center visit-selector">
     <span class="selector-wrapper d-inline-block rounded">
-
       <!-- Específica -->
-      <button class="btn primary rounded ion-text-md-uppercase"
+      <button
+        class="btn primary rounded ion-text-md-uppercase"
         [ngClass]="{primary: subframe === SPECIFIC_FRAME, transparent: subframe !== SPECIFIC_FRAME}"
-        (click)="switchFrame(SPECIFIC_FRAME)">
+        (click)="switchFrame(SPECIFIC_FRAME)"
+      >
         Específica
       </button>
 
       <!-- Por proyecto -->
-      <button class="btn transparent rounded ion-text-md-uppercase"
+      <button
+        class="btn transparent rounded ion-text-md-uppercase"
         [ngClass]="{primary: subframe === PER_PROJECT_FRAME, transparent: subframe !== PER_PROJECT_FRAME}"
-        (click)="switchFrame(PER_PROJECT_FRAME)">
+        (click)="switchFrame(PER_PROJECT_FRAME)"
+      >
         Por proyecto
       </button>
-
     </span>
   </div>
 
   <!-- Tipos de visita -->
   <ng-container [ngSwitch]="subframe">
-
     <!-- Visita específica -->
-    <app-specific (dateStartSpecific)="getDateStart($event)" (specificStartHourSelected)="getSpecificStartHour($event)"
-      (specificEndHourSelected)="getSpecificEndHour($event)" (specificTotalHour)="getTotalHoursSpecific($event)"
-      (showButtonNext)="getShowButtonNext($event)" *ngSwitchCase="SPECIFIC_FRAME"></app-specific>
+    <app-specific
+      (dateStartSpecific)="getDateStart($event)"
+      (specificStartHourSelected)="getSpecificStartHour($event)"
+      (specificEndHourSelected)="getSpecificEndHour($event)"
+      (specificTotalHour)="getTotalHoursSpecific($event)"
+      (showButtonNext)="getShowButtonNext($event)"
+      *ngSwitchCase="SPECIFIC_FRAME"
+    ></app-specific>
 
     <!-- Visita por proyecto -->
-    <app-per-project *ngSwitchCase="PER_PROJECT_FRAME" (showButtonNext)="getShowButtonNext($event)"
-      (projectDateSelected)="getProjectDateSelected($event)"></app-per-project>
-
+    <app-per-project
+      *ngSwitchCase="PER_PROJECT_FRAME"
+      (showButtonNext)="getShowButtonNext($event)"
+      (projectDateSelected)="getProjectDateSelected($event)"
+    ></app-per-project>
   </ng-container>
 
   <!-- Botón de continuar -->
@@ -64,9 +71,6 @@
   </div> -->
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed" (click)="next()" *ngIf="showButtonNext">
-    <ion-button color="primary" mode="ios" expand="block" class="btn">
-      Continuar
-    </ion-button>
+    <ion-button color="primary" mode="ios" expand="block" class="btn"> Continuar </ion-button>
   </ion-fab>
-
 </ion-content>

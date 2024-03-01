@@ -9,12 +9,7 @@ import { SelectRegisterEventPageRoutingModule } from './select-register-event-ro
 import { SelectRegisterEventPage } from './select-register-event.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SelectRegisterEventPageRoutingModule
-  ],
-  declarations: [SelectRegisterEventPage]
+  imports: [CommonModule, FormsModule, IonicModule, SelectRegisterEventPageRoutingModule],
+  declarations: [SelectRegisterEventPage],
 })
 export class SelectRegisterEventPageModule {}

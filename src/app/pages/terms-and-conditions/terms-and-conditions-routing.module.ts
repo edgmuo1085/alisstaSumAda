@@ -6,8 +6,8 @@ import { TermsAndConditionsPage } from './terms-and-conditions.page';
 const routes: Routes = [
   {
     path: '',
-    component: TermsAndConditionsPage
-  }
+    component: TermsAndConditionsPage,
+  },
 ];
 
 @NgModule({

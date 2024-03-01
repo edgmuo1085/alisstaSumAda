@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {  HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment'; 
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { responsableEvento, RegistroAsistenteEvento } from '../../intarfaces/interfaces';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventService {
-
   // API_USERREGISTREMODEL = environment.API_GETUSERREGISTEREVENT;
   // API_CREATEEVENT = environment.API_CREATE_EVENT;
-
 
   API_SEARCH_BRANCH_OFFICES_FOR_EVENT = environment.API_GET_BRANCH_OFFICE_EVENT;
   API_SEARCH_MUNICIPY_BRANCH_OFFICE_FOR_EVENT = environment.API_GET_MUNICIPY_BRANCH_OFFICE_EVENT;
@@ -23,7 +20,7 @@ export class EventService {
   API_SEARCH_RESPONSIBLE_MANUAL_EVENT = environment.API_GET_SEARCH_RESPONSIBLE_MANUAL_EVENT;
   API_DOCUMENTS_TYPE = environment.API_GET_DOCUMENTS_TYPE;
 
-  constructor( private http: HttpClient ) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Metodo que realiza la petición para obtener las sucursales segun la fecha del
@@ -37,7 +34,7 @@ export class EventService {
    * Metodo que realiza la petición para obtener los municipios acorde a la sucursal seleccionada la cual llega por parametro
    * esto en el módulo de eventos positiva.
    */
-  getMunicipyBrachOffice( idBranchOffice: any ) {
+  getMunicipyBrachOffice(idBranchOffice: any) {
     const urlGetMunicipyBranchOffice = `${this.API_SEARCH_MUNICIPY_BRANCH_OFFICE_FOR_EVENT}?Fk_Id_Sucursal=${idBranchOffice}`;
     return this.http.get<any>(urlGetMunicipyBranchOffice);
   }
@@ -46,7 +43,7 @@ export class EventService {
    * Método que realiza la petición para obtener los eventos segun el municipio seleccionado
    */
 
-  getEventForMunicipy( idMunicipy: any ) {
+  getEventForMunicipy(idMunicipy: any) {
     const urlEventForMunicipy = `${this.API_SEARCH_EVENT_FOR_MUNICIPY}?FK_Id_Municipio=${idMunicipy}`;
     return this.http.get<any>(urlEventForMunicipy);
   }
@@ -83,13 +80,11 @@ export class EventService {
    * parametros:
    * - documentoAsistente
    * - idEvento
-   * Este metodo permite consultar la información del usuario el cual sera registrado manualmente, 
+   * Este metodo permite consultar la información del usuario el cual sera registrado manualmente,
    * recive dos parametros para dicha consulta.
    */
   getSearchResponsibleEventManual(documentoAsistente: string, idEvento: number) {
-    const urlSearchResponsibleManualEvent =
-      `${this.API_SEARCH_RESPONSIBLE_MANUAL_EVENT}?NumeroIdentificacionEmpleado=${documentoAsistente}&Fk_Id_Evento=${idEvento}`;
+    const urlSearchResponsibleManualEvent = `${this.API_SEARCH_RESPONSIBLE_MANUAL_EVENT}?NumeroIdentificacionEmpleado=${documentoAsistente}&Fk_Id_Evento=${idEvento}`;
     return this.http.get(urlSearchResponsibleManualEvent);
   }
-
 }

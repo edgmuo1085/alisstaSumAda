@@ -14,7 +14,6 @@ import { ResendVerificationCodeComponent } from '../../components/resend-verific
   styleUrls: ['./exec-log.page.scss'],
 })
 export class ExecLogPage implements OnInit {
-
   /**
    * Array de opciones del menú de ejecución de actividades
    */
@@ -30,9 +29,11 @@ export class ExecLogPage implements OnInit {
    */
   nameUserRegister: string;
 
-  constructor( private menuConfOptions: MenuConfiguracionService,
-               private modalCtrl: ModalController,
-               private storage: Storage ) { }
+  constructor(
+    private menuConfOptions: MenuConfiguracionService,
+    private modalCtrl: ModalController,
+    private storage: Storage
+  ) {}
 
   ngOnInit() {
     this.optMenuOptions = this.menuConfOptions.getMenuExceActivities();
@@ -40,8 +41,8 @@ export class ExecLogPage implements OnInit {
     this.uploadInfoUser();
   }
 
-  optionSelectedMenu( itemSelected ) {
-    switch ( itemSelected.title ) {
+  optionSelectedMenu(itemSelected) {
+    switch (itemSelected.title) {
       case 'Visitas pendientes':
         break;
       case 'Tareas por enviar':
@@ -68,10 +69,9 @@ export class ExecLogPage implements OnInit {
 
   async showResendVerificationCode() {
     const modal = await this.modalCtrl.create({
-      component: ResendVerificationCodeComponent
+      component: ResendVerificationCodeComponent,
     });
 
     return await modal.present();
   }
-
 }
