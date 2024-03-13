@@ -1,3 +1,4 @@
+
 const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
@@ -24,6 +25,7 @@ export const environment = {
   API_RECOVERY_VERIFICATION_CODE: ambiente + 'Actividad/Actividades-ReenviarCodigoVerificacion',
   API_SAVE_ACTA_ASESORIA: ambiente + 'Actividad/Actividades-GuardarActaAsesoria',
   API_UPLOAD_FILE_ACTA_ASESORIA: ambiente + 'Actividad/Actividades-SubirSoporteActividad',
+  API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP: ambiente + 'Actividad/Enviar-CorreoNotificacionActaApp',
 
   API_LIST_TEMAS_COMUNICACION: ambiente + 'Comunicaciones/Datos-Comunicaciones',
   API_BUSCAR_CUMUNICACIONES: ambiente + 'Comunicaciones/Comunicaciones-Filtro',

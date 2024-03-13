@@ -150,7 +150,11 @@ export interface uploadFile {
   Base64?: any;
 }
 
-// tslint:disable-next-line: class-name
+export interface CorreoNotificacionActaApp {
+  Fk_ID_ActividadMigradaPorUsuario: number;
+}
+
+// tslint:disable-next-line: class-name  
 export interface responsibleCode {
   id?: number;
   nombre?: string;

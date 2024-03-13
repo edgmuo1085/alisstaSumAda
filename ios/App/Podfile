@@ -29,7 +29,6 @@ def capacitor_pods
   pod 'CapacitorHaptics', :path => '../../node_modules/@capacitor/haptics'
   pod 'CapacitorKeyboard', :path => '../../node_modules/@capacitor/keyboard'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
-<<<<<<< HEAD
   pod 'CapacitorDarkMode', :path => '../../node_modules/capacitor-dark-mode'
   pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
   pod 'CordovaPluginsStatic', :path => '../capacitor-cordova-ios-plugins'
@@ -39,16 +38,7 @@ end
 target 'App' do
   capacitor_pods
 end
-=======
-  pod 'CordovaPlugins', :path => '../capacitor-cordova-ios-plugins'
-  pod 'CordovaPluginsStatic', :path => '../capacitor-cordova-ios-plugins'
-  pod 'CordovaPluginsResources', :path => '../capacitor-cordova-ios-plugins'
-end
 
-target 'App' do
-  capacitor_pods
-end
->>>>>>> deploy-android
 
 
 post_install do |installer|

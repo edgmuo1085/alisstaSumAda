@@ -9,6 +9,7 @@ import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/ad
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
+import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 
 @Component({
   selector: 'app-survey-and-signature',
@@ -250,6 +251,16 @@ export class SurveyAndSignaturePage implements OnInit {
         for (const f of files) {
           const body = { ...f, UidActaAsesoria: +creacionActa[1] };
           await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
+        }
+
+        if (this.actaAsesoriaGestionada && this.actaAsesoriaGestionada.TTA_lista && this.actaAsesoriaGestionada.TTA_lista.length > 0) {
+          for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
+            const idActividadMigradaPorUsuario = tta.id;
+
+            // envio correo notificacion acta asesoria 
+            const notifCorreoActa: CorreoNotificacionActaApp = { Fk_ID_ActividadMigradaPorUsuario: idActividadMigradaPorUsuario };
+            await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+          }
         }
 
         this.photoService.photos = [];
