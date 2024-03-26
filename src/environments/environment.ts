@@ -15,7 +15,20 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 //const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/; 
 
-const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+// const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';                               // Produccion
+const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; // Test Original 
+// const ambiente = 'http://test-dos-positiva.adacsc.co/';
+// const ambiente = 'http://splaneacion-test-dos.adacsc.co/';
+// const ambiente = 'http://saplicacion-test-dos.adacsc.co/';
+// const ambiente = 'http://sempresa-test-dos.adacsc.co/';
+// const ambiente = 'http://splananual-test-dos.adacsc.co/';
+// const ambiente = 'http://sincidenteinvestigacion-test-dos.adacsc.co/';
+// const ambiente = 'http://sparticipacion-test-dos.adacsc.co/';
+// const ambiente = 'http://smedicionevaluacion-test-dos.adacsc.co/';
+// const ambiente = 'http://sproveedor-test-dos.adacsc.co/';
+// const ambiente = 'http://senfermedadlaboral-test-dos.adacsc.co/';
+// const ambiente = 'http://srevision-test-dos.adacsc.co/';
+
 
 export const environment = {
   production: false,
