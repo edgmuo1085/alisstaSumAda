@@ -7,7 +7,7 @@ android {
         applicationId 'co.positiva.alisstasum'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 200024
+        versionCode 200025
         versionName '2.0.10'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
