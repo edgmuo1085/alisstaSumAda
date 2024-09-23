@@ -30,7 +30,6 @@ npm-debug.log*
 /node_modules
 /platforms
 /plugins
-/www
 /new_android
 /old_android
 /v2.android
