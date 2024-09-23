@@ -23,12 +23,12 @@ export class ActivityListCompanyService {
   public progressBarValues$ = this.progressBarValues.asObservable();
   public actasGuardadas = [];
 
-  private async presentToastActivitiesPaginator(message: string) {
+  private async presentToastActivitiesPaginator(message: string, color: string) {
     const toast = await this.toastCtrl.create({
       message: message,
       duration: 5000,
       position: 'bottom',
-      color: 'primary',
+      color: color,
       mode: 'ios',
     });
     toast.present();
@@ -52,10 +52,10 @@ export class ActivityListCompanyService {
     this.getRecordsForPage()
   } 
 
-   getRecordsForPage(): void {
+   async getRecordsForPage(): Promise<void> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    this.http.post<any>(this.API_REGISTROS_PAGINA, {}).subscribe(
+   await this.http.post<any>(this.API_REGISTROS_PAGINA, {}).subscribe(
       (response) => {
         this.cantidadRegistrosPorPagina = response.intCantidadRegistrosPorPagina;
         console.log("Cantidaddd...!!!", this.cantidadRegistrosPorPagina)
@@ -79,15 +79,14 @@ export class ActivityListCompanyService {
 
   listActivityForCompanyForPage(listActivityTotal) {
     
-    this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades.")
+    this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades.", "primary")
     this.progressBar.visible = true;
     this.progressBar.records = listActivityTotal;
     this.progressBarValues.next(this.progressBar);
-
-    const activitiesForPage: number = 10; //TODO: Este dato debe venir de el backend en el constructor
-    let totalPages: number = listActivityTotal % activitiesForPage > 0
-    ? Math.floor(listActivityTotal / activitiesForPage) + 1
-    : Math.floor(listActivityTotal / activitiesForPage)
+    
+    let totalPages: number = listActivityTotal % this.cantidadRegistrosPorPagina > 0
+    ? Math.floor(listActivityTotal / this.cantidadRegistrosPorPagina) + 1
+    : Math.floor(listActivityTotal / this.cantidadRegistrosPorPagina)
     // let totalPages: number = Math.floor(listActivityTotal / activitiesForPage) + 1; //cuadrar cuando no hay residuo
     let currentPage: number = 2;
 
@@ -112,7 +111,7 @@ export class ActivityListCompanyService {
       setTimeout(() => {
         this.progressBarValues.next(this.progressBar);
       }, 2000);
-      this.presentToastActivitiesPaginator("Actividades cargadas con Exito.")
+      this.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary")
       return;
     }
 
@@ -135,6 +134,10 @@ export class ActivityListCompanyService {
       },
       error => {
         console.error(`Error en la página ${currentPage}:`, error);
+        this.progressBar.visible = false;
+        this.progressBar.refreshBtnEnable = false;
+        this.progressBarValues.next(this.progressBar);
+        this.presentToastActivitiesPaginator("Error al cargar las actividades, intentalo nuevamente por favor.", "danger")
       },
       () => {       
         console.log(`Llamada a la página ${currentPage} completada`);
