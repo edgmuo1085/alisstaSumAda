@@ -11,13 +11,13 @@
  */
 import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 
-//const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
-//const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
+// const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+// const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/; 
 
 // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';                             // Produccion
-// const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';  // Test Original 
-// const ambiente = 'http://test-dos-positiva.adacsc.co/';
+//const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';  // Test Original 
+//const ambiente = 'http://test-dos-positiva.adacsc.co/';
 // const ambiente = 'http://splaneacion-test-dos.adacsc.co/';
 // const ambiente = 'http://saplicacion-test-dos.adacsc.co/';
 // const ambiente = 'http://sempresa-test-dos.adacsc.co/';
@@ -25,13 +25,31 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 // const ambiente = 'http://sincidenteinvestigacion-test-dos.adacsc.co/';
 // const ambiente = 'http://sparticipacion-test-dos.adacsc.co/';
 // const ambiente = 'http://smedicionevaluacion-test-dos.adacsc.co/';
-const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
+//const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
 // const ambiente = 'http://senfermedadlaboral-test-dos.adacsc.co/';
 // const ambiente = 'http://srevision-test-dos.adacsc.co/';
+//const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
 
+//  Test 2
+// const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
+
+//  Test 3
+//const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
+
+//  Pre
+const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+
+//  Producción
+//const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
-  production: false,
+  production: true,
+
+  //  Pre
+  RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+
+  //  Producción
+  //RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
 
@@ -50,6 +68,7 @@ export const environment = {
   API_SAVE_RECOMMENDATION_AT: ambiente + 'Incidente/guardar-recomendacionesGenerales-siniestro-app',
 
   API_GET_Avtividades_Empresa: ambiente + 'Actividad/Actividades-Empresa',
+  API_GET_Cantidad_Registros_Por_Pagina: ambiente + 'Actividad/Cantidad_RegistrosPorPaginaAPP',
   API_LIBERAR_ACTIVIDADES: ambiente + 'Actividad/Actividades-Liberar',
   API_RECOVERY_VERIFICATION_CODE: ambiente + 'Actividad/Actividades-ReenviarCodigoVerificacion',
   API_SAVE_ACTA_ASESORIA: ambiente + 'Actividad/Actividades-GuardarActaAsesoria',
@@ -65,8 +84,6 @@ export const environment = {
 
   API_LISTAR_EMPRESAS_MIGRADAS: ambiente + 'MigrarEmpresa/Obtener_Empresas_Migrar',
   API_GUARDAR_EMPRESA_MIGRADA: ambiente + 'MigrarEmpresa/Guardar-ActaActualizacionEmpresa',
-
-  RECUPERAR_PASSWORD: 'http://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
   ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c',

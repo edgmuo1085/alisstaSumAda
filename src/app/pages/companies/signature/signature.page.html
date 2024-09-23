@@ -91,7 +91,7 @@
   </p>
 
   <h4 class="section-title">Firma responsable de ARL</h4>
-  <div style="border: 1px solid black; border-radius: 10px">
+  <div style="border: 1px solid black; border-radius: 10px" class="firmaContent">
     <signature-pad #padARL [options]="SIGNATURE_PAD_OPTIONS" (onEndEvent)="drawComplete(padARL, 'firmaARL')"> </signature-pad>
     <p class="leyenda ion-text-center">{{ responsableARL.nombres }} {{ responsableARL.apellidos }}</p>
   </div>
@@ -107,7 +107,7 @@
 <ng-template #noQr>
   <ng-container *ngIf="formGroup.controls.codigoVerificacion.valid">
     <h4 class="section-title">Firma responsable de empresa</h4>
-    <div style="border: 1px solid black; border-radius: 10px">
+    <div class="firmaContent" style="border: 1px solid black; border-radius: 10px">
       <signature-pad #padEmpresa [options]="SIGNATURE_PAD_OPTIONS" (onEndEvent)="drawComplete(padEmpresa, 'firmaEmpresa')"> </signature-pad>
       <p class="leyenda ion-text-center">{{ formGroup.controls.responsable.value.Nombre }}</p>
     </div>
@@ -129,7 +129,7 @@
       {{ responsableARL.idProveedor }}
     </p>
     <h4 class="section-title">Firma responsable de ARL</h4>
-    <div style="border: 1px solid black; border-radius: 10px">
+    <div class="firmaContent" style="border: 1px solid black; border-radius: 10px">
       <signature-pad #padARL [options]="SIGNATURE_PAD_OPTIONS" (onEndEvent)="drawComplete(padARL, 'firmaARL')"> </signature-pad>
       <p class="leyenda ion-text-center">{{ responsableARL.nombres }} {{ responsableARL.apellidos }}</p>
     </div>

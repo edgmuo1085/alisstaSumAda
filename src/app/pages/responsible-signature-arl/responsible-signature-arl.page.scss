@@ -15,6 +15,10 @@ ion-header {
   }
 }
 
+signature-pad {
+  background: #ffffff!important;
+}
+
 .titulo {
   width: 100% !important;
   font-size: 20px !important;
@@ -37,3 +41,11 @@ ion-header {
 h3 {
   text-align: center;
 }
+
+.firmaContent {
+  background: #ffffff!important;
+}
+
+.firmaContent div{
+  background: #ffffff!important;
+} 

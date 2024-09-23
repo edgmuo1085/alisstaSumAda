@@ -35,7 +35,7 @@ export class ConfigService {
   /**
    * Identificador de la aplicación para _Android_.
    */
-  private readonly ANDROID_APP_ID = '';
+  private readonly ANDROID_APP_ID = 'co.positiva.alisstasum';
 
   /**
    *  Variable para indicar si inicio sesion

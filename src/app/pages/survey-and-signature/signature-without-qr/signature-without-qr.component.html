@@ -38,7 +38,8 @@
             </ion-avatar>
           </ion-item>
         </ion-col>
-
+      </ion-row>
+      <ion-row>
         <ion-col>
           <ion-item lines="none" (click)="radioSelected('Regular')">
             <ion-label class="imgSinSeleccionar">Regular</ion-label>
@@ -73,7 +74,7 @@
   </div>
 </div>
 
-<div style="border: 1px solid black; border-radius: 10px" *ngIf="showSignature">
+<div style="border: 1px solid black; border-radius: 10px;background: #ffffff;" *ngIf="showSignature" class="firmaContent">
   <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"> </signature-pad>
   <div class="ion-text-center">
     <p class="firma" *ngIf="namePersonSignature">

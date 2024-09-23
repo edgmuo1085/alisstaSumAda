@@ -235,9 +235,19 @@ export class CompaniesService {
     }
 
     const url = environment.API_GUARDAR_EMPRESA_MIGRADA;
-    console.log('uel de update', url);
+
+    console.log("LogDev save: ", JSON.stringify(url));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(0,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(3999,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(7998,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(11997,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(15996,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(19995,4000));
+    console.log("LogDev save: ", JSON.stringify(this.company).substr(23994));
+    
 
     return this.http.post(url, this.company).pipe(
+
       tap(async (r: any) => {
         const result = r.split(';')[0];
 

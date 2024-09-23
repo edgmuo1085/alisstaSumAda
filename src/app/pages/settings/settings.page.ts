@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faBook, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { AppRate } from '@ionic-native/app-rate/ngx';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { ConfigService } from '../../config.service';
 import { Observable } from 'rxjs';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
@@ -31,6 +31,24 @@ export class SettingsPage implements OnInit {
    */
   faBook: IconDefinition;
 
+  options: InAppBrowserOptions = {
+    location: 'yes',//Or 'no' 
+    hidden: 'no', //Or  'yes'
+    clearcache: 'yes',
+    clearsessioncache: 'yes',
+    zoom: 'yes',//Android only ,shows browser zoom controls 
+    hardwareback: 'yes',
+    mediaPlaybackRequiresUserAction: 'no',
+    shouldPauseOnSuspend: 'no', //Android only 
+    closebuttoncaption: 'Cerrar', //iOS only
+    disallowoverscroll: 'no', //iOS only 
+    toolbar: 'yes', //iOS only 
+    enableViewportScale: 'no', //iOS only 
+    allowInlineMediaPlayback: 'no',//iOS only 
+    presentationstyle: 'fullscreen',//iOS only 
+    fullscreen: 'yes',//Windows only    
+  };
+
   /**
    * Cadenas de texto para la ventana de alerta de calificación de la aplicación.
    */
@@ -47,7 +65,7 @@ export class SettingsPage implements OnInit {
    */
   private readonly RATE_APP_IDS = {
     ios: `<${this.config.iosAppID}>`,
-    android: `market://details?id=<${this.config.androidAppID}>`,
+    android: `market://details?id=${this.config.androidAppID}`,
   };
 
   public static readonly NOTIFICATIONS_KEY: string = 'notifications';
@@ -154,7 +172,7 @@ export class SettingsPage implements OnInit {
    * Muestra una ventana de diálogo que le permite al usuario calificar la aplicación en el mercado
    * de aplicaciones.
    */
-  async rateApp(): Promise<void> {
+  async rateAppOld(): Promise<void> {
     this.appRate.setPreferences({
       storeAppURL: this.RATE_APP_IDS,
       customLocale: this.RATE_APP_TEXTS,
@@ -217,4 +235,33 @@ export class SettingsPage implements OnInit {
       this.toastAutologin('¡Autologin activado!');
     }
   }
+
+  rateApp() {
+
+    var userAgent = navigator.userAgent;
+    var dispositivo = "ios";
+
+    if (userAgent.split("Android").length > 1) {
+      dispositivo = "android";
+    }
+
+    if (dispositivo == "android") {
+
+      this.appRate.setPreferences({
+        storeAppURL: this.RATE_APP_IDS,
+        customLocale: this.RATE_APP_TEXTS,
+        simpleMode: true,
+      });
+  
+      this.appRate.promptForRating(true);
+
+    } else {
+
+      let url = 'https://apps.apple.com/us/app/alissta-sum/id1534224945';
+      this.iab.create(url, '_blank', this.options);
+
+    }
+
+  }
+
 }

@@ -168,3 +168,11 @@ export interface liberarActividades {
   direccionIP: string;
   CedulaUsuarioModifica: string;
 }
+
+export interface progressBarValues {
+  visible: boolean;
+  progress: number;
+  records: number;
+  refreshBtnEnable: boolean
+}
+

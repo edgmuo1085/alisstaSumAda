@@ -125,6 +125,9 @@ export class SignaturePage implements OnInit {
    * Envía los datos al servidor para su procesamiento.
    */
   async send(): Promise<void> {
+
+    console.log("LogDev Send");
+
     if (this.formGroup.invalid) {
       return;
     }
@@ -195,8 +198,8 @@ export class SignaturePage implements OnInit {
       .subscribe({
         next: async r => {
           const result = JSON.stringify(r).includes('false');
-          console.log('REsultado de save compañia', r);
-          console.log('REsultado de save compañia result', result);
+          
+          console.log('LogDev Send Next: ', JSON.stringify(r));
 
           if (result == true) {
             onError();
@@ -208,7 +211,9 @@ export class SignaturePage implements OnInit {
           alert.present();
           this.router.navigate(['../../../../'], { relativeTo: this.route });
         },
-        error: onError,
+        error: (err) => {
+          console.error("LogDev Send: " + JSON.stringify(err)); // Manejo de errores
+        }
       });
   }
 
@@ -283,6 +288,9 @@ export class SignaturePage implements OnInit {
    * Obtiene la geolocalización del dispositivo.
    */
   private async getGeolocation(): Promise<void> {
+
+    console.log("LogDev getGeolocation");
+
     const loading = await this.alertService.showLoading();
 
     this.geolocation
@@ -293,9 +301,14 @@ export class SignaturePage implements OnInit {
           lng: `${response.coords.longitude}`,
         };
 
+        console.log("LogDev getGeolocation", JSON.stringify(this.coords));
+
         this.getCompany();
       })
       .catch(async error => {
+
+        console.log("LogDev getGeolocation", JSON.stringify(error.code));
+
         if (error.code === 1) {
           // Si se produce un error de este tipo es porque se está intentando acceder al servicio
           // de ubicación desde un origen inseguro. Se asume que entonces se está ejecutando la aplicación

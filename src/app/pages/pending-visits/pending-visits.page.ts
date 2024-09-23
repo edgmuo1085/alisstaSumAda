@@ -5,6 +5,7 @@ import { LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ActivityListCompanyService } from '../../services/activities/activityListCompany/activity-list-company.service';
 import { NetworkService } from '../../services/network/network.service';
+import { progressBarValues } from 'src/app/intarfaces/interfaces';
 
 /**
  * Componente de la vista de visitas pendientes.
@@ -16,6 +17,13 @@ import { NetworkService } from '../../services/network/network.service';
 })
 export class PendingVisitsPage implements OnInit {
   listActivity: any[] = [];
+  listActivityTotal: number = 0;
+  progressBar: progressBarValues | any = {
+    visible: false,
+    progress: 0,
+    records: 0,
+    refreshBtnEnable: false
+  };
 
   textoBuscar = '';
   moduloBuscar = '';
@@ -70,19 +78,22 @@ export class PendingVisitsPage implements OnInit {
     this.presentLoading();
     const documentoUsuario = await this.storage.get('sesion');
 
-    setTimeout(() => {
-      this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).subscribe(
+    setTimeout(() => { //TODO: evaluar purgar memoria de array de la lista
+      this.listActivitiesCompany.listActivityForCompany(documentoUsuario).subscribe(
         async response => {
           console.log('Respuesta de actividade', response);
 
+          const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
+          this.listActivityTotal = listActivityTotal;
+
           const listActivity = response.listActivitiesCompany || [];
+
           const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
 
-          listActivity.forEach((a: any) => {
-            a.listaActividadesMigradas = a.listaActividadesMigradas.filter(
-              (aa: any) => actasGuardadas.find(aaa => aaa.activities.find((aaaa: any) => aaaa.id === aa.id)) === undefined
-            );
-          });
+          console.log("Actas Guardadas Metodo: ", actasGuardadas)
+
+          this.listActivitiesCompany.actasGuardadas = actasGuardadas;
+          this.listActivitiesCompany.listActivitiesFilter(listActivity);
 
           this.storage.set('departamentos', response.listDepartamentos);
           this.storage.set('municipios', response.listMunicipios);
@@ -90,9 +101,22 @@ export class PendingVisitsPage implements OnInit {
 
           // Guardar las actividades en un BD local.
           this.storage.set('listaActividades', listActivity);
+          this.listActivitiesCompany.setActivities(listActivity);
           this.validateDataListActivities();
           this.showListPendingVisit = false;
           this.loading.dismiss();
+
+          if (listActivity.length < listActivityTotal) {
+            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues)})
+            this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
+            this.listActivitiesCompany.activities$.subscribe(
+              async listActivitiesForPage => {
+                this.storage.set('listaActividades', listActivitiesForPage);
+                await this.storage.get('listaActividades')
+                this.validateDataListActivities()
+              }
+            )
+          }
         },
         err => {
           this.loading.dismiss();
@@ -112,7 +136,6 @@ export class PendingVisitsPage implements OnInit {
 
   async validateDataListActivities() {
     const dataListActivities = await this.storage.get('listaActividades');
-
     if (dataListActivities) {
       this.listActivity = dataListActivities.filter((a: any) => a.listaActividadesMigradas.length > 0);
     } else {

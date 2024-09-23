@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Plugins } from '@capacitor/core';
+// import { Plugins } from '@capacitor/core';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 import { InAppBrowser, InAppBrowserObject, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
@@ -14,7 +14,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/Authentication/auth.service';
 import { SettingsPage } from '../../settings/settings.page';
 
-const { App } = Plugins;
+// const { App } = Plugins;
 
 /**
  * Componente de la vista de inicio de sesión.
@@ -226,7 +226,6 @@ export class LoginPage implements OnInit {
    * Si el formulario es válido, realiza el inicio de sesión.
    */
   login(): void {
-    console.log('El formulario es: ', this.form);
     const employerId = this.form.value.employerID;
     const userID = this.form.value.userID;
     const password = this.form.value.password;
@@ -239,6 +238,7 @@ export class LoginPage implements OnInit {
     if (validForm) {
       this.autentication(employerId, userID, password);
     }
+    // this.autentication(901247360, "1017184468", "Abc123456*");//TODO: borrar una vez se terminen pruebas
   }
 
   async autoLogin() {
@@ -343,7 +343,7 @@ export class LoginPage implements OnInit {
    * Muestra una ventana de diálogo que le permite al usuario ir a la página de _Alissta_ para realizar
    * recuperación de contraseña.
    */
-  async forgotPassword(): Promise<void> {
+  async forgotPasswordOld(): Promise<void> {
     const okHandler = (): void => {
       // this.iab.create(this.config.allistaPasswordRecoveryURL, '_system');
       // this.iab.create(this.config.allistaPasswordRecoveryURL, '_blank', this.options);
@@ -478,4 +478,15 @@ export class LoginPage implements OnInit {
     });
     return this.loading.present();
   }
+
+  /**
+   * Recuperar contraseña
+   * params void
+   * return void
+   */
+  forgotPassword() {
+    let url = environment.RECUPERAR_PASSWORD;
+    this.iab.create(url, '_blank', this.options);
+  }
+  
 }

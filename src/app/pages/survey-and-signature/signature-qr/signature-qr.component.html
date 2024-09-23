@@ -25,7 +25,7 @@
   <div class="ion-text-center">
     <h4>Firma responsable de ARL</h4>
   </div>
-  <div style="border: 1px solid black; border-radius: 10px">
+  <div style="border: 1px solid black; border-radius: 10px" class="firmaContent">
     <signature-pad [options]="signaturePadOptions" (onBeginEvent)="drawStart()" (onEndEvent)="drawComplete()"> </signature-pad>
     <div class="ion-text-center">
       <p class="firma" *ngIf="infoUserARL">{{ infoUserARL.nombres }} {{ infoUserARL.apellidos }}</p>

@@ -21,6 +21,7 @@ export const environment = {
   API_SAVE_RECOMMENDATION_AT: ambiente + 'Incidente/guardar-recomendacionesGenerales-siniestro-app',
 
   API_GET_Avtividades_Empresa: ambiente + 'Actividad/Actividades-Empresa',
+  API_GET_Cantidad_Registros_Por_Pagina: ambiente + 'Actividad/Cantidad_RegistrosPorPaginaAPP',
   API_LIBERAR_ACTIVIDADES: ambiente + 'Actividad/Actividades-Liberar',
   API_RECOVERY_VERIFICATION_CODE: ambiente + 'Actividad/Actividades-ReenviarCodigoVerificacion',
   API_SAVE_ACTA_ASESORIA: ambiente + 'Actividad/Actividades-GuardarActaAsesoria',

@@ -43,11 +43,14 @@ export class EditContactPage {
    * Tipos de documento.
    */
   readonly TIPOS_DOCUMENTO = [
-    { label: 'CC', value: 'CC' },
-    { label: 'CE', value: 'CE' },
-    { label: 'PA', value: 'PA' },
-    { label: 'PE', value: 'PE' },
-    { label: 'PT', value: 'PT' },
+    { label: 'CC', value: '1' },
+    { label: 'NI', value: '2' },
+    { label: 'CE', value: '3' },
+    { label: 'NU', value: '4' },
+    { label: 'PA', value: '5' },
+    { label: 'TI', value: '6' },
+    { label: 'PE', value: '7' },
+    { label: 'PT', value: '8' }
   ];
 
   /**
