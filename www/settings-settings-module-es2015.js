@@ -968,19 +968,7 @@ class FontAwesomeModule {
 }
 FontAwesomeModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: FontAwesomeModule });
 FontAwesomeModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FontAwesomeModule_Factory(t) { return new (t || FontAwesomeModule)(); } });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FontAwesomeModule, { declarations: [FaIconComponent,
-        FaDuotoneIconComponent,
-        FaLayersComponent,
-        FaLayersTextComponent,
-        FaLayersCounterComponent,
-        FaStackComponent,
-        FaStackItemSizeDirective], exports: [FaIconComponent,
-        FaDuotoneIconComponent,
-        FaLayersComponent,
-        FaLayersTextComponent,
-        FaLayersCounterComponent,
-        FaStackComponent,
-        FaStackItemSizeDirective] }); })();
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FontAwesomeModule, { declarations: [FaIconComponent, FaDuotoneIconComponent, FaLayersComponent, FaLayersTextComponent, FaLayersCounterComponent, FaStackComponent, FaStackItemSizeDirective], exports: [FaIconComponent, FaDuotoneIconComponent, FaLayersComponent, FaLayersTextComponent, FaLayersCounterComponent, FaStackComponent, FaStackItemSizeDirective] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FontAwesomeModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{

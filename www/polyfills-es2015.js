@@ -3052,7 +3052,7 @@ window.__Zone_disable_customElements = true;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\calvarado\Documents\proyecto\Actual\alissta_sum\Trunk\202406071\src\polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! /Users/ada/Documents/apps/alisstaSumAda/src/polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })
