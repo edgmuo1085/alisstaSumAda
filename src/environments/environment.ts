@@ -16,7 +16,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/; 
 
 // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';                             // Produccion
-//const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';  // Test Original 
+const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';  // Test Original 
 //const ambiente = 'http://test-dos-positiva.adacsc.co/';
 // const ambiente = 'http://splaneacion-test-dos.adacsc.co/';
 // const ambiente = 'http://saplicacion-test-dos.adacsc.co/';
@@ -37,7 +37,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 //const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
 
 //  Pre
-const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+// const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 
 //  Producción
 //const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
