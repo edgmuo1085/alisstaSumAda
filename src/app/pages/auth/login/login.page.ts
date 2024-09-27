@@ -234,6 +234,7 @@ export class LoginPage implements OnInit {
       documentoUsuario: userID,
       password,
     };
+    console.log('Usuario: ', this.infoUserAuth);
     const validForm = this.validateForm();
     if (validForm) {
       this.autentication(employerId, userID, password);

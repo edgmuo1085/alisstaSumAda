@@ -150,7 +150,9 @@ export class ResponsibleSignatureARLPage implements OnInit {
     if (checkNetwork) {
       await this.presentLoading('Creando acta de asesoría ...');
       let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
+      console.log("Creacion acta sin split: ", creacionActa)
       creacionActa = creacionActa.split(';');
+      console.log("Creacion acta con split: ", creacionActa)
       if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
         for (const f of files) {
           const body = { ...f, UidActaAsesoria: +creacionActa[1] };
