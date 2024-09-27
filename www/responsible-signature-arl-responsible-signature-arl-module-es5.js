@@ -551,7 +551,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   files = this.getFiles();
 
                   if (!checkNetwork) {
-                    _context6.next = 72;
+                    _context6.next = 74;
                     break;
                   }
 
@@ -564,21 +564,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 case 11:
                   creacionActa = _context6.sent;
+                  console.log("Creacion acta sin split: ", creacionActa);
                   creacionActa = creacionActa.split(';');
+                  console.log("Creacion acta con split: ", creacionActa);
 
                   if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
-                    _context6.next = 68;
+                    _context6.next = 70;
                     break;
                   }
 
                   _iterator = _createForOfIteratorHelper(files);
-                  _context6.prev = 15;
+                  _context6.prev = 17;
 
                   _iterator.s();
 
-                case 17:
+                case 19:
                   if ((_step = _iterator.n()).done) {
-                    _context6.next = 24;
+                    _context6.next = 26;
                     break;
                   }
 
@@ -586,44 +588,44 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   body = Object.assign(Object.assign({}, f), {
                     UidActaAsesoria: +creacionActa[1]
                   });
-                  _context6.next = 22;
+                  _context6.next = 24;
                   return this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
 
-                case 22:
-                  _context6.next = 17;
-                  break;
-
                 case 24:
-                  _context6.next = 29;
+                  _context6.next = 19;
                   break;
 
                 case 26:
-                  _context6.prev = 26;
-                  _context6.t0 = _context6["catch"](15);
+                  _context6.next = 31;
+                  break;
+
+                case 28:
+                  _context6.prev = 28;
+                  _context6.t0 = _context6["catch"](17);
 
                   _iterator.e(_context6.t0);
 
-                case 29:
-                  _context6.prev = 29;
+                case 31:
+                  _context6.prev = 31;
 
                   _iterator.f();
 
-                  return _context6.finish(29);
+                  return _context6.finish(31);
 
-                case 32:
+                case 34:
                   if (!(this.actaAsesoriaGestionada && this.actaAsesoriaGestionada.TTA_lista && this.actaAsesoriaGestionada.TTA_lista.length > 0)) {
-                    _context6.next = 52;
+                    _context6.next = 54;
                     break;
                   }
 
                   _iterator2 = _createForOfIteratorHelper(this.actaAsesoriaGestionada.TTA_lista);
-                  _context6.prev = 34;
+                  _context6.prev = 36;
 
                   _iterator2.s();
 
-                case 36:
+                case 38:
                   if ((_step2 = _iterator2.n()).done) {
-                    _context6.next = 44;
+                    _context6.next = 46;
                     break;
                   }
 
@@ -633,36 +635,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   notifCorreoActa = {
                     Fk_ID_ActividadMigradaPorUsuario: idActividadMigradaPorUsuario
                   };
-                  _context6.next = 42;
+                  _context6.next = 44;
                   return this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
 
-                case 42:
-                  _context6.next = 36;
-                  break;
-
                 case 44:
-                  _context6.next = 49;
+                  _context6.next = 38;
                   break;
 
                 case 46:
-                  _context6.prev = 46;
-                  _context6.t1 = _context6["catch"](34);
+                  _context6.next = 51;
+                  break;
+
+                case 48:
+                  _context6.prev = 48;
+                  _context6.t1 = _context6["catch"](36);
 
                   _iterator2.e(_context6.t1);
 
-                case 49:
-                  _context6.prev = 49;
+                case 51:
+                  _context6.prev = 51;
 
                   _iterator2.f();
 
-                  return _context6.finish(49);
+                  return _context6.finish(51);
 
-                case 52:
+                case 54:
                   this.photoService.photos = [];
-                  _context6.next = 55;
+                  _context6.next = 57;
                   return this.storage.get('listaActividades');
 
-                case 55:
+                case 57:
                   listaActividades = _context6.sent;
                   _loop = /*#__PURE__*/_regeneratorRuntime().mark(function _loop(i) {
                     var actividadesMigradas;
@@ -691,35 +693,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   });
                   i = 0;
 
-                case 58:
+                case 60:
                   if (!(i < listaActividades.length)) {
-                    _context6.next = 63;
+                    _context6.next = 65;
                     break;
                   }
 
-                  return _context6.delegateYield(_loop(i), "t2", 60);
+                  return _context6.delegateYield(_loop(i), "t2", 62);
 
-                case 60:
+                case 62:
                   i++;
-                  _context6.next = 58;
+                  _context6.next = 60;
                   break;
 
-                case 63:
+                case 65:
                   this.storage.set('listaActividades', listaActividades);
                   this.notification('Atención', 'Se ha creado el acta de asesoría');
                   this.router.navigateByUrl('/u/execLog');
-                  _context6.next = 69;
+                  _context6.next = 71;
                   break;
 
-                case 68:
+                case 70:
                   this.notification('Error', 'No se pudo crear el acta de asesoría');
 
-                case 69:
+                case 71:
                   this.loading.dismiss();
-                  _context6.next = 87;
+                  _context6.next = 89;
                   break;
 
-                case 72:
+                case 74:
                   activitiesChange = [];
                   getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
                   actSelec = JSON.parse(sessionStorage.companySelected); // tslint:disable-next-line: prefer-for-of
@@ -749,20 +751,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   });
                   _i = 0;
 
-                case 77:
+                case 79:
                   if (!(_i < actSelec.listaActividadesMigradas.length)) {
-                    _context6.next = 82;
+                    _context6.next = 84;
                     break;
                   }
 
-                  return _context6.delegateYield(_loop2(), "t3", 79);
+                  return _context6.delegateYield(_loop2(), "t3", 81);
 
-                case 79:
+                case 81:
                   _i++;
-                  _context6.next = 77;
+                  _context6.next = 79;
                   break;
 
-                case 82:
+                case 84:
                   actSelec.listaActividadesMigradas = activitiesChange;
                   cambioCompanySelected = JSON.stringify(actSelec);
                   sessionStorage.setItem('companySelected', cambioCompanySelected);
@@ -773,11 +775,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     this.router.navigateByUrl('/u/execLog');
                   }
 
-                case 87:
+                case 89:
                 case "end":
                   return _context6.stop();
               }
-            }, _callee4, this, [[15, 26, 29, 32], [34, 46, 49, 52]]);
+            }, _callee4, this, [[17, 28, 31, 34], [36, 48, 51, 54]]);
           }));
         }
       }, {
@@ -1188,7 +1190,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       },
       directives: [_ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonHeader"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonGrid"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonRow"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonCol"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonToolbar"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonButtons"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonBackButton"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonBackButtonDelegate"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonTitle"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonContent"], _angular_common__WEBPACK_IMPORTED_MODULE_13__["NgIf"], angular2_signaturepad__WEBPACK_IMPORTED_MODULE_7__["SignaturePad"], _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonButton"]],
-      styles: ["ion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%] {\n  padding: 0px;\n  background: #95a6b1;\n  color: white;\n}\nion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%]   ion-row[_ngcontent-%COMP%]   ion-col[_ngcontent-%COMP%] {\n  padding: 0px;\n  background: #95a6b1;\n}\nion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%]   ion-row[_ngcontent-%COMP%]   ion-toolbar[_ngcontent-%COMP%] {\n  padding: 0px;\n}\nsignature-pad[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n.titulo[_ngcontent-%COMP%] {\n  width: 100% !important;\n  font-size: 20px !important;\n  text-align: left;\n  padding: 0px;\n  padding-top: 10px;\n}\n.firma[_ngcontent-%COMP%] {\n  border-top: 1px solid #95a6b1;\n  margin-right: 30px;\n  margin-left: 30px;\n  font-weight: bold;\n  color: gray;\n  font: unset;\n  font-size: 15px;\n  padding-top: 5px;\n}\nh3[_ngcontent-%COMP%] {\n  text-align: center;\n}\n.firmaContent[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n.firmaContent[_ngcontent-%COMP%]   div[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvcmVzcG9uc2libGUtc2lnbmF0dXJlLWFybC9DOlxcVXNlcnNcXGNhbHZhcmFkb1xcRG9jdW1lbnRzXFxwcm95ZWN0b1xcQWN0dWFsXFxhbGlzc3RhX3N1bVxcQnJhbmNoZXNcXFJldmlzaW9uX1ZlcnNpb25fQWN0dWFsaXphZGFfMjAyNDA5MjAvc3JjXFxhcHBcXHBhZ2VzXFxyZXNwb25zaWJsZS1zaWduYXR1cmUtYXJsXFxyZXNwb25zaWJsZS1zaWduYXR1cmUtYXJsLnBhZ2Uuc2NzcyIsInNyYy9hcHAvcGFnZXMvcmVzcG9uc2libGUtc2lnbmF0dXJlLWFybC9yZXNwb25zaWJsZS1zaWduYXR1cmUtYXJsLnBhZ2Uuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDRTtFQUNFLFlBQUE7RUFDQSxtQkFBQTtFQUNBLFlBQUE7QUNBSjtBREVNO0VBQ0UsWUFBQTtFQUNBLG1CQUFBO0FDQVI7QURFTTtFQUNFLFlBQUE7QUNBUjtBRE1BO0VBQ0UsOEJBQUE7QUNIRjtBRE1BO0VBQ0Usc0JBQUE7RUFDQSwwQkFBQTtFQUNBLGdCQUFBO0VBQ0EsWUFBQTtFQUNBLGlCQUFBO0FDSEY7QURNQTtFQUNFLDZCQUFBO0VBQ0Esa0JBQUE7RUFDQSxpQkFBQTtFQUNBLGlCQUFBO0VBQ0EsV0FBQTtFQUNBLFdBQUE7RUFDQSxlQUFBO0VBQ0EsZ0JBQUE7QUNIRjtBRE1BO0VBQ0Usa0JBQUE7QUNIRjtBRE1BO0VBQ0UsOEJBQUE7QUNIRjtBRE1BO0VBQ0UsOEJBQUE7QUNIRiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL3Jlc3BvbnNpYmxlLXNpZ25hdHVyZS1hcmwvcmVzcG9uc2libGUtc2lnbmF0dXJlLWFybC5wYWdlLnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJpb24taGVhZGVyIHtcbiAgaW9uLWdyaWQge1xuICAgIHBhZGRpbmc6IDBweDtcbiAgICBiYWNrZ3JvdW5kOiAjOTVhNmIxO1xuICAgIGNvbG9yOiB3aGl0ZTtcbiAgICBpb24tcm93IHtcbiAgICAgIGlvbi1jb2wge1xuICAgICAgICBwYWRkaW5nOiAwcHg7XG4gICAgICAgIGJhY2tncm91bmQ6ICM5NWE2YjE7XG4gICAgICB9XG4gICAgICBpb24tdG9vbGJhciB7XG4gICAgICAgIHBhZGRpbmc6IDBweDtcbiAgICAgIH1cbiAgICB9XG4gIH1cbn1cblxuc2lnbmF0dXJlLXBhZCB7XG4gIGJhY2tncm91bmQ6ICNmZmZmZmYhaW1wb3J0YW50O1xufVxuXG4udGl0dWxvIHtcbiAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDtcbiAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG4gIHRleHQtYWxpZ246IGxlZnQ7XG4gIHBhZGRpbmc6IDBweDtcbiAgcGFkZGluZy10b3A6IDEwcHg7XG59XG5cbi5maXJtYSB7XG4gIGJvcmRlci10b3A6IDFweCBzb2xpZCAjOTVhNmIxO1xuICBtYXJnaW4tcmlnaHQ6IDMwcHg7XG4gIG1hcmdpbi1sZWZ0OiAzMHB4O1xuICBmb250LXdlaWdodDogYm9sZDtcbiAgY29sb3I6IGdyYXk7XG4gIGZvbnQ6IHVuc2V0O1xuICBmb250LXNpemU6IDE1cHg7XG4gIHBhZGRpbmctdG9wOiA1cHg7XG59XG5cbmgzIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uZmlybWFDb250ZW50IHtcbiAgYmFja2dyb3VuZDogI2ZmZmZmZiFpbXBvcnRhbnQ7XG59XG5cbi5maXJtYUNvbnRlbnQgZGl2e1xuICBiYWNrZ3JvdW5kOiAjZmZmZmZmIWltcG9ydGFudDtcbn0gXG4iLCJpb24taGVhZGVyIGlvbi1ncmlkIHtcbiAgcGFkZGluZzogMHB4O1xuICBiYWNrZ3JvdW5kOiAjOTVhNmIxO1xuICBjb2xvcjogd2hpdGU7XG59XG5pb24taGVhZGVyIGlvbi1ncmlkIGlvbi1yb3cgaW9uLWNvbCB7XG4gIHBhZGRpbmc6IDBweDtcbiAgYmFja2dyb3VuZDogIzk1YTZiMTtcbn1cbmlvbi1oZWFkZXIgaW9uLWdyaWQgaW9uLXJvdyBpb24tdG9vbGJhciB7XG4gIHBhZGRpbmc6IDBweDtcbn1cblxuc2lnbmF0dXJlLXBhZCB7XG4gIGJhY2tncm91bmQ6ICNmZmZmZmYgIWltcG9ydGFudDtcbn1cblxuLnRpdHVsbyB7XG4gIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7XG4gIGZvbnQtc2l6ZTogMjBweCAhaW1wb3J0YW50O1xuICB0ZXh0LWFsaWduOiBsZWZ0O1xuICBwYWRkaW5nOiAwcHg7XG4gIHBhZGRpbmctdG9wOiAxMHB4O1xufVxuXG4uZmlybWEge1xuICBib3JkZXItdG9wOiAxcHggc29saWQgIzk1YTZiMTtcbiAgbWFyZ2luLXJpZ2h0OiAzMHB4O1xuICBtYXJnaW4tbGVmdDogMzBweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGNvbG9yOiBncmF5O1xuICBmb250OiB1bnNldDtcbiAgZm9udC1zaXplOiAxNXB4O1xuICBwYWRkaW5nLXRvcDogNXB4O1xufVxuXG5oMyB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuLmZpcm1hQ29udGVudCB7XG4gIGJhY2tncm91bmQ6ICNmZmZmZmYgIWltcG9ydGFudDtcbn1cblxuLmZpcm1hQ29udGVudCBkaXYge1xuICBiYWNrZ3JvdW5kOiAjZmZmZmZmICFpbXBvcnRhbnQ7XG59Il19 */"]
+      styles: ["ion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%] {\n  padding: 0px;\n  background: #95a6b1;\n  color: white;\n}\nion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%]   ion-row[_ngcontent-%COMP%]   ion-col[_ngcontent-%COMP%] {\n  padding: 0px;\n  background: #95a6b1;\n}\nion-header[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%]   ion-row[_ngcontent-%COMP%]   ion-toolbar[_ngcontent-%COMP%] {\n  padding: 0px;\n}\nsignature-pad[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n.titulo[_ngcontent-%COMP%] {\n  width: 100% !important;\n  font-size: 20px !important;\n  text-align: left;\n  padding: 0px;\n  padding-top: 10px;\n}\n.firma[_ngcontent-%COMP%] {\n  border-top: 1px solid #95a6b1;\n  margin-right: 30px;\n  margin-left: 30px;\n  font-weight: bold;\n  color: gray;\n  font: unset;\n  font-size: 15px;\n  padding-top: 5px;\n}\nh3[_ngcontent-%COMP%] {\n  text-align: center;\n}\n.firmaContent[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n.firmaContent[_ngcontent-%COMP%]   div[_ngcontent-%COMP%] {\n  background: #ffffff !important;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvcGFnZXMvcmVzcG9uc2libGUtc2lnbmF0dXJlLWFybC9DOlxcVXNlcnNcXGNhbHZhcmFkb1xcRG9jdW1lbnRzXFxwcm95ZWN0b1xcQWN0dWFsXFxhbGlzc3RhX3N1bVxcVHJ1bmtcXDIwMjQwNjA3MS9zcmNcXGFwcFxccGFnZXNcXHJlc3BvbnNpYmxlLXNpZ25hdHVyZS1hcmxcXHJlc3BvbnNpYmxlLXNpZ25hdHVyZS1hcmwucGFnZS5zY3NzIiwic3JjL2FwcC9wYWdlcy9yZXNwb25zaWJsZS1zaWduYXR1cmUtYXJsL3Jlc3BvbnNpYmxlLXNpZ25hdHVyZS1hcmwucGFnZS5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUNFO0VBQ0UsWUFBQTtFQUNBLG1CQUFBO0VBQ0EsWUFBQTtBQ0FKO0FERU07RUFDRSxZQUFBO0VBQ0EsbUJBQUE7QUNBUjtBREVNO0VBQ0UsWUFBQTtBQ0FSO0FETUE7RUFDRSw4QkFBQTtBQ0hGO0FETUE7RUFDRSxzQkFBQTtFQUNBLDBCQUFBO0VBQ0EsZ0JBQUE7RUFDQSxZQUFBO0VBQ0EsaUJBQUE7QUNIRjtBRE1BO0VBQ0UsNkJBQUE7RUFDQSxrQkFBQTtFQUNBLGlCQUFBO0VBQ0EsaUJBQUE7RUFDQSxXQUFBO0VBQ0EsV0FBQTtFQUNBLGVBQUE7RUFDQSxnQkFBQTtBQ0hGO0FETUE7RUFDRSxrQkFBQTtBQ0hGO0FETUE7RUFDRSw4QkFBQTtBQ0hGO0FETUE7RUFDRSw4QkFBQTtBQ0hGIiwiZmlsZSI6InNyYy9hcHAvcGFnZXMvcmVzcG9uc2libGUtc2lnbmF0dXJlLWFybC9yZXNwb25zaWJsZS1zaWduYXR1cmUtYXJsLnBhZ2Uuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1oZWFkZXIge1xuICBpb24tZ3JpZCB7XG4gICAgcGFkZGluZzogMHB4O1xuICAgIGJhY2tncm91bmQ6ICM5NWE2YjE7XG4gICAgY29sb3I6IHdoaXRlO1xuICAgIGlvbi1yb3cge1xuICAgICAgaW9uLWNvbCB7XG4gICAgICAgIHBhZGRpbmc6IDBweDtcbiAgICAgICAgYmFja2dyb3VuZDogIzk1YTZiMTtcbiAgICAgIH1cbiAgICAgIGlvbi10b29sYmFyIHtcbiAgICAgICAgcGFkZGluZzogMHB4O1xuICAgICAgfVxuICAgIH1cbiAgfVxufVxuXG5zaWduYXR1cmUtcGFkIHtcbiAgYmFja2dyb3VuZDogI2ZmZmZmZiFpbXBvcnRhbnQ7XG59XG5cbi50aXR1bG8ge1xuICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xuICBmb250LXNpemU6IDIwcHggIWltcG9ydGFudDtcbiAgdGV4dC1hbGlnbjogbGVmdDtcbiAgcGFkZGluZzogMHB4O1xuICBwYWRkaW5nLXRvcDogMTBweDtcbn1cblxuLmZpcm1hIHtcbiAgYm9yZGVyLXRvcDogMXB4IHNvbGlkICM5NWE2YjE7XG4gIG1hcmdpbi1yaWdodDogMzBweDtcbiAgbWFyZ2luLWxlZnQ6IDMwcHg7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xuICBjb2xvcjogZ3JheTtcbiAgZm9udDogdW5zZXQ7XG4gIGZvbnQtc2l6ZTogMTVweDtcbiAgcGFkZGluZy10b3A6IDVweDtcbn1cblxuaDMge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbi5maXJtYUNvbnRlbnQge1xuICBiYWNrZ3JvdW5kOiAjZmZmZmZmIWltcG9ydGFudDtcbn1cblxuLmZpcm1hQ29udGVudCBkaXZ7XG4gIGJhY2tncm91bmQ6ICNmZmZmZmYhaW1wb3J0YW50O1xufSBcbiIsImlvbi1oZWFkZXIgaW9uLWdyaWQge1xuICBwYWRkaW5nOiAwcHg7XG4gIGJhY2tncm91bmQ6ICM5NWE2YjE7XG4gIGNvbG9yOiB3aGl0ZTtcbn1cbmlvbi1oZWFkZXIgaW9uLWdyaWQgaW9uLXJvdyBpb24tY29sIHtcbiAgcGFkZGluZzogMHB4O1xuICBiYWNrZ3JvdW5kOiAjOTVhNmIxO1xufVxuaW9uLWhlYWRlciBpb24tZ3JpZCBpb24tcm93IGlvbi10b29sYmFyIHtcbiAgcGFkZGluZzogMHB4O1xufVxuXG5zaWduYXR1cmUtcGFkIHtcbiAgYmFja2dyb3VuZDogI2ZmZmZmZiAhaW1wb3J0YW50O1xufVxuXG4udGl0dWxvIHtcbiAgd2lkdGg6IDEwMCUgIWltcG9ydGFudDtcbiAgZm9udC1zaXplOiAyMHB4ICFpbXBvcnRhbnQ7XG4gIHRleHQtYWxpZ246IGxlZnQ7XG4gIHBhZGRpbmc6IDBweDtcbiAgcGFkZGluZy10b3A6IDEwcHg7XG59XG5cbi5maXJtYSB7XG4gIGJvcmRlci10b3A6IDFweCBzb2xpZCAjOTVhNmIxO1xuICBtYXJnaW4tcmlnaHQ6IDMwcHg7XG4gIG1hcmdpbi1sZWZ0OiAzMHB4O1xuICBmb250LXdlaWdodDogYm9sZDtcbiAgY29sb3I6IGdyYXk7XG4gIGZvbnQ6IHVuc2V0O1xuICBmb250LXNpemU6IDE1cHg7XG4gIHBhZGRpbmctdG9wOiA1cHg7XG59XG5cbmgzIHtcbiAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4uZmlybWFDb250ZW50IHtcbiAgYmFja2dyb3VuZDogI2ZmZmZmZiAhaW1wb3J0YW50O1xufVxuXG4uZmlybWFDb250ZW50IGRpdiB7XG4gIGJhY2tncm91bmQ6ICNmZmZmZmYgIWltcG9ydGFudDtcbn0iXX0= */"]
     });
     /*@__PURE__*/
 
