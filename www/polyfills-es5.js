@@ -18875,7 +18875,7 @@ function _toPrimitive(input, hint) { if (typeof input !== "object" || input === 
   /***/
   function _(module, exports, __webpack_require__) {
     __webpack_require__(
-    /*! C:\Users\calvarado\Documents\proyecto\Actual\alissta_sum\Trunk\202406071\node_modules\@angular-devkit\build-angular\src\angular-cli-files\models\es5-polyfills.js */
+    /*! /Users/ada/Documents/apps/alisstaSumAda/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js */
     "./node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/es5-polyfills.js");
 
     __webpack_require__(
@@ -18883,7 +18883,7 @@ function _toPrimitive(input, hint) { if (typeof input !== "object" || input === 
     "./node_modules/zone.js/dist/zone-legacy.js");
 
     module.exports = __webpack_require__(
-    /*! C:\Users\calvarado\Documents\proyecto\Actual\alissta_sum\Trunk\202406071\src\polyfills.ts */
+    /*! /Users/ada/Documents/apps/alisstaSumAda/src/polyfills.ts */
     "./src/polyfills.ts");
     /***/
   }

@@ -79,14 +79,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
-  CapacitorApp: d9ad682d7afb46cff7f6b80dc47ecaecb470b979
-  CapacitorCamera: e00aa9e60b80f5d40ead0f5bdd88cb45fdc3e571
-  CapacitorCommunityBarcodeScanner: a43bb14cec343f4defaf26cac281d799b25b90f0
+  CapacitorApp: acd42fe8561fe751ad5b5f459aa85e6acd7bee24
+  CapacitorCamera: 6f0777dbc5b9fbb59852567ba9ac3b0da2e4ee8f
+  CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
   CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
-  CapacitorFilesystem: 94d5b8a40d102af88e5fb16c770284a8107f484c
-  CapacitorHaptics: 532b8cfe3112519073039ae1d027970e81746038
-  CapacitorKeyboard: ea7b8ca944513580e482f3cb3a25a0d1c8497f85
-  CapacitorStatusBar: 7a635e984da8ddc4e8f68d2887ccc7b46f28ccbf
+  CapacitorFilesystem: db8deb7b98de37c118e2d5ff4cd1c0d0576c6d33
+  CapacitorHaptics: 213b3a1f3efd6dbf6e6b76a1b2bb0399cf43b213
+  CapacitorKeyboard: 16121a97b56c8609ec518ebcdc64d6386c84e5c8
+  CapacitorStatusBar: 65933e554bb5d65b361deaa936a93616086a2608
   CordovaPlugins: 9696b524426335bd43eb429b39b7d03dc5f7270a
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
   CordovaPluginsStatic: 595166e69149ee7001127e1e4311ef824c716e55
