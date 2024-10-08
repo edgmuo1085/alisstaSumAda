@@ -7063,9 +7063,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
     //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/;
     // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';                             // Produccion
-
-
-    var ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; // Test Original
+    //const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; // Test Original
     //const ambiente = 'http://test-dos-positiva.adacsc.co/';
     // const ambiente = 'http://splaneacion-test-dos.adacsc.co/';
     // const ambiente = 'http://saplicacion-test-dos.adacsc.co/';
@@ -7078,7 +7076,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // const ambiente = 'http://senfermedadlaboral-test-dos.adacsc.co/';
     // const ambiente = 'http://srevision-test-dos.adacsc.co/';
     //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
-    //  Test 2
+    //  Test 1
+
+
+    var ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/'; //  Test 2
     // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
     //  Test 3
     //const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';

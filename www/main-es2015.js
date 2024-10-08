@@ -4158,7 +4158,7 @@ __webpack_require__.r(__webpack_exports__);
 // const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/;
 // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';                             // Produccion
-const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; // Test Original
+//const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; // Test Original
 //const ambiente = 'http://test-dos-positiva.adacsc.co/';
 // const ambiente = 'http://splaneacion-test-dos.adacsc.co/';
 // const ambiente = 'http://saplicacion-test-dos.adacsc.co/';
@@ -4171,6 +4171,8 @@ const ambiente = 'http://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst
 // const ambiente = 'http://senfermedadlaboral-test-dos.adacsc.co/';
 // const ambiente = 'http://srevision-test-dos.adacsc.co/';
 //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
+//  Test 1
+const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //  Test 2
 // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
 //  Test 3
