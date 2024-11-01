@@ -4172,13 +4172,13 @@ __webpack_require__.r(__webpack_exports__);
 // const ambiente = 'http://srevision-test-dos.adacsc.co/';
 //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
 //  Test 1
-const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
+// const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //  Test 2
 // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
 //  Test 3
-//const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
+// const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
 //  Pre
-// const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 //  Producción
 //const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 const environment = {

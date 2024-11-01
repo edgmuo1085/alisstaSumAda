@@ -50,6 +50,8 @@
 		<string>La identificación de la ubicación es utilizada únicamente para validar el lugar de
 			diligenciamiento del acta. En ningún caso se realiza rastreo no autorizado por el
 			usuario al usar la aplicación.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>La app necesita acceder a su ubicación para generar las actas de actividades.</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>To Record Audio With Video</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
