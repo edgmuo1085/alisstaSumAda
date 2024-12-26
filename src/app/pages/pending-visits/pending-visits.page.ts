@@ -79,7 +79,7 @@ export class PendingVisitsPage implements OnInit {
     const documentoUsuario = await this.storage.get('sesion');
 
     setTimeout(() => { //TODO: evaluar purgar memoria de array de la lista
-      this.listActivitiesCompany.listActivityForCompany(documentoUsuario).subscribe(
+      this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(
         async response => {
           console.log('Respuesta de actividade', response);
 
@@ -90,7 +90,7 @@ export class PendingVisitsPage implements OnInit {
 
           const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
 
-          console.log("Actas Guardadas Metodo: ", actasGuardadas)
+          console.log('Actas Guardadas Metodo: ', actasGuardadas);
 
           this.listActivitiesCompany.actasGuardadas = actasGuardadas;
           this.listActivitiesCompany.listActivitiesFilter(listActivity);
@@ -107,15 +107,15 @@ export class PendingVisitsPage implements OnInit {
           this.loading.dismiss();
 
           if (listActivity.length < listActivityTotal) {
-            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues)})
+            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {
+              (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+            });
             this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
-            this.listActivitiesCompany.activities$.subscribe(
-              async listActivitiesForPage => {
-                this.storage.set('listaActividades', listActivitiesForPage);
-                await this.storage.get('listaActividades')
-                this.validateDataListActivities()
-              }
-            )
+            this.listActivitiesCompany.activities$.subscribe(async listActivitiesForPage => {
+              this.storage.set('listaActividades', listActivitiesForPage);
+              await this.storage.get('listaActividades');
+              this.validateDataListActivities();
+            });
           }
         },
         err => {

@@ -595,7 +595,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 case 3:
                   documentoUsuario = _context3.sent;
                   setTimeout(function () {
-                    _this.listActivitiesCompany.listActivityForCompany(documentoUsuario).subscribe(function (response) {
+                    _this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(function (response) {
                       return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
                         var _this2 = this;
 
@@ -622,7 +622,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                             case 9:
                               actasGuardadas = _context2.t0;
-                              console.log("Actas Guardadas Metodo: ", actasGuardadas);
+                              console.log('Actas Guardadas Metodo: ', actasGuardadas);
                               this.listActivitiesCompany.actasGuardadas = actasGuardadas;
                               this.listActivitiesCompany.listActivitiesFilter(listActivity);
                               this.storage.set('departamentos', response.listDepartamentos);
@@ -637,7 +637,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                               if (listActivity.length < listActivityTotal) {
                                 this.listActivitiesCompany.progressBarValues$.subscribe(function (progressBarValues) {
-                                  _this2.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues);
+                                  _this2.progressBar = progressBarValues, console.log('Progressss...!!: ', progressBarValues);
                                 });
                                 this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
                                 this.listActivitiesCompany.activities$.subscribe(function (listActivitiesForPage) {

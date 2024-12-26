@@ -289,13 +289,13 @@ class PendingVisitsPage {
             this.presentLoading();
             const documentoUsuario = yield this.storage.get('sesion');
             setTimeout(() => {
-                this.listActivitiesCompany.listActivityForCompany(documentoUsuario).subscribe((response) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+                this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe((response) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
                     console.log('Respuesta de actividade', response);
                     const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
                     this.listActivityTotal = listActivityTotal;
                     const listActivity = response.listActivitiesCompany || [];
                     const actasGuardadas = (yield this.storage.get('actasAsesoriaSinInternet')) || [];
-                    console.log("Actas Guardadas Metodo: ", actasGuardadas);
+                    console.log('Actas Guardadas Metodo: ', actasGuardadas);
                     this.listActivitiesCompany.actasGuardadas = actasGuardadas;
                     this.listActivitiesCompany.listActivitiesFilter(listActivity);
                     this.storage.set('departamentos', response.listDepartamentos);
@@ -308,7 +308,9 @@ class PendingVisitsPage {
                     this.showListPendingVisit = false;
                     this.loading.dismiss();
                     if (listActivity.length < listActivityTotal) {
-                        this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => { this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues); });
+                        this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {
+                            (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+                        });
                         this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
                         this.listActivitiesCompany.activities$.subscribe((listActivitiesForPage) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
                             this.storage.set('listaActividades', listActivitiesForPage);

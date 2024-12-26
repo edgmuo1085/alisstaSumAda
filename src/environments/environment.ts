@@ -43,7 +43,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 
 //  Producción
-//const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
+// const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
   production: true,
@@ -52,7 +52,7 @@ export const environment = {
   RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   //  Producción
-  //RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+  // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
 

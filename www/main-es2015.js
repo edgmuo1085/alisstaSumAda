@@ -3244,7 +3244,7 @@ class ActivityListCompanyService {
             visible: false,
             progress: 0,
             records: 0,
-            refreshBtnEnable: true
+            refreshBtnEnable: true,
         };
         this.activitiesSubject = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
         this.progressBarValues = new rxjs__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"](this.progressBar);
@@ -3270,21 +3270,28 @@ class ActivityListCompanyService {
         });
     }
     setActivities(newActivities) {
-        console.log("Seteo: ", newActivities);
+        console.log('Seteo: ', newActivities);
         this.activitiesSubject.next(newActivities);
     }
     getRecordsForPage() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
             const headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({ 'Content-Type': 'application/json' });
-            yield this.http.post(this.API_REGISTROS_PAGINA, {}).subscribe((response) => {
+            yield this.http.post(this.API_REGISTROS_PAGINA, {}).subscribe(response => {
                 this.cantidadRegistrosPorPagina = response.intCantidadRegistrosPorPagina;
-                console.log("Cantidaddd...!!!", this.cantidadRegistrosPorPagina);
-            }, (error) => {
+                console.log('Cantidaddd...!!!', this.cantidadRegistrosPorPagina);
+            }, error => {
                 console.error('Error en la consulta:', error);
             });
         });
     }
     listActivityForCompany(documentoUsuario) {
+        this.API_LISTACTIVITYCOMPANY = '';
+        this.API_LISTACTIVITYCOMPANY = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_GET_Avtividades_Empresa;
+        this.API_LISTACTIVITYCOMPANY = `${this.API_LISTACTIVITYCOMPANY}?pNumeroDocumento=${documentoUsuario}`;
+        console.log('Servicio de lista de actividades ->', this.API_LISTACTIVITYCOMPANY);
+        return this.http.post(this.API_LISTACTIVITYCOMPANY, null);
+    }
+    listActivityForCompanyPerPage(documentoUsuario) {
         this.API_LISTACTIVITYCOMPANY = '';
         this.API_LISTACTIVITYCOMPANY = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_GET_Avtividades_Empresa;
         const { idPersona, tipoDocProveedor, idProveedor } = documentoUsuario;
@@ -3295,7 +3302,7 @@ class ActivityListCompanyService {
         return this.http.post(url, null);
     }
     listActivityForCompanyForPage(listActivityTotal) {
-        this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades.", "primary");
+        this.presentToastActivitiesPaginator('Espera mientras se descargan las Actividades.', 'primary');
         this.progressBar.visible = true;
         this.progressBar.records = listActivityTotal;
         this.progressBarValues.next(this.progressBar);
@@ -3315,12 +3322,12 @@ class ActivityListCompanyService {
                 visible: false,
                 progress: 0,
                 records: 0,
-                refreshBtnEnable: false
+                refreshBtnEnable: false,
             };
             setTimeout(() => {
                 this.progressBarValues.next(this.progressBar);
             }, 2000);
-            this.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary");
+            this.presentToastActivitiesPaginator('Actividades cargadas con Exito.', 'primary');
             return;
         }
         this.getListActivitiesForPage(url, currentPage).subscribe(response => {
@@ -3341,18 +3348,18 @@ class ActivityListCompanyService {
             this.progressBar.visible = false;
             this.progressBar.refreshBtnEnable = false;
             this.progressBarValues.next(this.progressBar);
-            this.presentToastActivitiesPaginator("Error al cargar las actividades, intentalo nuevamente por favor.", "danger");
+            this.presentToastActivitiesPaginator('Error al cargar las actividades, intentalo nuevamente por favor.', 'danger');
         }, () => {
             console.log(`Llamada a la página ${currentPage} completada`);
         });
     }
     getListActivitiesForPage(url, page) {
         url = `${url}&numPag=${page}`;
-        console.log("Current PAge: ", url);
+        console.log('Current PAge: ', url);
         return this.http.post(url, {}); // Llamado POST a la API
     }
     listActivitiesFilter(listActivity) {
-        console.log("Actas Guardads Filtro: ", this.actasGuardadas);
+        console.log('Actas Guardads Filtro: ', this.actasGuardadas);
         return listActivity.forEach((a) => {
             a.listaActividadesMigradas = a.listaActividadesMigradas.filter((aa) => this.actasGuardadas.find(aaa => aaa.activities.find((aaaa) => aaaa.id === aa.id)) === undefined);
         });
@@ -4180,13 +4187,13 @@ __webpack_require__.r(__webpack_exports__);
 //  Pre
 const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 //  Producción
-//const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
+// const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 const environment = {
     production: true,
     //  Pre
     RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
     //  Producción
-    //RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+    // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
     API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
     API_GET_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Sucursales',
     API_GET_MUNICIPY_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Municipio',

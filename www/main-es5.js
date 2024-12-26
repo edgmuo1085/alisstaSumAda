@@ -5649,7 +5649,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "setActivities",
         value: function setActivities(newActivities) {
-          console.log("Seteo: ", newActivities);
+          console.log('Seteo: ', newActivities);
           this.activitiesSubject.next(newActivities);
         }
       }, {
@@ -5668,7 +5668,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   _context16.next = 3;
                   return this.http.post(this.API_REGISTROS_PAGINA, {}).subscribe(function (response) {
                     _this10.cantidadRegistrosPorPagina = response.intCantidadRegistrosPorPagina;
-                    console.log("Cantidaddd...!!!", _this10.cantidadRegistrosPorPagina);
+                    console.log('Cantidaddd...!!!', _this10.cantidadRegistrosPorPagina);
                   }, function (error) {
                     console.error('Error en la consulta:', error);
                   });
@@ -5685,6 +5685,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function listActivityForCompany(documentoUsuario) {
           this.API_LISTACTIVITYCOMPANY = '';
           this.API_LISTACTIVITYCOMPANY = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_GET_Avtividades_Empresa;
+          this.API_LISTACTIVITYCOMPANY = "".concat(this.API_LISTACTIVITYCOMPANY, "?pNumeroDocumento=").concat(documentoUsuario);
+          console.log('Servicio de lista de actividades ->', this.API_LISTACTIVITYCOMPANY);
+          return this.http.post(this.API_LISTACTIVITYCOMPANY, null);
+        }
+      }, {
+        key: "listActivityForCompanyPerPage",
+        value: function listActivityForCompanyPerPage(documentoUsuario) {
+          this.API_LISTACTIVITYCOMPANY = '';
+          this.API_LISTACTIVITYCOMPANY = _environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].API_GET_Avtividades_Empresa;
           var idPersona = documentoUsuario.idPersona,
               tipoDocProveedor = documentoUsuario.tipoDocProveedor,
               idProveedor = documentoUsuario.idProveedor;
@@ -5697,7 +5706,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "listActivityForCompanyForPage",
         value: function listActivityForCompanyForPage(listActivityTotal) {
-          this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades.", "primary");
+          this.presentToastActivitiesPaginator('Espera mientras se descargan las Actividades.', 'primary');
           this.progressBar.visible = true;
           this.progressBar.records = listActivityTotal;
           this.progressBarValues.next(this.progressBar);
@@ -5724,7 +5733,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             setTimeout(function () {
               _this11.progressBarValues.next(_this11.progressBar);
             }, 2000);
-            this.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary");
+            this.presentToastActivitiesPaginator('Actividades cargadas con Exito.', 'primary');
             return;
           }
 
@@ -5756,7 +5765,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             _this11.progressBarValues.next(_this11.progressBar);
 
-            _this11.presentToastActivitiesPaginator("Error al cargar las actividades, intentalo nuevamente por favor.", "danger");
+            _this11.presentToastActivitiesPaginator('Error al cargar las actividades, intentalo nuevamente por favor.', 'danger');
           }, function () {
             console.log("Llamada a la p\xE1gina ".concat(currentPage, " completada"));
           });
@@ -5765,7 +5774,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "getListActivitiesForPage",
         value: function getListActivitiesForPage(url, page) {
           url = "".concat(url, "&numPag=").concat(page);
-          console.log("Current PAge: ", url);
+          console.log('Current PAge: ', url);
           return this.http.post(url, {}); // Llamado POST a la API
         }
       }, {
@@ -5773,7 +5782,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function listActivitiesFilter(listActivity) {
           var _this12 = this;
 
-          console.log("Actas Guardads Filtro: ", this.actasGuardadas);
+          console.log('Actas Guardads Filtro: ', this.actasGuardadas);
           return listActivity.forEach(function (a) {
             a.listaActividadesMigradas = a.listaActividadesMigradas.filter(function (aa) {
               return _this12.actasGuardadas.find(function (aaa) {
@@ -7086,14 +7095,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 
     var ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; //  Producción
-    //const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
+    // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
     var environment = {
       production: true,
       //  Pre
       RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
       //  Producción
-      //RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+      // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
       API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
       API_GET_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Sucursales',
       API_GET_MUNICIPY_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Municipio',
