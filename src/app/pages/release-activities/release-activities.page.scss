@@ -80,3 +80,23 @@ ion-content {
   text-align: left;
   margin-top: 10px;
 }
+
+.boton-flotante {
+  position: fixed; /* Fijo en la pantalla */
+  bottom: 20px;    /* Distancia desde la parte inferior */
+  left: 50%;       /* Lo posiciona al 50% desde el borde izquierdo */
+  transform: translateX(-50%); /* Lo centra horizontalmente */
+  z-index: 100;    /* Asegura que esté por encima de otros elementos */
+
+  /* Opcional: sombra para resaltar */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  /* Opcional: bordes redondeados */
+  border-radius: 50px;
+
+  /* Opcional: mayor tamaño */
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}

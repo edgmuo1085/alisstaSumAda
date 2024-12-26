@@ -38,9 +38,9 @@ export class ResendVerificationCodeComponent implements OnInit {
    */
   async listActivities() {
     const documentoUsuario = await this.storage.get('sesion');
-    this.presentLoading('Cargando responsables ...');
-    const responsables = await this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).toPromise();
-    this.listaResponsables = responsables.listActivitiesCompany;
+    // this.presentLoading('Cargando responsables ...');
+    // const responsables = await this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).toPromise();
+    this.listaResponsables = await this.storage.get('listaActividades');;
     const responsablesList = [];
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.listaResponsables.length; i++) {
@@ -56,7 +56,7 @@ export class ResendVerificationCodeComponent implements OnInit {
       }
     }
     this.listaResponsables = responsablesList;
-    this.loading.dismiss();
+    console.log("Lista de respondables::: ", this.listaResponsables)
   }
 
   /**

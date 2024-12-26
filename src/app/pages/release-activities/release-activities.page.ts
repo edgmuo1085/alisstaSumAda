@@ -73,10 +73,13 @@ export class ReleaseActivitiesPage implements OnInit {
 
   async listActivities() {
     this.informacionUsuario = await this.storage.get('sesion');
-    this.presentLoading();
-    const actividades = await this.listActivitiesCompany.listActivityForCompany(this.informacionUsuario.idPersona).toPromise();
-    this.listActivity = actividades.listActivitiesCompany;
-    this.loading.dismiss();
+    this.listActivity = await this.storage.get('listaActividades');
+    console.log("UsuarioStorageado: ", this.informacionUsuario)
+    // this.presentLoading();
+    // const actividades = await this.listActivitiesCompany.listActivityForCompany(this.informacionUsuario.idPersona).toPromise();
+    // this.listActivity = actividades.listActivitiesCompany;
+    console.log("LIstado de Actividades 2.0: ", this.listActivity);
+    // this.loading.dismiss();
   }
 
   search(event) {
@@ -99,23 +102,49 @@ export class ReleaseActivitiesPage implements OnInit {
   }
 
   async liberarActividad() {
+    // Mostrar el indicador de carga
     this.presentLoading();
-    const idActividadesSeleccionadas = [];
-    this.actividadesSeleccionadas.forEach(element => {
-      idActividadesSeleccionadas.push(element.id);
-    });
+  
+    // Obtener los IDs de las actividades seleccionadas
+    const idActividadesSeleccionadas = this.actividadesSeleccionadas.map(element => element.id);
+  
+    // Crear el objeto para enviar al servidor
     const objLiberar: liberarActividades = {
       ListaIdsActividades: idActividadesSeleccionadas,
       direccionIP: this.cacheService.ipAddress,
       CedulaUsuarioModifica: this.informacionUsuario.idPersona,
     };
+  
+    // Llamada al servicio para liberar las actividades
     const siLiberoActividades = await this.listActivitiesCompany.liberarActivities(objLiberar).toPromise();
+  
     if (siLiberoActividades) {
+      // Notificar éxito
       this.notification('Atención', 'Se logró liberar la(s) actividad(es) seleccionadas');
+  
+      // Obtener la lista de actividades del storage
+      const listaActividades = await this.storage.get('listaActividades') || [];
+  
+      // Recorrer cada elemento de la lista y filtrar las actividades migradas
+      listaActividades.forEach(actividad => {
+        if (actividad.listaActividadesMigradas) {
+          actividad.listaActividadesMigradas = actividad.listaActividadesMigradas.filter(
+            actMigrada => !idActividadesSeleccionadas.includes(actMigrada.id)
+          );
+        }
+      });
+  
+      // Guardar nuevamente en el storage la lista actualizada
+      await this.storage.set('listaActividades', listaActividades);
+  
+      // Lógica adicional (si es necesario refrescar la lista visible)
       this.listActivities();
     } else {
-      this.notification('Error', 'Ocurrio un error al tratar de liberar la actividad');
+      // Notificar error en la liberación
+      this.notification('Error', 'Ocurrió un error al tratar de liberar la(s) actividad(es)');
     }
+  
+    // Cerrar el indicador de carga
     this.loading.dismiss();
   }
 

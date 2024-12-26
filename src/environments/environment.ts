@@ -46,7 +46,7 @@ const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-ss
 // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
-  production: true,
+  production: false,
 
   //  Pre
   RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
@@ -90,4 +90,5 @@ export const environment = {
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
   ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c',
+  APP_VERSION_ENVIRONMENT: ambiente
 };

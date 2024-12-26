@@ -35,12 +35,17 @@ To get more help on the Ionic CLI use `ionic help` or go check out the [Ionic CL
 - android\app\src\main\AndroidManifest.xml
 	* Agregar en manifest xmlns:tools="http://schemas.android.com/tools"
 	* Agregar en aplication tools:replace="android:appComponentFactory"
+							android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 	
-- Agregar en gradle.propierties
+- Agregar en raiz/gradle.propierties
 	* android.enableJetifier=true
 	
 ** Validar documentacion de librerias que requieran cambiar la ruta de importacion a andoridX en carpeta "capacitor-cordova-android-plugins" ejemplo:
 	* public class FileProvider extends androidx.core.content.FileProvider {}
+	* rutas
+		- android\capacitor-cordova-android-plugins\src\main\java\io\github\pwlin\cordova\plugins\fileopener2\FileProvider.java
+		- android\capacitor-cordova-android-plugins\src\main\java\org\apache\cordova\camera\FileProvider.java
+	
 
 # Librerías a Modificar para compilar
 
@@ -74,4 +79,3 @@ Cuando deseen compilar desde android studio y les aparezca errores de librerías
 
 - import androidx.appcompat.app.ActionBar;
 - import androidx.appcompat.app.AppCompatActivity;
-

@@ -29,7 +29,20 @@ export class ExecLogPage implements OnInit {
    */
   nameUserRegister: string;
 
+  listActivity: any[] = [];
+  listActivityTotal: number = 0;
+  showListPendingVisit = true;
+  loading: any;
+   progressBar: progressBarValues | any = {
+      visible: false,
+      progress: 0,
+      records: 0,
+      refreshBtnEnable: false
+    };
+
   constructor(
+    private listActivitiesCompany: ActivityListCompanyService,
+    private loadingCtlr: LoadingController,
     private menuConfOptions: MenuConfiguracionService,
     private modalCtrl: ModalController,
     private storage: Storage
@@ -73,5 +86,63 @@ export class ExecLogPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  async listActivities() {
+    this.presentLoading();
+    const documentoUsuario = await this.storage.get('sesion');
+    setTimeout(() => { //TODO: evaluar purgar memoria de array de la lista
+      this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(
+        async response => {
+          console.log('Respuesta de actividade', response);
+          const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
+          this.listActivityTotal = listActivityTotal;
+          const listActivity = response.listActivitiesCompany || [];
+          const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
+          console.log("Actas Guardadas Metodo: ", actasGuardadas)
+          this.listActivitiesCompany.actasGuardadas = actasGuardadas;
+          this.listActivitiesCompany.listActivitiesFilter(listActivity);
+          this.storage.set('departamentos', response.listDepartamentos);
+          this.storage.set('municipios', response.listMunicipios);
+          this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+          // Guardar las actividades en un BD local.
+          this.storage.set('listaActividades', listActivity);
+          this.listActivitiesCompany.setActivities(listActivity);
+          this.validateDataListActivities();
+          this.showListPendingVisit = false;
+          this.loading.dismiss();
+          if (listActivity.length < listActivityTotal) {
+            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues)})
+            this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
+            this.listActivitiesCompany.activities$.subscribe(
+              async listActivitiesForPage => {
+                this.storage.set('listaActividades', listActivitiesForPage);
+                await this.storage.get('listaActividades')
+                this.validateDataListActivities()
+              }
+            )
+          }
+        },
+        err => {
+          this.loading.dismiss();
+          this.showListPendingVisit = false;
+        }
+      );
+    }, 2000);
+  }
+  async presentLoading() {
+    this.loading = await this.loadingCtlr.create({
+      mode: 'ios',
+      message: 'Cargando',
+    });
+    return this.loading.present();
+  }
+  async validateDataListActivities() {
+    const dataListActivities = await this.storage.get('listaActividades');
+    if (dataListActivities) {
+      this.listActivity = dataListActivities.filter((a: any) => a.listaActividadesMigradas.length > 0);
+    } else {
+      this.listActivity = [];
+    }
   }
 }

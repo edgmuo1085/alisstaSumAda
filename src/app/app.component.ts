@@ -9,6 +9,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AlertController, Platform } from '@ionic/angular';
 import { environment } from '../environments/environment';
 import { NetworkService } from './services/network/network.service';
+import { AppVersionService } from './services/version/app-version.service';
 const { DarkMode } = Plugins;
 
 @Component({
@@ -25,9 +26,12 @@ export class AppComponent {
     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
     private networkService: NetworkService,
-    private location: Location
+    private location: Location,
+    private AppVersionSv: AppVersionService
   ) {
     this.initializeApp();
+    this.listenToAppState();
+    this.AppVersionSv.checkForUpdate(); 
   }
 
   initializeApp() {
@@ -41,6 +45,16 @@ export class AppComponent {
       this.router.navigateByUrl('login');
     });
   }
+
+     // Escucha cambios de estado en la app (foreground/background)
+     listenToAppState(): void {
+      App.addListener('appStateChange', ({ isActive }) => {
+        if (isActive) {
+          console.log('La app volvió al primer plano.');
+          this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
+        }
+      });
+    }
 
   async checkDarkTheme(): Promise<void> {
     let shouldAdd: boolean;

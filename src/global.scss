@@ -512,3 +512,9 @@ body.scanner-active {
   --background: transparent;
   --ion-background-color: transparent;
 }
+
+.custom-update-alert .alert-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+}
