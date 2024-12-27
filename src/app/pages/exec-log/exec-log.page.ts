@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
 import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ResendVerificationCodeComponent } from '../../components/resend-verification-code/resend-verification-code.component';
+import { progressBarValues } from 'src/app/intarfaces/interfaces';
+import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 
 /**
  * Componente para la vista de registro de ejecución.
@@ -33,12 +35,12 @@ export class ExecLogPage implements OnInit {
   listActivityTotal: number = 0;
   showListPendingVisit = true;
   loading: any;
-   progressBar: progressBarValues | any = {
-      visible: false,
-      progress: 0,
-      records: 0,
-      refreshBtnEnable: false
-    };
+  progressBar: progressBarValues | any = {
+    visible: false,
+    progress: 0,
+    records: 0,
+    refreshBtnEnable: false,
+  };
 
   constructor(
     private listActivitiesCompany: ActivityListCompanyService,
@@ -91,7 +93,8 @@ export class ExecLogPage implements OnInit {
   async listActivities() {
     this.presentLoading();
     const documentoUsuario = await this.storage.get('sesion');
-    setTimeout(() => { //TODO: evaluar purgar memoria de array de la lista
+    setTimeout(() => {
+      //TODO: evaluar purgar memoria de array de la lista
       this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(
         async response => {
           console.log('Respuesta de actividade', response);
@@ -99,7 +102,7 @@ export class ExecLogPage implements OnInit {
           this.listActivityTotal = listActivityTotal;
           const listActivity = response.listActivitiesCompany || [];
           const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
-          console.log("Actas Guardadas Metodo: ", actasGuardadas)
+          console.log('Actas Guardadas Metodo: ', actasGuardadas);
           this.listActivitiesCompany.actasGuardadas = actasGuardadas;
           this.listActivitiesCompany.listActivitiesFilter(listActivity);
           this.storage.set('departamentos', response.listDepartamentos);
@@ -112,15 +115,15 @@ export class ExecLogPage implements OnInit {
           this.showListPendingVisit = false;
           this.loading.dismiss();
           if (listActivity.length < listActivityTotal) {
-            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues)})
+            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {
+              (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+            });
             this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
-            this.listActivitiesCompany.activities$.subscribe(
-              async listActivitiesForPage => {
-                this.storage.set('listaActividades', listActivitiesForPage);
-                await this.storage.get('listaActividades')
-                this.validateDataListActivities()
-              }
-            )
+            this.listActivitiesCompany.activities$.subscribe(async listActivitiesForPage => {
+              this.storage.set('listaActividades', listActivitiesForPage);
+              await this.storage.get('listaActividades');
+              this.validateDataListActivities();
+            });
           }
         },
         err => {

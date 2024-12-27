@@ -142793,6 +142793,42 @@ const App = Object(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["registerPlugin"
 
 /***/ }),
 
+/***/ "./node_modules/@capacitor/browser/dist/esm/definitions.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@capacitor/browser/dist/esm/definitions.js ***!
+  \*****************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=definitions.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@capacitor/browser/dist/esm/index.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@capacitor/browser/dist/esm/index.js ***!
+  \***********************************************************/
+/*! exports provided: Browser */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Browser", function() { return Browser; });
+/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @capacitor/core */ "./node_modules/@capacitor/core/dist/index.js");
+/* harmony import */ var _definitions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./definitions */ "./node_modules/@capacitor/browser/dist/esm/definitions.js");
+/* empty/unused harmony star reexport */
+const Browser = Object(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["registerPlugin"])('Browser', {
+    web: () => Promise.all(/*! import() | web */[__webpack_require__.e("common"), __webpack_require__.e("web")]).then(__webpack_require__.bind(null, /*! ./web */ "./node_modules/@capacitor/browser/dist/esm/web.js")).then(m => new m.BrowserWeb()),
+});
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@capacitor/core/dist/index.js":
 /*!****************************************************!*\
   !*** ./node_modules/@capacitor/core/dist/index.js ***!

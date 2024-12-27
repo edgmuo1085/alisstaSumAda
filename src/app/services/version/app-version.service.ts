@@ -3,20 +3,19 @@ import { getPlatform, Injectable } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { AlertController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
-import { environment } from '../../../environments/environment'
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppVersionService {
-  private appVersion: string = ""; // Versión local de la app (puedes obtenerla dinámicamente en Capacitor)
-
+  private appVersion: string = ''; // Versión local de la app (puedes obtenerla dinámicamente en Capacitor)
 
   appsTable = {
-    1: "Alissta Gestion Android",
-    2: "Alissta Gestion IOS",
-    3: "Alissta SUM Android",
-    4: "Alissta SUM IOS"
+    1: 'Alissta Gestion Android',
+    2: 'Alissta Gestion IOS',
+    3: 'Alissta SUM Android',
+    4: 'Alissta SUM IOS',
   };
 
   constructor(
@@ -27,21 +26,22 @@ export class AppVersionService {
 
   // Método asíncrono para verificar la versión
   async checkForUpdate(): Promise<void> {
-    const env = environment.APP_VERSION_ENVIRONMENT
+    const env = environment.APP_VERSION_ENVIRONMENT;
 
-    let apiVersionUrl = env === "https://sproveedor.adacsc.co/sg-sst/"
-      ? 'https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
-      : 'https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
+    let apiVersionUrl =
+      env === 'https://sproveedor.adacsc.co/sg-sst/'
+        ? 'https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=4'
+        : 'https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=4';
     //TODO: Si se requieren mas ambientes, es mejor crear un enum con las url de los web Services
 
     try {
       const appInfo = await App.getInfo(); // Obtiene la versión actual
       this.appVersion = appInfo.version;
-  
+
       const response: any = await this.http.get(apiVersionUrl).toPromise();
-  
-        console.log('Url de entorno: ', apiVersionUrl)
-  
+
+      console.log('Url de entorno: ', apiVersionUrl);
+
       if (this.isVersionOutdated(this.appVersion, response)) {
         this.showUpdateAlert(response);
       }
@@ -77,38 +77,39 @@ export class AppVersionService {
           <p style="margin: 5px 0;">Versión actual: <strong>${this.appVersion}</strong></p>
           <p style="margin: 5px 0;">Versión disponible: <strong>${apiVersion}</strong></p>
           <p style="margin: 10px 0;">
-            ${isIos 
-            ? '¡Actualiza desde la App Store para seguir disfrutando de las nuevas mejoras!'
-            : '¡Actualiza para seguir disfrutando de las nuevas mejoras!'}
+            ${
+              isIos
+                ? '¡Actualiza desde la App Store para seguir disfrutando de las nuevas mejoras!'
+                : '¡Actualiza para seguir disfrutando de las nuevas mejoras!'
+            }
           </p>
         </div>
       `,
-    buttons: isIos
-      ? [
-        {
-          text: 'Más tarde',
-          role: 'cancel',
-        }
-      ] // En iOS no hay botones
-      : [
-          {
-            text: 'Actualizar ahora',
-            handler: () => {
-              this.redirectToStore(); // Redirigir a la tienda
+      buttons: isIos
+        ? [
+            {
+              text: 'Más tarde',
+              role: 'cancel',
             },
-          },
-          {
-            text: 'Más tarde',
-            role: 'cancel',
-          },
-        ],
-    mode: 'ios',
-    cssClass: 'custom-update-alert',
-    backdropDismiss: false,
+          ] // En iOS no hay botones
+        : [
+            {
+              text: 'Actualizar ahora',
+              handler: () => {
+                this.redirectToStore(); // Redirigir a la tienda
+              },
+            },
+            {
+              text: 'Más tarde',
+              role: 'cancel',
+            },
+          ],
+      mode: 'ios',
+      cssClass: 'custom-update-alert',
+      backdropDismiss: false,
     });
     await alert.present();
   }
-  
 
   // Redirigir a la tienda adecuada
   // private redirectToStore(): void {
@@ -138,7 +139,7 @@ export class AppVersionService {
   //   const iosUrl = 'itms-apps://itunes.apple.com/app/id1306274186';
   //   const fallbackAndroidUrl = 'https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share';
   //   const fallbackIosUrl = 'https://apps.apple.com/co/app/alissta/id1306274186';
-  
+
   //   try {
   //     if (this.platform.is('android')) {
   //       // Intenta abrir Play Store directamente
@@ -160,15 +161,15 @@ export class AppVersionService {
   async redirectToStore(): Promise<void> {
     const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
     const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
-  
+
     try {
       const url = this.platform.is('android') ? androidUrl : iosUrl;
-  
+
       // Asegúrate de manejar plataformas no soportadas
       if (!url) {
         throw new Error('Plataforma no soportada para redirección a la tienda.');
       }
-  
+
       // Abre el enlace en el navegador
       await Browser.open({ url });
     } catch (error) {

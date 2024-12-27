@@ -302,6 +302,46 @@ class AppWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"] {
 
 /***/ }),
 
+/***/ "./node_modules/@capacitor/browser/dist/esm/web.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/@capacitor/browser/dist/esm/web.js ***!
+  \*********************************************************/
+/*! exports provided: BrowserWeb, Browser */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserWeb", function() { return BrowserWeb; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Browser", function() { return Browser; });
+/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @capacitor/core */ "./node_modules/@capacitor/core/dist/index.js");
+
+class BrowserWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"] {
+    constructor() {
+        super();
+        this._lastWindow = null;
+    }
+    async open(options) {
+        this._lastWindow = window.open(options.url, options.windowName || '_blank');
+    }
+    async close() {
+        return new Promise((resolve, reject) => {
+            if (this._lastWindow != null) {
+                this._lastWindow.close();
+                this._lastWindow = null;
+                resolve();
+            }
+            else {
+                reject('No active window to close!');
+            }
+        });
+    }
+}
+const Browser = new BrowserWeb();
+
+//# sourceMappingURL=web.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@capacitor/camera/dist/esm/web.js":
 /*!********************************************************!*\
   !*** ./node_modules/@capacitor/camera/dist/esm/web.js ***!

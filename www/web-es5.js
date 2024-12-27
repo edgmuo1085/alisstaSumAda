@@ -960,6 +960,118 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   },
 
   /***/
+  "./node_modules/@capacitor/browser/dist/esm/web.js":
+  /*!*********************************************************!*\
+    !*** ./node_modules/@capacitor/browser/dist/esm/web.js ***!
+    \*********************************************************/
+
+  /*! exports provided: BrowserWeb, Browser */
+
+  /***/
+  function node_modulesCapacitorBrowserDistEsmWebJs(module, __webpack_exports__, __webpack_require__) {
+    "use strict";
+
+    __webpack_require__.r(__webpack_exports__);
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "BrowserWeb", function () {
+      return BrowserWeb;
+    });
+    /* harmony export (binding) */
+
+
+    __webpack_require__.d(__webpack_exports__, "Browser", function () {
+      return Browser;
+    });
+    /* harmony import */
+
+
+    var _capacitor_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(
+    /*! @capacitor/core */
+    "./node_modules/@capacitor/core/dist/index.js");
+
+    var BrowserWeb = /*#__PURE__*/function (_capacitor_core__WEBP3) {
+      _inherits(BrowserWeb, _capacitor_core__WEBP3);
+
+      var _super4 = _createSuper(BrowserWeb);
+
+      function BrowserWeb() {
+        var _this7;
+
+        _classCallCheck(this, BrowserWeb);
+
+        _this7 = _super4.call(this);
+        _this7._lastWindow = null;
+        return _this7;
+      }
+
+      _createClass(BrowserWeb, [{
+        key: "open",
+        value: function () {
+          var _open = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee25(options) {
+            return _regeneratorRuntime().wrap(function _callee25$(_context25) {
+              while (1) switch (_context25.prev = _context25.next) {
+                case 0:
+                  this._lastWindow = window.open(options.url, options.windowName || '_blank');
+
+                case 1:
+                case "end":
+                  return _context25.stop();
+              }
+            }, _callee25, this);
+          }));
+
+          function open(_x9) {
+            return _open.apply(this, arguments);
+          }
+
+          return open;
+        }()
+      }, {
+        key: "close",
+        value: function () {
+          var _close = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee26() {
+            var _this8 = this;
+
+            return _regeneratorRuntime().wrap(function _callee26$(_context26) {
+              while (1) switch (_context26.prev = _context26.next) {
+                case 0:
+                  return _context26.abrupt("return", new Promise(function (resolve, reject) {
+                    if (_this8._lastWindow != null) {
+                      _this8._lastWindow.close();
+
+                      _this8._lastWindow = null;
+                      resolve();
+                    } else {
+                      reject('No active window to close!');
+                    }
+                  }));
+
+                case 1:
+                case "end":
+                  return _context26.stop();
+              }
+            }, _callee26);
+          }));
+
+          function close() {
+            return _close.apply(this, arguments);
+          }
+
+          return close;
+        }()
+      }]);
+
+      return BrowserWeb;
+    }(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"]);
+
+    var Browser = new BrowserWeb(); //# sourceMappingURL=web.js.map
+
+    /***/
+  },
+
+  /***/
   "./node_modules/@capacitor/camera/dist/esm/web.js":
   /*!********************************************************!*\
     !*** ./node_modules/@capacitor/camera/dist/esm/web.js ***!
@@ -997,34 +1109,34 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     /*! ./definitions */
     "./node_modules/@capacitor/camera/dist/esm/definitions.js");
 
-    var CameraWeb = /*#__PURE__*/function (_capacitor_core__WEBP3) {
-      _inherits(CameraWeb, _capacitor_core__WEBP3);
+    var CameraWeb = /*#__PURE__*/function (_capacitor_core__WEBP4) {
+      _inherits(CameraWeb, _capacitor_core__WEBP4);
 
-      var _super4 = _createSuper(CameraWeb);
+      var _super5 = _createSuper(CameraWeb);
 
       function CameraWeb() {
         _classCallCheck(this, CameraWeb);
 
-        return _super4.apply(this, arguments);
+        return _super5.apply(this, arguments);
       }
 
       _createClass(CameraWeb, [{
         key: "getPhoto",
         value: function () {
-          var _getPhoto = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee27(options) {
-            var _this7 = this;
+          var _getPhoto = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee29(options) {
+            var _this9 = this;
 
-            return _regeneratorRuntime().wrap(function _callee27$(_context27) {
-              while (1) switch (_context27.prev = _context27.next) {
+            return _regeneratorRuntime().wrap(function _callee29$(_context29) {
+              while (1) switch (_context29.prev = _context29.next) {
                 case 0:
-                  return _context27.abrupt("return", new Promise( /*#__PURE__*/function () {
-                    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee26(resolve, reject) {
+                  return _context29.abrupt("return", new Promise( /*#__PURE__*/function () {
+                    var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee28(resolve, reject) {
                       var actionSheet;
-                      return _regeneratorRuntime().wrap(function _callee26$(_context26) {
-                        while (1) switch (_context26.prev = _context26.next) {
+                      return _regeneratorRuntime().wrap(function _callee28$(_context28) {
+                        while (1) switch (_context28.prev = _context28.next) {
                           case 0:
                             if (options.webUseInput || options.source === _definitions__WEBPACK_IMPORTED_MODULE_1__["CameraSource"].Photos) {
-                              _this7.fileInputExperience(options, resolve);
+                              _this9.fileInputExperience(options, resolve);
                             } else if (options.source === _definitions__WEBPACK_IMPORTED_MODULE_1__["CameraSource"].Prompt) {
                               actionSheet = document.querySelector('pwa-action-sheet');
 
@@ -1041,74 +1153,33 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                                 title: options.promptLabelPicture || 'Take Picture'
                               }];
                               actionSheet.addEventListener('onSelection', /*#__PURE__*/function () {
-                                var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee25(e) {
+                                var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee27(e) {
                                   var selection;
-                                  return _regeneratorRuntime().wrap(function _callee25$(_context25) {
-                                    while (1) switch (_context25.prev = _context25.next) {
+                                  return _regeneratorRuntime().wrap(function _callee27$(_context27) {
+                                    while (1) switch (_context27.prev = _context27.next) {
                                       case 0:
                                         selection = e.detail;
 
                                         if (selection === 0) {
-                                          _this7.fileInputExperience(options, resolve);
+                                          _this9.fileInputExperience(options, resolve);
                                         } else {
-                                          _this7.cameraExperience(options, resolve, reject);
+                                          _this9.cameraExperience(options, resolve, reject);
                                         }
 
                                       case 2:
                                       case "end":
-                                        return _context25.stop();
+                                        return _context27.stop();
                                     }
-                                  }, _callee25);
+                                  }, _callee27);
                                 }));
 
-                                return function (_x12) {
+                                return function (_x13) {
                                   return _ref4.apply(this, arguments);
                                 };
                               }());
                             } else {
-                              _this7.cameraExperience(options, resolve, reject);
+                              _this9.cameraExperience(options, resolve, reject);
                             }
-
-                          case 1:
-                          case "end":
-                            return _context26.stop();
-                        }
-                      }, _callee26);
-                    }));
-
-                    return function (_x10, _x11) {
-                      return _ref3.apply(this, arguments);
-                    };
-                  }()));
-
-                case 1:
-                case "end":
-                  return _context27.stop();
-              }
-            }, _callee27);
-          }));
-
-          function getPhoto(_x9) {
-            return _getPhoto.apply(this, arguments);
-          }
-
-          return getPhoto;
-        }()
-      }, {
-        key: "pickImages",
-        value: function () {
-          var _pickImages = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee29(_options) {
-            var _this8 = this;
-
-            return _regeneratorRuntime().wrap(function _callee29$(_context29) {
-              while (1) switch (_context29.prev = _context29.next) {
-                case 0:
-                  return _context29.abrupt("return", new Promise( /*#__PURE__*/function () {
-                    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee28(resolve) {
-                      return _regeneratorRuntime().wrap(function _callee28$(_context28) {
-                        while (1) switch (_context28.prev = _context28.next) {
-                          case 0:
-                            _this8.multipleFileInputExperience(resolve);
 
                           case 1:
                           case "end":
@@ -1117,8 +1188,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                       }, _callee28);
                     }));
 
-                    return function (_x14) {
-                      return _ref5.apply(this, arguments);
+                    return function (_x11, _x12) {
+                      return _ref3.apply(this, arguments);
                     };
                   }()));
 
@@ -1129,7 +1200,48 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             }, _callee29);
           }));
 
-          function pickImages(_x13) {
+          function getPhoto(_x10) {
+            return _getPhoto.apply(this, arguments);
+          }
+
+          return getPhoto;
+        }()
+      }, {
+        key: "pickImages",
+        value: function () {
+          var _pickImages = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee31(_options) {
+            var _this10 = this;
+
+            return _regeneratorRuntime().wrap(function _callee31$(_context31) {
+              while (1) switch (_context31.prev = _context31.next) {
+                case 0:
+                  return _context31.abrupt("return", new Promise( /*#__PURE__*/function () {
+                    var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee30(resolve) {
+                      return _regeneratorRuntime().wrap(function _callee30$(_context30) {
+                        while (1) switch (_context30.prev = _context30.next) {
+                          case 0:
+                            _this10.multipleFileInputExperience(resolve);
+
+                          case 1:
+                          case "end":
+                            return _context30.stop();
+                        }
+                      }, _callee30);
+                    }));
+
+                    return function (_x15) {
+                      return _ref5.apply(this, arguments);
+                    };
+                  }()));
+
+                case 1:
+                case "end":
+                  return _context31.stop();
+              }
+            }, _callee31);
+          }));
+
+          function pickImages(_x14) {
             return _pickImages.apply(this, arguments);
           }
 
@@ -1138,61 +1250,61 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "cameraExperience",
         value: function () {
-          var _cameraExperience = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee31(options, resolve, reject) {
-            var _this9 = this;
+          var _cameraExperience = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee33(options, resolve, reject) {
+            var _this11 = this;
 
             var cameraModal;
-            return _regeneratorRuntime().wrap(function _callee31$(_context31) {
-              while (1) switch (_context31.prev = _context31.next) {
+            return _regeneratorRuntime().wrap(function _callee33$(_context33) {
+              while (1) switch (_context33.prev = _context33.next) {
                 case 0:
                   if (!customElements.get('pwa-camera-modal')) {
-                    _context31.next = 16;
+                    _context33.next = 16;
                     break;
                   }
 
                   cameraModal = document.createElement('pwa-camera-modal');
                   cameraModal.facingMode = options.direction === _definitions__WEBPACK_IMPORTED_MODULE_1__["CameraDirection"].Front ? 'user' : 'environment';
                   document.body.appendChild(cameraModal);
-                  _context31.prev = 4;
-                  _context31.next = 7;
+                  _context33.prev = 4;
+                  _context33.next = 7;
                   return cameraModal.componentOnReady();
 
                 case 7:
                   cameraModal.addEventListener('onPhoto', /*#__PURE__*/function () {
-                    var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee30(e) {
+                    var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee32(e) {
                       var photo;
-                      return _regeneratorRuntime().wrap(function _callee30$(_context30) {
-                        while (1) switch (_context30.prev = _context30.next) {
+                      return _regeneratorRuntime().wrap(function _callee32$(_context32) {
+                        while (1) switch (_context32.prev = _context32.next) {
                           case 0:
                             photo = e.detail;
 
                             if (!(photo === null)) {
-                              _context30.next = 5;
+                              _context32.next = 5;
                               break;
                             }
 
                             reject(new _capacitor_core__WEBPACK_IMPORTED_MODULE_0__["CapacitorException"]('User cancelled photos app'));
-                            _context30.next = 14;
+                            _context32.next = 14;
                             break;
 
                           case 5:
                             if (!(photo instanceof Error)) {
-                              _context30.next = 9;
+                              _context32.next = 9;
                               break;
                             }
 
                             reject(photo);
-                            _context30.next = 14;
+                            _context32.next = 14;
                             break;
 
                           case 9:
-                            _context30.t0 = resolve;
-                            _context30.next = 12;
-                            return _this9._getCameraPhoto(photo, options);
+                            _context32.t0 = resolve;
+                            _context32.next = 12;
+                            return _this11._getCameraPhoto(photo, options);
 
                           case 12:
-                            _context30.t1 = _context30.sent;
-                            (0, _context30.t0)(_context30.t1);
+                            _context32.t1 = _context32.sent;
+                            (0, _context32.t0)(_context32.t1);
 
                           case 14:
                             cameraModal.dismiss();
@@ -1200,26 +1312,26 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                           case 16:
                           case "end":
-                            return _context30.stop();
+                            return _context32.stop();
                         }
-                      }, _callee30);
+                      }, _callee32);
                     }));
 
-                    return function (_x18) {
+                    return function (_x19) {
                       return _ref6.apply(this, arguments);
                     };
                   }());
                   cameraModal.present();
-                  _context31.next = 14;
+                  _context33.next = 14;
                   break;
 
                 case 11:
-                  _context31.prev = 11;
-                  _context31.t0 = _context31["catch"](4);
+                  _context33.prev = 11;
+                  _context33.t0 = _context33["catch"](4);
                   this.fileInputExperience(options, resolve);
 
                 case 14:
-                  _context31.next = 18;
+                  _context33.next = 18;
                   break;
 
                 case 16:
@@ -1228,12 +1340,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 18:
                 case "end":
-                  return _context31.stop();
+                  return _context33.stop();
               }
-            }, _callee31, this, [[4, 11]]);
+            }, _callee33, this, [[4, 11]]);
           }));
 
-          function cameraExperience(_x15, _x16, _x17) {
+          function cameraExperience(_x16, _x17, _x18) {
             return _cameraExperience.apply(this, arguments);
           }
 
@@ -1398,42 +1510,42 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "checkPermissions",
         value: function () {
-          var _checkPermissions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee32() {
+          var _checkPermissions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee34() {
             var permission;
-            return _regeneratorRuntime().wrap(function _callee32$(_context32) {
-              while (1) switch (_context32.prev = _context32.next) {
+            return _regeneratorRuntime().wrap(function _callee34$(_context34) {
+              while (1) switch (_context34.prev = _context34.next) {
                 case 0:
                   if (!(typeof navigator === 'undefined' || !navigator.permissions)) {
-                    _context32.next = 2;
+                    _context34.next = 2;
                     break;
                   }
 
                   throw this.unavailable('Permissions API not available in this browser');
 
                 case 2:
-                  _context32.prev = 2;
-                  _context32.next = 5;
+                  _context34.prev = 2;
+                  _context34.next = 5;
                   return window.navigator.permissions.query({
                     name: 'camera'
                   });
 
                 case 5:
-                  permission = _context32.sent;
-                  return _context32.abrupt("return", {
+                  permission = _context34.sent;
+                  return _context34.abrupt("return", {
                     camera: permission.state,
                     photos: 'granted'
                   });
 
                 case 9:
-                  _context32.prev = 9;
-                  _context32.t0 = _context32["catch"](2);
+                  _context34.prev = 9;
+                  _context34.t0 = _context34["catch"](2);
                   throw this.unavailable('Camera permissions are not available in this browser');
 
                 case 12:
                 case "end":
-                  return _context32.stop();
+                  return _context34.stop();
               }
-            }, _callee32, this, [[2, 9]]);
+            }, _callee34, this, [[2, 9]]);
           }));
 
           function checkPermissions() {
@@ -1445,17 +1557,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "requestPermissions",
         value: function () {
-          var _requestPermissions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee33() {
-            return _regeneratorRuntime().wrap(function _callee33$(_context33) {
-              while (1) switch (_context33.prev = _context33.next) {
+          var _requestPermissions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee35() {
+            return _regeneratorRuntime().wrap(function _callee35$(_context35) {
+              while (1) switch (_context35.prev = _context35.next) {
                 case 0:
                   throw this.unimplemented('Not implemented on web.');
 
                 case 1:
                 case "end":
-                  return _context33.stop();
+                  return _context35.stop();
               }
-            }, _callee33, this);
+            }, _callee35, this);
           }));
 
           function requestPermissions() {
@@ -1467,17 +1579,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "pickLimitedLibraryPhotos",
         value: function () {
-          var _pickLimitedLibraryPhotos = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee34() {
-            return _regeneratorRuntime().wrap(function _callee34$(_context34) {
-              while (1) switch (_context34.prev = _context34.next) {
+          var _pickLimitedLibraryPhotos = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee36() {
+            return _regeneratorRuntime().wrap(function _callee36$(_context36) {
+              while (1) switch (_context36.prev = _context36.next) {
                 case 0:
                   throw this.unavailable('Not implemented on web.');
 
                 case 1:
                 case "end":
-                  return _context34.stop();
+                  return _context36.stop();
               }
-            }, _callee34, this);
+            }, _callee36, this);
           }));
 
           function pickLimitedLibraryPhotos() {
@@ -1489,17 +1601,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "getLimitedLibraryPhotos",
         value: function () {
-          var _getLimitedLibraryPhotos = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee35() {
-            return _regeneratorRuntime().wrap(function _callee35$(_context35) {
-              while (1) switch (_context35.prev = _context35.next) {
+          var _getLimitedLibraryPhotos = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee37() {
+            return _regeneratorRuntime().wrap(function _callee37$(_context37) {
+              while (1) switch (_context37.prev = _context37.next) {
                 case 0:
                   throw this.unavailable('Not implemented on web.');
 
                 case 1:
                 case "end":
-                  return _context35.stop();
+                  return _context37.stop();
               }
-            }, _callee35, this);
+            }, _callee37, this);
           }));
 
           function getLimitedLibraryPhotos() {
@@ -1575,54 +1687,54 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       });
     }
 
-    var FilesystemWeb = /*#__PURE__*/function (_capacitor_core__WEBP4) {
-      _inherits(FilesystemWeb, _capacitor_core__WEBP4);
+    var FilesystemWeb = /*#__PURE__*/function (_capacitor_core__WEBP5) {
+      _inherits(FilesystemWeb, _capacitor_core__WEBP5);
 
-      var _super5 = _createSuper(FilesystemWeb);
+      var _super6 = _createSuper(FilesystemWeb);
 
       function FilesystemWeb() {
-        var _this10;
+        var _this12;
 
         _classCallCheck(this, FilesystemWeb);
 
-        _this10 = _super5.apply(this, arguments);
-        _this10.DB_VERSION = 1;
-        _this10.DB_NAME = 'Disc';
-        _this10._writeCmds = ['add', 'put', 'delete'];
-        return _this10;
+        _this12 = _super6.apply(this, arguments);
+        _this12.DB_VERSION = 1;
+        _this12.DB_NAME = 'Disc';
+        _this12._writeCmds = ['add', 'put', 'delete'];
+        return _this12;
       }
 
       _createClass(FilesystemWeb, [{
         key: "initDb",
         value: function () {
-          var _initDb = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee36() {
-            var _this11 = this;
+          var _initDb = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee38() {
+            var _this13 = this;
 
-            return _regeneratorRuntime().wrap(function _callee36$(_context36) {
-              while (1) switch (_context36.prev = _context36.next) {
+            return _regeneratorRuntime().wrap(function _callee38$(_context38) {
+              while (1) switch (_context38.prev = _context38.next) {
                 case 0:
                   if (!(this._db !== undefined)) {
-                    _context36.next = 2;
+                    _context38.next = 2;
                     break;
                   }
 
-                  return _context36.abrupt("return", this._db);
+                  return _context38.abrupt("return", this._db);
 
                 case 2:
                   if ('indexedDB' in window) {
-                    _context36.next = 4;
+                    _context38.next = 4;
                     break;
                   }
 
                   throw this.unavailable("This browser doesn't support IndexedDB");
 
                 case 4:
-                  return _context36.abrupt("return", new Promise(function (resolve, reject) {
-                    var request = indexedDB.open(_this11.DB_NAME, _this11.DB_VERSION);
+                  return _context38.abrupt("return", new Promise(function (resolve, reject) {
+                    var request = indexedDB.open(_this13.DB_NAME, _this13.DB_VERSION);
                     request.onupgradeneeded = FilesystemWeb.doUpgrade;
 
                     request.onsuccess = function () {
-                      _this11._db = request.result;
+                      _this13._db = request.result;
                       resolve(request.result);
                     };
 
@@ -1637,9 +1749,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 5:
                 case "end":
-                  return _context36.stop();
+                  return _context38.stop();
               }
-            }, _callee36, this);
+            }, _callee38, this);
           }));
 
           function initDb() {
@@ -1651,13 +1763,13 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "dbRequest",
         value: function () {
-          var _dbRequest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee37(cmd, args) {
+          var _dbRequest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee39(cmd, args) {
             var readFlag;
-            return _regeneratorRuntime().wrap(function _callee37$(_context37) {
-              while (1) switch (_context37.prev = _context37.next) {
+            return _regeneratorRuntime().wrap(function _callee39$(_context39) {
+              while (1) switch (_context39.prev = _context39.next) {
                 case 0:
                   readFlag = this._writeCmds.indexOf(cmd) !== -1 ? 'readwrite' : 'readonly';
-                  return _context37.abrupt("return", this.initDb().then(function (conn) {
+                  return _context39.abrupt("return", this.initDb().then(function (conn) {
                     return new Promise(function (resolve, reject) {
                       var tx = conn.transaction(['FileStorage'], readFlag);
                       var store = tx.objectStore('FileStorage');
@@ -1675,12 +1787,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 2:
                 case "end":
-                  return _context37.stop();
+                  return _context39.stop();
               }
-            }, _callee37, this);
+            }, _callee39, this);
           }));
 
-          function dbRequest(_x19, _x20) {
+          function dbRequest(_x20, _x21) {
             return _dbRequest.apply(this, arguments);
           }
 
@@ -1689,13 +1801,13 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "dbIndexRequest",
         value: function () {
-          var _dbIndexRequest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee38(indexName, cmd, args) {
+          var _dbIndexRequest = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee40(indexName, cmd, args) {
             var readFlag;
-            return _regeneratorRuntime().wrap(function _callee38$(_context38) {
-              while (1) switch (_context38.prev = _context38.next) {
+            return _regeneratorRuntime().wrap(function _callee40$(_context40) {
+              while (1) switch (_context40.prev = _context40.next) {
                 case 0:
                   readFlag = this._writeCmds.indexOf(cmd) !== -1 ? 'readwrite' : 'readonly';
-                  return _context38.abrupt("return", this.initDb().then(function (conn) {
+                  return _context40.abrupt("return", this.initDb().then(function (conn) {
                     return new Promise(function (resolve, reject) {
                       var tx = conn.transaction(['FileStorage'], readFlag);
                       var store = tx.objectStore('FileStorage');
@@ -1714,12 +1826,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 2:
                 case "end":
-                  return _context38.stop();
+                  return _context40.stop();
               }
-            }, _callee38, this);
+            }, _callee40, this);
           }));
 
-          function dbIndexRequest(_x21, _x22, _x23) {
+          function dbIndexRequest(_x22, _x23, _x24) {
             return _dbIndexRequest.apply(this, arguments);
           }
 
@@ -1737,25 +1849,25 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "clear",
         value: function () {
-          var _clear = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee39() {
+          var _clear = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee41() {
             var conn, tx, store;
-            return _regeneratorRuntime().wrap(function _callee39$(_context39) {
-              while (1) switch (_context39.prev = _context39.next) {
+            return _regeneratorRuntime().wrap(function _callee41$(_context41) {
+              while (1) switch (_context41.prev = _context41.next) {
                 case 0:
-                  _context39.next = 2;
+                  _context41.next = 2;
                   return this.initDb();
 
                 case 2:
-                  conn = _context39.sent;
+                  conn = _context41.sent;
                   tx = conn.transaction(['FileStorage'], 'readwrite');
                   store = tx.objectStore('FileStorage');
                   store.clear();
 
                 case 6:
                 case "end":
-                  return _context39.stop();
+                  return _context41.stop();
               }
-            }, _callee39, this);
+            }, _callee41, this);
           }));
 
           function clear() {
@@ -1773,39 +1885,39 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "readFile",
         value: function () {
-          var _readFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee40(options) {
+          var _readFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee42(options) {
             var path, entry;
-            return _regeneratorRuntime().wrap(function _callee40$(_context40) {
-              while (1) switch (_context40.prev = _context40.next) {
+            return _regeneratorRuntime().wrap(function _callee42$(_context42) {
+              while (1) switch (_context42.prev = _context42.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path); // const encoding = options.encoding;
 
-                  _context40.next = 3;
+                  _context42.next = 3;
                   return this.dbRequest('get', [path]);
 
                 case 3:
-                  entry = _context40.sent;
+                  entry = _context42.sent;
 
                   if (!(entry === undefined)) {
-                    _context40.next = 6;
+                    _context42.next = 6;
                     break;
                   }
 
                   throw Error('File does not exist.');
 
                 case 6:
-                  return _context40.abrupt("return", {
+                  return _context42.abrupt("return", {
                     data: entry.content ? entry.content : ''
                   });
 
                 case 7:
                 case "end":
-                  return _context40.stop();
+                  return _context42.stop();
               }
-            }, _callee40, this);
+            }, _callee42, this);
           }));
 
-          function readFile(_x24) {
+          function readFile(_x25) {
             return _readFile.apply(this, arguments);
           }
 
@@ -1820,23 +1932,23 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "writeFile",
         value: function () {
-          var _writeFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee41(options) {
+          var _writeFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee43(options) {
             var path, data, encoding, doRecursive, occupiedEntry, parentPath, parentEntry, subDirIndex, parentArgPath, now, pathObj;
-            return _regeneratorRuntime().wrap(function _callee41$(_context41) {
-              while (1) switch (_context41.prev = _context41.next) {
+            return _regeneratorRuntime().wrap(function _callee43$(_context43) {
+              while (1) switch (_context43.prev = _context43.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
                   data = options.data;
                   encoding = options.encoding;
                   doRecursive = options.recursive;
-                  _context41.next = 6;
+                  _context43.next = 6;
                   return this.dbRequest('get', [path]);
 
                 case 6:
-                  occupiedEntry = _context41.sent;
+                  occupiedEntry = _context43.sent;
 
                   if (!(occupiedEntry && occupiedEntry.type === 'directory')) {
-                    _context41.next = 9;
+                    _context43.next = 9;
                     break;
                   }
 
@@ -1844,26 +1956,26 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 9:
                   parentPath = path.substr(0, path.lastIndexOf('/'));
-                  _context41.next = 12;
+                  _context43.next = 12;
                   return this.dbRequest('get', [parentPath]);
 
                 case 12:
-                  parentEntry = _context41.sent;
+                  parentEntry = _context43.sent;
 
                   if (!(parentEntry === undefined)) {
-                    _context41.next = 19;
+                    _context43.next = 19;
                     break;
                   }
 
                   subDirIndex = parentPath.indexOf('/', 1);
 
                   if (!(subDirIndex !== -1)) {
-                    _context41.next = 19;
+                    _context43.next = 19;
                     break;
                   }
 
                   parentArgPath = parentPath.substr(subDirIndex);
-                  _context41.next = 19;
+                  _context43.next = 19;
                   return this.mkdir({
                     path: parentArgPath,
                     directory: options.directory,
@@ -1872,14 +1984,14 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 19:
                   if (encoding) {
-                    _context41.next = 23;
+                    _context43.next = 23;
                     break;
                   }
 
                   data = data.indexOf(',') >= 0 ? data.split(',')[1] : data;
 
                   if (this.isBase64String(data)) {
-                    _context41.next = 23;
+                    _context43.next = 23;
                     break;
                   }
 
@@ -1896,22 +2008,22 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                     mtime: now,
                     content: data
                   };
-                  _context41.next = 27;
+                  _context43.next = 27;
                   return this.dbRequest('put', [pathObj]);
 
                 case 27:
-                  return _context41.abrupt("return", {
+                  return _context43.abrupt("return", {
                     uri: pathObj.path
                   });
 
                 case 28:
                 case "end":
-                  return _context41.stop();
+                  return _context43.stop();
               }
-            }, _callee41, this);
+            }, _callee43, this);
           }));
 
-          function writeFile(_x25) {
+          function writeFile(_x26) {
             return _writeFile.apply(this, arguments);
           }
 
@@ -1926,10 +2038,10 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "appendFile",
         value: function () {
-          var _appendFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee42(options) {
+          var _appendFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee44(options) {
             var path, data, encoding, parentPath, now, ctime, occupiedEntry, parentEntry, subDirIndex, parentArgPath, pathObj;
-            return _regeneratorRuntime().wrap(function _callee42$(_context42) {
-              while (1) switch (_context42.prev = _context42.next) {
+            return _regeneratorRuntime().wrap(function _callee44$(_context44) {
+              while (1) switch (_context44.prev = _context44.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
                   data = options.data;
@@ -1937,40 +2049,40 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   parentPath = path.substr(0, path.lastIndexOf('/'));
                   now = Date.now();
                   ctime = now;
-                  _context42.next = 8;
+                  _context44.next = 8;
                   return this.dbRequest('get', [path]);
 
                 case 8:
-                  occupiedEntry = _context42.sent;
+                  occupiedEntry = _context44.sent;
 
                   if (!(occupiedEntry && occupiedEntry.type === 'directory')) {
-                    _context42.next = 11;
+                    _context44.next = 11;
                     break;
                   }
 
                   throw Error('The supplied path is a directory.');
 
                 case 11:
-                  _context42.next = 13;
+                  _context44.next = 13;
                   return this.dbRequest('get', [parentPath]);
 
                 case 13:
-                  parentEntry = _context42.sent;
+                  parentEntry = _context44.sent;
 
                   if (!(parentEntry === undefined)) {
-                    _context42.next = 20;
+                    _context44.next = 20;
                     break;
                   }
 
                   subDirIndex = parentPath.indexOf('/', 1);
 
                   if (!(subDirIndex !== -1)) {
-                    _context42.next = 20;
+                    _context44.next = 20;
                     break;
                   }
 
                   parentArgPath = parentPath.substr(subDirIndex);
-                  _context42.next = 20;
+                  _context44.next = 20;
                   return this.mkdir({
                     path: parentArgPath,
                     directory: options.directory,
@@ -1979,7 +2091,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 20:
                   if (!(!encoding && !this.isBase64String(data))) {
-                    _context42.next = 22;
+                    _context44.next = 22;
                     break;
                   }
 
@@ -2005,17 +2117,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                     mtime: now,
                     content: data
                   };
-                  _context42.next = 26;
+                  _context44.next = 26;
                   return this.dbRequest('put', [pathObj]);
 
                 case 26:
                 case "end":
-                  return _context42.stop();
+                  return _context44.stop();
               }
-            }, _callee42, this);
+            }, _callee44, this);
           }));
 
-          function appendFile(_x26) {
+          function appendFile(_x27) {
             return _appendFile.apply(this, arguments);
           }
 
@@ -2030,51 +2142,51 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "deleteFile",
         value: function () {
-          var _deleteFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee43(options) {
+          var _deleteFile = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee45(options) {
             var path, entry, entries;
-            return _regeneratorRuntime().wrap(function _callee43$(_context43) {
-              while (1) switch (_context43.prev = _context43.next) {
+            return _regeneratorRuntime().wrap(function _callee45$(_context45) {
+              while (1) switch (_context45.prev = _context45.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
-                  _context43.next = 3;
+                  _context45.next = 3;
                   return this.dbRequest('get', [path]);
 
                 case 3:
-                  entry = _context43.sent;
+                  entry = _context45.sent;
 
                   if (!(entry === undefined)) {
-                    _context43.next = 6;
+                    _context45.next = 6;
                     break;
                   }
 
                   throw Error('File does not exist.');
 
                 case 6:
-                  _context43.next = 8;
+                  _context45.next = 8;
                   return this.dbIndexRequest('by_folder', 'getAllKeys', [IDBKeyRange.only(path)]);
 
                 case 8:
-                  entries = _context43.sent;
+                  entries = _context45.sent;
 
                   if (!(entries.length !== 0)) {
-                    _context43.next = 11;
+                    _context45.next = 11;
                     break;
                   }
 
                   throw Error('Folder is not empty.');
 
                 case 11:
-                  _context43.next = 13;
+                  _context45.next = 13;
                   return this.dbRequest('delete', [path]);
 
                 case 13:
                 case "end":
-                  return _context43.stop();
+                  return _context45.stop();
               }
-            }, _callee43, this);
+            }, _callee45, this);
           }));
 
-          function deleteFile(_x27) {
+          function deleteFile(_x28) {
             return _deleteFile.apply(this, arguments);
           }
 
@@ -2089,28 +2201,28 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "mkdir",
         value: function () {
-          var _mkdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee44(options) {
+          var _mkdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee46(options) {
             var path, doRecursive, parentPath, depth, parentEntry, occupiedEntry, parentArgPath, now, pathObj;
-            return _regeneratorRuntime().wrap(function _callee44$(_context44) {
-              while (1) switch (_context44.prev = _context44.next) {
+            return _regeneratorRuntime().wrap(function _callee46$(_context46) {
+              while (1) switch (_context46.prev = _context46.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
                   doRecursive = options.recursive;
                   parentPath = path.substr(0, path.lastIndexOf('/'));
                   depth = (path.match(/\//g) || []).length;
-                  _context44.next = 6;
+                  _context46.next = 6;
                   return this.dbRequest('get', [parentPath]);
 
                 case 6:
-                  parentEntry = _context44.sent;
-                  _context44.next = 9;
+                  parentEntry = _context46.sent;
+                  _context46.next = 9;
                   return this.dbRequest('get', [path]);
 
                 case 9:
-                  occupiedEntry = _context44.sent;
+                  occupiedEntry = _context46.sent;
 
                   if (!(depth === 1)) {
-                    _context44.next = 12;
+                    _context46.next = 12;
                     break;
                   }
 
@@ -2118,7 +2230,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 12:
                   if (!(occupiedEntry !== undefined)) {
-                    _context44.next = 14;
+                    _context46.next = 14;
                     break;
                   }
 
@@ -2126,7 +2238,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 14:
                   if (!(!doRecursive && depth !== 2 && parentEntry === undefined)) {
-                    _context44.next = 16;
+                    _context46.next = 16;
                     break;
                   }
 
@@ -2134,12 +2246,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 16:
                   if (!(doRecursive && depth !== 2 && parentEntry === undefined)) {
-                    _context44.next = 20;
+                    _context46.next = 20;
                     break;
                   }
 
                   parentArgPath = parentPath.substr(parentPath.indexOf('/', 1));
-                  _context44.next = 20;
+                  _context46.next = 20;
                   return this.mkdir({
                     path: parentArgPath,
                     directory: options.directory,
@@ -2156,17 +2268,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                     ctime: now,
                     mtime: now
                   };
-                  _context44.next = 24;
+                  _context46.next = 24;
                   return this.dbRequest('put', [pathObj]);
 
                 case 24:
                 case "end":
-                  return _context44.stop();
+                  return _context46.stop();
               }
-            }, _callee44, this);
+            }, _callee46, this);
           }));
 
-          function mkdir(_x28) {
+          function mkdir(_x29) {
             return _mkdir.apply(this, arguments);
           }
 
@@ -2180,22 +2292,22 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "rmdir",
         value: function () {
-          var _rmdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee45(options) {
+          var _rmdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee47(options) {
             var path, directory, recursive, fullPath, entry, readDirResult, _iterator, _step, _entry, entryPath, entryObj;
 
-            return _regeneratorRuntime().wrap(function _callee45$(_context45) {
-              while (1) switch (_context45.prev = _context45.next) {
+            return _regeneratorRuntime().wrap(function _callee47$(_context47) {
+              while (1) switch (_context47.prev = _context47.next) {
                 case 0:
                   path = options.path, directory = options.directory, recursive = options.recursive;
                   fullPath = this.getPath(directory, path);
-                  _context45.next = 4;
+                  _context47.next = 4;
                   return this.dbRequest('get', [fullPath]);
 
                 case 4:
-                  entry = _context45.sent;
+                  entry = _context47.sent;
 
                   if (!(entry === undefined)) {
-                    _context45.next = 7;
+                    _context47.next = 7;
                     break;
                   }
 
@@ -2203,24 +2315,24 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 7:
                   if (!(entry.type !== 'directory')) {
-                    _context45.next = 9;
+                    _context47.next = 9;
                     break;
                   }
 
                   throw Error('Requested path is not a directory');
 
                 case 9:
-                  _context45.next = 11;
+                  _context47.next = 11;
                   return this.readdir({
                     path: path,
                     directory: directory
                   });
 
                 case 11:
-                  readDirResult = _context45.sent;
+                  readDirResult = _context47.sent;
 
                   if (!(readDirResult.files.length !== 0 && !recursive)) {
-                    _context45.next = 14;
+                    _context47.next = 14;
                     break;
                   }
 
@@ -2228,44 +2340,44 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 14:
                   _iterator = _createForOfIteratorHelper(readDirResult.files);
-                  _context45.prev = 15;
+                  _context47.prev = 15;
 
                   _iterator.s();
 
                 case 17:
                   if ((_step = _iterator.n()).done) {
-                    _context45.next = 32;
+                    _context47.next = 32;
                     break;
                   }
 
                   _entry = _step.value;
                   entryPath = "".concat(path, "/").concat(_entry.name);
-                  _context45.next = 22;
+                  _context47.next = 22;
                   return this.stat({
                     path: entryPath,
                     directory: directory
                   });
 
                 case 22:
-                  entryObj = _context45.sent;
+                  entryObj = _context47.sent;
 
                   if (!(entryObj.type === 'file')) {
-                    _context45.next = 28;
+                    _context47.next = 28;
                     break;
                   }
 
-                  _context45.next = 26;
+                  _context47.next = 26;
                   return this.deleteFile({
                     path: entryPath,
                     directory: directory
                   });
 
                 case 26:
-                  _context45.next = 30;
+                  _context47.next = 30;
                   break;
 
                 case 28:
-                  _context45.next = 30;
+                  _context47.next = 30;
                   return this.rmdir({
                     path: entryPath,
                     directory: directory,
@@ -2273,38 +2385,38 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   });
 
                 case 30:
-                  _context45.next = 17;
+                  _context47.next = 17;
                   break;
 
                 case 32:
-                  _context45.next = 37;
+                  _context47.next = 37;
                   break;
 
                 case 34:
-                  _context45.prev = 34;
-                  _context45.t0 = _context45["catch"](15);
+                  _context47.prev = 34;
+                  _context47.t0 = _context47["catch"](15);
 
-                  _iterator.e(_context45.t0);
+                  _iterator.e(_context47.t0);
 
                 case 37:
-                  _context45.prev = 37;
+                  _context47.prev = 37;
 
                   _iterator.f();
 
-                  return _context45.finish(37);
+                  return _context47.finish(37);
 
                 case 40:
-                  _context45.next = 42;
+                  _context47.next = 42;
                   return this.dbRequest('delete', [fullPath]);
 
                 case 42:
                 case "end":
-                  return _context45.stop();
+                  return _context47.stop();
               }
-            }, _callee45, this, [[15, 34, 37, 40]]);
+            }, _callee47, this, [[15, 34, 37, 40]]);
           }));
 
-          function rmdir(_x29) {
+          function rmdir(_x30) {
             return _rmdir.apply(this, arguments);
           }
 
@@ -2319,59 +2431,59 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "readdir",
         value: function () {
-          var _readdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee47(options) {
-            var _this12 = this;
+          var _readdir = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee49(options) {
+            var _this14 = this;
 
             var path, entry, entries, files;
-            return _regeneratorRuntime().wrap(function _callee47$(_context47) {
-              while (1) switch (_context47.prev = _context47.next) {
+            return _regeneratorRuntime().wrap(function _callee49$(_context49) {
+              while (1) switch (_context49.prev = _context49.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
-                  _context47.next = 3;
+                  _context49.next = 3;
                   return this.dbRequest('get', [path]);
 
                 case 3:
-                  entry = _context47.sent;
+                  entry = _context49.sent;
 
                   if (!(options.path !== '' && entry === undefined)) {
-                    _context47.next = 6;
+                    _context49.next = 6;
                     break;
                   }
 
                   throw Error('Folder does not exist.');
 
                 case 6:
-                  _context47.next = 8;
+                  _context49.next = 8;
                   return this.dbIndexRequest('by_folder', 'getAllKeys', [IDBKeyRange.only(path)]);
 
                 case 8:
-                  entries = _context47.sent;
-                  _context47.next = 11;
+                  entries = _context49.sent;
+                  _context49.next = 11;
                   return Promise.all(entries.map( /*#__PURE__*/function () {
-                    var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee46(e) {
+                    var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee48(e) {
                       var subEntry;
-                      return _regeneratorRuntime().wrap(function _callee46$(_context46) {
-                        while (1) switch (_context46.prev = _context46.next) {
+                      return _regeneratorRuntime().wrap(function _callee48$(_context48) {
+                        while (1) switch (_context48.prev = _context48.next) {
                           case 0:
-                            _context46.next = 2;
-                            return _this12.dbRequest('get', [e]);
+                            _context48.next = 2;
+                            return _this14.dbRequest('get', [e]);
 
                           case 2:
-                            subEntry = _context46.sent;
+                            subEntry = _context48.sent;
 
                             if (!(subEntry === undefined)) {
-                              _context46.next = 7;
+                              _context48.next = 7;
                               break;
                             }
 
-                            _context46.next = 6;
-                            return _this12.dbRequest('get', [e + '/']);
+                            _context48.next = 6;
+                            return _this14.dbRequest('get', [e + '/']);
 
                           case 6:
-                            subEntry = _context46.sent;
+                            subEntry = _context48.sent;
 
                           case 7:
-                            return _context46.abrupt("return", {
+                            return _context48.abrupt("return", {
                               name: e.substring(path.length + 1),
                               type: subEntry.type,
                               size: subEntry.size,
@@ -2382,30 +2494,30 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                           case 8:
                           case "end":
-                            return _context46.stop();
+                            return _context48.stop();
                         }
-                      }, _callee46);
+                      }, _callee48);
                     }));
 
-                    return function (_x31) {
+                    return function (_x32) {
                       return _ref7.apply(this, arguments);
                     };
                   }()));
 
                 case 11:
-                  files = _context47.sent;
-                  return _context47.abrupt("return", {
+                  files = _context49.sent;
+                  return _context49.abrupt("return", {
                     files: files
                   });
 
                 case 13:
                 case "end":
-                  return _context47.stop();
+                  return _context49.stop();
               }
-            }, _callee47, this);
+            }, _callee49, this);
           }));
 
-          function readdir(_x30) {
+          function readdir(_x31) {
             return _readdir.apply(this, arguments);
           }
 
@@ -2420,42 +2532,42 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "getUri",
         value: function () {
-          var _getUri = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee48(options) {
+          var _getUri = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee50(options) {
             var path, entry;
-            return _regeneratorRuntime().wrap(function _callee48$(_context48) {
-              while (1) switch (_context48.prev = _context48.next) {
+            return _regeneratorRuntime().wrap(function _callee50$(_context50) {
+              while (1) switch (_context50.prev = _context50.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
-                  _context48.next = 3;
+                  _context50.next = 3;
                   return this.dbRequest('get', [path]);
 
                 case 3:
-                  entry = _context48.sent;
+                  entry = _context50.sent;
 
                   if (!(entry === undefined)) {
-                    _context48.next = 8;
+                    _context50.next = 8;
                     break;
                   }
 
-                  _context48.next = 7;
+                  _context50.next = 7;
                   return this.dbRequest('get', [path + '/']);
 
                 case 7:
-                  entry = _context48.sent;
+                  entry = _context50.sent;
 
                 case 8:
-                  return _context48.abrupt("return", {
+                  return _context50.abrupt("return", {
                     uri: (entry === null || entry === void 0 ? void 0 : entry.path) || path
                   });
 
                 case 9:
                 case "end":
-                  return _context48.stop();
+                  return _context50.stop();
               }
-            }, _callee48, this);
+            }, _callee50, this);
           }));
 
-          function getUri(_x32) {
+          function getUri(_x33) {
             return _getUri.apply(this, arguments);
           }
 
@@ -2470,39 +2582,39 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "stat",
         value: function () {
-          var _stat = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee49(options) {
+          var _stat = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee51(options) {
             var path, entry;
-            return _regeneratorRuntime().wrap(function _callee49$(_context49) {
-              while (1) switch (_context49.prev = _context49.next) {
+            return _regeneratorRuntime().wrap(function _callee51$(_context51) {
+              while (1) switch (_context51.prev = _context51.next) {
                 case 0:
                   path = this.getPath(options.directory, options.path);
-                  _context49.next = 3;
+                  _context51.next = 3;
                   return this.dbRequest('get', [path]);
 
                 case 3:
-                  entry = _context49.sent;
+                  entry = _context51.sent;
 
                   if (!(entry === undefined)) {
-                    _context49.next = 8;
+                    _context51.next = 8;
                     break;
                   }
 
-                  _context49.next = 7;
+                  _context51.next = 7;
                   return this.dbRequest('get', [path + '/']);
 
                 case 7:
-                  entry = _context49.sent;
+                  entry = _context51.sent;
 
                 case 8:
                   if (!(entry === undefined)) {
-                    _context49.next = 10;
+                    _context51.next = 10;
                     break;
                   }
 
                   throw Error('Entry does not exist.');
 
                 case 10:
-                  return _context49.abrupt("return", {
+                  return _context51.abrupt("return", {
                     type: entry.type,
                     size: entry.size,
                     ctime: entry.ctime,
@@ -2512,12 +2624,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 11:
                 case "end":
-                  return _context49.stop();
+                  return _context51.stop();
               }
-            }, _callee49, this);
+            }, _callee51, this);
           }));
 
-          function stat(_x33) {
+          function stat(_x34) {
             return _stat.apply(this, arguments);
           }
 
@@ -2532,24 +2644,24 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "rename",
         value: function () {
-          var _rename = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee50(options) {
-            return _regeneratorRuntime().wrap(function _callee50$(_context50) {
-              while (1) switch (_context50.prev = _context50.next) {
+          var _rename = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee52(options) {
+            return _regeneratorRuntime().wrap(function _callee52$(_context52) {
+              while (1) switch (_context52.prev = _context52.next) {
                 case 0:
-                  _context50.next = 2;
+                  _context52.next = 2;
                   return this._copy(options, true);
 
                 case 2:
-                  return _context50.abrupt("return");
+                  return _context52.abrupt("return");
 
                 case 3:
                 case "end":
-                  return _context50.stop();
+                  return _context52.stop();
               }
-            }, _callee50, this);
+            }, _callee52, this);
           }));
 
-          function rename(_x34) {
+          function rename(_x35) {
             return _rename.apply(this, arguments);
           }
 
@@ -2564,20 +2676,20 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "copy",
         value: function () {
-          var _copy2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee51(options) {
-            return _regeneratorRuntime().wrap(function _callee51$(_context51) {
-              while (1) switch (_context51.prev = _context51.next) {
+          var _copy2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee53(options) {
+            return _regeneratorRuntime().wrap(function _callee53$(_context53) {
+              while (1) switch (_context53.prev = _context53.next) {
                 case 0:
-                  return _context51.abrupt("return", this._copy(options, false));
+                  return _context53.abrupt("return", this._copy(options, false));
 
                 case 1:
                 case "end":
-                  return _context51.stop();
+                  return _context53.stop();
               }
-            }, _callee51, this);
+            }, _callee53, this);
           }));
 
-          function copy(_x35) {
+          function copy(_x36) {
             return _copy2.apply(this, arguments);
           }
 
@@ -2586,19 +2698,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "requestPermissions",
         value: function () {
-          var _requestPermissions2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee52() {
-            return _regeneratorRuntime().wrap(function _callee52$(_context52) {
-              while (1) switch (_context52.prev = _context52.next) {
+          var _requestPermissions2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee54() {
+            return _regeneratorRuntime().wrap(function _callee54$(_context54) {
+              while (1) switch (_context54.prev = _context54.next) {
                 case 0:
-                  return _context52.abrupt("return", {
+                  return _context54.abrupt("return", {
                     publicStorage: 'granted'
                   });
 
                 case 1:
                 case "end":
-                  return _context52.stop();
+                  return _context54.stop();
               }
-            }, _callee52);
+            }, _callee54);
           }));
 
           function requestPermissions() {
@@ -2610,19 +2722,19 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "checkPermissions",
         value: function () {
-          var _checkPermissions2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee53() {
-            return _regeneratorRuntime().wrap(function _callee53$(_context53) {
-              while (1) switch (_context53.prev = _context53.next) {
+          var _checkPermissions2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee55() {
+            return _regeneratorRuntime().wrap(function _callee55$(_context55) {
+              while (1) switch (_context55.prev = _context55.next) {
                 case 0:
-                  return _context53.abrupt("return", {
+                  return _context55.abrupt("return", {
                     publicStorage: 'granted'
                   });
 
                 case 1:
                 case "end":
-                  return _context53.stop();
+                  return _context55.stop();
               }
-            }, _callee53);
+            }, _callee55);
           }));
 
           function checkPermissions() {
@@ -2641,8 +2753,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }, {
         key: "_copy",
         value: function () {
-          var _copy3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee55(options) {
-            var _this13 = this;
+          var _copy3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee57(options) {
+            var _this15 = this;
 
             var doRename,
                 toDirectory,
@@ -2665,17 +2777,17 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                 _iterator2,
                 _step2,
                 filename,
-                _args55 = arguments;
+                _args57 = arguments;
 
-            return _regeneratorRuntime().wrap(function _callee55$(_context55) {
-              while (1) switch (_context55.prev = _context55.next) {
+            return _regeneratorRuntime().wrap(function _callee57$(_context57) {
+              while (1) switch (_context57.prev = _context57.next) {
                 case 0:
-                  doRename = _args55.length > 1 && _args55[1] !== undefined ? _args55[1] : false;
+                  doRename = _args57.length > 1 && _args57[1] !== undefined ? _args57[1] : false;
                   toDirectory = options.toDirectory;
                   to = options.to, from = options.from, fromDirectory = options.directory;
 
                   if (!(!to || !from)) {
-                    _context55.next = 5;
+                    _context57.next = 5;
                     break;
                   }
 
@@ -2691,59 +2803,59 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   toPath = this.getPath(toDirectory, to); // Test that the "to" and "from" locations are different
 
                   if (!(fromPath === toPath)) {
-                    _context55.next = 10;
+                    _context57.next = 10;
                     break;
                   }
 
-                  return _context55.abrupt("return", {
+                  return _context57.abrupt("return", {
                     uri: toPath
                   });
 
                 case 10:
                   if (!isPathParent(fromPath, toPath)) {
-                    _context55.next = 12;
+                    _context57.next = 12;
                     break;
                   }
 
                   throw Error('To path cannot contain the from path');
 
                 case 12:
-                  _context55.prev = 12;
-                  _context55.next = 15;
+                  _context57.prev = 12;
+                  _context57.next = 15;
                   return this.stat({
                     path: to,
                     directory: toDirectory
                   });
 
                 case 15:
-                  toObj = _context55.sent;
-                  _context55.next = 29;
+                  toObj = _context57.sent;
+                  _context57.next = 29;
                   break;
 
                 case 18:
-                  _context55.prev = 18;
-                  _context55.t0 = _context55["catch"](12);
+                  _context57.prev = 18;
+                  _context57.t0 = _context57["catch"](12);
                   // To location does not exist, ensure the directory containing "to" location exists and is a directory
                   toPathComponents = to.split('/');
                   toPathComponents.pop();
                   _toPath = toPathComponents.join('/'); // Check the containing directory of the "to" location exists
 
                   if (!(toPathComponents.length > 0)) {
-                    _context55.next = 29;
+                    _context57.next = 29;
                     break;
                   }
 
-                  _context55.next = 26;
+                  _context57.next = 26;
                   return this.stat({
                     path: _toPath,
                     directory: toDirectory
                   });
 
                 case 26:
-                  toParentDirectory = _context55.sent;
+                  toParentDirectory = _context57.sent;
 
                   if (!(toParentDirectory.type !== 'directory')) {
-                    _context55.next = 29;
+                    _context57.next = 29;
                     break;
                   }
 
@@ -2751,73 +2863,73 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 29:
                   if (!(toObj && toObj.type === 'directory')) {
-                    _context55.next = 31;
+                    _context57.next = 31;
                     break;
                   }
 
                   throw new Error('Cannot overwrite a directory with a file');
 
                 case 31:
-                  _context55.next = 33;
+                  _context57.next = 33;
                   return this.stat({
                     path: from,
                     directory: fromDirectory
                   });
 
                 case 33:
-                  fromObj = _context55.sent;
+                  fromObj = _context57.sent;
 
                   // Set the mtime/ctime of the supplied path
                   updateTime = /*#__PURE__*/function () {
-                    var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee54(path, ctime, mtime) {
+                    var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee56(path, ctime, mtime) {
                       var fullPath, entry;
-                      return _regeneratorRuntime().wrap(function _callee54$(_context54) {
-                        while (1) switch (_context54.prev = _context54.next) {
+                      return _regeneratorRuntime().wrap(function _callee56$(_context56) {
+                        while (1) switch (_context56.prev = _context56.next) {
                           case 0:
-                            fullPath = _this13.getPath(toDirectory, path);
-                            _context54.next = 3;
-                            return _this13.dbRequest('get', [fullPath]);
+                            fullPath = _this15.getPath(toDirectory, path);
+                            _context56.next = 3;
+                            return _this15.dbRequest('get', [fullPath]);
 
                           case 3:
-                            entry = _context54.sent;
+                            entry = _context56.sent;
                             entry.ctime = ctime;
                             entry.mtime = mtime;
-                            _context54.next = 8;
-                            return _this13.dbRequest('put', [entry]);
+                            _context56.next = 8;
+                            return _this15.dbRequest('put', [entry]);
 
                           case 8:
                           case "end":
-                            return _context54.stop();
+                            return _context56.stop();
                         }
-                      }, _callee54);
+                      }, _callee56);
                     }));
 
-                    return function updateTime(_x37, _x38, _x39) {
+                    return function updateTime(_x38, _x39, _x40) {
                       return _ref8.apply(this, arguments);
                     };
                   }();
 
                   ctime = fromObj.ctime ? fromObj.ctime : Date.now();
-                  _context55.t1 = fromObj.type;
-                  _context55.next = _context55.t1 === 'file' ? 39 : _context55.t1 === 'directory' ? 53 : 88;
+                  _context57.t1 = fromObj.type;
+                  _context57.next = _context57.t1 === 'file' ? 39 : _context57.t1 === 'directory' ? 53 : 88;
                   break;
 
                 case 39:
-                  _context55.next = 41;
+                  _context57.next = 41;
                   return this.readFile({
                     path: from,
                     directory: fromDirectory
                   });
 
                 case 41:
-                  file = _context55.sent;
+                  file = _context57.sent;
 
                   if (!doRename) {
-                    _context55.next = 45;
+                    _context57.next = 45;
                     break;
                   }
 
-                  _context55.next = 45;
+                  _context57.next = 45;
                   return this.deleteFile({
                     path: from,
                     directory: fromDirectory
@@ -2829,7 +2941,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   } // Write the file to the new location
 
 
-                  _context55.next = 48;
+                  _context57.next = 48;
                   return this.writeFile({
                     path: to,
                     directory: toDirectory,
@@ -2838,30 +2950,30 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   });
 
                 case 48:
-                  writeResult = _context55.sent;
+                  writeResult = _context57.sent;
 
                   if (!doRename) {
-                    _context55.next = 52;
+                    _context57.next = 52;
                     break;
                   }
 
-                  _context55.next = 52;
+                  _context57.next = 52;
                   return updateTime(to, ctime, fromObj.mtime);
 
                 case 52:
-                  return _context55.abrupt("return", writeResult);
+                  return _context57.abrupt("return", writeResult);
 
                 case 53:
                   if (!toObj) {
-                    _context55.next = 55;
+                    _context57.next = 55;
                     break;
                   }
 
                   throw Error('Cannot move a directory over an existing object');
 
                 case 55:
-                  _context55.prev = 55;
-                  _context55.next = 58;
+                  _context57.prev = 55;
+                  _context57.next = 58;
                   return this.mkdir({
                     path: to,
                     directory: toDirectory,
@@ -2870,43 +2982,43 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
                 case 58:
                   if (!doRename) {
-                    _context55.next = 61;
+                    _context57.next = 61;
                     break;
                   }
 
-                  _context55.next = 61;
+                  _context57.next = 61;
                   return updateTime(to, ctime, fromObj.mtime);
 
                 case 61:
-                  _context55.next = 65;
+                  _context57.next = 65;
                   break;
 
                 case 63:
-                  _context55.prev = 63;
-                  _context55.t2 = _context55["catch"](55);
+                  _context57.prev = 63;
+                  _context57.t2 = _context57["catch"](55);
 
                 case 65:
-                  _context55.next = 67;
+                  _context57.next = 67;
                   return this.readdir({
                     path: from,
                     directory: fromDirectory
                   });
 
                 case 67:
-                  contents = _context55.sent.files;
+                  contents = _context57.sent.files;
                   _iterator2 = _createForOfIteratorHelper(contents);
-                  _context55.prev = 69;
+                  _context57.prev = 69;
 
                   _iterator2.s();
 
                 case 71:
                   if ((_step2 = _iterator2.n()).done) {
-                    _context55.next = 77;
+                    _context57.next = 77;
                     break;
                   }
 
                   filename = _step2.value;
-                  _context55.next = 75;
+                  _context57.next = 75;
                   return this._copy({
                     from: "".concat(from, "/").concat(filename.name),
                     to: "".concat(to, "/").concat(filename.name),
@@ -2915,51 +3027,51 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                   }, doRename);
 
                 case 75:
-                  _context55.next = 71;
+                  _context57.next = 71;
                   break;
 
                 case 77:
-                  _context55.next = 82;
+                  _context57.next = 82;
                   break;
 
                 case 79:
-                  _context55.prev = 79;
-                  _context55.t3 = _context55["catch"](69);
+                  _context57.prev = 79;
+                  _context57.t3 = _context57["catch"](69);
 
-                  _iterator2.e(_context55.t3);
+                  _iterator2.e(_context57.t3);
 
                 case 82:
-                  _context55.prev = 82;
+                  _context57.prev = 82;
 
                   _iterator2.f();
 
-                  return _context55.finish(82);
+                  return _context57.finish(82);
 
                 case 85:
                   if (!doRename) {
-                    _context55.next = 88;
+                    _context57.next = 88;
                     break;
                   }
 
-                  _context55.next = 88;
+                  _context57.next = 88;
                   return this.rmdir({
                     path: from,
                     directory: fromDirectory
                   });
 
                 case 88:
-                  return _context55.abrupt("return", {
+                  return _context57.abrupt("return", {
                     uri: toPath
                   });
 
                 case 89:
                 case "end":
-                  return _context55.stop();
+                  return _context57.stop();
               }
-            }, _callee55, this, [[12, 18], [55, 63], [69, 79, 82, 85]]);
+            }, _callee57, this, [[12, 18], [55, 63], [69, 79, 82, 85]]);
           }));
 
-          function _copy(_x36) {
+          function _copy(_x37) {
             return _copy3.apply(this, arguments);
           }
 
