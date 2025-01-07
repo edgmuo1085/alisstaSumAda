@@ -4167,11 +4167,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _capacitor_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @capacitor/browser */ "./node_modules/@capacitor/browser/dist/esm/index.js");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm2015/ionic-angular.js");
-/* harmony import */ var _capacitor_app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @capacitor/app */ "./node_modules/@capacitor/app/dist/esm/index.js");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
-
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/__ivy_ngcc__/fesm2015/ionic-angular.js");
+/* harmony import */ var _capacitor_app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @capacitor/app */ "./node_modules/@capacitor/app/dist/esm/index.js");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../environments/environment */ "./src/environments/environment.ts");
 
 
 
@@ -4197,13 +4195,13 @@ class AppVersionService {
     // Método asíncrono para verificar la versión
     checkForUpdate() {
         return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            const env = _environments_environment__WEBPACK_IMPORTED_MODULE_6__["environment"].APP_VERSION_ENVIRONMENT;
+            const env = _environments_environment__WEBPACK_IMPORTED_MODULE_5__["environment"].APP_VERSION_ENVIRONMENT;
             let apiVersionUrl = env === 'https://sproveedor.adacsc.co/sg-sst/'
                 ? 'https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=4'
                 : 'https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=4';
             //TODO: Si se requieren mas ambientes, es mejor crear un enum con las url de los web Services
             try {
-                const appInfo = yield _capacitor_app__WEBPACK_IMPORTED_MODULE_5__["App"].getInfo(); // Obtiene la versión actual
+                const appInfo = yield _capacitor_app__WEBPACK_IMPORTED_MODULE_4__["App"].getInfo(); // Obtiene la versión actual
                 this.appVersion = appInfo.version;
                 const response = yield this.http.get(apiVersionUrl).toPromise();
                 console.log('Url de entorno: ', apiVersionUrl);
@@ -4260,7 +4258,7 @@ class AppVersionService {
                         {
                             text: 'Actualizar ahora',
                             handler: () => {
-                                this.redirectToStore(); // Redirigir a la tienda
+                                // this.redirectToStore(); // Redirigir a la tienda
                             },
                         },
                         {
@@ -4275,77 +4273,15 @@ class AppVersionService {
             yield alert.present();
         });
     }
-    // Redirigir a la tienda adecuada
-    // private redirectToStore(): void {
-    //   if (this.platform.is('android')) {
-    //     window.open('https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share', '_system');
-    //   } else if (this.platform.is('ios')) {
-    //     window.open('https://apps.apple.com/co/app/alissta/id1306274186', '_system');
-    //   }
-    // }
-    // async redirectToStore(): Promise<void> {
-    //   const androidUrl = 'https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share';
-    //   const iosUrl = 'itms-apps://itunes.apple.com/app/id1306274186';
-    //   if (this.platform.is('android')) {
-    //     // Abre Play Store
-    //     await Browser.open({ url: androidUrl });
-    //   } else if (this.platform.is('ios')) {
-    //     // Abre App Store directamente
-    //     await Browser.open({ url: iosUrl });
-    //   } else {
-    //     console.log('Plataforma no soportada para redirección a la tienda.');
-    //   }
-    // }
-    // async redirectToStore(): Promise<void> {
-    //   const androidUrl = 'market://details?id=co.gov.alissta';
-    //   const iosUrl = 'itms-apps://itunes.apple.com/app/id1306274186';
-    //   const fallbackAndroidUrl = 'https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share';
-    //   const fallbackIosUrl = 'https://apps.apple.com/co/app/alissta/id1306274186';
-    //   try {
-    //     if (this.platform.is('android')) {
-    //       // Intenta abrir Play Store directamente
-    //       await App.openUrl({ url: androidUrl });
-    //     } else if (this.platform.is('ios')) {
-    //       // Intenta abrir App Store directamente
-    //       await App.openUrl({ url: iosUrl });
-    //     } else {
-    //       console.log('Plataforma no soportada para redirección a la tienda.');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error al abrir la tienda, intentando fallback:', error);
-    //     // Fallback al navegador si falla
-    //     const fallbackUrl = this.platform.is('android') ? fallbackAndroidUrl : fallbackIosUrl;
-    //     window.open(fallbackUrl, '_system');
-    //   }
-    // }
-    redirectToStore() {
-        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-            const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
-            const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
-            try {
-                const url = this.platform.is('android') ? androidUrl : iosUrl;
-                // Asegúrate de manejar plataformas no soportadas
-                if (!url) {
-                    throw new Error('Plataforma no soportada para redirección a la tienda.');
-                }
-                // Abre el enlace en el navegador
-                yield _capacitor_browser__WEBPACK_IMPORTED_MODULE_3__["Browser"].open({ url });
-            }
-            catch (error) {
-                // Manejo de errores
-                console.error('Error al redirigir a la tienda:', error);
-            }
-        });
-    }
 }
-AppVersionService.ɵfac = function AppVersionService_Factory(t) { return new (t || AppVersionService)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["Platform"])); };
+AppVersionService.ɵfac = function AppVersionService_Factory(t) { return new (t || AppVersionService)(_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"]), _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵinject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"])); };
 AppVersionService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineInjectable"]({ token: AppVersionService, factory: AppVersionService.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵsetClassMetadata"](AppVersionService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"],
         args: [{
                 providedIn: 'root',
             }]
-    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["Platform"] }]; }, null); })();
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"] }]; }, null); })();
 
 
 /***/ }),

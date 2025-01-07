@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { getPlatform, Injectable } from '@angular/core';
-import { Browser } from '@capacitor/browser';
 import { AlertController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { environment } from '../../../environments/environment';
@@ -96,7 +95,7 @@ export class AppVersionService {
             {
               text: 'Actualizar ahora',
               handler: () => {
-                this.redirectToStore(); // Redirigir a la tienda
+                // this.redirectToStore(); // Redirigir a la tienda
               },
             },
             {
@@ -158,23 +157,23 @@ export class AppVersionService {
   //   }
   // }
 
-  async redirectToStore(): Promise<void> {
-    const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
-    const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
+  // async redirectToStore(): Promise<void> {
+  //   const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
+  //   const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
 
-    try {
-      const url = this.platform.is('android') ? androidUrl : iosUrl;
+  //   try {
+  //     const url = this.platform.is('android') ? androidUrl : iosUrl;
 
-      // Asegúrate de manejar plataformas no soportadas
-      if (!url) {
-        throw new Error('Plataforma no soportada para redirección a la tienda.');
-      }
+  //     // Asegúrate de manejar plataformas no soportadas
+  //     if (!url) {
+  //       throw new Error('Plataforma no soportada para redirección a la tienda.');
+  //     }
 
-      // Abre el enlace en el navegador
-      await Browser.open({ url });
-    } catch (error) {
-      // Manejo de errores
-      console.error('Error al redirigir a la tienda:', error);
-    }
-  }
+  //     // Abre el enlace en el navegador
+  //     await Browser.open({ url });
+  //   } catch (error) {
+  //     // Manejo de errores
+  //     console.error('Error al redirigir a la tienda:', error);
+  //   }
+  // }
 }

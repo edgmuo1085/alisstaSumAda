@@ -3,8 +3,6 @@ PODS:
     - CapacitorCordova
   - CapacitorApp (4.1.1):
     - Capacitor
-  - CapacitorBrowser (5.2.1):
-    - Capacitor
   - CapacitorCamera (4.1.5):
     - Capacitor
   - CapacitorCommunityBarcodeScanner (4.0.1):
@@ -38,7 +36,6 @@ PODS:
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
-  - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
   - "CapacitorCommunityBarcodeScanner (from `../../node_modules/@capacitor-community/barcode-scanner`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
@@ -59,8 +56,6 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
     :path: "../../node_modules/@capacitor/app"
-  CapacitorBrowser:
-    :path: "../../node_modules/@capacitor/browser"
   CapacitorCamera:
     :path: "../../node_modules/@capacitor/camera"
   CapacitorCommunityBarcodeScanner:
@@ -85,7 +80,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
   CapacitorApp: acd42fe8561fe751ad5b5f459aa85e6acd7bee24
-  CapacitorBrowser: bac3132be6506411704149f9f2099843ffe470a0
   CapacitorCamera: 6f0777dbc5b9fbb59852567ba9ac3b0da2e4ee8f
   CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
   CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
@@ -98,6 +92,6 @@ SPEC CHECKSUMS:
   CordovaPluginsStatic: 595166e69149ee7001127e1e4311ef824c716e55
   OneSignalXCFramework: 3c3ef25ecca5eae1bf80a3272c49fd1dbab96b35
 
-PODFILE CHECKSUM: d4c1c6a960441311052361a079db138c61972035
+PODFILE CHECKSUM: 14c77f0ea7b920df15ae3c220c5ab6181afb1b17
 
 COCOAPODS: 1.15.2
