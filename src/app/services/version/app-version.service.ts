@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { getPlatform, Injectable } from '@angular/core';
+import { Browser } from '@capacitor/browser';
 import { AlertController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { environment } from '../../../environments/environment';

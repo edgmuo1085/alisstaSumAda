@@ -147,7 +147,7 @@ export class ReleaseActivitiesPage implements OnInit {
     // Cerrar el indicador de carga
     this.loading.dismiss();
   }
-
+  
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       mode: 'ios',

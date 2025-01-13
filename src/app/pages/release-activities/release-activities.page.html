@@ -33,7 +33,7 @@
           <ion-col size="12">
             <strong>
               <h1 class="tituloSlide">
-                No tiene actividades para liberar, debes de migrar actividades desde la web para poderlas liberar.
+                No tiene actividades para liberar, debes de migrar actividades desde la web o sincronizarlas para poderlas liberar.
               </h1>
             </strong>
           </ion-col>
@@ -42,11 +42,9 @@
     </ion-slide>
   </ion-slides>
 
-  <ion-list *ngIf="listActivity.length > 0">
-    <ion-row
-      class="ion-margin-bottom"
-      *ngFor="let company of listActivity | searchCompanyList: textoBuscar : ['numeroDocumento', 'name']; let i = index"
-    >
+  <ion-list *ngIf="listActivity.length > 0" class="mb-4">
+    <ion-row class="ion-margin-bottom"
+      *ngFor="let company of listActivity | searchCompanyList: textoBuscar : ['numeroDocumento', 'name']; let i = index">
       <ion-col size="12">
         <div class="ion-text-center">
           <div class="bold">Nombre Empresa</div>
@@ -65,7 +63,7 @@
                 <ion-grid>
                   <ion-row>
                     <ion-col size="12">
-                      <ion-label><strong>código actividad</strong></ion-label>
+                      <ion-label><strong>Código actividad</strong></ion-label>
                     </ion-col>
                   </ion-row>
                   <ion-row>
@@ -87,17 +85,18 @@
               </ion-item>
               <ion-item lines="none">
                 <ion-label><strong>Seleccionar actividad</strong></ion-label>
-                <ion-checkbox slot="end" [value]="isSelectecActivity" color="primary" (click)="activitySelected(activity)"></ion-checkbox>
+                <ion-checkbox slot="end" [value]="isSelectecActivity" color="primary"
+                  (click)="activitySelected(activity)"></ion-checkbox>
               </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size="12">
-        <ion-button (click)="liberarActividad()" expand="block" color="primary"> Liberar actividad </ion-button>
-      </ion-col>
-    </ion-row>
   </ion-list>
 </ion-content>
+
+<ion-button *ngIf="listActivity.length > 0" class="boton-flotante" (click)="liberarActividad()" color="primary"
+  [disabled]="actividadesSeleccionadas.length === 0">
+  {{ actividadesSeleccionadas.length >= 2 ? "Liberar Actividades" : "Liberar Actividad"}}
+</ion-button>

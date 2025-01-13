@@ -14,6 +14,7 @@ export class ResendVerificationCodeComponent implements OnInit {
    */
 
   listaResponsables: any[] = [];
+  responsableList: any[] = [];
   responsablesSeleccionados: any[] = [];
   loading: any;
   textoBuscar = '';
@@ -40,23 +41,29 @@ export class ResendVerificationCodeComponent implements OnInit {
     const documentoUsuario = await this.storage.get('sesion');
     // this.presentLoading('Cargando responsables ...');
     // const responsables = await this.listActivitiesCompany.listActivityForCompany(documentoUsuario.idPersona).toPromise();
-    this.listaResponsables = await this.storage.get('listaActividades');;
-    const responsablesList = [];
+    this.listaResponsables = await this.storage.get('listaActividades');
+    let responsables = [];
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.listaResponsables.length; i++) {
-      const idEmpresa = this.listaResponsables[i].id;
-      // tslint:disable-next-line: prefer-for-of
-      for (let j = 0; j < this.listaResponsables[i].listaReposables.length; j++) {
-        const element = this.listaResponsables[i].listaReposables[j];
-        const objResponsables = {
-          idEmpresa,
-          listaResponsables: element,
-        };
-        responsablesList.push(objResponsables);
+      if (this.listaResponsables[i].listaReposables.length > 0) {
+        const idEmpresa = this.listaResponsables[i].id;
+        const nameEmpresa = this.listaResponsables[i].name;
+        const docEmpresa = this.listaResponsables[i].numeroDocumento;
+        const empresaInfo = { nameEmpresa, docEmpresa }
+        // tslint:disable-next-line: prefer-for-of
+        for (let j = 0; j < this.listaResponsables[i].listaReposables.length; j++) {
+          const element = this.listaResponsables[i].listaReposables[j];
+          // const objResponsables = {
+          //   idEmpresa,
+          //   listaResponsables: element,
+          // };
+          responsables.push({ idEmpresa, element });
+        }
+        this.responsableList.push({ empresaInfo, responsables });
+        responsables = []
       }
     }
-    this.listaResponsables = responsablesList;
-    console.log("Lista de respondables::: ", this.listaResponsables)
+    this.listaResponsables = responsables;
   }
 
   /**
@@ -66,18 +73,18 @@ export class ResendVerificationCodeComponent implements OnInit {
     this.textoBuscar = event.detail.value;
   }
 
-  selectResponsible(responsableSelected) {
-    const idSelected = responsableSelected.listaResponsables.id;
-    const existe = this.responsablesSeleccionados.find(item => item.listaResponsables.id === idSelected);
-    if (existe) {
-      this.responsablesSeleccionados.forEach(element => {
-        const item = element;
-        if (item === existe) {
-          this.responsablesSeleccionados.splice(existe, 1);
-        }
-      });
+  selectResponsible(responsable: { idEmpresa: number; element: { id: number } }) {
+    // Busca el índice del objeto en el array por el `element.id`
+    const index = this.responsablesSeleccionados.findIndex(
+      (item) => item.element.id === responsable.element.id
+    );
+
+    if (index !== -1) {
+      // Si existe, elimina el objeto completo
+      this.responsablesSeleccionados.splice(index, 1);
     } else {
-      this.responsablesSeleccionados.push(responsableSelected);
+      // Si no existe, agrega el nuevo objeto
+      this.responsablesSeleccionados.push(responsable);
     }
   }
 
@@ -91,12 +98,12 @@ export class ResendVerificationCodeComponent implements OnInit {
       this.presentLoading('Reenviando código ...');
       // tslint:disable-next-line: max-line-length
       const siEnvioCorreo = await this.activityListCompany
-        .recordarCodigoVerificacion(usuarioAEnviarCodigo.listaResponsables.id, usuarioAEnviarCodigo.idEmpresa)
+        .recordarCodigoVerificacion(usuarioAEnviarCodigo.element.id, usuarioAEnviarCodigo.idEmpresa)
         .toPromise();
       if (siEnvioCorreo) {
-        this.notification('Atención', `Se reenvío el código de verificación al usuario:${usuarioAEnviarCodigo.listaResponsables.correo} `);
+        this.notification('Atención', `Se reenvío el código de verificación al usuario:${usuarioAEnviarCodigo.element.correo} `);
       } else {
-        this.notification('Error', `No se pudo envíar el correo al siguiente usuario: ${usuarioAEnviarCodigo.listaResponsables.correo}`);
+        this.notification('Error', `No se pudo envíar el correo al siguiente usuario: ${usuarioAEnviarCodigo.element.correo}`);
       }
     } else {
       this.notification('Error', 'Se debe seleccionar solo un usuario');
