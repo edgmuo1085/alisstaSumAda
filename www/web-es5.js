@@ -1,46 +1,46 @@
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
 
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
 
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(typeof e + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(typeof e + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _callSuper(t, o, e) { return o = _getPrototypeOf(o), _possibleConstructorReturn(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], _getPrototypeOf(t).constructor) : o.apply(t, e)); }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _possibleConstructorReturn(t, e) { if (e && ("object" == typeof e || "function" == typeof e)) return e; if (void 0 !== e) throw new TypeError("Derived constructors may only return object or undefined"); return _assertThisInitialized(t); }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _assertThisInitialized(e) { if (void 0 === e) throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); return e; }
 
-function _possibleConstructorReturn(self, call) { if (call && (typeof call === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _getPrototypeOf(t) { return _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function (t) { return t.__proto__ || Object.getPrototypeOf(t); }, _getPrototypeOf(t); }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _inherits(t, e) { if ("function" != typeof e && null !== e) throw new TypeError("Super expression must either be null or a function"); t.prototype = Object.create(e && e.prototype, { constructor: { value: t, writable: !0, configurable: !0 } }), Object.defineProperty(t, "prototype", { writable: !1 }), e && _setPrototypeOf(t, e); }
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _setPrototypeOf(t, e) { return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) { return t.__proto__ = e, t; }, _setPrototypeOf(t, e); }
 
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["web"], {
   /***/
@@ -52,7 +52,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BarcodeScannerWeb */
 
   /***/
-  function node_modulesCapacitorCommunityBarcodeScannerDistEsmWebJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_CapacitorCommunity_barcodeScanner_dist_esm_webJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -88,16 +88,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     "./node_modules/@capacitor-community/barcode-scanner/dist/esm/definitions.js");
 
     var BarcodeScannerWeb = /*#__PURE__*/function (_capacitor_core__WEBP) {
-      _inherits(BarcodeScannerWeb, _capacitor_core__WEBP);
-
-      var _super2 = _createSuper(BarcodeScannerWeb);
-
       function BarcodeScannerWeb() {
         var _this2;
 
         _classCallCheck(this, BarcodeScannerWeb);
 
-        _this2 = _super2.apply(this, arguments);
+        _this2 = _callSuper(this, BarcodeScannerWeb, arguments);
         _this2._formats = [];
         _this2._controls = null;
         _this2._torchState = false;
@@ -107,7 +103,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         return _this2;
       }
 
-      _createClass(BarcodeScannerWeb, [{
+      _inherits(BarcodeScannerWeb, _capacitor_core__WEBP);
+
+      return _createClass(BarcodeScannerWeb, [{
         key: "prepare",
         value: function () {
           var _prepare = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
@@ -789,8 +787,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           return _stop;
         }()
       }]);
-
-      return BarcodeScannerWeb;
     }(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"]); //# sourceMappingURL=web.js.map
 
     /***/
@@ -806,7 +802,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: AppWeb */
 
   /***/
-  function node_modulesCapacitorAppDistEsmWebJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Capacitor_app_dist_esm_webJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -824,16 +820,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     "./node_modules/@capacitor/core/dist/index.js");
 
     var AppWeb = /*#__PURE__*/function (_capacitor_core__WEBP2) {
-      _inherits(AppWeb, _capacitor_core__WEBP2);
-
-      var _super3 = _createSuper(AppWeb);
-
       function AppWeb() {
         var _this6;
 
         _classCallCheck(this, AppWeb);
 
-        _this6 = _super3.call(this);
+        _this6 = _callSuper(this, AppWeb);
 
         _this6.handleVisibilityChange = function () {
           var data = {
@@ -853,7 +845,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         return _this6;
       }
 
-      _createClass(AppWeb, [{
+      _inherits(AppWeb, _capacitor_core__WEBP2);
+
+      return _createClass(AppWeb, [{
         key: "exitApp",
         value: function exitApp() {
           throw this.unimplemented('Not implemented on web.');
@@ -951,8 +945,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           return minimizeApp;
         }()
       }]);
-
-      return AppWeb;
     }(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"]); //# sourceMappingURL=web.js.map
 
     /***/
@@ -968,7 +960,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: CameraWeb, Camera */
 
   /***/
-  function node_modulesCapacitorCameraDistEsmWebJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Capacitor_camera_dist_esm_webJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -998,17 +990,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     "./node_modules/@capacitor/camera/dist/esm/definitions.js");
 
     var CameraWeb = /*#__PURE__*/function (_capacitor_core__WEBP3) {
-      _inherits(CameraWeb, _capacitor_core__WEBP3);
-
-      var _super4 = _createSuper(CameraWeb);
-
       function CameraWeb() {
         _classCallCheck(this, CameraWeb);
 
-        return _super4.apply(this, arguments);
+        return _callSuper(this, CameraWeb, arguments);
       }
 
-      _createClass(CameraWeb, [{
+      _inherits(CameraWeb, _capacitor_core__WEBP3);
+
+      return _createClass(CameraWeb, [{
         key: "getPhoto",
         value: function () {
           var _getPhoto = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee27(options) {
@@ -1509,8 +1499,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           return getLimitedLibraryPhotos;
         }()
       }]);
-
-      return CameraWeb;
     }(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"]);
 
     var Camera = new CameraWeb(); //# sourceMappingURL=web.js.map
@@ -1527,7 +1515,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: FilesystemWeb */
 
   /***/
-  function node_modulesCapacitorFilesystemDistEsmWebJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Capacitor_filesystem_dist_esm_webJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -1576,23 +1564,21 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
     }
 
     var FilesystemWeb = /*#__PURE__*/function (_capacitor_core__WEBP4) {
-      _inherits(FilesystemWeb, _capacitor_core__WEBP4);
-
-      var _super5 = _createSuper(FilesystemWeb);
-
       function FilesystemWeb() {
         var _this10;
 
         _classCallCheck(this, FilesystemWeb);
 
-        _this10 = _super5.apply(this, arguments);
+        _this10 = _callSuper(this, FilesystemWeb, arguments);
         _this10.DB_VERSION = 1;
         _this10.DB_NAME = 'Disc';
         _this10._writeCmds = ['add', 'put', 'delete'];
         return _this10;
       }
 
-      _createClass(FilesystemWeb, [{
+      _inherits(FilesystemWeb, _capacitor_core__WEBP4);
+
+      return _createClass(FilesystemWeb, [{
         key: "initDb",
         value: function () {
           var _initDb = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee36() {
@@ -2997,8 +2983,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           }
         }
       }]);
-
-      return FilesystemWeb;
     }(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["WebPlugin"]);
 
     FilesystemWeb._debug = true; //# sourceMappingURL=web.js.map
@@ -3015,7 +2999,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: HTMLCanvasElementLuminanceSource */
 
   /***/
-  function node_modulesZxingBrowserEsmCommonHTMLCanvasElementLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_common_HTMLCanvasElementLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3075,7 +3059,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }
 
       HTMLCanvasElementLuminanceSource.makeBufferFromCanvasImageData = function (canvas) {
-        var canvasCtx = canvas.getContext('2d');
+        var canvasCtx;
+
+        try {
+          canvasCtx = canvas.getContext('2d', {
+            willReadFrequently: true
+          });
+        } catch (e) {
+          canvasCtx = canvas.getContext('2d');
+        }
 
         if (!canvasCtx) {
           throw new Error('Couldn\'t get canvas context.');
@@ -3241,7 +3233,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no exports provided */
 
   /***/
-  function node_modulesZxingBrowserEsmCommonHTMLVisualMediaElementJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_common_HTMLVisualMediaElementJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__); //# sourceMappingURL=HTMLVisualMediaElement.js.map
@@ -3259,7 +3251,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no exports provided */
 
   /***/
-  function node_modulesZxingBrowserEsmCommonIScannerControlsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_common_IScannerControlsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__); //# sourceMappingURL=IScannerControls.js.map
@@ -3277,7 +3269,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: hasNavigator, canEnumerateDevices */
 
   /***/
-  function node_modulesZxingBrowserEsmCommonNavigatorUtilsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_common_navigatorUtilsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3331,7 +3323,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BarcodeFormat, HTMLCanvasElementLuminanceSource, BrowserAztecCodeReader, BrowserMultiFormatOneDReader, BrowserCodeReader, BrowserDatamatrixCodeReader, BrowserMultiFormatReader, BrowserPDF417Reader, BrowserQRCodeReader, BrowserCodeSvgWriter, BrowserQRCodeSvgWriter */
 
   /***/
-  function node_modulesZxingBrowserEsmIndexJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_indexJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3510,7 +3502,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserAztecCodeReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserAztecCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserAztecCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3595,7 +3587,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserCodeReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -4388,23 +4380,23 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
                     }
 
                     reject(false);
-                    element.removeEventListener('canplay', videoCanPlayListener);
+                    element.removeEventListener('canplay', _videoCanPlayListener);
                   }, timeout);
                   /**
                    * Should contain the current registered listener for video loaded-metadata,
                    * used to unregister that listener when needed.
                    */
 
-                  var videoCanPlayListener = function videoCanPlayListener() {
+                  var _videoCanPlayListener = function videoCanPlayListener() {
                     BrowserCodeReader.tryPlayVideo(element).then(function (hasPlayed) {
                       clearTimeout(timeoutId);
-                      element.removeEventListener('canplay', videoCanPlayListener);
+                      element.removeEventListener('canplay', _videoCanPlayListener);
                       resolve(hasPlayed);
                     });
                   }; // both should be unregistered after called
 
 
-                  element.addEventListener('canplay', videoCanPlayListener);
+                  element.addEventListener('canplay', _videoCanPlayListener);
                 })];
             }
           });
@@ -4460,20 +4452,20 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             } // removes the listener
 
 
-            element.removeEventListener('load', imageLoadedListener); // rejects the load
+            element.removeEventListener('load', _imageLoadedListener); // rejects the load
 
             reject();
           }, timeout);
 
-          var imageLoadedListener = function imageLoadedListener() {
+          var _imageLoadedListener = function imageLoadedListener() {
             clearTimeout(timeoutId); // removes the listener
 
-            element.removeEventListener('load', imageLoadedListener); // resolves the load
+            element.removeEventListener('load', _imageLoadedListener); // resolves the load
 
             resolve();
           };
 
-          element.addEventListener('load', imageLoadedListener);
+          element.addEventListener('load', _imageLoadedListener);
         });
       };
       /**
@@ -5265,7 +5257,16 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
          * The HTML canvas element context.
          */
 
-        var captureCanvasContext = captureCanvas.getContext('2d'); // cannot proceed w/o this
+        var captureCanvasContext;
+
+        try {
+          captureCanvasContext = captureCanvas.getContext('2d', {
+            willReadFrequently: true
+          });
+        } catch (e) {
+          captureCanvasContext = captureCanvas.getContext('2d');
+        } // cannot proceed w/o this
+
 
         if (!captureCanvasContext) {
           throw new Error('Couldn\'t create canvas for visual element scan.');
@@ -5294,7 +5295,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
           stop: stop
         }; // this async loop allows infinite (or almost? maybe) scans
 
-        var loop = function loop() {
+        var _loop = function loop() {
           if (stopScan) {
             // no need to clear timeouts as none was create yet in this scope.
             return;
@@ -5306,7 +5307,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             var result = _this.decodeFromCanvas(captureCanvas);
 
             callbackFn(result, undefined, controls);
-            lastTimeoutId = setTimeout(loop, _this.options.delayBetweenScanSuccess);
+            lastTimeoutId = setTimeout(_loop, _this.options.delayBetweenScanSuccess);
           } catch (error) {
             callbackFn(undefined, error, controls);
             var isChecksumError = error instanceof _zxing_library__WEBPACK_IMPORTED_MODULE_0__["ChecksumException"];
@@ -5315,7 +5316,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
             if (isChecksumError || isFormatError || isNotFound) {
               // trying again
-              lastTimeoutId = setTimeout(loop, _this.options.delayBetweenScanAttempts);
+              lastTimeoutId = setTimeout(_loop, _this.options.delayBetweenScanAttempts);
               return;
             } // not trying again
 
@@ -5329,7 +5330,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         }; // starts the async loop
 
 
-        loop();
+        _loop();
+
         return controls;
       };
       /**
@@ -5414,7 +5416,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserDatamatrixCodeReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserDatamatrixCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserDatamatrixCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5496,7 +5498,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserMultiFormatOneDReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserMultiFormatOneDReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserMultiFormatOneDReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5580,7 +5582,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserMultiFormatReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserMultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserMultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5686,7 +5688,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserPDF417Reader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserPDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserPDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5768,7 +5770,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserQRCodeReader */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersBrowserQRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_BrowserQRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5850,7 +5852,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no exports provided */
 
   /***/
-  function node_modulesZxingBrowserEsmReadersIBrowserCodeReaderOptionsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_readers_IBrowserCodeReaderOptionsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__); //# sourceMappingURL=IBrowserCodeReaderOptions.js.map
@@ -5868,7 +5870,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserCodeSvgWriter */
 
   /***/
-  function node_modulesZxingBrowserEsmWritersBrowserCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_writers_BrowserCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6059,7 +6061,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserQRCodeSvgWriter */
 
   /***/
-  function node_modulesZxingBrowserEsmWritersBrowserQRCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_browser_esm_writers_BrowserQRCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6245,7 +6247,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no static exports found */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6419,7 +6421,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserAztecCodeReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserAztecCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserAztecCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6508,7 +6510,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserBarcodeReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserBarcodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserBarcodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6595,7 +6597,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserCodeReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -7843,7 +7845,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
         this._stopAsyncDecode = false;
 
-        var loop = function loop(resolve, reject) {
+        var _loop2 = function loop(resolve, reject) {
           if (_this._stopAsyncDecode) {
             reject(new _core_NotFoundException__WEBPACK_IMPORTED_MODULE_5__["default"]('Video stream has ended before any code could be detected.'));
             _this._stopAsyncDecode = undefined;
@@ -7861,7 +7863,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
             if (ifNotFound || ifChecksumOrFormat) {
               // trying again
-              return setTimeout(loop, _this._timeBetweenDecodingAttempts, resolve, reject);
+              return setTimeout(_loop2, _this._timeBetweenDecodingAttempts, resolve, reject);
             }
 
             reject(e);
@@ -7869,7 +7871,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         };
 
         return new Promise(function (resolve, reject) {
-          return loop(resolve, reject);
+          return _loop2(resolve, reject);
         });
       };
       /**
@@ -7882,7 +7884,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
         this._stopContinuousDecode = false;
 
-        var loop = function loop() {
+        var _loop3 = function loop() {
           if (_this._stopContinuousDecode) {
             _this._stopContinuousDecode = undefined;
             return;
@@ -7892,7 +7894,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
             var result = _this.decode(element);
 
             callbackFn(result, null);
-            setTimeout(loop, _this.timeBetweenScansMillis);
+            setTimeout(_loop3, _this.timeBetweenScansMillis);
           } catch (e) {
             callbackFn(null, e);
             var isChecksumOrFormatError = e instanceof _core_ChecksumException__WEBPACK_IMPORTED_MODULE_2__["default"] || e instanceof _core_FormatException__WEBPACK_IMPORTED_MODULE_4__["default"];
@@ -7900,12 +7902,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
             if (isChecksumOrFormatError || isNotFound) {
               // trying again
-              setTimeout(loop, _this._timeBetweenDecodingAttempts);
+              setTimeout(_loop3, _this._timeBetweenDecodingAttempts);
             }
           }
         };
 
-        loop();
+        _loop3();
       };
       /**
        * Gets the BinaryBitmap for ya! (and decodes it)
@@ -8202,7 +8204,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserDatamatrixCodeReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserDatamatrixCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserDatamatrixCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -8288,7 +8290,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserMultiFormatReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserMultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserMultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -8381,7 +8383,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserPDF417Reader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserPDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserPDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -8467,7 +8469,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserQRCodeReader */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserQRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserQRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -8553,7 +8555,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: BrowserQRCodeSvgWriter */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserBrowserQRCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_BrowserQRCodeSvgWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -8763,7 +8765,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no static exports found */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserDecodeContinuouslyCallbackJs(module, exports) {
+  function _node_modules_Zxing_library_esm_browser_DecodeContinuouslyCallbackJs(module, exports) {
     /***/
   },
 
@@ -8776,7 +8778,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: HTMLCanvasElementLuminanceSource */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserHTMLCanvasElementLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_HTMLCanvasElementLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9021,7 +9023,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no static exports found */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserHTMLVisualMediaElementJs(module, exports) {
+  function _node_modules_Zxing_library_esm_browser_HTMLVisualMediaElementJs(module, exports) {
     /***/
   },
 
@@ -9034,7 +9036,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: VideoInputDevice */
 
   /***/
-  function node_modulesZxingLibraryEsmBrowserVideoInputDeviceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_browser_VideoInputDeviceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9095,7 +9097,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreArgumentExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ArgumentExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9162,7 +9164,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreArithmeticExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ArithmeticExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9229,7 +9231,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreArrayIndexOutOfBoundsExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ArrayIndexOutOfBoundsExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9308,7 +9310,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreBarcodeFormatJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_BarcodeFormatJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9411,7 +9413,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreBinarizerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_BinarizerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9478,7 +9480,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreBinaryBitmapJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_BinaryBitmapJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9667,7 +9669,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreChecksumExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ChecksumExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9738,7 +9740,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDecodeHintTypeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_DecodeHintTypeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -9896,7 +9898,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreEncodeHintTypeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_EncodeHintTypeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10053,7 +10055,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10141,7 +10143,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreFormatExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_FormatExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10212,7 +10214,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreIllegalArgumentExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_IllegalArgumentExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10279,7 +10281,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreIllegalStateExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_IllegalStateExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10346,7 +10348,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreIndexOutOfBoundsExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_IndexOutOfBoundsExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10413,7 +10415,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreInvertedLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_InvertedLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10584,7 +10586,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_LuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -10768,7 +10770,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreMultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_MultiFormatReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11080,7 +11082,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreMultiFormatWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_MultiFormatWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11227,7 +11229,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreNotFoundExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_NotFoundExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11298,7 +11300,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreNullPointerExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_NullPointerExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11365,7 +11367,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOutOfMemoryErrorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_OutOfMemoryErrorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11431,7 +11433,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePlanarYUVLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_PlanarYUVLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11703,7 +11705,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreRGBLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_RGBLuminanceSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -11952,7 +11954,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreReaderExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ReaderExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12019,7 +12021,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreReedSolomonExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ReedSolomonExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12086,7 +12088,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12286,7 +12288,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreResultMetadataTypeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ResultMetadataTypeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12405,7 +12407,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreResultPointJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_ResultPointJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12569,7 +12571,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUnsupportedOperationExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_UnsupportedOperationExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12636,7 +12638,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreWriterExceptionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_WriterExceptionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12703,7 +12705,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecAztecDetectorResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_AztecDetectorResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12805,7 +12807,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecAztecReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_AztecReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -12973,7 +12975,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecAztecWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_AztecWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -13159,7 +13161,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecDecoderDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_decoder_DecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -13622,7 +13624,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: Point, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecDetectorDetectorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_detector_DetectorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -14256,7 +14258,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderAztecCodeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_AztecCodeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -14366,7 +14368,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderBinaryShiftTokenJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_BinaryShiftTokenJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -14487,7 +14489,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: static_CHAR_MAP, CHAR_MAP */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderCharMapJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_CharMapJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -14591,7 +14593,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_EncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15124,7 +15126,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: MODE_NAMES, MODE_UPPER, MODE_LOWER, MODE_DIGIT, MODE_MIXED, MODE_PUNCT, EMPTY_TOKEN */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderEncoderConstantsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_EncoderConstantsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15213,7 +15215,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderHighLevelEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_HighLevelEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15581,7 +15583,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: LATCH_TABLE */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderLatchTableJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_LatchTableJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15614,7 +15616,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: static_SHIFT_TABLE, SHIFT_TABLE */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderShiftTableJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_ShiftTableJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15708,7 +15710,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderSimpleTokenJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_SimpleTokenJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -15824,7 +15826,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderStateJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_StateJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -16101,7 +16103,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderTokenJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_TokenJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -16151,7 +16153,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: addBinaryShift, add */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreAztecEncoderTokenHelpersJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_aztec_encoder_TokenHelpersJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -16201,7 +16203,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonBitArrayJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_BitArrayJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -16744,7 +16746,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonBitMatrixJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_BitMatrixJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -17422,7 +17424,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonBitSourceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_BitSourceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -17572,7 +17574,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: CharacterSetValueIdentifiers, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonCharacterSetECIJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_CharacterSetECIJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -17839,7 +17841,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonDecoderResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_DecoderResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -18021,7 +18023,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonDefaultGridSamplerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_DefaultGridSamplerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -18219,7 +18221,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonDetectorResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_DetectorResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -18282,7 +18284,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ECIEncoderSet */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonECIEncoderSetJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_ECIEncoderSetJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -18561,7 +18563,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonGlobalHistogramBinarizerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_GlobalHistogramBinarizerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -18858,7 +18860,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonGridSamplerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_GridSamplerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -19002,7 +19004,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonGridSamplerInstanceJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_GridSamplerInstanceJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -19059,7 +19061,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonHybridBinarizerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_HybridBinarizerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -19401,7 +19403,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: MinimalECIInput */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonMinimalECIInputJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_MinimalECIInputJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -19767,7 +19769,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonPerspectiveTransformJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_PerspectiveTransformJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -19994,7 +19996,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonStringUtilsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_StringUtilsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -20373,7 +20375,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonDetectorMathUtilsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_detector_MathUtilsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -20500,7 +20502,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonDetectorWhiteRectangleDetectorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_detector_WhiteRectangleDetectorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -20895,7 +20897,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonReedsolomonAbstractGenericGFJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_reedsolomon_AbstractGenericGFJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -20993,7 +20995,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonReedsolomonGenericGFJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_reedsolomon_GenericGFJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -21248,7 +21250,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonReedsolomonGenericGFPolyJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_reedsolomon_GenericGFPolyJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -21606,7 +21608,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonReedsolomonReedSolomonDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_reedsolomon_ReedSolomonDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -21867,7 +21869,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreCommonReedsolomonReedSolomonEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_common_reedsolomon_ReedSolomonEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -22018,7 +22020,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDataMatrixReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_DataMatrixReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -22251,7 +22253,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDataMatrixWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_DataMatrixWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -22495,7 +22497,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDecoderBitMatrixParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_decoder_BitMatrixParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -23068,7 +23070,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDecoderDataBlockJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_decoder_DataBlockJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -23260,7 +23262,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDecoderDecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_decoder_DecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -23932,7 +23934,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDecoderDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_decoder_DecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -24129,7 +24131,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ECBlocks, ECB, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDecoderVersionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_decoder_VersionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -24380,7 +24382,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixDetectorDetectorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_detector_DetectorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -24775,7 +24777,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ASCIIEncoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderASCIIEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_ASCIIEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -24885,7 +24887,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: Base256Encoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderBase256EncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_Base256EncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -24995,7 +24997,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: C40Encoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderC40EncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_C40EncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -25277,7 +25279,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderDefaultPlacementJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_DefaultPlacementJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -25490,7 +25492,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: EdifactEncoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderEdifactEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_EdifactEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -25683,7 +25685,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: EncoderContext */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderEncoderContextJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_EncoderContextJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -25836,7 +25838,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderErrorCorrectionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_ErrorCorrectionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -25979,7 +25981,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderHighLevelEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_HighLevelEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -26463,7 +26465,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: MinimalEncoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderMinimalEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_MinimalEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -27723,7 +27725,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default, PROD_SYMBOLS */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderSymbolInfoJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_SymbolInfoJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -28002,7 +28004,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: TextEncoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderTextEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_TextEncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -28150,7 +28152,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: X12Encoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderX12EncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_X12EncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -28318,7 +28320,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: FACTOR_SETS, FACTORS, MODULO_VALUE, LOG, ALOG, SymbolShapeHint, PAD, LATCH_TO_C40, LATCH_TO_BASE256, UPPER_SHIFT, MACRO_05, MACRO_06, LATCH_TO_ANSIX12, LATCH_TO_TEXT, LATCH_TO_EDIFACT, C40_UNLATCH, X12_UNLATCH, MACRO_05_HEADER, MACRO_06_HEADER, MACRO_TRAILER, ASCII_ENCODATION, C40_ENCODATION, TEXT_ENCODATION, X12_ENCODATION, EDIFACT_ENCODATION, BASE256_ENCODATION */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderConstantsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_constantsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -28633,7 +28635,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ASCIIEncoder, Base256Encoder, C40Encoder, EdifactEncoder, EncoderContext, ErrorCorrection, DefaultPlacement, HighLevelEncoder, MinimalEncoder, SymbolInfo, TextEncoder, X12Encoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreDatamatrixEncoderIndexJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_datamatrix_encoder_indexJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -28794,7 +28796,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedAbstractUPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_AbstractUPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -29079,7 +29081,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedCodaBarReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_CodaBarReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -29293,7 +29295,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedCode128ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_Code128ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -29829,7 +29831,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedCode39ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_Code39ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -30330,7 +30332,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedCode93ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_Code93ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -30778,7 +30780,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedEAN13ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_EAN13ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -30986,7 +30988,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedEAN8ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_EAN8ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -31167,7 +31169,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedITFReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_ITFReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -31659,7 +31661,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedMultiFormatOneDReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_MultiFormatOneDReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -31889,7 +31891,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedMultiFormatUPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_MultiFormatUPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -32146,7 +32148,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedOneDReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_OneDReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -32499,7 +32501,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCAReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCAReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -32660,7 +32662,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCEANExtension2SupportJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCEANExtension2SupportJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -32843,7 +32845,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCEANExtension5SupportJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCEANExtension5SupportJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -33108,7 +33110,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCEANExtensionSupportJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCEANExtensionSupportJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -33185,7 +33187,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCEANReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -33475,7 +33477,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedUPCEReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_UPCEReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -33791,7 +33793,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssAbstractRSSReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_AbstractRSSReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34010,7 +34012,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssDataCharacterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_DataCharacterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34066,7 +34068,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssFinderPatternJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_FinderPatternJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34133,7 +34135,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssPairJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_PairJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34211,7 +34213,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssRSS14ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_RSS14ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34843,7 +34845,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssRSSUtilsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_RSSUtilsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -34981,7 +34983,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedBitArrayBuilderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_BitArrayBuilderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -35064,7 +35066,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedExpandedPairJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_ExpandedPairJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -35139,7 +35141,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedExpandedRowJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_ExpandedRowJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -35220,7 +35222,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedRSSExpandedReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_RSSExpandedReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36255,7 +36257,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI013103decoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI013103decoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36325,7 +36327,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01320xDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01320xDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36403,7 +36405,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01392xDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01392xDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36495,7 +36497,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01393xDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01393xDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36599,7 +36601,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI013x0x1xDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI013x0x1xDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36738,7 +36740,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI013x0xDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI013x0xDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36825,7 +36827,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01AndOtherAIsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01AndOtherAIsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -36906,7 +36908,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01decoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01decoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37013,7 +37015,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAI01weightDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AI01weightDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37092,7 +37094,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAbstractExpandedDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AbstractExpandedDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37137,7 +37139,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: createDecoder */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAbstractExpandedDecoderComplementJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AbstractExpandedDecoderComplementJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37277,7 +37279,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersAnyAIDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_AnyAIDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37351,7 +37353,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersBlockParsedResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_BlockParsedResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37394,7 +37396,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersDecodedCharJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_DecodedCharJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37468,7 +37470,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersDecodedInformationJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_DecodedInformationJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37553,7 +37555,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersDecodedNumericJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_DecodedNumericJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37654,7 +37656,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersDecodedObjectJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_DecodedObjectJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37688,7 +37690,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersFieldParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_FieldParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -37908,7 +37910,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreOnedRssExpandedDecodersGeneralAppIdDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_oned_rss_expanded_decoders_GeneralAppIdDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -38467,7 +38469,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417PDF417CommonJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_PDF417CommonJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -38632,7 +38634,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417PDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_PDF417ReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -38901,7 +38903,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417PDF417ResultMetadataJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_PDF417ResultMetadataJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -39107,7 +39109,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderBarcodeMetadataJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_BarcodeMetadataJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -39182,7 +39184,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderBarcodeValueJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_BarcodeValueJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -39360,7 +39362,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderBoundingBoxJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_BoundingBoxJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -39574,7 +39576,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderCodewordJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_CodewordJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -39675,7 +39677,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderDecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_DecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -40690,7 +40692,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderDetectionResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_DetectionResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -41113,7 +41115,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderDetectionResultColumnJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_DetectionResultColumnJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -41294,7 +41296,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderDetectionResultRowIndicatorColumnJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_DetectionResultRowIndicatorColumnJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -41725,7 +41727,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderPDF417CodewordDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_PDF417CodewordDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -41940,7 +41942,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderPDF417ScanningDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_PDF417ScanningDecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -42948,7 +42950,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderEcErrorCorrectionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_ec_ErrorCorrectionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -43236,7 +43238,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderEcModulusBaseJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_ec_ModulusBaseJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -43320,7 +43322,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderEcModulusGFJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_ec_ModulusGFJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -43474,7 +43476,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DecoderEcModulusPolyJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_decoder_ec_ModulusPolyJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -43892,7 +43894,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DetectorDetectorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_detector_DetectorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -44333,7 +44335,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCorePdf417DetectorPDF417DetectorResultJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_pdf417_detector_PDF417DetectorResultJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -44393,7 +44395,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeQRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_QRCodeReaderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -44708,7 +44710,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeQRCodeWriterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_QRCodeWriterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -44890,7 +44892,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderBitMatrixParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_BitMatrixParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -45206,7 +45208,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderDataBlockJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_DataBlockJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -45408,7 +45410,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: DataMaskValues, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderDataMaskJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_DataMaskJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -45592,7 +45594,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderDecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_DecodedBitStreamParserJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46089,7 +46091,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderDecoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_DecoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46387,7 +46389,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderECBJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_ECBJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46436,7 +46438,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderECBlocksJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_ECBlocksJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46537,7 +46539,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ErrorCorrectionLevelValues, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderErrorCorrectionLevelJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_ErrorCorrectionLevelJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46694,7 +46696,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderFormatInformationJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_FormatInformationJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -46910,7 +46912,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: ModeValues, default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderModeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_ModeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -47076,7 +47078,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderQRCodeDecoderMetaDataJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_QRCodeDecoderMetaDataJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -47153,7 +47155,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDecoderVersionJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_decoder_VersionJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -47443,7 +47445,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorAlignmentPatternJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_AlignmentPatternJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -47577,7 +47579,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorAlignmentPatternFinderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_AlignmentPatternFinderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -47963,7 +47965,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorDetectorJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_DetectorJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -48481,7 +48483,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorFinderPatternJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_FinderPatternJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -48643,7 +48645,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorFinderPatternFinderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_FinderPatternFinderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -49543,7 +49545,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeDetectorFinderPatternInfoJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_detector_FinderPatternInfoJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -49610,7 +49612,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderBlockPairJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_BlockPairJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -49667,7 +49669,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderByteMatrixJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_ByteMatrixJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -49896,7 +49898,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderEncoderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_EncoderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -50715,7 +50717,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderMaskUtilJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_MaskUtilJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -51004,7 +51006,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderMatrixUtilJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_MatrixUtilJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -51505,7 +51507,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreQrcodeEncoderQRCodeJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_qrcode_encoder_QRCodeJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -51638,7 +51640,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilArraysJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_ArraysJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -51920,7 +51922,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilByteArrayOutputStreamJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_ByteArrayOutputStreamJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52317,7 +52319,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilCharsetJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_CharsetJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52387,7 +52389,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilCollectionsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_CollectionsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52431,7 +52433,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilFloatJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_FloatJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52477,7 +52479,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilFormatterJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_FormatterJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52601,7 +52603,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilIntegerJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_IntegerJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52741,7 +52743,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilLongJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_LongJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52788,7 +52790,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilOutputStreamJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_OutputStreamJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -52967,7 +52969,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilStandardCharsetsJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_StandardCharsetsJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -53006,7 +53008,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilStringBuilderJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_StringBuilderJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -53109,7 +53111,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilStringEncodingJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_StringEncodingJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -53279,7 +53281,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: default */
 
   /***/
-  function node_modulesZxingLibraryEsmCoreUtilSystemJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_core_util_SystemJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -53327,7 +53329,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! no static exports found */
 
   /***/
-  function node_modulesZxingLibraryEsmIndexJs(module, __webpack_exports__, __webpack_require__) {
+  function _node_modules_Zxing_library_esm_indexJs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -54540,7 +54542,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   /*! exports provided: CustomError, customErrorFactory */
 
   /***/
-  function node_modulesTsCustomErrorDistCustomErrorMjs(__webpack_module__, __webpack_exports__, __webpack_require__) {
+  function _node_modules_tsCustomError_dist_customErrorMjs(__webpack_module__, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);

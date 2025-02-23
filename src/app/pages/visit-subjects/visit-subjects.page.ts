@@ -345,7 +345,7 @@ export class VisitSubjectsPage implements OnInit {
   updateListAdvisoryTopic() {
     const listActivMigradas = JSON.parse(sessionStorage.companySelected).listaActividadesMigradas;
     this.subjects = listActivMigradas;
-    console.log("Lista Act Migradas", listActivMigradas )
+    console.log('Lista Act Migradas', listActivMigradas);
     this.subjectForm = new FormGroup({});
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.subjects.length; i++) {
@@ -516,7 +516,7 @@ export class VisitSubjectsPage implements OnInit {
 
       if (!actividadesEDValidas) {
         this.validarCoberturaHorasEjecutadas = false;
-        this.notification('Atención', 'Debe adjuntar archivos para las actividades EDUCA o indicar código de evento.');
+        this.notification('Atención', 'Debe adjuntar archivos para las actividades EVENTOS POSITIVA o indicar código de evento.');
         break;
       }
 

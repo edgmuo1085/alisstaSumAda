@@ -1,13 +1,15 @@
 PODS:
-  - Capacitor (5.7.5):
+  - Capacitor (5.7.8):
     - CapacitorCordova
   - CapacitorApp (4.1.1):
+    - Capacitor
+  - CapacitorBrowser (5.2.1):
     - Capacitor
   - CapacitorCamera (4.1.5):
     - Capacitor
   - CapacitorCommunityBarcodeScanner (4.0.1):
     - Capacitor
-  - CapacitorCordova (5.7.5)
+  - CapacitorCordova (5.7.8)
   - CapacitorFilesystem (4.1.5):
     - Capacitor
   - CapacitorHaptics (4.1.0):
@@ -16,26 +18,27 @@ PODS:
     - Capacitor
   - CapacitorStatusBar (4.1.1):
     - Capacitor
-  - CordovaPlugins (5.3.0):
+  - CordovaPlugins (5.7.8):
     - CapacitorCordova
   - CordovaPluginsResources (0.0.105)
-  - CordovaPluginsStatic (5.3.0):
+  - CordovaPluginsStatic (5.7.8):
     - CapacitorCordova
-    - OneSignalXCFramework (= 3.12.9)
-  - OneSignalXCFramework (3.12.9):
-    - OneSignalXCFramework/OneSignalCore (= 3.12.9)
-    - OneSignalXCFramework/OneSignalExtension (= 3.12.9)
-    - OneSignalXCFramework/OneSignalOutcomes (= 3.12.9)
-  - OneSignalXCFramework/OneSignalCore (3.12.9)
-  - OneSignalXCFramework/OneSignalExtension (3.12.9):
+    - OneSignalXCFramework (= 3.12.10)
+  - OneSignalXCFramework (3.12.10):
+    - OneSignalXCFramework/OneSignalCore (= 3.12.10)
+    - OneSignalXCFramework/OneSignalExtension (= 3.12.10)
+    - OneSignalXCFramework/OneSignalOutcomes (= 3.12.10)
+  - OneSignalXCFramework/OneSignalCore (3.12.10)
+  - OneSignalXCFramework/OneSignalExtension (3.12.10):
     - OneSignalXCFramework/OneSignalCore
     - OneSignalXCFramework/OneSignalOutcomes
-  - OneSignalXCFramework/OneSignalOutcomes (3.12.9):
+  - OneSignalXCFramework/OneSignalOutcomes (3.12.10):
     - OneSignalXCFramework/OneSignalCore
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorBrowser (from `../../node_modules/@capacitor/browser`)"
   - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
   - "CapacitorCommunityBarcodeScanner (from `../../node_modules/@capacitor-community/barcode-scanner`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
@@ -56,6 +59,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorApp:
     :path: "../../node_modules/@capacitor/app"
+  CapacitorBrowser:
+    :path: "../../node_modules/@capacitor/browser"
   CapacitorCamera:
     :path: "../../node_modules/@capacitor/camera"
   CapacitorCommunityBarcodeScanner:
@@ -78,20 +83,21 @@ EXTERNAL SOURCES:
     :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
-  Capacitor: 7d42085cb786b2d3ea9ac8a17ebd7e3305be7b72
-  CapacitorApp: acd42fe8561fe751ad5b5f459aa85e6acd7bee24
-  CapacitorCamera: 6f0777dbc5b9fbb59852567ba9ac3b0da2e4ee8f
-  CapacitorCommunityBarcodeScanner: 7feb206489c8555a8ca0c74c57ddf49ead774eb8
-  CapacitorCordova: c946a6052b547e1e185fc46862003f7b9130ead1
-  CapacitorFilesystem: db8deb7b98de37c118e2d5ff4cd1c0d0576c6d33
-  CapacitorHaptics: 213b3a1f3efd6dbf6e6b76a1b2bb0399cf43b213
-  CapacitorKeyboard: 16121a97b56c8609ec518ebcdc64d6386c84e5c8
-  CapacitorStatusBar: 65933e554bb5d65b361deaa936a93616086a2608
-  CordovaPlugins: 9696b524426335bd43eb429b39b7d03dc5f7270a
+  Capacitor: 747aadb4fa786f460d8cd9d0557cb81440a13747
+  CapacitorApp: d9ad682d7afb46cff7f6b80dc47ecaecb470b979
+  CapacitorBrowser: c547b3bb461dde9d2c295b13fa8a3c549be20b23
+  CapacitorCamera: e00aa9e60b80f5d40ead0f5bdd88cb45fdc3e571
+  CapacitorCommunityBarcodeScanner: a43bb14cec343f4defaf26cac281d799b25b90f0
+  CapacitorCordova: 31ab98dca2ddcee051027a1afe7e8c85c82f7297
+  CapacitorFilesystem: 94d5b8a40d102af88e5fb16c770284a8107f484c
+  CapacitorHaptics: 532b8cfe3112519073039ae1d027970e81746038
+  CapacitorKeyboard: ea7b8ca944513580e482f3cb3a25a0d1c8497f85
+  CapacitorStatusBar: 7a635e984da8ddc4e8f68d2887ccc7b46f28ccbf
+  CordovaPlugins: f131b53bdbd4effbab1017bbb6a090863dd6a958
   CordovaPluginsResources: 0c211f770ed91763a179ebcd9b9346e120b70662
-  CordovaPluginsStatic: 595166e69149ee7001127e1e4311ef824c716e55
-  OneSignalXCFramework: 3c3ef25ecca5eae1bf80a3272c49fd1dbab96b35
+  CordovaPluginsStatic: 74be48284c91da363c73826d2627a47c7f940232
+  OneSignalXCFramework: e458f7a374192598a1d66418e1b61481c3cdf0e9
 
-PODFILE CHECKSUM: 14c77f0ea7b920df15ae3c220c5ab6181afb1b17
+PODFILE CHECKSUM: bdac54a6cb0c904fef20e452e919f0f912ef4f4f
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

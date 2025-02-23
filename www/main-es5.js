@@ -1,14 +1,14 @@
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(typeof e + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == typeof h && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(typeof e + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, "prototype", { writable: !1 }), e; }
 
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == typeof i ? i : i + ""; }
 
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Cannot call a class as a function"); }
 
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"], {
   /***/
@@ -20,7 +20,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! no static exports found */
 
   /***/
-  function $$_lazy_route_resourceLazyRecursive(module, exports) {
+  function _$$_lazy_route_resource_lazy_recursive(module, exports) {
     function webpackEmptyAsyncContext(req) {
       // Here Promise.resolve().then() is used instead of new Promise() to prevent
       // uncaught exception popping up in devtools
@@ -50,7 +50,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! no static exports found */
 
   /***/
-  function node_modulesIonicCoreDistEsmLazyRecursiveEntryJs$IncludeEntryJs$ExcludeSystemEntryJs$(module, exports, __webpack_require__) {
+  function _node_modules_Ionic_core_dist_esm_lazy_recursive__EntryJs$_include_EntryJs$_exclude_SystemEntryJs$(module, exports, __webpack_require__) {
     var map = {
       "./ion-action-sheet.entry.js": ["./node_modules/@ionic/core/dist/esm/ion-action-sheet.entry.js", "common", 0],
       "./ion-alert.entry.js": ["./node_modules/@ionic/core/dist/esm/ion-alert.entry.js", "common", 1],
@@ -131,7 +131,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! no static exports found */
 
   /***/
-  function node_modulesMomentLocaleSyncRecursive$(module, exports, __webpack_require__) {
+  function _node_modules_moment_locale_sync_recursive__$(module, exports, __webpack_require__) {
     var map = {
       "./af": "./node_modules/moment/locale/af.js",
       "./af.js": "./node_modules/moment/locale/af.js",
@@ -144,6 +144,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       "./ar-ly.js": "./node_modules/moment/locale/ar-ly.js",
       "./ar-ma": "./node_modules/moment/locale/ar-ma.js",
       "./ar-ma.js": "./node_modules/moment/locale/ar-ma.js",
+      "./ar-ps": "./node_modules/moment/locale/ar-ps.js",
+      "./ar-ps.js": "./node_modules/moment/locale/ar-ps.js",
       "./ar-sa": "./node_modules/moment/locale/ar-sa.js",
       "./ar-sa.js": "./node_modules/moment/locale/ar-sa.js",
       "./ar-tn": "./node_modules/moment/locale/ar-tn.js",
@@ -278,6 +280,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       "./ko": "./node_modules/moment/locale/ko.js",
       "./ko.js": "./node_modules/moment/locale/ko.js",
       "./ku": "./node_modules/moment/locale/ku.js",
+      "./ku-kmr": "./node_modules/moment/locale/ku-kmr.js",
+      "./ku-kmr.js": "./node_modules/moment/locale/ku-kmr.js",
       "./ku.js": "./node_modules/moment/locale/ku.js",
       "./ky": "./node_modules/moment/locale/ky.js",
       "./ky.js": "./node_modules/moment/locale/ky.js",
@@ -439,7 +443,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AppRoutingModule */
 
   /***/
-  function srcAppAppRoutingModuleTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_appRoutingModuleTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -542,7 +546,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AppComponent */
 
   /***/
-  function srcAppAppComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_appComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -651,7 +655,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.AppVersionSv.checkForUpdate();
       }
 
-      _createClass(AppComponent, [{
+      return _createClass(AppComponent, [{
         key: "initializeApp",
         value: function initializeApp() {
           var _this = this;
@@ -899,8 +903,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }]);
-
-      return AppComponent;
     }();
 
     AppComponent.ɵfac = function AppComponent_Factory(t) {
@@ -969,7 +971,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AppModule */
 
   /***/
-  function srcAppAppModuleTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_appModuleTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -1173,7 +1175,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AdvisoryVerificationComponent */
 
   /***/
-  function srcAppComponentsAdvisoryVerificationAdvisoryVerificationComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_advisoryVerification_advisoryVerificationComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -2094,7 +2096,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.cacheService = cacheService;
       }
 
-      _createClass(AdvisoryVerificationComponent, [{
+      return _createClass(AdvisoryVerificationComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           this.getInfoAdvisory();
@@ -2118,8 +2120,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.modalCtrl.dismiss();
         }
       }]);
-
-      return AdvisoryVerificationComponent;
     }();
 
     AdvisoryVerificationComponent.ɵfac = function AdvisoryVerificationComponent_Factory(t) {
@@ -2478,7 +2478,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: MY_FORMATS, ComponentsModule */
 
   /***/
-  function srcAppComponentsComponentsModuleTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_componentsModuleTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -2714,7 +2714,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: HeaderComponent */
 
   /***/
-  function srcAppComponentsHeaderHeaderComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_header_headerComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -2788,7 +2788,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.deviceUUID = this.device.uuid;
       }
 
-      _createClass(HeaderComponent, [{
+      return _createClass(HeaderComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           this.uploadInfoUser();
@@ -2817,8 +2817,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }]);
-
-      return HeaderComponent;
     }();
 
     HeaderComponent.ɵfac = function HeaderComponent_Factory(t) {
@@ -2922,7 +2920,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: InactiveUsersTalkComponent */
 
   /***/
-  function srcAppComponentsInactiveUsersTalkInactiveUsersTalkComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_inactiveUsersTalk_inactiveUsersTalkComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -2999,7 +2997,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.talkService = talkService;
       }
 
-      _createClass(InactiveUsersTalkComponent, [{
+      return _createClass(InactiveUsersTalkComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           this.getUsuariosInactivos();
@@ -3024,8 +3022,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           this.items = usuariosInactivos;
         }
       }]);
-
-      return InactiveUsersTalkComponent;
     }();
 
     InactiveUsersTalkComponent.ɵfac = function InactiveUsersTalkComponent_Factory(t) {
@@ -3097,7 +3093,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: PopoverComponent */
 
   /***/
-  function srcAppComponentsPopoverPopoverComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_popover_popoverComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3216,7 +3212,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: RecommendationDetailComponent */
 
   /***/
-  function srcAppComponentsRecommendationDetailRecommendationDetailComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_recommendationDetail_recommendationDetailComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3275,7 +3271,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.disabledField = true;
       }
 
-      _createClass(RecommendationDetailComponent, [{
+      return _createClass(RecommendationDetailComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {
           var date = this.dateRadication.split('T')[0].split('-');
@@ -3408,8 +3404,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }]);
-
-      return RecommendationDetailComponent;
     }();
 
     RecommendationDetailComponent.ɵfac = function RecommendationDetailComponent_Factory(t) {
@@ -3744,7 +3738,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: ResendVerificationCodeComponent */
 
   /***/
-  function srcAppComponentsResendVerificationCodeResendVerificationCodeComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_resendVerificationCode_resendVerificationCodeComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -3790,14 +3784,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     var _angular_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
     /*! @angular/common */
     "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-    /* harmony import */
 
-
-    var _pipes_search_resend_code_pipe__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-    /*! ../../pipes/search-resend-code.pipe */
-    "./src/app/pipes/search-resend-code.pipe.ts");
-
-    function ResendVerificationCodeComponent_ion_slides_8_Template(rf, ctx) {
+    function ResendVerificationCodeComponent_ion_slides_10_Template(rf, ctx) {
       if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-slides", 12);
 
@@ -3807,11 +3795,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "ion-row");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-col", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-col", 13);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "div", 13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "div", 14);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](6, "img", 14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](6, "img", 15);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -3821,11 +3809,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "ion-row");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "ion-col", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "ion-col", 13);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "strong");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "p", 15);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "p", 16);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](11, " No tienes actividades migradas, por ende, no existe una lista de responsables para reenv\xEDar el c\xF3digo de verificaci\xF3n ");
 
@@ -3845,45 +3833,127 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     }
 
-    function ResendVerificationCodeComponent_div_9_ion_row_13_Template(rf, ctx) {
+    function ResendVerificationCodeComponent_ng_template_11_ion_row_1_ion_col_12_Template(rf, ctx) {
       if (rf & 1) {
-        var _r6 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetCurrentView"]();
+        var _r11 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetCurrentView"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-row");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-col", 13);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "ion-col", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "ion-card", 12);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "ion-checkbox", 20);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "ion-card-content", 12);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_div_9_ion_row_13_Template_ion_checkbox_click_2_listener() {
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "ion-list");
 
-          var responsable_r3 = ctx.$implicit;
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-item", 22);
 
-          var ctx_r5 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "ion-grid");
 
-          return ctx_r5.selectResponsible(responsable_r3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "ion-row");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "ion-col", 13);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "ion-label");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "strong");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](10, "Nombre");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](11, "ion-row");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](12, "ion-col", 13);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](13, "p");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](14, "small");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](15);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](16, "ion-row");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](17, "ion-col", 13);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](18, "ion-label");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](19, "strong");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](20, "Correo");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](21, "ion-row");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](22, "ion-col", 13);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](23, "p");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](24, "small");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](25);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](26, "ion-item", 22);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](27, "ion-label");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](28, "strong");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](29, "Seleccionar Correo");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](30, "ion-checkbox", 23);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_ng_template_11_ion_row_1_ion_col_12_Template_ion_checkbox_click_30_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r11);
+
+          var resp_r8 = ctx.$implicit;
+
+          var ctx_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"](3);
+
+          return ctx_r10.selectResponsible(resp_r8);
         });
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "ion-col", 18);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-label");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](5);
-
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "ion-col", 18);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "ion-label");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](8);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -3893,39 +3963,51 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
 
       if (rf & 2) {
-        var responsable_r3 = ctx.$implicit;
+        var resp_r8 = ctx.$implicit;
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](15);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](responsable_r3.listaResponsables.Nombre);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](resp_r8.element.Nombre);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](10);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](responsable_r3.listaResponsables.correo);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](resp_r8.element.correo);
       }
     }
 
-    var _c0 = function _c0() {
-      return ["nombre", "correoElecctronico"];
-    };
-
-    function ResendVerificationCodeComponent_div_9_Template(rf, ctx) {
+    function ResendVerificationCodeComponent_ng_template_11_ion_row_1_Template(rf, ctx) {
       if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "div");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-row", 19);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "ion-grid", 16);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "ion-col", 13);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "ion-row");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "div", 14);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](3, "ion-col", 17);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "div", 20);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-col", 18);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](4, "Nombre Empresa");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "ion-label");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "strong");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "div");
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](7, "Nombre");
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "div", 14);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "div", 20);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](9, "Documento Identificaci\xF3n");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "div");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](11);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -3933,41 +4015,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](8, "ion-col", 18);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "ion-label");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "strong");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](11, "Correo");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](12, "ion-grid", 16);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](13, ResendVerificationCodeComponent_div_9_ion_row_13_Template, 9, 2, "ion-row", 19);
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipe"](14, "searchResendCode");
-
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](12, ResendVerificationCodeComponent_ng_template_11_ion_row_1_ion_col_12_Template, 31, 2, "ion-col", 21);
 
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
       }
 
       if (rf & 2) {
-        var ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
+        var company_r5 = ctx.$implicit;
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](13);
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](6);
 
-        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpipeBind3"](14, 1, ctx_r1.listaResponsables, ctx_r1.textoBuscar, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵpureFunction0"](5, _c0)));
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](company_r5.empresaInfo.nameEmpresa);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtextInterpolate"](company_r5.empresaInfo.docEmpresa);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", company_r5.responsables);
+      }
+    }
+
+    function ResendVerificationCodeComponent_ng_template_11_Template(rf, ctx) {
+      if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-list", 17);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](1, ResendVerificationCodeComponent_ng_template_11_ion_row_1_Template, 13, 3, "ion-row", 18);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+      }
+
+      if (rf & 2) {
+        var ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngForOf", ctx_r2.responsableList);
+      }
+    }
+
+    function ResendVerificationCodeComponent_ion_buttons_15_Template(rf, ctx) {
+      if (rf & 1) {
+        var _r13 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵgetCurrentView"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-buttons", 24);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](1, "ion-button", 25);
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_ion_buttons_15_Template_ion_button_click_1_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵrestoreView"](_r13);
+
+          var ctx_r12 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵnextContext"]();
+
+          return ctx_r12.resendCode();
+        });
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "ion-label");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](3, "Reenv\xEDar c\xF3digo");
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+        _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
       }
     }
 
@@ -3986,11 +4098,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
          */
 
         this.listaResponsables = [];
+        this.responsableList = [];
         this.responsablesSeleccionados = [];
         this.textoBuscar = '';
       }
 
-      _createClass(ResendVerificationCodeComponent, [{
+      return _createClass(ResendVerificationCodeComponent, [{
         key: "ngOnInit",
         value: function ngOnInit() {}
       }, {
@@ -4006,7 +4119,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "listActivities",
         value: function listActivities() {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-            var documentoUsuario, responsablesList, i, idEmpresa, j, element, objResponsables;
+            var documentoUsuario, responsables, i, idEmpresa, nameEmpresa, docEmpresa, empresaInfo, j, element;
             return _regeneratorRuntime().wrap(function _callee8$(_context8) {
               while (1) switch (_context8.prev = _context8.next) {
                 case 0:
@@ -4020,26 +4133,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
                 case 5:
                   this.listaResponsables = _context8.sent;
-                  ;
-                  responsablesList = []; // tslint:disable-next-line: prefer-for-of
+                  responsables = []; // tslint:disable-next-line: prefer-for-of
 
                   for (i = 0; i < this.listaResponsables.length; i++) {
-                    idEmpresa = this.listaResponsables[i].id; // tslint:disable-next-line: prefer-for-of
+                    if (this.listaResponsables[i].listaReposables.length > 0) {
+                      idEmpresa = this.listaResponsables[i].id;
+                      nameEmpresa = this.listaResponsables[i].name;
+                      docEmpresa = this.listaResponsables[i].numeroDocumento;
+                      empresaInfo = {
+                        nameEmpresa: nameEmpresa,
+                        docEmpresa: docEmpresa
+                      }; // tslint:disable-next-line: prefer-for-of
 
-                    for (j = 0; j < this.listaResponsables[i].listaReposables.length; j++) {
-                      element = this.listaResponsables[i].listaReposables[j];
-                      objResponsables = {
-                        idEmpresa: idEmpresa,
-                        listaResponsables: element
-                      };
-                      responsablesList.push(objResponsables);
+                      for (j = 0; j < this.listaResponsables[i].listaReposables.length; j++) {
+                        element = this.listaResponsables[i].listaReposables[j]; // const objResponsables = {
+                        //   idEmpresa,
+                        //   listaResponsables: element,
+                        // };
+
+                        responsables.push({
+                          idEmpresa: idEmpresa,
+                          element: element
+                        });
+                      }
+
+                      this.responsableList.push({
+                        empresaInfo: empresaInfo,
+                        responsables: responsables
+                      });
+                      responsables = [];
                     }
                   }
 
-                  this.listaResponsables = responsablesList;
-                  console.log("Lista de respondables::: ", this.listaResponsables);
+                  this.listaResponsables = responsables;
 
-                case 11:
+                case 9:
                 case "end":
                   return _context8.stop();
               }
@@ -4057,24 +4185,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
       }, {
         key: "selectResponsible",
-        value: function selectResponsible(responsableSelected) {
-          var _this8 = this;
-
-          var idSelected = responsableSelected.listaResponsables.id;
-          var existe = this.responsablesSeleccionados.find(function (item) {
-            return item.listaResponsables.id === idSelected;
+        value: function selectResponsible(responsable) {
+          // Busca el índice del objeto en el array por el `element.id`
+          var index = this.responsablesSeleccionados.findIndex(function (item) {
+            return item.element.id === responsable.element.id;
           });
 
-          if (existe) {
-            this.responsablesSeleccionados.forEach(function (element) {
-              var item = element;
-
-              if (item === existe) {
-                _this8.responsablesSeleccionados.splice(existe, 1);
-              }
-            });
+          if (index !== -1) {
+            // Si existe, elimina el objeto completo
+            this.responsablesSeleccionados.splice(index, 1);
           } else {
-            this.responsablesSeleccionados.push(responsableSelected);
+            // Si no existe, agrega el nuevo objeto
+            this.responsablesSeleccionados.push(responsable);
           }
         }
         /**
@@ -4098,15 +4220,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   this.presentLoading('Reenviando código ...'); // tslint:disable-next-line: max-line-length
 
                   _context9.next = 5;
-                  return this.activityListCompany.recordarCodigoVerificacion(usuarioAEnviarCodigo.listaResponsables.id, usuarioAEnviarCodigo.idEmpresa).toPromise();
+                  return this.activityListCompany.recordarCodigoVerificacion(usuarioAEnviarCodigo.element.id, usuarioAEnviarCodigo.idEmpresa).toPromise();
 
                 case 5:
                   siEnvioCorreo = _context9.sent;
 
                   if (siEnvioCorreo) {
-                    this.notification('Atención', "Se reenv\xEDo el c\xF3digo de verificaci\xF3n al usuario:".concat(usuarioAEnviarCodigo.listaResponsables.correo, " "));
+                    this.notification('Atención', "Se reenv\xEDo el c\xF3digo de verificaci\xF3n al usuario:".concat(usuarioAEnviarCodigo.element.correo, " "));
                   } else {
-                    this.notification('Error', "No se pudo env\xEDar el correo al siguiente usuario: ".concat(usuarioAEnviarCodigo.listaResponsables.correo));
+                    this.notification('Error', "No se pudo env\xEDar el correo al siguiente usuario: ".concat(usuarioAEnviarCodigo.element.correo));
                   }
 
                   _context9.next = 10;
@@ -4190,8 +4312,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }]);
-
-      return ResendVerificationCodeComponent;
     }();
 
     ResendVerificationCodeComponent.ɵfac = function ResendVerificationCodeComponent_Factory(t) {
@@ -4201,9 +4321,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     ResendVerificationCodeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
       type: ResendVerificationCodeComponent,
       selectors: [["app-resend-verification-code"]],
-      decls: 20,
-      vars: 2,
-      consts: [[1, "ion-no-border"], ["color", "tertiary"], ["size", "12"], [1, "titulo"], [1, "ion-padding", "backgroundContent"], ["mode", "ios", 4, "ngIf"], [4, "ngIf"], ["no-border", ""], ["slot", "start"], ["color", "secondary", "expand", "block", 3, "click"], ["slot", "end"], ["color", "primary", "expand", "block", 3, "click"], ["mode", "ios"], [1, "ion-text-center"], ["src", "../../../assets/icon/icono_observaciones.svg", "alt", ""], [1, "tituloSlide"], ["fixed", ""], ["size", "2"], ["size", "5"], [4, "ngFor", "ngForOf"], ["mode", "ios", 3, "click"]],
+      decls: 16,
+      vars: 3,
+      consts: [[1, "ion-no-border"], ["color", "tertiary"], [2, "align-items", "center"], ["size", "2"], ["defaultHref", "", "text", "", "color", "primary", 1, "custom-back-button", 3, "click"], ["size", "10"], [1, "titulo"], [1, "ion-padding", "backgroundContent"], ["mode", "ios", 4, "ngIf", "ngIfElse"], ["responsables", ""], ["no-border", ""], ["slot", "end", 4, "ngIf"], ["mode", "ios"], ["size", "12"], [1, "ion-text-center"], ["src", "../../../assets/icon/icono_observaciones.svg", "alt", ""], [1, "tituloSlide"], [1, "mb-4"], ["class", "ion-margin-bottom", 4, "ngFor", "ngForOf"], [1, "ion-margin-bottom"], [1, "bold"], ["size", "12", 4, "ngFor", "ngForOf"], ["lines", "none"], ["slot", "end", "color", "primary", 3, "click"], ["slot", "end"], ["color", "primary", "expand", "block", 3, "click"]],
       template: function ResendVerificationCodeComponent_Template(rf, ctx) {
         if (rf & 1) {
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](0, "ion-header", 0);
@@ -4212,49 +4332,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](2, "ion-grid");
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "ion-row");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](3, "ion-row", 2);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-col", 2);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](4, "ion-col", 3);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "ion-title", 3);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](5, "ion-back-button", 4);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](6, "Reenv\xEDar c\xF3digo de verificaci\xF3n");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "ion-content", 4);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](8, ResendVerificationCodeComponent_ion_slides_8_Template, 12, 0, "ion-slides", 5);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](9, ResendVerificationCodeComponent_div_9_Template, 15, 6, "div", 6);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](10, "ion-footer", 7);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](11, "ion-toolbar");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](12, "ion-buttons", 8);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](13, "ion-button", 9);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_Template_ion_button_click_13_listener() {
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_Template_ion_back_button_click_5_listener() {
             return ctx.regresar();
           });
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](14, "ion-label");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](15, "Regresar");
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](6, "ion-col", 5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](7, "ion-title", 6);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](8, "Reenviar c\xF3digo de verificaci\xF3n");
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -4262,23 +4358,25 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](16, "ion-buttons", 10);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](17, "ion-button", 11);
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵlistener"]("click", function ResendVerificationCodeComponent_Template_ion_button_click_17_listener() {
-            return ctx.resendCode();
-          });
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](18, "ion-label");
-
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtext"](19, "Reenv\xEDar c\xF3digo");
-
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](9, "ion-content", 7);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](10, ResendVerificationCodeComponent_ion_slides_10_Template, 12, 0, "ion-slides", 8);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](11, ResendVerificationCodeComponent_ng_template_11_Template, 2, 1, "ng-template", null, 9, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplateRefExtractor"]);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](13, "ion-footer", 10);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementStart"](14, "ion-toolbar");
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](15, ResendVerificationCodeComponent_ion_buttons_15_Template, 4, 0, "ion-buttons", 11);
 
           _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelementEnd"]();
 
@@ -4286,17 +4384,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         }
 
         if (rf & 2) {
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](8);
+          var _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵreference"](12);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.listaResponsables.length === 0 || undefined);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](10);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](1);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.responsableList.length === 0 || undefined)("ngIfElse", _r1);
 
-          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.listaResponsables.length > 0);
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵadvance"](5);
+
+          _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵproperty"]("ngIf", ctx.responsablesSeleccionados.length >= 1);
         }
       },
-      directives: [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonHeader"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonToolbar"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonGrid"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonRow"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCol"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonTitle"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonContent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonFooter"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonButtons"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonButton"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonLabel"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonSlides"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonSlide"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCheckbox"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["BooleanValueAccessor"]],
-      pipes: [_pipes_search_resend_code_pipe__WEBPACK_IMPORTED_MODULE_6__["SearchResendCodePipe"]],
+      directives: [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonHeader"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonToolbar"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonGrid"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonRow"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCol"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonBackButton"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonBackButtonDelegate"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonTitle"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonContent"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgIf"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonFooter"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonSlides"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonSlide"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonList"], _angular_common__WEBPACK_IMPORTED_MODULE_5__["NgForOf"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCard"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCardContent"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonItem"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonLabel"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonCheckbox"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["BooleanValueAccessor"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonButtons"], _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["IonButton"]],
       styles: ["ion-header[_ngcontent-%COMP%]   ion-toolbar[_ngcontent-%COMP%] {\n  padding-top: 0px;\n}\nion-header[_ngcontent-%COMP%]   .titulo[_ngcontent-%COMP%] {\n  width: 100% !important;\n  font-size: 14.5px !important;\n  text-align: center;\n}\nion-content[_ngcontent-%COMP%]   ion-searchbar[_ngcontent-%COMP%] {\n  --border-radius: 30px;\n}\nion-content[_ngcontent-%COMP%]   ion-slides[_ngcontent-%COMP%] {\n  height: 80%;\n  border: 1px solid #344b56;\n  border-radius: 50px;\n  margin-top: 40px;\n}\nion-content[_ngcontent-%COMP%]   ion-slides[_ngcontent-%COMP%]   ion-slide[_ngcontent-%COMP%]   ion-grid[_ngcontent-%COMP%]   ion-row[_ngcontent-%COMP%]   ion-col[_ngcontent-%COMP%]   .tituloSlide[_ngcontent-%COMP%] {\n  margin-top: -30px;\n  font-weight: bold;\n  color: #344b56;\n}\nion-content[_ngcontent-%COMP%]   ion-list[_ngcontent-%COMP%] {\n  padding: 0px;\n  background: none;\n}\nion-content[_ngcontent-%COMP%]   ion-list[_ngcontent-%COMP%]   ion-item[_ngcontent-%COMP%] {\n  margin-bottom: 10px;\n  border-radius: 15px;\n}\nion-content[_ngcontent-%COMP%]   ion-button[_ngcontent-%COMP%] {\n  --border-radius: 50px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Vc2Vycy9hZGEvRG9jdW1lbnRzL2FwcHMvYWxpc3N0YVN1bUFkYS9zcmMvYXBwL2NvbXBvbmVudHMvcmVzZW5kLXZlcmlmaWNhdGlvbi1jb2RlL3Jlc2VuZC12ZXJpZmljYXRpb24tY29kZS5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvY29tcG9uZW50cy9yZXNlbmQtdmVyaWZpY2F0aW9uLWNvZGUvcmVzZW5kLXZlcmlmaWNhdGlvbi1jb2RlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUNFO0VBQ0UsZ0JBQUE7QUNBSjtBREVFO0VBQ0Usc0JBQUE7RUFDQSw0QkFBQTtFQUNBLGtCQUFBO0FDQUo7QURLRTtFQUNFLHFCQUFBO0FDRko7QURJRTtFQUNFLFdBQUE7RUFDQSx5QkFBQTtFQUNBLG1CQUFBO0VBQ0EsZ0JBQUE7QUNGSjtBRE9ZO0VBQ0UsaUJBQUE7RUFDQSxpQkFBQTtFQUNBLGNBQUE7QUNMZDtBRFlFO0VBQ0UsWUFBQTtFQUNBLGdCQUFBO0FDVko7QURXSTtFQUNFLG1CQUFBO0VBQ0EsbUJBQUE7QUNUTjtBRFlFO0VBQ0UscUJBQUE7QUNWSiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcmVzZW5kLXZlcmlmaWNhdGlvbi1jb2RlL3Jlc2VuZC12ZXJpZmljYXRpb24tY29kZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbImlvbi1oZWFkZXIge1xuICBpb24tdG9vbGJhciB7XG4gICAgcGFkZGluZy10b3A6IDBweDtcbiAgfVxuICAmIC50aXR1bG8ge1xuICAgIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7XG4gICAgZm9udC1zaXplOiAxNC41cHggIWltcG9ydGFudDtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIH1cbn1cblxuaW9uLWNvbnRlbnQge1xuICBpb24tc2VhcmNoYmFyIHtcbiAgICAtLWJvcmRlci1yYWRpdXM6IDMwcHg7XG4gIH1cbiAgaW9uLXNsaWRlcyB7XG4gICAgaGVpZ2h0OiA4MCU7XG4gICAgYm9yZGVyOiAxcHggc29saWQgIzM0NGI1NjtcbiAgICBib3JkZXItcmFkaXVzOiA1MHB4O1xuICAgIG1hcmdpbi10b3A6IDQwcHg7XG4gICAgaW9uLXNsaWRlIHtcbiAgICAgIGlvbi1ncmlkIHtcbiAgICAgICAgaW9uLXJvdyB7XG4gICAgICAgICAgaW9uLWNvbCB7XG4gICAgICAgICAgICAmIC50aXR1bG9TbGlkZSB7XG4gICAgICAgICAgICAgIG1hcmdpbi10b3A6IC0zMHB4O1xuICAgICAgICAgICAgICBmb250LXdlaWdodDogYm9sZDtcbiAgICAgICAgICAgICAgY29sb3I6ICMzNDRiNTY7XG4gICAgICAgICAgICB9XG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICB9XG4gIGlvbi1saXN0IHtcbiAgICBwYWRkaW5nOiAwcHg7XG4gICAgYmFja2dyb3VuZDogbm9uZTtcbiAgICBpb24taXRlbSB7XG4gICAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xuICAgICAgYm9yZGVyLXJhZGl1czogMTVweDtcbiAgICB9XG4gIH1cbiAgaW9uLWJ1dHRvbiB7XG4gICAgLS1ib3JkZXItcmFkaXVzOiA1MHB4O1xuICB9XG59XG4iLCJpb24taGVhZGVyIGlvbi10b29sYmFyIHtcbiAgcGFkZGluZy10b3A6IDBweDtcbn1cbmlvbi1oZWFkZXIgLnRpdHVsbyB7XG4gIHdpZHRoOiAxMDAlICFpbXBvcnRhbnQ7XG4gIGZvbnQtc2l6ZTogMTQuNXB4ICFpbXBvcnRhbnQ7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuaW9uLWNvbnRlbnQgaW9uLXNlYXJjaGJhciB7XG4gIC0tYm9yZGVyLXJhZGl1czogMzBweDtcbn1cbmlvbi1jb250ZW50IGlvbi1zbGlkZXMge1xuICBoZWlnaHQ6IDgwJTtcbiAgYm9yZGVyOiAxcHggc29saWQgIzM0NGI1NjtcbiAgYm9yZGVyLXJhZGl1czogNTBweDtcbiAgbWFyZ2luLXRvcDogNDBweDtcbn1cbmlvbi1jb250ZW50IGlvbi1zbGlkZXMgaW9uLXNsaWRlIGlvbi1ncmlkIGlvbi1yb3cgaW9uLWNvbCAudGl0dWxvU2xpZGUge1xuICBtYXJnaW4tdG9wOiAtMzBweDtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGNvbG9yOiAjMzQ0YjU2O1xufVxuaW9uLWNvbnRlbnQgaW9uLWxpc3Qge1xuICBwYWRkaW5nOiAwcHg7XG4gIGJhY2tncm91bmQ6IG5vbmU7XG59XG5pb24tY29udGVudCBpb24tbGlzdCBpb24taXRlbSB7XG4gIG1hcmdpbi1ib3R0b206IDEwcHg7XG4gIGJvcmRlci1yYWRpdXM6IDE1cHg7XG59XG5pb24tY29udGVudCBpb24tYnV0dG9uIHtcbiAgLS1ib3JkZXItcmFkaXVzOiA1MHB4O1xufSJdfQ== */"]
     });
     /*@__PURE__*/
@@ -4338,7 +4437,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: ScannerQrComponent */
 
   /***/
-  function srcAppComponentsScannerQrScannerQrComponentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_components_scannerQr_scannerQrComponentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -4415,7 +4514,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.scanActive = false;
       }
 
-      _createClass(ScannerQrComponent, [{
+      return _createClass(ScannerQrComponent, [{
         key: "ngOnDestroy",
         value: function ngOnDestroy() {
           this.stopBarcodeRemove('');
@@ -4472,13 +4571,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "checkPermission",
         value: function checkPermission() {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee14() {
-            var _this9 = this;
+            var _this8 = this;
 
             return _regeneratorRuntime().wrap(function _callee14$(_context14) {
               while (1) switch (_context14.prev = _context14.next) {
                 case 0:
                   return _context14.abrupt("return", new Promise(function (resolve, reject) {
-                    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this9, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+                    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this8, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
                       var status, alert;
                       return _regeneratorRuntime().wrap(function _callee13$(_context13) {
                         while (1) switch (_context13.prev = _context13.next) {
@@ -4568,8 +4667,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return this.modalCtrl.dismiss();
         }
       }]);
-
-      return ScannerQrComponent;
     }();
 
     ScannerQrComponent.ɵfac = function ScannerQrComponent_Factory(t) {
@@ -4721,7 +4818,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: ConfigService */
 
   /***/
-  function srcAppConfigServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_configServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -4786,7 +4883,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        */
 
 
-      _createClass(ConfigService, [{
+      return _createClass(ConfigService, [{
         key: "allistaPasswordRecoveryURL",
         get: function get() {
           return this.ALISSTA_PASSWORD_RECOVERY_URL;
@@ -4828,8 +4925,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return this.ANDROID_APP_ID;
         }
       }]);
-
-      return ConfigService;
     }();
 
     ConfigService.ɵfac = function ConfigService_Factory(t) {
@@ -4864,7 +4959,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AuthGuard */
 
   /***/
-  function srcAppPagesAuthAuthGuardTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pages_auth_authGuardTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -4910,7 +5005,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.LOGIN_URL = 'auth/login';
       }
 
-      _createClass(AuthGuard, [{
+      return _createClass(AuthGuard, [{
         key: "canActivate",
         value: function canActivate() {
           var existe = this.config.isLogged;
@@ -4922,8 +5017,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }
         }
       }]);
-
-      return AuthGuard;
     }();
 
     AuthGuard.ɵfac = function AuthGuard_Factory(t) {
@@ -4964,7 +5057,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: FilterCompaniesPipe */
 
   /***/
-  function srcAppPipesFilterCompaniesPipeTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_filterCompaniesPipeTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -4986,14 +5079,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, FilterCompaniesPipe);
       }
 
-      _createClass(FilterCompaniesPipe, [{
+      return _createClass(FilterCompaniesPipe, [{
         key: "transform",
         value: function transform(value, properties, term) {
-          var _this10 = this;
+          var _this9 = this;
 
           return value.filter(function (v) {
             return properties.some(function (p) {
-              return _this10.matchItem(v, p, term);
+              return _this9.matchItem(v, p, term);
             });
           });
         }
@@ -5025,8 +5118,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return value.includes(term.toLowerCase());
         }
       }]);
-
-      return FilterCompaniesPipe;
     }();
 
     FilterCompaniesPipe.ɵfac = function FilterCompaniesPipe_Factory(t) {
@@ -5061,7 +5152,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: MunicipiosFilterPipe */
 
   /***/
-  function srcAppPipesMunicipiosFilterPipeTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_municipiosFilterPipeTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5083,7 +5174,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, MunicipiosFilterPipe);
       }
 
-      _createClass(MunicipiosFilterPipe, [{
+      return _createClass(MunicipiosFilterPipe, [{
         key: "transform",
         value: function transform(municipios, departamento) {
           return municipios.filter(function (m) {
@@ -5091,8 +5182,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }]);
-
-      return MunicipiosFilterPipe;
     }();
 
     MunicipiosFilterPipe.ɵfac = function MunicipiosFilterPipe_Factory(t) {
@@ -5127,7 +5216,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: PipesModule */
 
   /***/
-  function srcAppPipesPipesModuleTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_pipesModuleTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5218,7 +5307,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: RecommendationTypePipe */
 
   /***/
-  function srcAppPipesRecommendationTypePipeTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_recommendationTypePipeTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5240,14 +5329,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, RecommendationTypePipe);
       }
 
-      _createClass(RecommendationTypePipe, [{
+      return _createClass(RecommendationTypePipe, [{
         key: "transform",
         value: function transform(texto) {
           return texto.charAt(0);
         }
       }]);
-
-      return RecommendationTypePipe;
     }();
 
     RecommendationTypePipe.ɵfac = function RecommendationTypePipe_Factory(t) {
@@ -5282,7 +5369,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: SearchCompanyListPipe */
 
   /***/
-  function srcAppPipesSearchCompanyListPipeTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_searchCompanyListPipeTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5304,7 +5391,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, SearchCompanyListPipe);
       }
 
-      _createClass(SearchCompanyListPipe, [{
+      return _createClass(SearchCompanyListPipe, [{
         key: "transform",
         value: function transform(companyXActivities, texto, properties, modulo) {
           if (!companyXActivities) {
@@ -5336,8 +5423,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }]);
-
-      return SearchCompanyListPipe;
     }();
 
     SearchCompanyListPipe.ɵfac = function SearchCompanyListPipe_Factory(t) {
@@ -5372,7 +5457,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: SearchResendCodePipe */
 
   /***/
-  function srcAppPipesSearchResendCodePipeTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_pipes_searchResendCodePipeTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5394,7 +5479,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         _classCallCheck(this, SearchResendCodePipe);
       }
 
-      _createClass(SearchResendCodePipe, [{
+      return _createClass(SearchResendCodePipe, [{
         key: "transform",
         value: function transform(listResponsables, texto, properties) {
           if (!listResponsables) {
@@ -5419,8 +5504,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           });
         }
       }]);
-
-      return SearchResendCodePipe;
     }();
 
     SearchResendCodePipe.ɵfac = function SearchResendCodePipe_Factory(t) {
@@ -5455,7 +5538,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: RecommendationATService */
 
   /***/
-  function srcAppServicesATRecommendationAtServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_AT_recommendationAtServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5499,7 +5582,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
        */
 
 
-      _createClass(RecommendationATService, [{
+      return _createClass(RecommendationATService, [{
         key: "getListRecommendationAT",
         value: function getListRecommendationAT(idProveedor) {
           var rq = {
@@ -5534,8 +5617,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return this.http.post(this.API_SAVE_RECOMMENDATION_AT, recommendation);
         }
       }]);
-
-      return RecommendationATService;
     }();
 
     RecommendationATService.ɵfac = function RecommendationATService_Factory(t) {
@@ -5574,7 +5655,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: ActivityListCompanyService */
 
   /***/
-  function srcAppServicesActivitiesActivityListCompanyActivityListCompanyServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_activities_activityListCompany_activityListCompanyServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5645,7 +5726,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.getRecordsForPage();
       }
 
-      _createClass(ActivityListCompanyService, [{
+      return _createClass(ActivityListCompanyService, [{
         key: "presentToastActivitiesPaginator",
         value: function presentToastActivitiesPaginator(message, color) {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee15() {
@@ -5683,7 +5764,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "getRecordsForPage",
         value: function getRecordsForPage() {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee16() {
-            var _this11 = this;
+            var _this10 = this;
 
             var headers;
             return _regeneratorRuntime().wrap(function _callee16$(_context16) {
@@ -5694,8 +5775,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   });
                   _context16.next = 3;
                   return this.http.post(this.API_REGISTROS_PAGINA, {}).subscribe(function (response) {
-                    _this11.cantidadRegistrosPorPagina = response.intCantidadRegistrosPorPagina;
-                    console.log('Cantidaddd...!!!', _this11.cantidadRegistrosPorPagina);
+                    _this10.cantidadRegistrosPorPagina = response.intCantidadRegistrosPorPagina;
+                    console.log('Cantidaddd...!!!', _this10.cantidadRegistrosPorPagina);
                   }, function (error) {
                     console.error('Error en la consulta:', error);
                   });
@@ -5747,7 +5828,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "listActivityForCompanyBucle",
         value: function listActivityForCompanyBucle(url, currentPage, totalPages) {
-          var _this12 = this;
+          var _this11 = this;
 
           if (currentPage > totalPages) {
             console.log('Todas las páginas han sido procesadas');
@@ -5758,7 +5839,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               refreshBtnEnable: false
             };
             setTimeout(function () {
-              _this12.progressBarValues.next(_this12.progressBar);
+              _this11.progressBarValues.next(_this11.progressBar);
             }, 2000);
             this.presentToastActivitiesPaginator('Actividades cargadas con Exito.', 'primary');
             return;
@@ -5766,33 +5847,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           this.getListActivitiesForPage(url, currentPage).subscribe(function (response) {
             // console.log(`Respuesta de la página ${currentPage}:`, response.listActivitiesCompany);
-            var currentActivities = _this12.activitiesSubject.getValue();
+            var currentActivities = _this11.activitiesSubject.getValue();
 
             var newActivities = response.listActivitiesCompany;
 
-            _this12.listActivitiesFilter(newActivities);
+            _this11.listActivitiesFilter(newActivities);
 
             var activities = currentActivities.concat(newActivities);
 
-            _this12.activitiesSubject.next(activities);
+            _this11.activitiesSubject.next(activities);
 
-            _this12.progressBar.visible = true;
-            _this12.progressBar.progress = Number((activities.length / _this12.progressBar.records).toFixed(1));
-            _this12.progressBar.refreshBtnEnable = true;
+            _this11.progressBar.visible = true;
+            _this11.progressBar.progress = Number((activities.length / _this11.progressBar.records).toFixed(1));
+            _this11.progressBar.refreshBtnEnable = true;
 
-            _this12.progressBarValues.next(_this12.progressBar);
+            _this11.progressBarValues.next(_this11.progressBar);
 
             console.log('Grupo llamadas...!!: ', url, currentPage + 1, totalPages);
 
-            _this12.listActivityForCompanyBucle(url, currentPage + 1, totalPages);
+            _this11.listActivityForCompanyBucle(url, currentPage + 1, totalPages);
           }, function (error) {
             console.error("Error en la p\xE1gina ".concat(currentPage, ":"), error);
-            _this12.progressBar.visible = false;
-            _this12.progressBar.refreshBtnEnable = false;
+            _this11.progressBar.visible = false;
+            _this11.progressBar.refreshBtnEnable = false;
 
-            _this12.progressBarValues.next(_this12.progressBar);
+            _this11.progressBarValues.next(_this11.progressBar);
 
-            _this12.presentToastActivitiesPaginator('Error al cargar las actividades, intentalo nuevamente por favor.', 'danger');
+            _this11.presentToastActivitiesPaginator('Error al cargar las actividades, intentalo nuevamente por favor.', 'danger');
           }, function () {
             console.log("Llamada a la p\xE1gina ".concat(currentPage, " completada"));
           });
@@ -5807,12 +5888,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "listActivitiesFilter",
         value: function listActivitiesFilter(listActivity) {
-          var _this13 = this;
+          var _this12 = this;
 
           console.log('Actas Guardads Filtro: ', this.actasGuardadas);
           return listActivity.forEach(function (a) {
             a.listaActividadesMigradas = a.listaActividadesMigradas.filter(function (aa) {
-              return _this13.actasGuardadas.find(function (aaa) {
+              return _this12.actasGuardadas.find(function (aaa) {
                 return aaa.activities.find(function (aaaa) {
                   return aaaa.id === aa.id;
                 });
@@ -5836,8 +5917,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return this.http.post(this.API_RECOVERY_VERIFICATION_CODE, null);
         }
       }]);
-
-      return ActivityListCompanyService;
     }();
 
     ActivityListCompanyService.ɵfac = function ActivityListCompanyService_Factory(t) {
@@ -5878,7 +5957,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: CacheService */
 
   /***/
-  function srcAppServicesCacheCacheServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_cache_cacheServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -5957,7 +6036,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       } // --------------------------- MÓDULO EJECUCIÓN ACTIVIDADES --------------------\\
 
 
-      _createClass(CacheService, [{
+      return _createClass(CacheService, [{
         key: "saveActivities",
         value: function saveActivities(listActivitiesSelectedForExec) {
           this.activitiesSelectedForExec = [];
@@ -6039,12 +6118,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "getAllInfoToAdvisory",
         value: function getAllInfoToAdvisory() {
-          var _this14 = this;
+          var _this13 = this;
 
           this.activitiesSelected = [];
           this.activitiesSelectedForExec.forEach(function (element) {
             if (element.coverage !== 0) {
-              _this14.activitiesSelected.push(element);
+              _this13.activitiesSelected.push(element);
             }
           });
           var verificationAdvisory = {
@@ -6108,7 +6187,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "removeFotoAdjunta",
         value: function removeFotoAdjunta(id) {
-          var _this15 = this;
+          var _this14 = this;
 
           this.fotosAdjuntas.forEach(function (f) {
             var index = f.findIndex(function (ff) {
@@ -6121,7 +6200,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             var deleted = f.splice(index, 1);
 
-            var registry = _this15.infoDocumentosPorActividad.find(function (r) {
+            var registry = _this14.infoDocumentosPorActividad.find(function (r) {
               return r.idActividad === deleted[0].idActividad;
             });
 
@@ -6146,7 +6225,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "removePDFAdjunto",
         value: function removePDFAdjunto(id) {
-          var _this16 = this;
+          var _this15 = this;
 
           this.pdfAdjuntos.forEach(function (a) {
             var index = a.findIndex(function (aa) {
@@ -6159,7 +6238,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
             var deleted = a.splice(index, 1);
 
-            var registry = _this16.infoDocumentosPorActividad.find(function (r) {
+            var registry = _this15.infoDocumentosPorActividad.find(function (r) {
               return r.idActividad === deleted[0].idActividad;
             });
 
@@ -6660,8 +6739,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }]);
-
-      return CacheService;
     }();
 
     CacheService.ɵfac = function CacheService_Factory(t) {
@@ -6700,7 +6777,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: ConnectionStatusEnum, NetworkService */
 
   /***/
-  function srcAppServicesNetworkNetworkServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_network_networkServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6791,16 +6868,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.showIPAddress();
       }
 
-      _createClass(NetworkService, [{
+      return _createClass(NetworkService, [{
         key: "showIPAddress",
         value: function showIPAddress() {
-          var _this17 = this;
+          var _this16 = this;
 
           this.http.get('https://api.ipify.org/?format=json').subscribe(function (ip) {
-            _this17.connectionStatus = ConnectionStatusEnum.Online;
-            _this17.ipAddress = ip;
+            _this16.connectionStatus = ConnectionStatusEnum.Online;
+            _this16.ipAddress = ip;
 
-            _this17.cacheService.saveIpAddress(_this17.ipAddress.ip);
+            _this16.cacheService.saveIpAddress(_this16.ipAddress.ip);
           });
         }
       }, {
@@ -6822,18 +6899,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         key: "testNetworkConnection",
         value: function testNetworkConnection() {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee20() {
-            var _this18 = this;
+            var _this17 = this;
 
             return _regeneratorRuntime().wrap(function _callee20$(_context21) {
               while (1) switch (_context21.prev = _context21.next) {
                 case 0:
                   _context21.prev = 0;
                   this.getNetworkTestRequest().subscribe(function (success) {
-                    _this18.hasConnection.next(true);
+                    _this17.hasConnection.next(true);
 
                     return;
                   }, function (error) {
-                    _this18.hasConnection.next(false);
+                    _this17.hasConnection.next(false);
 
                     return;
                   });
@@ -6857,26 +6934,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "initializeNetworkEvents",
         value: function initializeNetworkEvents() {
-          var _this19 = this;
+          var _this18 = this;
 
           if (this.plt.is('cordova')) {
             this.network.onConnect().subscribe(function () {
-              return _this19.connectionStatus = ConnectionStatusEnum.Online;
+              return _this18.connectionStatus = ConnectionStatusEnum.Online;
             });
             this.network.onDisconnect().subscribe(function () {
-              return _this19.connectionStatus = ConnectionStatusEnum.Offline;
+              return _this18.connectionStatus = ConnectionStatusEnum.Offline;
             });
             return;
           }
 
           var connectionEvents = Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["merge"])(Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["of"])(navigator.onLine), Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["fromEvent"])(window, 'online').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["mapTo"])(ConnectionStatusEnum.Online)), Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["fromEvent"])(window, 'offline').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["mapTo"])(ConnectionStatusEnum.Offline)));
           connectionEvents.subscribe(function (status) {
-            return _this19.connectionStatus = status;
+            return _this18.connectionStatus = status;
           });
         }
       }]);
-
-      return NetworkService;
     }();
 
     NetworkService.ɵfac = function NetworkService_Factory(t) {
@@ -6921,7 +6996,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: TalkService */
 
   /***/
-  function srcAppServicesTalkTalkServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_talk_talkServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -6964,7 +7039,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.rolesVisualizadosHistoricos = [];
       }
 
-      _createClass(TalkService, [{
+      return _createClass(TalkService, [{
         key: "changeStateUser",
         value: function changeStateUser(pPKConversacionUsuario, pPKConversacion, pEstado, pIP, pPKUidUsuario) {
           var url = ''; // tslint:disable-next-line: max-line-length
@@ -7024,8 +7099,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return this.rolesVisualizadosHistoricos;
         }
       }]);
-
-      return TalkService;
     }();
 
     TalkService.ɵfac = function TalkService_Factory(t) {
@@ -7064,7 +7137,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: AppVersionService */
 
   /***/
-  function srcAppServicesVersionAppVersionServiceTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_app_services_version_appVersionServiceTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -7129,7 +7202,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       } // Método asíncrono para verificar la versión
 
 
-      _createClass(AppVersionService, [{
+      return _createClass(AppVersionService, [{
         key: "checkForUpdate",
         value: function checkForUpdate() {
           return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee21() {
@@ -7236,8 +7309,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }]);
-
-      return AppVersionService;
     }();
 
     AppVersionService.ɵfac = function AppVersionService_Factory(t) {
@@ -7280,7 +7351,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! exports provided: environment */
 
   /***/
-  function srcEnvironmentsEnvironmentTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_environments_environmentTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);
@@ -7329,15 +7400,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     // const ambiente = 'http://srevision-test-dos.adacsc.co/';
     //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
     //  Test 1
-    // const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
-    //  Test 2
+
+
+    var ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/'; //  Test 2
     // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
     //  Test 3
     // const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
     //  Pre
-
-
-    var ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/'; //  Producción
+    // const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+    //  Producción
     // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
     var environment = {
@@ -7390,7 +7461,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /*! no exports provided */
 
   /***/
-  function srcMainTs(module, __webpack_exports__, __webpack_require__) {
+  function _src_mainTs(module, __webpack_exports__, __webpack_require__) {
     "use strict";
 
     __webpack_require__.r(__webpack_exports__);

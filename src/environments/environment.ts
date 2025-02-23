@@ -31,7 +31,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
 
 //  Test 1
-// const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
+const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 
 //  Test 2
 // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
@@ -40,7 +40,7 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 // const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
 
 //  Pre
-const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+// const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 
 //  Producción
 // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
@@ -90,5 +90,5 @@ export const environment = {
 
   ONE_SIGNAL_SENDER_ID: '1023388241846',
   ONE_SIGNAL_APP_ID: 'af2757e0-1095-4476-84d2-298ee2b5bb5c',
-  APP_VERSION_ENVIRONMENT: ambiente
+  APP_VERSION_ENVIRONMENT: ambiente,
 };
