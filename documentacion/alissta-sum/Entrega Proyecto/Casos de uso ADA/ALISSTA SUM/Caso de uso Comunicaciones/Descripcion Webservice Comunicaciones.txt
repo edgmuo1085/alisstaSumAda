@@ -1,0 +1,712 @@
+-> Servicio que obtiene los temas de las comunicacion
+	
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Datos-Comunicaciones
+	
+	JSON reSspuesta
+	{
+    "temas": [
+        {
+            "Uid_Constante": 35,
+            "Valor": "RE",
+            "Nombre": "Retiro empresa",
+            "Grupo": "TEMCOM",
+            "Descripcion": "Temas de comunicacion",
+            "Estado": "A",
+            "Modificable": "1",
+            "Eliminado": 0,
+            "Uid_Usuario_Modifica": 1
+        },
+        {
+            "Uid_Constante": 36,
+            "Valor": "T1",
+            "Nombre": "Cambio de ejecutivo",
+            "Grupo": "TEMCOM",
+            "Descripcion": "Temas de comunicacion",
+            "Estado": "A",
+            "Modificable": "1",
+            "Eliminado": 0,
+            "Uid_Usuario_Modifica": 1
+        }
+    ],
+    "RolVisHis": [
+        10,
+        11
+    ]
+}
+	
+-> Servicio que consulta las comunicaciones 
+
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Comunicaciones-Filtro?pRazonSocialNit=&pPKTema=-1&pFechaInicio=&pFechaFin=&pUidUsuario=3320&pUidRol=16
+	
+	JSON reSspuesta
+	{
+		"IsOk": true,
+		"Message": null,
+		"Respuesta": [
+			{
+				"PKConversacion": 4.0,
+				"FKEmpresaSum": 1.0,
+				"FKTema": "RE",
+				"Tema": "Retiro empresa",
+				"FechaCreacion": "2021-02-17T10:45:03.023",
+				"FechaCreacionCorta": "17/02/2021 10:45:03",
+				"Observaciones": "ddfdfdfdfff",
+				"Vigencia": "2020",
+				"FKEmpresa": 0.0,
+				"Empresa": "ADA SA",
+				"EmpresaDocumento": "800167494",
+				"EmpresaTipoDocumento": "NI",
+				"Usuarios": [
+					{
+						"PKConversacionUsuario": 9.0,
+						"FKConversacion": 4.0,
+						"FKUsuario": 3321.0,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 16.0,
+						"UsuarioRolNombre": "PROVEEDOR",
+						"UsuarioRolSigla": "RP",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "I",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 1
+					},
+					{
+						"PKConversacionUsuario": 13.0,
+						"FKConversacion": 4.0,
+						"FKUsuario": 3319.0,
+						"UsuarioNombre": "VIVIANA ANDREA PEREZ LONDOÑO",
+						"UsuarioDocumento": "30236015",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 3.0,
+						"UsuarioRolNombre": "ASESOR POR PROYECTO",
+						"UsuarioRolSigla": "RAPP",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "I",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 2
+					},
+					{
+						"PKConversacionUsuario": 14.0,
+						"FKConversacion": 4.0,
+						"FKUsuario": 3320.0,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 8.0,
+						"UsuarioRolNombre": "EJECUTIVO INTEGRAL DE SERVICIO",
+						"UsuarioRolSigla": "REIDS",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 3
+					},
+					{
+						"PKConversacionUsuario": 20.0,
+						"FKConversacion": 4.0,
+						"FKUsuario": 1050.0,
+						"UsuarioNombre": "HAYDA NAYIBE RODRIGUEZ CICUA",
+						"UsuarioDocumento": "53048950",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 1.0,
+						"UsuarioRolNombre": "ADMINISTRADOR DEL SISTEMA",
+						"UsuarioRolSigla": "RADMS",
+						"FKProveedor": 2,
+						"ProveedorNombre": "ADA ",
+						"ProveedorDocumento": "800167494",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 4
+					}
+				],
+				"Links": [
+					{
+						"PKConversacionLink": 3.0,
+						"FKConversacion": 4.0,
+						"Link": "www.google.com",
+						"Elimino": false,
+						"Index": 1
+					}
+				]
+			},
+			{
+				"PKConversacion": 7.0,
+				"FKEmpresaSum": 4.0,
+				"FKTema": "RE",
+				"Tema": "Retiro empresa",
+				"FechaCreacion": "2021-02-17T17:14:37.62",
+				"FechaCreacionCorta": "17/02/2021 17:14:37",
+				"Observaciones": "fjhdsfjdshfjdhfdjsfdshf",
+				"Vigencia": "2021",
+				"FKEmpresa": 0.0,
+				"Empresa": "UNIVERSIDAD DEL MAGDALENA",
+				"EmpresaDocumento": "891780111",
+				"EmpresaTipoDocumento": "NI",
+				"Usuarios": [
+					{
+						"PKConversacionUsuario": 18.0,
+						"FKConversacion": 7.0,
+						"FKUsuario": 3320.0,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 8.0,
+						"UsuarioRolNombre": "EJECUTIVO INTEGRAL DE SERVICIO",
+						"UsuarioRolSigla": "REIDS",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 1
+					},
+					{
+						"PKConversacionUsuario": 19.0,
+						"FKConversacion": 7.0,
+						"FKUsuario": 3321.0,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 16.0,
+						"UsuarioRolNombre": "PROVEEDOR",
+						"UsuarioRolSigla": "RP",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 2
+					},
+					{
+						"PKConversacionUsuario": 23.0,
+						"FKConversacion": 7.0,
+						"FKUsuario": 8.0,
+						"UsuarioNombre": "ANDRES LEONARDO TOVAR RIVERA",
+						"UsuarioDocumento": "79963498",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 1.0,
+						"UsuarioRolNombre": "ADMINISTRADOR DEL SISTEMA",
+						"UsuarioRolSigla": "RADMS",
+						"FKProveedor": 1,
+						"ProveedorNombre": "POSITIVA COMPAÑIA DE SEGUROS SA",
+						"ProveedorDocumento": "860011153",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 3
+					},
+					{
+						"PKConversacionUsuario": 24.0,
+						"FKConversacion": 7.0,
+						"FKUsuario": 1050.0,
+						"UsuarioNombre": "HAYDA NAYIBE RODRIGUEZ CICUA",
+						"UsuarioDocumento": "53048950",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 1.0,
+						"UsuarioRolNombre": "ADMINISTRADOR DEL SISTEMA",
+						"UsuarioRolSigla": "RADMS",
+						"FKProveedor": 2,
+						"ProveedorNombre": "ADA ",
+						"ProveedorDocumento": "800167494",
+						"Estado": "I",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 4
+					}
+				],
+				"Links": [
+					{
+						"PKConversacionLink": 6.0,
+						"FKConversacion": 7.0,
+						"Link": "www.google.com",
+						"Elimino": false,
+						"Index": 1
+					}
+				]
+			},
+			{
+				"PKConversacion": 5.0,
+				"FKEmpresaSum": 1.0,
+				"FKTema": "T1",
+				"Tema": "Tema uno",
+				"FechaCreacion": "2021-02-18T10:11:19.98",
+				"FechaCreacionCorta": "18/02/2021 10:11:19",
+				"Observaciones": "FGDFGDFGD",
+				"Vigencia": "2021",
+				"FKEmpresa": 0.0,
+				"Empresa": "ADA SA",
+				"EmpresaDocumento": "800167494",
+				"EmpresaTipoDocumento": "NI",
+				"Usuarios": [
+					{
+						"PKConversacionUsuario": 10.0,
+						"FKConversacion": 5.0,
+						"FKUsuario": 3319.0,
+						"UsuarioNombre": "VIVIANA ANDREA PEREZ LONDOÑO",
+						"UsuarioDocumento": "30236015",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 3.0,
+						"UsuarioRolNombre": "ASESOR POR PROYECTO",
+						"UsuarioRolSigla": "RAPP",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 1
+					},
+					{
+						"PKConversacionUsuario": 25.0,
+						"FKConversacion": 5.0,
+						"FKUsuario": 3320.0,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"FKRol": 8.0,
+						"UsuarioRolNombre": "EJECUTIVO INTEGRAL DE SERVICIO",
+						"UsuarioRolSigla": "REIDS",
+						"FKProveedor": 8,
+						"ProveedorNombre": "MEDICOS LABORALES S.A.S.",
+						"ProveedorDocumento": "900344642",
+						"Estado": "A",
+						"EstadoProveedor": "A",
+						"Elimino": false,
+						"Index": 2
+					}
+				],
+				"Links": [
+					{
+						"PKConversacionLink": 4.0,
+						"FKConversacion": 5.0,
+						"Link": "FDSFSDF",
+						"Elimino": false,
+						"Index": 1
+					}
+				]
+			}
+		]
+	}
+		
+-> Servicio que obtiene los mensajes de la comunicacion
+
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Comunicaciones-Mensajes?pPKConversacion=7&pUidUsuario=3320
+	
+	JSON Respuesta{
+    "IsOk": true,
+    "Message": null,
+    "Respuesta": [
+        {
+				"PKConversacionMensaje": 4,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T01:58:34.14",
+				"FechaCorta": "18/02/2021 1:58:34",
+				"FKUsuario": 3320,
+				"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+				"UsuarioDocumento": "15985112",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Índice donde se comenzará a cambiar el array (con 0 como origen). Si es mayor que la longitud del array, el punto inicial será la longitud del array. Si es negativo, empezará esa cantidad de elementos contando desde el final @ANDRES LEONARDO TOVAR RIVERA",
+				"FKConversacionMensajePadre": 3,
+				"MensajePadre": {
+					"PKConversacionMensaje": 3,
+					"FKConversacion": 7,
+					"Fecha": "2021-02-16T23:20:11.567",
+					"FechaCorta": null,
+					"FKUsuario": 3320,
+					"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+					"UsuarioDocumento": "15985112",
+					"UsuarioTipoDocumento": "CC",
+					"Mensaje": "El subrayado se utiliza para resaltar muy bien un texto y a diferencia de la negrita, se emplea más en situaciones de frases largas, ya que en negrita quedaría muy cargante.",
+					"FKConversacionMensajePadre": 1,
+					"MensajePadre": null,
+					"EsPrivadoParaMi": false,
+					"Privado": null,
+					"LeidoPorMi": false,
+					"Leido": null
+				},
+				"EsPrivadoParaMi": true,
+				"EsPrivadoPorMi": true,
+				"Privado": [
+					{
+						"PKConversacionMensajePrivado": 1,
+						"FKConversacionMensaje": 4,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC"
+					}
+				],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 7,
+						"FKConversacionMensaje": 4,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T01:59:13.673",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 11,
+						"FKConversacionMensaje": 4,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T02:18:27.59",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 6,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T02:40:53.757",
+				"FechaCorta": "18/02/2021 2:40:53",
+				"FKUsuario": 3321,
+				"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+				"UsuarioDocumento": "24725397",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Mensaje de prueba Editar eliminar",
+				"FKConversacionMensajePadre": 0,
+				"MensajePadre": null,
+				"EsPrivadoParaMi": false,
+				"Privado": [],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 13,
+						"FKConversacionMensaje": 6,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T02:40:54.423",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 14,
+						"FKConversacionMensaje": 6,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T08:43:51.79",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 7,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T09:01:17.85",
+				"FechaCorta": "18/02/2021 9:01:17",
+				"FKUsuario": 3320,
+				"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+				"UsuarioDocumento": "15985112",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Esto es un mensaje de prueba Para eliminar editar mensaje",
+				"FKConversacionMensajePadre": 0,
+				"MensajePadre": null,
+				"EsPrivadoParaMi": false,
+				"Privado": [],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 15,
+						"FKConversacionMensaje": 7,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:01:18",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 18,
+						"FKConversacionMensaje": 7,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:08:27.377",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 8,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T09:37:05.547",
+				"FechaCorta": "18/02/2021 9:37:05",
+				"FKUsuario": 3320,
+				"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+				"UsuarioDocumento": "15985112",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Prueba mensaje padre",
+				"FKConversacionMensajePadre": 4,
+				"MensajePadre": {
+					"PKConversacionMensaje": 4,
+					"FKConversacion": 7,
+					"Fecha": "2021-02-18T01:58:34.14",
+					"FechaCorta": null,
+					"FKUsuario": 3320,
+					"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+					"UsuarioDocumento": "15985112",
+					"UsuarioTipoDocumento": "CC",
+					"Mensaje": "Índice donde se comenzará a cambiar el array (con 0 como origen). Si es mayor que la longitud del array, el punto inicial será la longitud del array. Si es negativo, empezará esa cantidad de elementos contando desde el final @ANDRES LEONARDO TOVAR RIVERA",
+					"FKConversacionMensajePadre": 3,
+					"MensajePadre": null,
+					"EsPrivadoParaMi": false,
+					"Privado": null,
+					"LeidoPorMi": false,
+					"Leido": null
+				},
+				"EsPrivadoParaMi": false,
+				"Privado": [],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 19,
+						"FKConversacionMensaje": 8,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:37:05.833",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 21,
+						"FKConversacionMensaje": 8,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:46:18.927",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 9,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T09:41:58.493",
+				"FechaCorta": "18/02/2021 9:41:58",
+				"FKUsuario": 3320,
+				"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+				"UsuarioDocumento": "15985112",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Prueba 2 mensaje padre",
+				"FKConversacionMensajePadre": 4,
+				"MensajePadre": {
+					"PKConversacionMensaje": 4,
+					"FKConversacion": 7,
+					"Fecha": "2021-02-18T01:58:34.14",
+					"FechaCorta": null,
+					"FKUsuario": 3320,
+					"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+					"UsuarioDocumento": "15985112",
+					"UsuarioTipoDocumento": "CC",
+					"Mensaje": "Índice donde se comenzará a cambiar el array (con 0 como origen). Si es mayor que la longitud del array, el punto inicial será la longitud del array. Si es negativo, empezará esa cantidad de elementos contando desde el final @ANDRES LEONARDO TOVAR RIVERA",
+					"FKConversacionMensajePadre": 3,
+					"MensajePadre": null,
+					"EsPrivadoParaMi": false,
+					"Privado": null,
+					"LeidoPorMi": false,
+					"Leido": null
+				},
+				"EsPrivadoParaMi": false,
+				"Privado": [],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 20,
+						"FKConversacionMensaje": 9,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:41:59.29",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 22,
+						"FKConversacionMensaje": 9,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:46:18.997",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 10,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T09:49:27.983",
+				"FechaCorta": "18/02/2021 9:49:27",
+				"FKUsuario": 3320,
+				"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+				"UsuarioDocumento": "15985112",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "Este mensaje es privado para gladys",
+				"FKConversacionMensajePadre": 0,
+				"MensajePadre": null,
+				"EsPrivadoParaMi": false,
+				"Privado": [
+					{
+						"PKConversacionMensajePrivado": 2,
+						"FKConversacionMensaje": 10,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC"
+					}
+				],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 23,
+						"FKConversacionMensaje": 10,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:49:28.243",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 24,
+						"FKConversacionMensaje": 10,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:49:40.53",
+						"FechaCorta": null
+					}
+				]
+			},
+			{
+				"PKConversacionMensaje": 11,
+				"FKConversacion": 7,
+				"Fecha": "2021-02-18T09:50:48.753",
+				"FechaCorta": "18/02/2021 9:50:48",
+				"FKUsuario": 3321,
+				"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+				"UsuarioDocumento": "24725397",
+				"UsuarioTipoDocumento": "CC",
+				"Mensaje": "hola quiero saber como va el tema",
+				"FKConversacionMensajePadre": 0,
+				"MensajePadre": null,
+				"EsPrivadoParaMi": false,
+				"Privado": [],
+				"LeidoPorMi": true,
+				"Leido": [
+					{
+						"PKConversacionMensajeLeido": 25,
+						"FKConversacionMensaje": 11,
+						"FKUsuario": 3321,
+						"UsuarioNombre": "MARIA GLADYS CLAVIJO GONZALEZ",
+						"UsuarioDocumento": "24725397",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:50:48.937",
+						"FechaCorta": null
+					},
+					{
+						"PKConversacionMensajeLeido": 26,
+						"FKConversacionMensaje": 11,
+						"FKUsuario": 3320,
+						"UsuarioNombre": "JAVIER  ZULUAGA BERNAL",
+						"UsuarioDocumento": "15985112",
+						"UsuarioTipoDocumento": "CC",
+						"Fecha": "2021-02-18T09:50:54.947",
+						"FechaCorta": null
+					}
+				]
+			}
+		]
+	}
+	
+-> Servicio que guarda el mensaje que se envia
+
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Comunicaciones-Guardar-Mensaje
+	
+	JSON body
+	
+	{
+		"PKConversacionMensaje": -1,
+		"PKConversacion": 7,                        
+		"PKUsuario": 3320,            
+		"Mensaje": "Esto es un mensaj de prueba desde la APP",
+		"UidMensajeRespuesta" : 0,
+		"LstUsuariosMensajePrivado":[
+			1,2,3
+		],
+		"LstUsuariosActivar":[
+			1,2,3
+		],
+		"IP": "000.000.000.000"
+	}
+	
+	JSON Respuesta
+	{
+		"IsOk": true,
+		"Message": null,
+		"Respuesta": true
+	}
+	
+-> Servicio que cambia el estado de un usuario en una conversacion
+
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Comunicaciones-Cambiar-Estado-Usuario?pPKConversacionUsuario=24&pPKConversacion=7&pEstado=A&pIP=192.168.0.1&pPKUidUsuario=3320
+	
+	
+	JSON Respuesta
+	{
+		"IsOk": true,
+		"Message": null,
+		"Respuesta": true
+	}	
+	
+-> Servicio que edita o elimina el mensaje
+
+	URL
+	http://localhost:7861/sg-sst/Comunicaciones/Comunicaciones-Editar-Mensaje
+	
+	JSON body
+	
+	{
+		"PKConversacionMensaje": 26,    
+		"PKUsuario": 3320,            
+		"Mensaje": "Esto es un mensaje de prueba desde la APP, editar mensaje",
+		"Eliminar": false
+	}
+	
+	JSON Respuesta
+	{
+		"IsOk": true,
+		"Message": null,
+		"Respuesta": true
+	}	

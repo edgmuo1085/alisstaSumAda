@@ -1,0 +1,173 @@
+ion-header {
+  & ion-grid {
+    padding: 0px;
+    background: #95a6b1;
+    color: white;
+
+    & ion-row {
+      & ion-col {
+        padding: 0px;
+        background: #95a6b1;
+
+        & .titulo {
+          font-size: 1rem;
+          padding: 0px;
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+
+      & ion-toolbar {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+ion-content {
+  & ion-card {
+    &.background-primary {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+
+      & ion-input {
+        --background: var(--ion-color-primary-contrast);
+      }
+    }
+
+    &.background-secondary {
+      --background: var(--ion-color-secondary);
+      --color: var(--ion-color-secondary-contrast);
+
+      & ion-input {
+        --background: var(--ion-color-secondary-contrast);
+      }
+    }
+
+    & ion-card-header {
+      & ion-card-title {
+        text-align: center;
+        font-size: 1rem;
+        text-transform: uppercase;
+        color: inherit;
+      }
+    }
+
+    & ion-card-content {
+      & ion-list {
+        background-color: transparent;
+
+        & ion-item {
+          --background: transparent;
+          --color: inherit;
+          --highlight-height: none;
+
+          &.fix-label {
+            & ion-label {
+              max-width: 65%;
+              white-space: break-spaces;
+            }
+
+            & ion-datetime {
+              padding: 0.5rem;
+              font-size: 0.9rem;
+              color: initial;
+              border-radius: 0.5rem;
+              background-color: var(--ion-color-tertiary);
+              opacity: 1;
+            }
+          }
+
+          & ion-label {
+            text-transform: capitalize;
+            opacity: initial;
+
+            &[position='stacked'] {
+              width: 100%;
+              transform: translateY(50%);
+              text-align: center;
+            }
+          }
+
+          & ion-input {
+            border-radius: 0.5rem;
+            --color: #000000;
+            --padding-top: 8px;
+            --padding-bottom: 8px;
+            --padding-start: 8px;
+            --padding-end: 8px;
+            font-size: 0.8rem;
+
+            &[aria-disabled='true'] {
+              --background: var(--ion-color-tertiary);
+
+              &::ng-deep {
+                & .native-input {
+                  opacity: 1;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      & .recommendation {
+        &:not(:last-child) {
+          margin-bottom: 1.5rem;
+        }
+
+        & .recommendation-text {
+          height: 150px;
+          overflow: scroll;
+          border-radius: 0.5rem;
+          border: 1px solid var(--ion-color-tertiary-shade);
+          padding: 10px;
+        }
+
+        & .recommendation-type {
+          display: flex;
+          justify-content: space-around;
+          font-size: 0.7rem;
+
+          & .label {
+            text-transform: uppercase;
+            font-weight: bold;
+            align-self: center;
+          }
+
+          & ion-item {
+            font-size: inherit;
+            --padding-start: 5px;
+            --inner-padding-end: 0;
+
+            &.actions {
+              pointer-events: auto;
+            }
+
+            & ion-label {
+              opacity: initial;
+            }
+
+            & ion-checkbox {
+              margin: 0 5px 0 0;
+
+              &.checkbox-disabled {
+                opacity: initial;
+              }
+            }
+
+            & ion-button {
+              --background: transparent;
+              --box-shadow: none;
+              --color: var(--ion-color-primary);
+            }
+          }
+        }
+      }
+    }
+  }
+  .arrowIcon {
+    font-size: 1rem;
+  }
+}

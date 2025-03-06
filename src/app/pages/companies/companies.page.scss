@@ -1,0 +1,23 @@
+ion-content {
+  & ion-col {
+    padding: 15px;
+
+    & ion-card {
+      height: 100%;
+      margin: 0;
+      border: 1px solid #95a6b1;
+
+      & ion-card-content {
+        & a {
+          color: inherit;
+          text-decoration: none;
+
+          & h4 {
+            text-align: center;
+            text-transform: capitalize;
+          }
+        }
+      }
+    }
+  }
+}

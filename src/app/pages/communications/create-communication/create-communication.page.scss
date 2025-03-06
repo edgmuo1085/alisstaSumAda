@@ -1,0 +1,27 @@
+ion-header {
+  ion-grid {
+    padding: 0px;
+    background: #95a6b1;
+    color: white;
+    ion-row {
+      ion-col {
+        padding: 0px;
+        background: #95a6b1;
+        ion-item {
+          width: 100%;
+        }
+      }
+      ion-toolbar {
+        padding: 0px;
+      }
+    }
+  }
+}
+
+.titulo {
+  width: 100% !important;
+  font-size: 24px !important;
+  padding: 0px;
+  text-align: left;
+  margin-top: 10px;
+}

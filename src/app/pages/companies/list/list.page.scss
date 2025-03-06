@@ -1,0 +1,102 @@
+ion-header {
+  & ion-col {
+    position: relative;
+
+    & ion-back-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    & ion-searchbar {
+      --border-radius: 1rem;
+    }
+  }
+}
+
+ion-content {
+  & .companies {
+    margin-bottom: 100px;
+    background-color: transparent;
+
+    & .company {
+      --padding-start: 0;
+      --padding-end: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+      --inner-padding-start: 0;
+      --inner-padding-end: 0;
+      --inner-padding-bottom: 0;
+      --inner-padding-top: 0;
+      --background: transparent;
+
+      & a {
+        text-decoration: none;
+
+        & ion-card {
+          --background: var(--ion-color-secondary);
+          --color: var(--ion-color-secondary-contrast);
+          border-radius: 1rem;
+
+          & ion-card-content {
+            & ion-item {
+              --padding-start: 0;
+              --padding-end: 0;
+              --padding-top: 0;
+              --padding-bottom: 0;
+              --inner-padding-start: 0;
+              --inner-padding-end: 0;
+              --inner-padding-bottom: 0;
+              --inner-padding-top: 0;
+              --background: inherit;
+              --color: inherit;
+              --min-height: auto;
+              white-space: break-spaces;
+
+              &.observaciones {
+                max-height: 4.5rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .no-companies-wrapper {
+    border: 1px solid #344b56;
+    border-radius: 2rem;
+    height: 80%;
+    position: relative;
+
+    & .message {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+
+      & img {
+        width: 65%;
+      }
+
+      & h3 {
+        font-weight: bold;
+      }
+
+      & ion-icon {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+cdk-virtual-scroll-viewport {
+  height: 100%;
+  width: 100%;
+
+  &::ng-deep {
+    & .cdk-virtual-scroll-content-wrapper {
+      width: 100%;
+    }
+  }
+}

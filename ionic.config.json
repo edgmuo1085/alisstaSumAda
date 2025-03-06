@@ -1,0 +1,8 @@
+{
+  "name": "Alissta SUM",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

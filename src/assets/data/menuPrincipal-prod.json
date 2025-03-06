@@ -1,0 +1,26 @@
+[
+  {
+    "icon": "../../../assets/icon/icono_ejecucion_actividades.svg",
+    "title": "Registro ejecución de actividades",
+    "show": true,
+    "redirecTo": "/registerExecActivities"
+  },
+  {
+    "icon": "../../../assets/icon/icono_educa.svg",
+    "title": "Eventos Positiva",
+    "show": true,
+    "redirecTo": "/consultEvent"
+  },
+  {
+    "icon": "../../../assets/icon/icono_comunicaciones.svg",
+    "title": "Comunicaciones",
+    "show": true,
+    "redirecTo": "/list-communications"
+  },
+  {
+    "icon": "../../../assets/icon/actualizacion-empresas.svg",
+    "title": "Actualizar Datos Empresa",
+    "show": true,
+    "redirecTo": "/companies"
+  }
+]
