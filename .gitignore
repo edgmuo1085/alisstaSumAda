@@ -35,3 +35,6 @@ npm-debug.log*
 /old_android
 /v2.android
 /www
+android/
+ios/
+www/
