@@ -679,7 +679,7 @@ class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
             this.checkDarkTheme();
-            this.initOneSignal();
+            // this.initOneSignal(); Se comenta para evitar la inicializacion de Onisignal
             this.networkService.initializeNetworkEvents();
             this.registerBackButtonListener();
             this.router.navigateByUrl('login');
@@ -4383,7 +4383,7 @@ __webpack_require__.r(__webpack_exports__);
 // const ambiente = 'http://srevision-test-dos.adacsc.co/';
 //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
 //  Test 1
-const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
+// const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //  Test 2
 // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
 //  Test 3
@@ -4391,13 +4391,13 @@ const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 //  Pre
 // const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 //  Producción
-// const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
+const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 const environment = {
     production: false,
     //  Pre
-    RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+    // RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
     //  Producción
-    // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+    RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
     API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
     API_GET_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Sucursales',
     API_GET_MUNICIPY_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Municipio',

@@ -31,7 +31,7 @@ export class AppComponent {
   ) {
     this.initializeApp();
     this.listenToAppState();
-    this.AppVersionSv.checkForUpdate(); 
+    this.AppVersionSv.checkForUpdate();
   }
 
   initializeApp() {
@@ -39,22 +39,22 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.checkDarkTheme();
-      this.initOneSignal();
+      // this.initOneSignal(); Se comenta para evitar la inicializacion de Onisignal
       this.networkService.initializeNetworkEvents();
       this.registerBackButtonListener();
       this.router.navigateByUrl('login');
     });
   }
 
-     // Escucha cambios de estado en la app (foreground/background)
-     listenToAppState(): void {
-      App.addListener('appStateChange', ({ isActive }) => {
-        if (isActive) {
-          console.log('La app volvió al primer plano.');
-          this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
-        }
-      });
-    }
+  // Escucha cambios de estado en la app (foreground/background)
+  listenToAppState(): void {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (isActive) {
+        console.log('La app volvió al primer plano.');
+        this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
+      }
+    });
+  }
 
   async checkDarkTheme(): Promise<void> {
     let shouldAdd: boolean;

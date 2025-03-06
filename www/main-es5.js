@@ -665,9 +665,8 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 
             _this.splashScreen.hide();
 
-            _this.checkDarkTheme();
+            _this.checkDarkTheme(); // this.initOneSignal(); Se comenta para evitar la inicializacion de Onisignal
 
-            _this.initOneSignal();
 
             _this.networkService.initializeNetworkEvents();
 
@@ -7400,23 +7399,23 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
     // const ambiente = 'http://srevision-test-dos.adacsc.co/';
     //const ambiente = 'http://sproveedor-test-tres.adacsc.co/';
     //  Test 1
-
-
-    var ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/'; //  Test 2
+    // const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
+    //  Test 2
     // const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
     //  Test 3
     // const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
     //  Pre
     // const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
     //  Producción
-    // const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
+
+    var ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
     var environment = {
       production: false,
       //  Pre
-      RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+      // RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
       //  Producción
-      // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+      RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
       API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
       API_GET_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Sucursales',
       API_GET_MUNICIPY_BRANCH_OFFICE_EVENT: ambiente + 'Evento/Buscar-Municipio',

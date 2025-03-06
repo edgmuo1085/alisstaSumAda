@@ -164,8 +164,8 @@ export class SettingsPage implements OnInit {
   switchNotifications(): void {
     this.notifications = !this.notifications;
     localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
-    if (this.notifications) this.oneSignal.setSubscription(true);
-    else this.oneSignal.setSubscription(false);
+    // if (this.notifications) this.oneSignal.setSubscription(true);  Se comenta para evitar la inicializacion de Onisignal
+    // else this.oneSignal.setSubscription(false);
   }
 
   /**
@@ -194,8 +194,8 @@ export class SettingsPage implements OnInit {
    * Método para cerrar la sesion voluntaria
    */
   singOff() {
-    this.oneSignal.setSubscription(false);
-    this.oneSignal.deleteTag('PERSONAL');
+    // this.oneSignal.setSubscription(false); Se comenta para evitar la inicializacion de Onisignal
+    // this.oneSignal.deleteTag('PERSONAL');
     this.storage.clear();
     localStorage.clear();
     sessionStorage.clear();

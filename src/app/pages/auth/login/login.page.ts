@@ -280,9 +280,9 @@ export class LoginPage implements OnInit {
             notification = true;
             localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, 'true');
           }
-          this.oneSignal.setSubscription(notification);
+          // this.oneSignal.setSubscription(notification); Se comenta para evitar la inicializacion de Onisignal
           console.log('setSubscription', notification);
-          this.oneSignal.sendTag('PERSONAL', response['0'].idRegistro);
+          // this.oneSignal.sendTag('PERSONAL', response['0'].idRegistro); Se comenta para evitar la inicializacion de Onisignal
           console.log('oneSignal.sendTag');
           this.config.isLogged = true;
           await this.authService.saveSesion(response[0]);
