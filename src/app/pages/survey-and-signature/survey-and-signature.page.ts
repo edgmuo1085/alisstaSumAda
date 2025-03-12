@@ -424,16 +424,18 @@ export class SurveyAndSignaturePage implements OnInit {
    * @param duration Texto que contiene la duración de la actividad.
    */
   private async registerTime(duration: string): Promise<void> {
-    const re = /(\d+)(\s+Horas\s+)(\d+)(\s+Minutos)/gm;
+    const re = /^\s*(\d+)\s*Horas\s+(\d+)\s*Minutos\s*$/i;
     const results = re.exec(duration);
-
+  
     if (!results) {
       return;
     }
 
-    const minutes = +results[1] * 60 + +results[3];
+    const minutes = +results[1] * 60 + +results[2];
+    
     await this.cacheService.setRegisteredTime(minutes);
   }
+  
 
   private getFiles(): any[] {
     const files: any[] = [];

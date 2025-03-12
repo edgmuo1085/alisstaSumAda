@@ -1,6 +1,6 @@
 {
   "appId": "co.positiva.alisstasum",
-  "appName": "Alissta SUM",
+  "appName": "Alissta SSUM",
   "version": "1.1.0",
   "bundledWebRuntime": false,
   "npmClient": "npm",

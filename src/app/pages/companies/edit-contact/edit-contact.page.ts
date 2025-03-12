@@ -27,7 +27,7 @@ export class EditContactPage {
   /**
    * Expresión regular para validar correos electrónicos.
    */
-  readonly EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  readonly EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   /**
    * Tipos de papel o representación.
