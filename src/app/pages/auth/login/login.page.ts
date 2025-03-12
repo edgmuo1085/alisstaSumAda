@@ -180,6 +180,7 @@ export class LoginPage {
    * Muestra u oculta la contraseña en el control de usuario.
    */
   togglePassword(): void {
+    console.log("entro al togle")
     this.passwordToggleIcon = this.passwordToggleIcon === this.HIDE_PASSWORD_ICON ? this.SHOW_PASSWORD_ICON : this.HIDE_PASSWORD_ICON;
     this.passwordType = this.passwordToggleIcon === this.SHOW_PASSWORD_ICON ? this.INPUT_TYPE_TEXT : this.INPUT_TYPE_PASSWORD;
   }
