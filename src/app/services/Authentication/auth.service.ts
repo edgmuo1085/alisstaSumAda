@@ -2,16 +2,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import * as CryptoJS from 'crypto-js';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { UserAuth } from '../../intarfaces/interfaces';
 import { CryptoService } from '../crypto/crypto.service';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  API_LOGIN = environment.API_AUTH;
+  API_LOGIN = environment.API_AUTH_ENCRYPT;
   httpHeaders: HttpHeaders;
 
   secretKey = '8y/B?E(H+MbQeThWmYq3t6w9z$C&F)J@';
@@ -23,45 +24,45 @@ export class AuthService {
     private storage: Storage,
   ) {}
 
-  login(employerID: number, userID: string, password: string): Observable<any> {
-    const rq = {
-      nitEmpresa: employerID,
-      documentoEmpleado: userID,
-      pass: password,
-    };
-    console.log("AUTH CRYPTO: ", CryptoService.encrypt(rq))
-    console.log('Url Login', this.API_LOGIN);
-    return this.http.post(this.API_LOGIN, rq);
-  }
-
   // login(employerID: number, userID: string, password: string): Observable<any> {
   //   const rq = {
   //     nitEmpresa: employerID,
   //     documentoEmpleado: userID,
   //     pass: password,
   //   };
-  //   const userInfo = CryptoService.encrypt(rq);
-  //   const rqEncrypted = {
-  //     idRegistro: userInfo,
-  //   };
-  //   return this.http.post(this.API_LOGIN, rqEncrypted).pipe(
-  //     map((response: any) => {
-  //       const decryptedResponse = CryptoService.decrypt(response);
-  //       return decryptedResponse;
-  //     }),
-  //     catchError(error => {
-  //       console.log('Error en el login: ', error);
-
-  //       const errorResponse = {
-  //         header: error.error ? 'Error al procesar la solicitud' : 'Usuario o contraseña inválida',
-  //         message: error.error
-  //           ? error.error.mensaje || 'Hubo un error al procesar las credenciales, por favor intente mas tarde.'
-  //           : 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?.',
-  //       };
-  //       return of({ error: true, ...errorResponse });
-  //     })
-  //   );
+  //   console.log("AUTH CRYPTO: ", CryptoService.encrypt(rq))
+  //   console.log('Url Login', this.API_LOGIN);
+  //   return this.http.post(this.API_LOGIN, rq);
   // }
+
+  login(employerID: number, userID: string, password: string): Observable<any> {
+    const rq = {
+      nitEmpresa: employerID,
+      documentoEmpleado: userID,
+      pass: password,
+    };
+    const userInfo = CryptoService.encrypt(rq);
+    const rqEncrypted = {
+      idRegistro: userInfo,
+    };
+    return this.http.post(this.API_LOGIN, rqEncrypted).pipe(
+      map((response: string) => {
+        const decryptedResponse = CryptoService.decrypt(response);
+        return decryptedResponse;
+      }),
+      catchError(error => {
+        console.log('Error en el login: ', error);
+
+        const errorResponse = {
+          header: error.error ? 'Error al procesar la solicitud' : 'Usuario o contraseña inválida',
+          message: error.error
+            ? error.error.mensaje || 'Hubo un error al procesar las credenciales, por favor intente mas tarde.'
+            : 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?.',
+        };
+        return of({ error: true, ...errorResponse });
+      })
+    );
+  }
 
   async saveSesion(newSesion: any): Promise<void> {
     console.log('Newsesion', newSesion);
