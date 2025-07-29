@@ -221,6 +221,7 @@ export class UploaderPage implements OnInit {
           fileAsistenciaEventos: this.asistenteEventosPYP,
           fileEvaluacionEventos: this.evaluacionEventos,
         };
+        console.log('Archivo procesado:', objFile);
         this.archivo = objFile;
         this.fileAttach.push(objFile);
         this.disableButtons = false;
@@ -268,7 +269,7 @@ export class UploaderPage implements OnInit {
 
       this.cacheService.saveAttachDocs(objetoActividad);
     } catch (e) {
-      console.log(e);
+      console.log("Este es un ctach que toca borrar: ", e);
     }
   }
 
@@ -336,6 +337,8 @@ export class UploaderPage implements OnInit {
     this.cacheService.infoActividadPorDocumento(objSoportesPorActividad);
 
     this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
+
+    console.log("Save: ", this.filesAdjuntos)
 
     this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
 

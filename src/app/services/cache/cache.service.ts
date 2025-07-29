@@ -234,6 +234,7 @@ export class CacheService {
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
   infoPDFAdjuntos(pdfAdjuntos) {
     this.pdfAdjuntos.push(pdfAdjuntos);
+    console.log("Ya en el servicio Pdf Adjuntos: ", this.pdfAdjuntos)
   }
 
   removePDFAdjunto(id: string) {
@@ -301,6 +302,8 @@ export class CacheService {
       strIp: this.ipAddress,
       strNitEmpresaActividades: idProveedor,
     };
+
+    return this.informacionActaAsesoria;
   }
 
   private transformActivities(activities: any[]): any[] {

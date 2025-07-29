@@ -162,6 +162,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
   
   private async handleNetworkAvailable(files: any[]) {
     await this.presentLoading('Creando acta de asesoría ...');
+    console.log("Estos son files: ", files)
     try {
       const creacionActa = await this.createActaAsesoria();
       if (creacionActa) {
@@ -291,7 +292,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
           path: `${idActividad}/${nombreArchivo}`,
           directory: Directory.Data,
         });
-      } catch {}
+      } catch { /* empty */ }
     }
     
   }
