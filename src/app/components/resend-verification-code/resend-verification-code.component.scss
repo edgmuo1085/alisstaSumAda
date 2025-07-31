@@ -1,15 +1,24 @@
 ion-header {
   ion-toolbar {
-    padding-top: 0px;
+    // padding-top: 0px;
+    padding-top: env(safe-area-inset-top); // Para iOS
+    padding-top: constant(safe-area-inset-top); // Para versiones antiguas
+    min-height: calc(56px + env(safe-area-inset-top));
   }
   & .titulo {
-    width: 100% !important;
+    // width: 100% !important;
+    white-space: normal;
     font-size: 14.5px !important;
     text-align: center;
+    padding: 0px 10vw 0px 0px;
   }
 }
 
 ion-content {
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+  --ion-safe-area-left: env(safe-area-inset-left);
+  --ion-safe-area-right: env(safe-area-inset-right);
   ion-searchbar {
     --border-radius: 30px;
   }
