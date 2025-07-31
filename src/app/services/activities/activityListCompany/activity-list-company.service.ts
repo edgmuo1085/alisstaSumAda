@@ -23,7 +23,7 @@ export class ActivityListCompanyService {
   public progressBarValues$ = this.progressBarValues.asObservable();
   public actasGuardadas = [];
 
-  private async presentToastActivitiesPaginator(message: string, color: string) {
+   async presentToastActivitiesPaginator(message: string, color: string) {
     const toast = await this.toastCtrl.create({
       message: message,
       duration: 5000,
