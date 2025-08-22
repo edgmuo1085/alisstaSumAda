@@ -15,6 +15,7 @@ import { VisitSubject } from './visit-subjects.typings';
 })
 export class VisitSubjectsPage implements OnInit {
   subjectForm: FormGroup;
+  modulo: string = JSON.parse(sessionStorage.companySelected).Modulo;
 
   /**
    * Temas de la asesoria.
@@ -216,7 +217,7 @@ export class VisitSubjectsPage implements OnInit {
             const attachments = this.subjectsSelected[i].cantidadDocumentos || 0;
             const showInputCode = this.subjectsSelected[i].showInputCode;
 
-            if (attachments < 1 && !showInputCode) {
+            if (attachments < 1 && !showInputCode && this.modulo !== "GE") {
               this.notification(
                 'Atención',
                 'Como la linea de acción es EDUCA, es obligatorio cargar los soportes Asistencia a eventos de PyP y Evaluación de eventos'
@@ -514,7 +515,7 @@ export class VisitSubjectsPage implements OnInit {
 
       const actividadesEDValidas = this.validarActividadesED(resultadoTarjetas);
 
-      if (!actividadesEDValidas) {
+      if (!actividadesEDValidas && this.modulo !== "GE") {
         this.validarCoberturaHorasEjecutadas = false;
         this.notification('Atención', 'Debe adjuntar archivos para las actividades EVENTOS POSITIVA o indicar código de evento.');
         break;
