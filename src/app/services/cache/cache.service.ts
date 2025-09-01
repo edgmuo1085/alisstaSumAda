@@ -234,7 +234,7 @@ export class CacheService {
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
   infoPDFAdjuntos(pdfAdjuntos) {
     this.pdfAdjuntos.push(pdfAdjuntos);
-    console.log("Ya en el servicio Pdf Adjuntos: ", this.pdfAdjuntos)
+    console.log('Ya en el servicio Pdf Adjuntos: ', this.pdfAdjuntos);
   }
 
   removePDFAdjunto(id: string) {
@@ -256,20 +256,23 @@ export class CacheService {
     });
   }
 
-    obtenerAdjuntosPDF() {
-      return this.pdfAdjuntos;
-    }
-  
-   createActaAsesoria(idProveedor: string) {
+  obtenerAdjuntosPDF() {
+    return this.pdfAdjuntos;
+  }
+
+  createActaAsesoria(idProveedor: string) {
     const TTA_LISTA = this.transformActivities(this.getAllInfoToAdvisory().activities);
-  
+
     this.setTypeAdviceInfo();
     this.setCommentAdviceInfo();
-  
+
+    const usarInfoARL = this.infoSurveyQR.firmaQR === false;
+
     this.informacionActaAsesoria = {
       FirmaQR: this.infoSurveyQR.firmaQR,
       ...this.typeAdviceSelectedEspec,
       ...this.typeAdviceSelectedProject,
+
       IGE_RazonSocial: this.infoCompany.nombre,
       IGE_TipoDocumento: this.infoCompany.tipoDocumento,
       IGE_NumeroDocumento: this.infoCompany.numeroDocumento,
@@ -282,23 +285,31 @@ export class CacheService {
       IGE_Correo: '',
       IGE_Latitud: this.infoCompany.latitud,
       IGE_Longitud: this.infoCompany.longitud,
+
       TTA_lista: TTA_LISTA,
+
       ...this.commentFailed,
       ...this.commentSucces,
-      RV_Calificacion: this.infoSurveyQR.answerPool,
+
+      RV_Calificacion: usarInfoARL ? this.infoSurveyQR.answerPool : '',
       RE_ResposableId: parseInt(this.infoSurveyQR.responsableId, 10),
       RE_ResposableNombre: this.infoSurveyQR.nombreResponsable,
       RE_ResposableDocumento: this.infoSurveyQR.numeroDocumentoResponsable,
       RE_ResponsableCargo: this.infoSurveyQR.cargo,
-      RE_ResponsableFirma: this.infoSurveyQR.signature,
-      RA_ResposableId: this.infoSurveyARL.responsableId,
-      RA_ResposableDocumento: this.infoSurveyARL.responsableDocumento,
-      RA_ResposableNombre: this.infoSurveyARL.responsableNombre,
-      RA_ResposableNumeroLicenciaSST: this.infoSurveyARL.responsableNumeroLicenciaSST,
-      RA_ResponsableRazonSocial: this.infoSurveyARL.responsableRazonSocial,
-      RA_ResponsableCargo: this.infoSurveyARL.responsableCargo,
-      RA_ResponsableFirma: this.infoSurveyARL.responsableFirma,
-      DocumentoUsuario: this.infoSurveyARL.responsableDocumento,
+      RE_ResponsableFirma: usarInfoARL ? this.infoSurveyQR.signature : '',
+
+      RA_ResposableId: usarInfoARL ? this.infoSurveyARL.responsableId : this.infoSurveyQR.documentoResponsableARL,
+      RA_ResposableDocumento: usarInfoARL ? this.infoSurveyARL.responsableDocumento : this.infoSurveyQR.documentoResponsableARL,
+      RA_ResposableNombre: usarInfoARL
+        ? this.infoSurveyARL.responsableNombre
+        : this.infoSurveyQR.nombreResponsableARL + ' ' + this.infoSurveyQR.apellidoResponsableARL,
+      RA_ResposableNumeroLicenciaSST: usarInfoARL ? this.infoSurveyARL.responsableNumeroLicenciaSST : this.infoSurveyQR.licenciaSSTARL,
+      RA_ResponsableRazonSocial: usarInfoARL ? this.infoSurveyARL.responsableRazonSocial : this.infoSurveyQR.nombreProveedor,
+      RA_ResponsableCargo: usarInfoARL ? this.infoSurveyARL.responsableCargo : this.infoSurveyQR.cargoARL,
+      RA_ResponsableFirma: usarInfoARL ? this.infoSurveyARL.responsableFirma : this.infoSurveyQR.signature,
+
+      DocumentoUsuario: usarInfoARL ? this.infoSurveyARL.responsableDocumento : this.infoSurveyQR.documentoResponsableARL,
+
       strIp: this.ipAddress,
       strNitEmpresaActividades: idProveedor,
     };
@@ -323,24 +334,26 @@ export class CacheService {
       CodigoeventoPositiva: activity.CodigoeventoPositiva,
     }));
   }
-  
+
   private transformRecomendaciones(recomendaciones: any[] | null): any[] | null {
-    return recomendaciones ? recomendaciones.map(r => ({
-      Pk_Id_SiniestroRecomendaciones: r.Pk_Id_SiniestroRecomendaciones,
-      Recomendacion: r.Recomendacion,
-      implementada: r.implementada,
-      fueronEficaces: r.fueronEficaces ?? false,
-      Fecha_Implementacion: r.Fecha_Implementacion ?? null,
-      informacionEvidencia: r.InformacionEnvidencia ?? null,
-      causaNoImplementancion: r.causaNoImplementancion ?? null,
-      fueGestionadaAPP: true,
-      tipoFuente: r.tipoFuente,
-      tipoMedio: r.tipoMedio,
-      tipoTrabajo: r.tipoTrabajo,
-      InformacionEnvidencia: r.InformacionEnvidencia ?? null,
-    })) : null;
+    return recomendaciones
+      ? recomendaciones.map(r => ({
+          Pk_Id_SiniestroRecomendaciones: r.Pk_Id_SiniestroRecomendaciones,
+          Recomendacion: r.Recomendacion,
+          implementada: r.implementada,
+          fueronEficaces: r.fueronEficaces ?? false,
+          Fecha_Implementacion: r.Fecha_Implementacion ?? null,
+          informacionEvidencia: r.InformacionEnvidencia ?? null,
+          causaNoImplementancion: r.causaNoImplementancion ?? null,
+          fueGestionadaAPP: true,
+          tipoFuente: r.tipoFuente,
+          tipoMedio: r.tipoMedio,
+          tipoTrabajo: r.tipoTrabajo,
+          InformacionEnvidencia: r.InformacionEnvidencia ?? null,
+        }))
+      : null;
   }
-  
+
   private setTypeAdviceInfo() {
     if (this.typeAdvice.type === 'Especifica') {
       this.typeAdviceSelectedEspec = {
@@ -356,7 +369,7 @@ export class CacheService {
       this.typeAdviceSelectedProject = { AP: this.typeAdvice.typeSelected, AP_Mes: this.typeAdvice.month, AP_Anio: this.typeAdvice.year };
     }
   }
-  
+
   private setCommentAdviceInfo() {
     if (this.commentAdvice.type === 'Fallo') {
       const fecha = this.commentAdvice.motive === 'R' ? this.formatDate(this.commentAdvice.newDateActivity.split('T')[0]) : '';
@@ -373,12 +386,12 @@ export class CacheService {
       this.commentFailed = { RV_Exitosa: '', RV_Motivo: '', RV_FechaServicio: '', RV_JustificacionMotivo: '' };
     }
   }
-  
+
   private formatDate(date: string): string {
     const [year, month, day] = date.split('-');
     return `${day}/${month}/${year}`;
   }
-  
+
   private formatTime(time: string): string {
     const [hour, minute] = time.split('.')[0].split(':');
     return `${hour}:${minute}`;
@@ -391,13 +404,12 @@ export class CacheService {
 
     for (const actividad of listaActividades) {
       const actividadesMigradas = actividad.listaActividadesMigradas;
-    
+
       actividad.listaActividadesMigradas = actividadesMigradas.filter(element => {
         const encontro = createdAdvisory.activities.find(x => x.id === element.id);
         return !encontro;
       });
     }
-    
 
     this.storage.set('listaActividades', listaActividades);
     const actasGuardadas = (await this.storage.get('actasAsesoriaSinInternet')) || [];
