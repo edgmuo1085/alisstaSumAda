@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
 import { Observable } from 'rxjs';
 import { Storage } from '@ionic/storage';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ResendVerificationCodeComponent } from '../../components/resend-verification-code/resend-verification-code.component';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 import { ProgressBarValues } from 'src/app/intarfaces/interfaces';
@@ -43,11 +43,12 @@ export class ExecLogPage implements OnInit {
     };
 
   constructor(
-     private listActivitiesCompany: ActivityListCompanyService,
+     private listActivitiesCompanySv: ActivityListCompanyService,
      private loadingCtlr: LoadingController,
     private menuConfOptions: MenuConfiguracionService,
     private modalCtrl: ModalController,
-    private storage: Storage
+    private storage: Storage,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -95,49 +96,58 @@ export class ExecLogPage implements OnInit {
     this.presentLoading();
     const documentoUsuario = await this.storage.get('sesion');
 
-    setTimeout(() => { //TODO: evaluar purgar memoria de array de la lista
-      this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(
+    setTimeout(() => {
+      //TODO: evaluar purgar memoria de array de la lista
+      this.listActivitiesCompanySv.listActivityForCompanyPerPage(documentoUsuario).subscribe(
         async response => {
           console.log('Respuesta de actividade', response);
 
-          const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
-          this.listActivityTotal = listActivityTotal;
+          if (response.listActivitiesCompany.length > 0) {
+            const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
+            this.listActivityTotal = listActivityTotal;
 
-          const listActivity = response.listActivitiesCompany || [];
+            const listActivity = response.listActivitiesCompany || [];
 
-          const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
+            const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
 
-          console.log("Actas Guardadas Metodo: ", actasGuardadas)
+            console.log('Actas Guardadas Metodo: ', actasGuardadas);
 
-          this.listActivitiesCompany.actasGuardadas = actasGuardadas;
-          this.listActivitiesCompany.listActivitiesFilter(listActivity);
+            this.listActivitiesCompanySv.actasGuardadas = actasGuardadas;
+            this.listActivitiesCompanySv.listActivitiesFilter(listActivity);
 
-          this.storage.set('departamentos', response.listDepartamentos);
-          this.storage.set('municipios', response.listMunicipios);
-          this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+            this.storage.set('departamentos', response.listDepartamentos);
+            this.storage.set('municipios', response.listMunicipios);
+            this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
 
-          // Guardar las actividades en un BD local.
-          this.storage.set('listaActividades', listActivity);
-          this.listActivitiesCompany.setActivities(listActivity);
-          this.validateDataListActivities();
-          this.showListPendingVisit = false;
-          this.loading.dismiss();
+            // Guardar las actividades en un BD local.
+            this.storage.set('listaActividades', listActivity);
+            this.listActivitiesCompanySv.setActivities(listActivity);
+            this.validateDataListActivities();
+            this.showListPendingVisit = false;
+            this.loading.dismiss();
 
-          if (listActivity.length < listActivityTotal) {
-            this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {this.progressBar = progressBarValues, console.log("Progressss...!!: ", progressBarValues)})
-            this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
-            this.listActivitiesCompany.activities$.subscribe(
-              async listActivitiesForPage => {
+            if (listActivity.length < listActivityTotal) {
+              this.listActivitiesCompanySv.progressBarValues$.subscribe(progressBarValues => {
+                (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+              });
+              this.listActivitiesCompanySv.listActivityForCompanyForPage(listActivityTotal);
+              this.listActivitiesCompanySv.activities$.subscribe(async listActivitiesForPage => {
                 this.storage.set('listaActividades', listActivitiesForPage);
-                await this.storage.get('listaActividades')
-                this.validateDataListActivities()
-              }
-            )
+                await this.storage.get('listaActividades');
+                this.validateDataListActivities();
+              });
+            } else {
+              this.listActivitiesCompanySv.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary")
+            }
+          } else {
+            this.whitoutListActivitiesCompanyAlert()
+            this.loading.dismiss();
           }
         },
         err => {
           this.loading.dismiss();
           this.showListPendingVisit = false;
+          console.log('Error: ', err);
         }
       );
     }, 2000);
@@ -158,5 +168,16 @@ export class ExecLogPage implements OnInit {
     } else {
       this.listActivity = [];
     }
+  }
+
+    async whitoutListActivitiesCompanyAlert() {
+    const alert = await this.alertCtrl.create({
+      mode: 'ios',
+      header: 'Aviso',
+      message: 'El Usuario no tiene Actividades Migradas.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }
