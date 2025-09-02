@@ -8,7 +8,7 @@ import { ActivityListCompanyService } from '../../services/activities/activityLi
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
-import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
+import { NetworkService } from '../../services/network/network.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 
 @Component({
@@ -135,7 +135,7 @@ export class SurveyAndSignaturePage implements OnInit {
   
   private async handleResendCode() {
     if (this.selectedVal) {
-      const checkNetwork = this.validateNetwork();
+      const checkNetwork = await this.checkBackendConnectivity();
       if (checkNetwork) {
         await this.resendVerificationCode();
       } else {
@@ -234,7 +234,7 @@ export class SurveyAndSignaturePage implements OnInit {
   }
 
   async sendTask() {
-    const checkNetwork = this.validateNetwork();
+    const checkNetwork = await this.net.testNetworkConnection();
     if (checkNetwork) {
       await this.handleNetworkTask();
     } else {
@@ -267,14 +267,17 @@ export class SurveyAndSignaturePage implements OnInit {
   }
   
   async handleOfflineTask() {
+    const idProveedor = this.infoUserARL.idProveedor;
+    this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
+
     const activitiesChange = [];
     const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
     const actSelec = JSON.parse(sessionStorage.companySelected);
-  
+
     for (const actividad of actSelec.listaActividadesMigradas) {
       const { idActividad } = actividad;
       const encontro = getInfoActaAsesoria.activities.find(element => element.idActividad === idActividad);
-      
+
       if (encontro) {
         encontro.estadoInterno = 'Por enviar';
         activitiesChange.push(encontro);
@@ -282,16 +285,23 @@ export class SurveyAndSignaturePage implements OnInit {
         activitiesChange.push(actividad);
       }
     }
-  
+
     actSelec.listaActividadesMigradas = activitiesChange;
     const cambioCompanySelected = JSON.stringify(actSelec);
     sessionStorage.setItem('companySelected', cambioCompanySelected);
-  
+
     const saveActaAsesoria = this.cacheService.saveActasAsesoria(this.getFiles());
-  
+
     if (saveActaAsesoria) {
       this.registerTime(this.actaAsesoriaGestionada.AE_HorasTotales);
-      this.notification('Atención', 'El móvil no tiene acceso a datos, por lo cual el acta de asesoría se guardó con estado pendiente por enviar.');
+
+      setTimeout(() => {
+        this.notification(
+          'Atención',
+          'El móvil no tiene acceso a datos, por lo cual el acta de asesoría se guardó con estado pendiente por enviar.'
+        );
+      }, 2500);
+
       this.router.navigateByUrl('/u/execLog');
     }
   }
@@ -378,14 +388,14 @@ export class SurveyAndSignaturePage implements OnInit {
     }    
   }
 
-  validateNetwork() {
-    const status = this.net.getNetworkStatus();
+  async checkBackendConnectivity(): Promise<boolean> {
+    await this.presentLoading('Verificando conexión ...');
 
-    if (status === ConnectionStatusEnum.Offline) {
-      this.presentToast();
-    }
+    const hasConnection = await this.net.testNetworkConnection();
 
-    return status === ConnectionStatusEnum.Online;
+    await this.loading.dismiss();
+
+    return hasConnection;
   }
 
   async presentLoading(message) {

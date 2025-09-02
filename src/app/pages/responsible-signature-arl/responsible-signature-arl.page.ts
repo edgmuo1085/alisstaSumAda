@@ -121,21 +121,11 @@ export class ResponsibleSignatureARLPage implements OnInit {
     modal.present();
   }
 
-  validateNetwork() {
-    const status = this.net.getNetworkStatus();
-
-    if (status === ConnectionStatusEnum.Offline) {
-      this.presentToast();
-    }
-
-    return status === ConnectionStatusEnum.Online;
-  }
-
   async sendTask() {
     const infoSurveyResponsibleARL = this.getSurveyResponsibleData();
     this.cacheService.saveSurveyARL(infoSurveyResponsibleARL);
   
-    const checkNetwork = this.validateNetwork();
+    const checkNetwork = await this.net.testNetworkConnection();
     const idProveedor = this.infoUserARL.idProveedor;
     this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
   
@@ -305,10 +295,12 @@ export class ResponsibleSignatureARLPage implements OnInit {
     return this.loading.present();
   }
 
-  async presentToast() {
+  async presentToast(message) {
     const toast = await this.toastController.create({
-      message: 'Verifique su conexión a internet.',
-      duration: 2000,
+      message,
+      duration: 5000,
+      position: 'top',
+      color: 'danger'
     });
     toast.present();
   }
