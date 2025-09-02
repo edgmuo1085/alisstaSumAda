@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
-import { RegistroAsistenteEvento, ResponsableEvento } from 'src/app/intarfaces/interfaces';
+import { FotoAdjunta, LoadedPDFInfo, RegistroAsistenteEvento, ResponsableEvento } from 'src/app/intarfaces/interfaces';
 import { ActaAsesoria } from '../../intarfaces/interfaces';
 
 @Injectable({
@@ -190,6 +190,10 @@ export class CacheService {
     this.saveAttach.push(attachsDocs);
   }
 
+   cleanAttachDocs() {
+    this.saveAttach = []
+  }
+
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
   infoActividadPorDocumento(documentosPorActividad) {
     const found = this.infoDocumentosPorActividad.find(d => d.idActividad === documentosPorActividad.idActividad);
@@ -228,7 +232,7 @@ export class CacheService {
   }
 
   obtenerAdjuntosFoto() {
-    return this.fotosAdjuntas;
+    return this.imgAdjuntosFilter();
   }
 
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
@@ -257,7 +261,7 @@ export class CacheService {
   }
 
   obtenerAdjuntosPDF() {
-    return this.pdfAdjuntos;
+   return this.pdfAdjuntosFilter()
   }
 
   createActaAsesoria(idProveedor: string) {
@@ -513,4 +517,28 @@ export class CacheService {
     const registeredTime = { date: moment().startOf('day').toISOString(), minutes: registeredMinutes };
     await this.storage.set('registeredTime', registeredTime);
   }
+
+  pdfAdjuntosFilter(): LoadedPDFInfo[] {
+    const pdfFilter = [].concat(...this.pdfAdjuntos);
+
+    const pdfAdjuntosFiltered = Array.from(
+      new Map( pdfFilter.map( obj => [obj.documento.id, obj])).values()
+    )
+    return pdfAdjuntosFiltered
+  }
+
+ imgAdjuntosFilter(): FotoAdjunta[] {
+ const aplanado = this.fotosAdjuntas.reduce((acc:FotoAdjunta[], curr:FotoAdjunta[]) => acc.concat(curr), []);
+
+  const filtrado = Array.from(
+    new Map<string, FotoAdjunta>(
+      aplanado.map(obj => {
+        const clave = `${obj.foto.idFoto}-${obj.idTipoArchivo}`;
+        return [clave, obj];
+      })
+    ).values()
+  );
+
+  return filtrado;
+}
 }

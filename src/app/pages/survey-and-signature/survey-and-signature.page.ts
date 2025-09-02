@@ -445,16 +445,16 @@ for (const objAdjuntarDoc of this.filesBase64) {
   files.push(objAdjuntarDoc);
 }
 
-for (const element of imagenesAdjuntas) {
-  for (const documento of element) {
-    const objAdjuntarImg = {
-      UidActividadMigradaXUSuario: documento.idActividad,
-      TipoSoporte: documento.idTipoArchivo,
-      base64: documento.foto.base64Imagen,
-    };
-    files.push(objAdjuntarImg);
-  }
+for (const documento of imagenesAdjuntas) {
+  const objAdjuntarImg = {
+    UidActividadMigradaXUSuario: documento.idActividad,
+    TipoSoporte: documento.idTipoArchivo,
+    base64: documento.foto.base64Imagen,
+  };
+
+  files.push(objAdjuntarImg);
 }
+
 
 
     this.removeFile();

@@ -335,19 +335,27 @@ export class ResponsibleSignatureARLPage implements OnInit {
       files.push(objAdjuntarDoc);
     }
     
-    for (const element of imagenesAdjuntas) {
-      element.forEach(async documento => {
+    // for (const element of imagenesAdjuntas) {
+    //   element.forEach(async documento => {
+    //     const objAdjuntarImg = {
+    //       UidActividadMigradaXUSuario: documento.idActividad,
+    //       TipoSoporte: documento.idTipoArchivo,
+    //       base64: documento.foto.base64Imagen,
+    //     };
+    
+    //     files.push(objAdjuntarImg);
+    //   });
+    // }
+
+    for (const documento of imagenesAdjuntas) {
         const objAdjuntarImg = {
           UidActividadMigradaXUSuario: documento.idActividad,
           TipoSoporte: documento.idTipoArchivo,
           base64: documento.foto.base64Imagen,
         };
-    
         files.push(objAdjuntarImg);
-      });
-    }
-    
-
+      };
+      
     this.removeFile();
 
     return files;

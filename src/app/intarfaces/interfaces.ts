@@ -167,3 +167,32 @@ export interface ProgressBarValues {
   refreshBtnEnable: boolean
 }
 
+export interface LoadedPDFInfo {
+    idActividad:   number;
+    tipoArchivo:   string;
+    idTipoArchivo: string;
+    documento:     Documento;
+}
+
+export interface Documento {
+    id:                    string;
+    file:                  Blob;
+    blob:                  Blob;
+    extension:             string;
+    fileAsistenciaEventos: boolean;
+    fileEvaluacionEventos: boolean;
+}
+
+// export interface Blob {
+// }
+
+export interface FotoAdjunta {
+  idActividad: number;
+  tipoArchivo: string;
+  idTipoArchivo: string;
+  foto: {
+    format: string;
+    base64Imagen: string;
+    idFoto: string;
+  };
+}
