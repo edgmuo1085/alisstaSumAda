@@ -94,31 +94,12 @@ export class UploaderPage implements OnInit {
     if (adjuntosPDF.length > 0) {
       this.filesAdjuntos = [];
 
-      // adjuntosPDF.forEach(element => {
-      //   element.forEach(documento => {
-      //     if (actividadSeleccionada.id === documento.idActividad) {
-      //       this.filesAdjuntos.push(documento);
-      //     }
-      //   });
-      // });
-
       adjuntosPDF.forEach(documento => {
           if (actividadSeleccionada.id === documento.idActividad) {
             this.filesAdjuntos.push(documento);
           }
         });
     }
-    // if (fotosAdjuntas.length > 0) {
-    //   this.listaDocumentos = [];
-    //   fotosAdjuntas.forEach(element => {
-    //     element.forEach(imagenes => {
-    //       if (actividadSeleccionada.id === imagenes.idActividad) {
-    //         this.listaDocumentos.push(imagenes);
-    //         this.fotosTomadas.push(imagenes);
-    //       }
-    //     });
-    //   });
-    // }
      if (fotosAdjuntas.length > 0) {
       this.listaDocumentos = [];
       fotosAdjuntas.forEach(imagenes => {
