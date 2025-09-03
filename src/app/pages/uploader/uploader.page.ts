@@ -362,6 +362,8 @@ export class UploaderPage implements OnInit {
         return 'Registro de exámenes de programa de vigilancia epidemiológica';
       case 'SR':
         return 'Seguimiento recomendaciones';
+        case 'ITR':
+        return 'Informe Técnico de Reclasificación';
       default:
         break;
     }
