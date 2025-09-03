@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { Ambiente } from 'src/environments/environment.interface';
 
 const STORAGE_KEY = 'ambienteSeleccionado';
 
@@ -10,6 +11,7 @@ const STORAGE_KEY = 'ambienteSeleccionado';
 export class ApiUrlService {
   private baseUrlSubject$: BehaviorSubject<string>;
   private loginUrlSubject$: BehaviorSubject<string>;
+  private baseUrlRecoveryPassSubject$: BehaviorSubject<string>;
   private ambienteNombreSubject: BehaviorSubject<string>;
 
   public baseUrl$; 
@@ -20,12 +22,13 @@ export class ApiUrlService {
     const almacenado = localStorage.getItem(STORAGE_KEY);
     const index = almacenado !== null ? parseInt(almacenado, 10) : environment.ambienteSeleccionado;
 
-    const ambiente = !environment.production
+    const ambiente: Ambiente = !environment.production
       ? environment.ambientes[index] || environment.ambientes[0]
-      : { nombre: 'Producción', url: environment.ambienteFijo };
+      : { nombre: 'Producción', url: environment.ambienteFijo, recoveryPass: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM' };
 
     this.baseUrlSubject$ = new BehaviorSubject<string>(ambiente.url);
     this.loginUrlSubject$ = new BehaviorSubject<string>(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
+    this.baseUrlRecoveryPassSubject$ = new BehaviorSubject<string>(ambiente.recoveryPass);
     this.ambienteNombreSubject = new BehaviorSubject<string>(ambiente.nombre);
 
     this.baseUrl$ = this.baseUrlSubject$.asObservable();
@@ -40,6 +43,7 @@ export class ApiUrlService {
         localStorage.setItem(STORAGE_KEY, index.toString());
         this.baseUrlSubject$.next(ambiente.url);
         this.loginUrlSubject$.next(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
+        this.baseUrlRecoveryPassSubject$.next(ambiente.recoveryPass);
         this.ambienteNombreSubject.next(ambiente.nombre);
         console.log('Cambiado a ambiente:', ambiente.nombre, "url: ", this.baseUrlSubject$.value, "login: ", this.loginUrlSubject$.value);
       }
@@ -159,17 +163,16 @@ export class ApiUrlService {
   }
 
   public get RECUPERAR_PASSWORD() {
-    if (environment.production) {
-      return 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
-    }
-    return 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
+    // if (environment.production) {
+    //   return 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
+    // }
+    // return 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM';
+    return this.baseUrlRecoveryPassSubject$.value;
   }
 
   public get ONE_SIGNAL_APP_ID() {
     return environment.production ? '6109fadd-da30-4364-8a6c-950ad936c01e' : 'af2757e0-1095-4476-84d2-298ee2b5bb5c';
   }
 
-  public get ONE_SIGNAL_SENDER_ID() {
-    return '1023388241846'; // Mismo en ambos ambientes
-  }
+  public readonly ONE_SIGNAL_SENDER_ID = '1023388241846';
 }
