@@ -10,13 +10,19 @@ import { AlertController, Platform } from '@ionic/angular';
 import { environment } from '../environments/environment';
 import { NetworkService } from './services/network/network.service';
 import { AppVersionService } from './services/version/app-version.service';
+import { ApiUrlService } from './services/apiUrl/api-url.service';
 const { DarkMode } = Plugins;
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
+  ambienteNombre = '';
+  isProduction = environment.production;
+
   constructor(
     private platform: Platform,
     private router: Router,
@@ -26,11 +32,17 @@ export class AppComponent {
     private alertCtrl: AlertController,
     private networkService: NetworkService,
     private location: Location,
-    private AppVersionSv: AppVersionService
+    private AppVersionSv: AppVersionService,
+    private apiUrlSv: ApiUrlService
   ) {
     this.initializeApp();
     this.listenToAppState();
     this.AppVersionSv.checkForUpdate(); 
+    if (!this.isProduction) {
+      this.apiUrlSv.ambienteNombre$.subscribe(nombre => {
+        this.ambienteNombre = nombre;
+      });
+    }
   }
 
   initializeApp() {
@@ -74,7 +86,7 @@ export class AppComponent {
   }
 
   initOneSignal(): void {
-    this.oneSignal.startInit(environment.ONE_SIGNAL_APP_ID, environment.ONE_SIGNAL_SENDER_ID);
+    this.oneSignal.startInit(this.apiUrlSv.ONE_SIGNAL_APP_ID, this.apiUrlSv.ONE_SIGNAL_SENDER_ID);
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
     this.oneSignal.handleNotificationReceived().subscribe((notification: OSNotification) => {
       this.onNotificationReceived(notification);

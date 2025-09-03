@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { defer, from, Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { StorageService } from 'src/app/storage.service';
-import { environment } from 'src/environments/environment';
+import { ApiUrlService } from '../apiUrl/api-url.service';
 
 /**
  * Manejo de empresas migradas.
@@ -134,7 +134,8 @@ export class CompaniesService {
 
   constructor(
     private http: HttpClient,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private apiUrl: ApiUrlService
   ) {}
 
   /**
@@ -145,7 +146,7 @@ export class CompaniesService {
    * @param idUsuario Identificación del usuario por el cual filtrar las empresas.
    */
   fetchCompanies(idUsuario: number): Observable<any> {
-    const url = `${environment.API_LISTAR_EMPRESAS_MIGRADAS}?id_Usuario=${idUsuario}`;
+    const url = `${this.apiUrl.API_LISTAR_EMPRESAS_MIGRADAS}?id_Usuario=${idUsuario}`;
 
     return this.http.post(url, null).pipe(
       concatMap((r: any) => defer(() => from(this.setCompanies(r)))),
@@ -235,7 +236,7 @@ export class CompaniesService {
       throw new Error('No company set.');
     }
 
-    const url = environment.API_GUARDAR_EMPRESA_MIGRADA;
+    const url = this.apiUrl.API_GUARDAR_EMPRESA_MIGRADA;
     console.log("LogDev save: ", JSON.stringify(url));
 
     return this.http.post(url, this.company).pipe(

@@ -5,15 +5,24 @@
   "private": true,
   "scripts": {
     "generate": "ionic generate",
+
     "start": "ionic serve --port=8100",
-    "start:prod": "ng serve --configuration production --port=8100",
-    "build": "ionic build",
-    "build:prod": "ng build --configuration production",
-    "build:apk:test": "npm run build && npx cap sync android && npx cap open android",
-    "build:apk:prod": "npm run build:prod && npx cap sync android && npx cap open android",
+    "start:test": "ng serve --configuration=test --port=8100",
+    "start:prod": "ng serve --configuration=production --port=8100",
+    
+    "build": "ionic build", 
+    "build:test": "ng build --configuration=test",
+    "build:prod": "ng build --configuration=production",
+
+    "copy:test:android": "npm run build:test && npx cap copy android",
+    "copy:prod:android": "npm run build:prod && npx cap copy android",
+    "copy:test:ios": "npm run build:test && npx cap copy ios",
+    "copy:prod:ios": "npm run build:prod && npx cap copy ios",
+    
     "sync": "ionic cap sync",
-    "copy:android": "ionic cap copy android",
-    "copy:ios": "ionic cap copy ios",
+    "sync:test": "npm run build:test && npx cap sync android",
+    "sync:prod": "npm run build:prod && npx cap sync android",
+
     "open:android": "ionic cap open android",
     "open:ios": "ionic cap open ios",
     "run:android": "ionic cap run android -l --external --open",

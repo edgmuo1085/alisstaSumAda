@@ -5,7 +5,7 @@ import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { BehaviorSubject, fromEvent, merge, Observable, of } from 'rxjs';
 import { mapTo, retry } from 'rxjs/operators';
 import { CacheService } from '../../services/cache/cache.service';
-import { environment } from './../../../environments/environment';
+import { ApiUrlService } from '../apiUrl/api-url.service';
 
 export enum ConnectionStatusEnum {
   Online,
@@ -30,7 +30,8 @@ export class NetworkService {
     private cacheService: CacheService,
     private plt: Platform,
      private alertController: AlertController,
-    private loadingCtlr: LoadingController
+    private loadingCtlr: LoadingController,
+    private apiUrl: ApiUrlService
   ) {
     this.connectionStatus = ConnectionStatusEnum.Offline;
     this.showIPAddress();
@@ -45,7 +46,7 @@ export class NetworkService {
   }
 
   private getNetworkTestRequest(): Observable<any> {
-    return this.http.get(environment.API_GET_BRANCH_OFFICE_EVENT).pipe(retry(2));
+    return this.http.get(this.apiUrl.API_GET_BRANCH_OFFICE_EVENT).pipe(retry(2));
   }
 
   public getNetworkType(): string {

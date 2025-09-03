@@ -6,6 +6,14 @@
         <img src="../../../../assets/logos/logo_alissta.png" alt="" />
       </ion-col>
     </ion-row>
+
+    <ion-item *ngIf="!isProd">
+      <ion-label>Ambiente</ion-label>
+      <ion-select [(ngModel)]="selectedIndex" (ionChange)="cambiarAmbiente()">
+        <ion-select-option *ngFor="let amb of ambientes; let i = index" [value]="i">{{ amb.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
     <ion-row>
       <ion-col size="12">
         <form [formGroup]="form" (ngSubmit)="login()">

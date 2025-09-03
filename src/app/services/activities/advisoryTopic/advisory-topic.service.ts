@@ -1,19 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { CorreoNotificacionActaApp, ActaAsesoria, UploadFile } from '../../../intarfaces/interfaces';
+import { ApiUrlService } from '../../apiUrl/api-url.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdvisoryTopicService {
-  API_SAVE_ACTA_ASESORIA = environment.API_SAVE_ACTA_ASESORIA;
-  API_UPLOAD_FILE_ACTA_ASESORIA = environment.API_UPLOAD_FILE_ACTA_ASESORIA;
-  API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP = environment.API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP;
+  API_SAVE_ACTA_ASESORIA = this.apiUrl.API_SAVE_ACTA_ASESORIA;
+  API_UPLOAD_FILE_ACTA_ASESORIA = this.apiUrl.API_UPLOAD_FILE_ACTA_ASESORIA;
+  API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP = this.apiUrl.API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP;
   httpHeaders: HttpHeaders;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiUrl: ApiUrlService) {}
 
   saveActaAsesoria(actaAses: ActaAsesoria): Observable<any> {
     const rq = actaAses;

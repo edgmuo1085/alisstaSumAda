@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { LiberarActividades, ProgressBarValues } from 'src/app/intarfaces/interfaces';
+import { ApiUrlService } from '../../apiUrl/api-url.service';
 
 @Injectable({
   providedIn: 'root',
@@ -41,13 +41,14 @@ export class ActivityListCompanyService {
     this.activitiesSubject.next(newActivities);
   }
 
-  API_REGISTROS_PAGINA = environment.API_GET_Cantidad_Registros_Por_Pagina;
+  API_REGISTROS_PAGINA = this.apiUrl.API_GET_Cantidad_Registros_Por_Pagina;
   API_LISTACTIVITYCOMPANY: string = '';
-  API_LIBERAR_ACTIVIDADES = environment.API_LIBERAR_ACTIVIDADES;
+  API_LIBERAR_ACTIVIDADES = this.apiUrl.API_LIBERAR_ACTIVIDADES;
   API_RECOVERY_VERIFICATION_CODE;
 
   constructor(private http: HttpClient,
     private toastCtrl: ToastController,
+    private apiUrl: ApiUrlService
   ) {
     this.getRecordsForPage()
   } 
@@ -67,7 +68,7 @@ export class ActivityListCompanyService {
 
   listActivityForCompany(documentoUsuario): Observable<any> {
     this.API_LISTACTIVITYCOMPANY = '';
-    this.API_LISTACTIVITYCOMPANY = environment.API_GET_Avtividades_Empresa;
+    this.API_LISTACTIVITYCOMPANY = this.apiUrl.API_GET_Avtividades_Empresa;
     this.API_LISTACTIVITYCOMPANY = `${this.API_LISTACTIVITYCOMPANY}?pNumeroDocumento=${documentoUsuario}`;
     console.log('Servicio de lista de actividades ->', this.API_LISTACTIVITYCOMPANY);
     return this.http.post(this.API_LISTACTIVITYCOMPANY, null);
@@ -75,7 +76,7 @@ export class ActivityListCompanyService {
 
   listActivityForCompanyPerPage(documentoUsuario): Observable<any> {
     this.API_LISTACTIVITYCOMPANY = '';
-    this.API_LISTACTIVITYCOMPANY = environment.API_GET_Avtividades_Empresa;
+    this.API_LISTACTIVITYCOMPANY = this.apiUrl.API_GET_Avtividades_Empresa;
     const { idPersona, tipoDocProveedor, idProveedor } = documentoUsuario
     const params: string = `?pNumeroDocumento=${idPersona}&tipoDocProveedor=${tipoDocProveedor}&idProveedor=${idProveedor}&intCantReg=${this.cantidadRegistrosPorPagina}`
     this.API_LISTACTIVITYCOMPANY = `${this.API_LISTACTIVITYCOMPANY}${params}`
@@ -174,7 +175,7 @@ export class ActivityListCompanyService {
 
   recordarCodigoVerificacion(pUidUsuariosAutorizadosxEmpresa: number, pUidEmpresaSum: number): Observable<any> {
     this.API_RECOVERY_VERIFICATION_CODE = '';
-    this.API_RECOVERY_VERIFICATION_CODE = environment.API_RECOVERY_VERIFICATION_CODE;
+    this.API_RECOVERY_VERIFICATION_CODE = this.apiUrl.API_RECOVERY_VERIFICATION_CODE;
     // tslint:disable-next-line: max-line-length
     this.API_RECOVERY_VERIFICATION_CODE = `${this.API_RECOVERY_VERIFICATION_CODE}?pUidUsuariosAutorizadosxEmpresa=${pUidUsuariosAutorizadosxEmpresa}&pUidEmpresaSum=${pUidEmpresaSum}`;
     return this.http.post(this.API_RECOVERY_VERIFICATION_CODE, null);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // import { Plugins } from '@capacitor/core';
@@ -13,6 +13,7 @@ import { StorageService } from 'src/app/storage.service';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/Authentication/auth.service';
 import { SettingsPage } from '../../settings/settings.page';
+import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 
 // const { App } = Plugins;
 
@@ -24,7 +25,7 @@ import { SettingsPage } from '../../settings/settings.page';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
   options: InAppBrowserOptions = {
     location: 'yes', // Or 'no'
     hidden: 'no', // Or  'yes'
@@ -42,6 +43,10 @@ export class LoginPage {
     presentationstyle: 'fullscreen', // iOS only
     fullscreen: 'yes', // Windows only
   };
+
+  isProd = environment.production;
+  ambientes = environment.ambientes || [];
+  selectedIndex = environment.ambienteSeleccionado;
 
   /**
    * Ícono que acompaña al control de usuario de contraseña para permitir al usuario revelar y
@@ -113,9 +118,16 @@ export class LoginPage {
     private faio: FingerprintAIO,
     private storageService: StorageService,
     private platform: Platform,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private apiUrl: ApiUrlService
   ) {
     this.initForm();
+  }
+
+  ngOnInit() {
+    const almacenado = localStorage.getItem('ambienteSeleccionado');
+    this.selectedIndex = almacenado ? parseInt(almacenado, 10) : environment.ambienteSeleccionado;
+    console.log('Ambiente: ', this.selectedIndex);
   }
 
   async ionViewWillEnter() {
@@ -180,7 +192,7 @@ export class LoginPage {
    * Muestra u oculta la contraseña en el control de usuario.
    */
   togglePassword(): void {
-    console.log("entro al togle")
+    console.log('entro al togle');
     this.passwordToggleIcon = this.passwordToggleIcon === this.HIDE_PASSWORD_ICON ? this.SHOW_PASSWORD_ICON : this.HIDE_PASSWORD_ICON;
     this.passwordType = this.passwordToggleIcon === this.SHOW_PASSWORD_ICON ? this.INPUT_TYPE_TEXT : this.INPUT_TYPE_PASSWORD;
   }
@@ -250,6 +262,10 @@ export class LoginPage {
           console.log('respuesta del login', response);
           const localStorageNotification: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
           let notification: boolean;
+          if(response.error){
+            this.loginErrorHandle();
+            return
+          }
           if (localStorageNotification) {
             console.log('localStorageNotification', localStorageNotification);
             notification = localStorageNotification == 'true';
@@ -274,15 +290,18 @@ export class LoginPage {
           console.log('no llega2');
           this.form.reset();
         },
-        error => {
-          console.log('Errrror: ', error);
-          this.config.isLogged = false;
-          this.errorLogin();
-          this.form.reset();
-          this.loading.dismiss();
+        () => {
+          this.loginErrorHandle();
         }
       );
     }, 2000);
+  }
+
+  loginErrorHandle(){
+     this.config.isLogged = false;
+          this.errorLogin();
+          this.form.reset();
+          this.loading.dismiss();
   }
 
   /**
@@ -324,7 +343,7 @@ export class LoginPage {
    */
   async forgotPasswordOld(): Promise<void> {
     const okHandler = (): void => {
-      const inAppBrowser: InAppBrowserObject = this.iab.create(environment.RECUPERAR_PASSWORD, '_blank', this.options);
+      const inAppBrowser: InAppBrowserObject = this.iab.create(this.apiUrl.RECUPERAR_PASSWORD, '_blank', this.options);
       inAppBrowser.on('message').subscribe(() => {
         inAppBrowser.close();
       });
@@ -461,14 +480,11 @@ export class LoginPage {
    * return void
    */
   forgotPassword() {
-    let url = environment.RECUPERAR_PASSWORD;
+    const url = this.apiUrl.RECUPERAR_PASSWORD;
     this.iab.create(url, '_blank', this.options);
   }
 
-  imp() {
-    console.log('Text Encriptado: ', this.authService.textEncript());
-  }
-  imp2() {
-    console.log('Text Desencriptado: ', this.authService.textDecrypt());
+  cambiarAmbiente() {
+    this.apiUrl.setAmbiente(this.selectedIndex);
   }
 }

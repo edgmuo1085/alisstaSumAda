@@ -9,8 +9,8 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { StorageService } from 'src/app/storage.service';
 import { ToastController } from '@ionic/angular';
-import { environment } from '../../../environments/environment';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 
 /**
  * Componente de la vista de configuraciones.
@@ -84,7 +84,8 @@ export class SettingsPage implements OnInit {
     private router: Router,
     private storageService: StorageService,
     private toastController: ToastController,
-    private oneSignal: OneSignal
+    private oneSignal: OneSignal,
+    private apiUrl: ApiUrlService
   ) {
     this.faBook = faBook;
   }
@@ -186,7 +187,7 @@ export class SettingsPage implements OnInit {
    * Abre la dirección URL de la web de _Alissta_ en un navegador para realizar el cambio de contraseña.
    */
   async changePassword(): Promise<void> {
-    this.iab.create(environment.RECUPERAR_PASSWORD, '_system');
+    this.iab.create(this.apiUrl.RECUPERAR_PASSWORD, '_system');
   }
 
   /**

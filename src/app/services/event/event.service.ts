@@ -1,23 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { ResponsableEvento, RegistroAsistenteEvento } from '../../intarfaces/interfaces';
+import { ApiUrlService } from '../apiUrl/api-url.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
 
-  API_SEARCH_BRANCH_OFFICES_FOR_EVENT = environment.API_GET_BRANCH_OFFICE_EVENT;
-  API_SEARCH_MUNICIPY_BRANCH_OFFICE_FOR_EVENT = environment.API_GET_MUNICIPY_BRANCH_OFFICE_EVENT;
-  API_SEARCH_EVENT_FOR_MUNICIPY = environment.API_GET_EVENT_FOR_MUNICIPY;
-  API_RESPONSIBLE_EVENT = environment.API_POST_CREATE_RESPONSIBLE_EVENT;
-  API_REGISTER_RESPONSIBLE_QR = environment.API_POST_REGISTER_RESPONSIBLE_EVENT_QR;
-  API_REGISTER_RESPONSIBLE_MANUAL = environment.API_POST_REGISTER_RESPONSIBLE_EVENT_MANUAL;
-  API_SEARCH_RESPONSIBLE_MANUAL_EVENT = environment.API_GET_SEARCH_RESPONSIBLE_MANUAL_EVENT;
-  API_DOCUMENTS_TYPE = environment.API_GET_DOCUMENTS_TYPE;
+  API_SEARCH_BRANCH_OFFICES_FOR_EVENT = this.apiUrl.API_GET_BRANCH_OFFICE_EVENT;
+  API_SEARCH_MUNICIPY_BRANCH_OFFICE_FOR_EVENT = this.apiUrl.API_GET_MUNICIPY_BRANCH_OFFICE_EVENT;
+  API_SEARCH_EVENT_FOR_MUNICIPY = this.apiUrl.API_GET_EVENT_FOR_MUNICIPY;
+  API_RESPONSIBLE_EVENT = this.apiUrl.API_POST_CREATE_RESPONSIBLE_EVENT;
+  API_REGISTER_RESPONSIBLE_QR = this.apiUrl.API_POST_REGISTER_RESPONSIBLE_EVENT_QR;
+  API_REGISTER_RESPONSIBLE_MANUAL = this.apiUrl.API_POST_REGISTER_RESPONSIBLE_EVENT_MANUAL;
+  API_SEARCH_RESPONSIBLE_MANUAL_EVENT = this.apiUrl.API_GET_SEARCH_RESPONSIBLE_MANUAL_EVENT;
+  API_DOCUMENTS_TYPE = this.apiUrl.API_GET_DOCUMENTS_TYPE;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiUrl: ApiUrlService) {}
 
   /**
    * Metodo que realiza la petición para obtener las sucursales segun la fecha del

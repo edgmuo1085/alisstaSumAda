@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ApiUrlService } from '../apiUrl/api-url.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TalkService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiUrl: ApiUrlService) {}
 
-  API_LIST_TEMAS_COMUNICACION = environment.API_LIST_TEMAS_COMUNICACION;
+  API_LIST_TEMAS_COMUNICACION = this.apiUrl.API_LIST_TEMAS_COMUNICACION;
 
-  API_BUSCAR_COMUNICACION = environment.API_BUSCAR_CUMUNICACIONES;
+  API_BUSCAR_COMUNICACION = this.apiUrl.API_BUSCAR_CUMUNICACIONES;
 
-  API_LIST_MENSAJES_CONVERSACION = environment.API_LIST_MENSAJES_CONVERSACION;
+  API_LIST_MENSAJES_CONVERSACION = this.apiUrl.API_LIST_MENSAJES_CONVERSACION;
 
-  API_CAMBIAR_ESTADO_USUARIO = environment.API_CAMBIAR_ESTADO_USUARIO;
+  API_CAMBIAR_ESTADO_USUARIO = this.apiUrl.API_CAMBIAR_ESTADO_USUARIO;
 
-  API_GUARDAR_MENSAJE = environment.API_GUARDAR_MENSAJE;
+  API_GUARDAR_MENSAJE = this.apiUrl.API_GUARDAR_MENSAJE;
 
-  API_EDITAR_ELIMINAR_MENSAJE = environment.API_EDITAR_ELIMINAR_MENSAJE;
+  API_EDITAR_ELIMINAR_MENSAJE = this.apiUrl.API_EDITAR_ELIMINAR_MENSAJE;
 
   talkSelected: any;
 

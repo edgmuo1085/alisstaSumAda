@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { RecommendationDetail, RecommendationAT } from 'src/app/intarfaces/interfaces';
+import { ApiUrlService } from '../apiUrl/api-url.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecommendationATService {
-  API_LIST_RECOMMENDATION_AT = environment.API_LIST_RECOMMENDATION_AT;
-  API_INFO_RECOMMENDATION_AT = environment.API_INFO_RECOMMENDATION_AT;
-  API_SAVE_RECOMMENDATION_DETAIL_AT = environment.API_SAVE_RECOMMENDATION_DETAIL_AT;
-  API_SAVE_RECOMMENDATION_AT = environment.API_SAVE_RECOMMENDATION_AT;
+  API_LIST_RECOMMENDATION_AT = this.apiUrl.API_LIST_RECOMMENDATION_AT;
+  API_INFO_RECOMMENDATION_AT = this.apiUrl.API_INFO_RECOMMENDATION_AT;
+  API_SAVE_RECOMMENDATION_DETAIL_AT = this.apiUrl.API_SAVE_RECOMMENDATION_DETAIL_AT;
+  API_SAVE_RECOMMENDATION_AT = this.apiUrl.API_SAVE_RECOMMENDATION_AT;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiUrl: ApiUrlService) {}
 
   /**
    * Listar las recomendaciones de AT

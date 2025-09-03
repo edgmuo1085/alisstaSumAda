@@ -27,9 +27,9 @@ export class AppVersionService {
 
   // Método asíncrono para verificar la versión
   async checkForUpdate(): Promise<void> {
-    const env = environment.APP_VERSION_ENVIRONMENT
+    const env = environment.production
 
-    const apiVersionUrl = env === "https://sproveedor.adacsc.co/sg-sst/"
+    const apiVersionUrl = env
       ? 'https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
       : 'https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
     //TODO: Si se requieren mas ambientes, es mejor crear un enum con las url de los web Services
