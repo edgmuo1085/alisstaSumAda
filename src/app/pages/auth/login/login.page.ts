@@ -180,7 +180,7 @@ export class LoginPage implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(8),
+          Validators.minLength(6),
           Validators.maxLength(15),
           Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.;:-]).{6,}$'),
         ],
