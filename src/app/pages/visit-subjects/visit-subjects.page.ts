@@ -15,6 +15,7 @@ import { VisitSubject } from './visit-subjects.typings';
 })
 export class VisitSubjectsPage implements OnInit {
   subjectForm: UntypedFormGroup;
+  modulo: string = JSON.parse(sessionStorage.companySelected).Modulo;
 
   /**
    * Temas de la asesoria.
@@ -234,8 +235,8 @@ private readonly ALERT_TEXTS = {
         const attachments = selectedSubject.cantidadDocumentos || 0;
         const showInputCode = selectedSubject.showInputCode;
   
-        if (attachments < 1 && !showInputCode) {
-          this.notification('Atención', 'Como la línea de acción es EVENTOS POSITIVA, es obligatorio cargar los soportes');
+        if (attachments < 1 && !showInputCode && this.modulo !== "GE") {
+          this.notification('Atención', 'Como la linea de acción es EDUCA, es obligatorio cargar los soportes Asistencia a eventos de PyP y Evaluación de eventos');
           this.attachDocs(subject);
           return;
         }
@@ -495,7 +496,7 @@ private validarTarjetas(tarjetas: any[]): boolean {
       return false;
     }
 
-    if (!this.validarActividadesED(tarjetas)) {
+    if (!this.validarActividadesED(tarjetas) && this.modulo !== "GE") {
       this.mostrarAlerta(this.ALERT_TEXTS.EDUCA_ACTIVITY_REQUIRED);
       return false;
     }
