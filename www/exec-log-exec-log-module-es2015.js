@@ -202,12 +202,13 @@ function ExecLogPage_ion_col_9_Template(rf, ctx) { if (rf & 1) {
  * Componente para la vista de registro de ejecución.
  */
 class ExecLogPage {
-    constructor(listActivitiesCompany, loadingCtlr, menuConfOptions, modalCtrl, storage) {
-        this.listActivitiesCompany = listActivitiesCompany;
+    constructor(listActivitiesCompanySv, loadingCtlr, menuConfOptions, modalCtrl, storage, alertCtrl) {
+        this.listActivitiesCompanySv = listActivitiesCompanySv;
         this.loadingCtlr = loadingCtlr;
         this.menuConfOptions = menuConfOptions;
         this.modalCtrl = modalCtrl;
         this.storage = storage;
+        this.alertCtrl = alertCtrl;
         this.listActivity = [];
         this.listActivityTotal = 0;
         this.showListPendingVisit = true;
@@ -263,34 +264,44 @@ class ExecLogPage {
             const documentoUsuario = yield this.storage.get('sesion');
             setTimeout(() => {
                 //TODO: evaluar purgar memoria de array de la lista
-                this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe((response) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+                this.listActivitiesCompanySv.listActivityForCompanyPerPage(documentoUsuario).subscribe((response) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
                     console.log('Respuesta de actividade', response);
-                    const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
-                    this.listActivityTotal = listActivityTotal;
-                    const listActivity = response.listActivitiesCompany || [];
-                    const actasGuardadas = (yield this.storage.get('actasAsesoriaSinInternet')) || [];
-                    console.log('Actas Guardadas Metodo: ', actasGuardadas);
-                    this.listActivitiesCompany.actasGuardadas = actasGuardadas;
-                    this.listActivitiesCompany.listActivitiesFilter(listActivity);
-                    this.storage.set('departamentos', response.listDepartamentos);
-                    this.storage.set('municipios', response.listMunicipios);
-                    this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
-                    // Guardar las actividades en un BD local.
-                    this.storage.set('listaActividades', listActivity);
-                    this.listActivitiesCompany.setActivities(listActivity);
-                    this.validateDataListActivities();
-                    this.showListPendingVisit = false;
-                    this.loading.dismiss();
-                    if (listActivity.length < listActivityTotal) {
-                        this.listActivitiesCompany.progressBarValues$.subscribe(progressBarValues => {
-                            (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
-                        });
-                        this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
-                        this.listActivitiesCompany.activities$.subscribe((listActivitiesForPage) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-                            this.storage.set('listaActividades', listActivitiesForPage);
-                            yield this.storage.get('listaActividades');
-                            this.validateDataListActivities();
-                        }));
+                    if (response.listActivitiesCompany.length > 0) {
+                        const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
+                        this.listActivityTotal = listActivityTotal;
+                        const listActivity = response.listActivitiesCompany || [];
+                        const actasGuardadas = (yield this.storage.get('actasAsesoriaSinInternet')) || [];
+                        console.log('Actas Guardadas Metodo: ', actasGuardadas);
+                        this.listActivitiesCompanySv.actasGuardadas = actasGuardadas;
+                        this.listActivitiesCompanySv.listActivitiesFilter(listActivity);
+                        this.storage.set('departamentos', response.listDepartamentos);
+                        this.storage.set('municipios', response.listMunicipios);
+                        this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+                        // Guardar las actividades en un BD local.
+                        this.storage.set('listaActividades', listActivity);
+                        this.listActivitiesCompanySv.setActivities(listActivity);
+                        this.validateDataListActivities();
+                        this.showListPendingVisit = false;
+                        this.loading.dismiss();
+                        if (listActivity.length < listActivityTotal) {
+                            this.listActivitiesCompanySv.progressBarValues$.subscribe(progressBarValues => {
+                                (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+                            });
+                            this.listActivitiesCompanySv.listActivityForCompanyForPage(listActivityTotal);
+                            this.listActivitiesCompanySv.activities$.subscribe((listActivitiesForPage) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+                                this.storage.set('listaActividades', listActivitiesForPage);
+                                yield this.storage.get('listaActividades');
+                                this.validateDataListActivities();
+                            }));
+                        }
+                        else {
+                            this.listActivitiesCompanySv.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary");
+                        }
+                    }
+                    else {
+                        console.log("El usuario no tiene visitas pendientes");
+                        this.whitoutListActivitiesCompanyAlert();
+                        this.loading.dismiss();
                     }
                 }), err => {
                     this.loading.dismiss();
@@ -319,8 +330,19 @@ class ExecLogPage {
             }
         });
     }
+    whitoutListActivitiesCompanyAlert() {
+        return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+            const alert = yield this.alertCtrl.create({
+                mode: 'ios',
+                header: 'Aviso',
+                message: 'El Usuario no tiene Actividades Migradas.',
+                buttons: ['OK'],
+            });
+            yield alert.present();
+        });
+    }
 }
-ExecLogPage.ɵfac = function ExecLogPage_Factory(t) { return new (t || ExecLogPage)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"])); };
+ExecLogPage.ɵfac = function ExecLogPage_Factory(t) { return new (t || ExecLogPage)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"])); };
 ExecLogPage.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: ExecLogPage, selectors: [["app-exec-log"]], decls: 20, vars: 8, consts: [["class", "ion-align-items-center ion-padding", 4, "ngIf"], [1, "backgroundContent"], ["size", "4", 4, "ngFor", "ngForOf"], ["size", "4", 3, "click", 4, "ngFor", "ngForOf"], ["size", "12", 1, "ion-text-center"], [1, "titulo"], ["vertical", "bottom", "horizontal", "center", "slot", "fixed"], [3, "disabled", "click"], ["name", "cloud-download-outline"], [1, "ion-align-items-center", "ion-padding"], ["size", "9"], [3, "value", "buffer"], ["size", "3", 1, "ion-text-right"], ["size", "4"], ["mode", "ios", 3, "routerLink", "click"], [1, "vertical-center"], [1, "center"], ["alt", "", 3, "src"], [1, "tituloOpcion"], ["size", "4", 3, "click"]], template: function ExecLogPage_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵelement"](0, "app-header");
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](1, ExecLogPage_ion_row_1_Template, 6, 4, "ion-row", 0);
@@ -371,7 +393,7 @@ ExecLogPage.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineCompon
                 templateUrl: './exec-log.page.html',
                 styleUrls: ['./exec-log.page.scss'],
             }]
-    }], function () { return [{ type: src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"] }, { type: _services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"] }, { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"] }]; }, null); })();
+    }], function () { return [{ type: src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"] }, { type: _services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"] }, { type: _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"] }, { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"] }]; }, null); })();
 
 
 /***/ }),

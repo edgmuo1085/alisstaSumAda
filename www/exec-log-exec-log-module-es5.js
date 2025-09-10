@@ -460,14 +460,15 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
 
 
     var ExecLogPage = /*#__PURE__*/function () {
-      function ExecLogPage(listActivitiesCompany, loadingCtlr, menuConfOptions, modalCtrl, storage) {
+      function ExecLogPage(listActivitiesCompanySv, loadingCtlr, menuConfOptions, modalCtrl, storage, alertCtrl) {
         _classCallCheck(this, ExecLogPage);
 
-        this.listActivitiesCompany = listActivitiesCompany;
+        this.listActivitiesCompanySv = listActivitiesCompanySv;
         this.loadingCtlr = loadingCtlr;
         this.menuConfOptions = menuConfOptions;
         this.modalCtrl = modalCtrl;
         this.storage = storage;
+        this.alertCtrl = alertCtrl;
         this.listActivity = [];
         this.listActivityTotal = 0;
         this.showListPendingVisit = true;
@@ -582,7 +583,7 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
                   documentoUsuario = _context5.sent;
                   setTimeout(function () {
                     //TODO: evaluar purgar memoria de array de la lista
-                    _this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario).subscribe(function (response) {
+                    _this.listActivitiesCompanySv.listActivityForCompanyPerPage(documentoUsuario).subscribe(function (response) {
                       return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
                         var _this2 = this;
 
@@ -591,43 +592,49 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
                           while (1) switch (_context4.prev = _context4.next) {
                             case 0:
                               console.log('Respuesta de actividade', response);
+
+                              if (!(response.listActivitiesCompany.length > 0)) {
+                                _context4.next = 25;
+                                break;
+                              }
+
                               listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
                               this.listActivityTotal = listActivityTotal;
                               listActivity = response.listActivitiesCompany || [];
-                              _context4.next = 6;
+                              _context4.next = 7;
                               return this.storage.get('actasAsesoriaSinInternet');
 
-                            case 6:
+                            case 7:
                               _context4.t0 = _context4.sent;
 
                               if (_context4.t0) {
-                                _context4.next = 9;
+                                _context4.next = 10;
                                 break;
                               }
 
                               _context4.t0 = [];
 
-                            case 9:
+                            case 10:
                               actasGuardadas = _context4.t0;
                               console.log('Actas Guardadas Metodo: ', actasGuardadas);
-                              this.listActivitiesCompany.actasGuardadas = actasGuardadas;
-                              this.listActivitiesCompany.listActivitiesFilter(listActivity);
+                              this.listActivitiesCompanySv.actasGuardadas = actasGuardadas;
+                              this.listActivitiesCompanySv.listActivitiesFilter(listActivity);
                               this.storage.set('departamentos', response.listDepartamentos);
                               this.storage.set('municipios', response.listMunicipios);
                               this.storage.set('listArchivosSoporte', response.listArchivosSoporte); // Guardar las actividades en un BD local.
 
                               this.storage.set('listaActividades', listActivity);
-                              this.listActivitiesCompany.setActivities(listActivity);
+                              this.listActivitiesCompanySv.setActivities(listActivity);
                               this.validateDataListActivities();
                               this.showListPendingVisit = false;
                               this.loading.dismiss();
 
                               if (listActivity.length < listActivityTotal) {
-                                this.listActivitiesCompany.progressBarValues$.subscribe(function (progressBarValues) {
+                                this.listActivitiesCompanySv.progressBarValues$.subscribe(function (progressBarValues) {
                                   _this2.progressBar = progressBarValues, console.log('Progressss...!!: ', progressBarValues);
                                 });
-                                this.listActivitiesCompany.listActivityForCompanyForPage(listActivityTotal);
-                                this.listActivitiesCompany.activities$.subscribe(function (listActivitiesForPage) {
+                                this.listActivitiesCompanySv.listActivityForCompanyForPage(listActivityTotal);
+                                this.listActivitiesCompanySv.activities$.subscribe(function (listActivitiesForPage) {
                                   return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(_this2, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
                                     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
                                       while (1) switch (_context3.prev = _context3.next) {
@@ -646,9 +653,19 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
                                     }, _callee3, this);
                                   }));
                                 });
+                              } else {
+                                this.listActivitiesCompanySv.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary");
                               }
 
-                            case 22:
+                              _context4.next = 28;
+                              break;
+
+                            case 25:
+                              console.log("El usuario no tiene visitas pendientes");
+                              this.whitoutListActivitiesCompanyAlert();
+                              this.loading.dismiss();
+
+                            case 28:
                             case "end":
                               return _context4.stop();
                           }
@@ -721,11 +738,39 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
             }, _callee7, this);
           }));
         }
+      }, {
+        key: "whitoutListActivitiesCompanyAlert",
+        value: function whitoutListActivitiesCompanyAlert() {
+          return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+            var alert;
+            return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+              while (1) switch (_context8.prev = _context8.next) {
+                case 0:
+                  _context8.next = 2;
+                  return this.alertCtrl.create({
+                    mode: 'ios',
+                    header: 'Aviso',
+                    message: 'El Usuario no tiene Actividades Migradas.',
+                    buttons: ['OK']
+                  });
+
+                case 2:
+                  alert = _context8.sent;
+                  _context8.next = 5;
+                  return alert.present();
+
+                case 5:
+                case "end":
+                  return _context8.stop();
+              }
+            }, _callee8, this);
+          }));
+        }
       }]);
     }();
 
     ExecLogPage.ɵfac = function ExecLogPage_Factory(t) {
-      return new (t || ExecLogPage)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"]));
+      return new (t || ExecLogPage)(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](src_app_services_activities_activityListCompany_activity_list_company_service__WEBPACK_IMPORTED_MODULE_6__["ActivityListCompanyService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_services_menu_configuracion_service__WEBPACK_IMPORTED_MODULE_2__["MenuConfiguracionService"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdirectiveInject"](_ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"]));
     };
 
     ExecLogPage.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({
@@ -846,6 +891,8 @@ function _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError("Can
           type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ModalController"]
         }, {
           type: _ionic_storage__WEBPACK_IMPORTED_MODULE_3__["Storage"]
+        }, {
+          type: _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"]
         }];
       }, null);
     })();

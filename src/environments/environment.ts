@@ -34,25 +34,25 @@ import 'zone.js/dist/zone-error'; // Included with Angular CLI.
 // const ambiente = 'http://sproveedor-test.adacsc.co/sg-sst/';
 
 //  Test 2
-const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
+// const ambiente = 'http://sproveedor-test-dos.adacsc.co/sg-sst/';
 
 //  Test 3
 // const ambiente = 'http://sproveedor-test-tres.adacsc.co/sg-sst/';
 
 //  Pre
-// const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
+//const ambiente = 'https://test-positiva-webservice-proveedor-pre.adacsc.co/sg-sst/';
 
 //  Producción
-// const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
+const ambiente = 'https://sproveedor.adacsc.co/sg-sst/';
 
 export const environment = {
   production: false,
 
   //  Pre
-  RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+  // RECUPERAR_PASSWORD: 'https://positiva.adacsc.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   //  Producción
-  // RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
+  RECUPERAR_PASSWORD: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM',
 
   API_AUTH: ambiente + 'UsuarioSumServicio/login_app_sum',
 
