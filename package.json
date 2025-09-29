@@ -14,14 +14,14 @@
     "build:test": "ng build --configuration=test",
     "build:prod": "ng build --configuration=production",
 
-    "copy:test:android": "npm run build:test && npx cap copy android && npx cap open android",
-    "copy:prod:android": "npm run build:prod && npx cap copy android && npx cap open android",
+    "copy:test:android": "npm run build:test && npx cap copy android && node tools/copy-android-manifest.js && npx cap open android",
+    "copy:prod:android": "npm run build:prod && npx cap copy android && node tools/copy-android-manifest.js && npx cap open android",
     "copy:test:ios": "npm run build:test && npx cap copy ios",
     "copy:prod:ios": "npm run build:prod && npx cap copy ios",
     
     "sync": "ionic cap sync",
-    "sync:test:android": "npm run build:test && npx cap sync android && npx cap open android",
-    "sync:prod:android": "npm run build:prod && npx cap sync android && npx cap open android",
+    "sync:test:android": "npm run build:test && npx cap sync android && node tools/copy-android-manifest.js && npx cap open android",
+    "sync:prod:android": "npm run build:prod && npx cap sync android && node tools/copy-android-manifest.js && npx cap open android",
 
     "open:android": "ionic cap open android",
     "open:ios": "ionic cap open ios",
