@@ -10,6 +10,7 @@ import { PhotoServiceService } from '../../services/attach/photo-service.service
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
+import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 
 @Component({
   selector: 'app-survey-and-signature',
@@ -59,7 +60,8 @@ export class SurveyAndSignaturePage implements OnInit {
     private activityListCompany: ActivityListCompanyService,
     private toastController: ToastController,
     private modalCtrl: ModalController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private processTracker: ProcessTrackerService
   ) {}
 
   async ionViewWillEnter() {
@@ -242,29 +244,91 @@ export class SurveyAndSignaturePage implements OnInit {
     }
   }
   
-  async handleNetworkTask() {
-    const idProveedor = this.infoUserARL.idProveedor;
-    this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
-    const files = this.getFiles();
+  // async handleNetworkTask() {
+  //   const idProveedor = this.infoUserARL.idProveedor;
+  //   this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
+  //   const files = this.getFiles();
     
-    await this.presentLoading('Creando acta de asesoría ...');
-    let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
-    creacionActa = creacionActa.split(';');
+  //   await this.presentLoading('Creando acta de asesoría ...');
+  //   let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
+  //   creacionActa = creacionActa.split(';');
   
-    if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
-      await this.uploadFiles(files, +creacionActa[1]);
-      await this.sendEmailNotifications();
-      await this.updateActivities();
+  //   if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
+  //     await this.uploadFiles(files, +creacionActa[1]);
+  //     await this.sendEmailNotifications();
+  //     await this.updateActivities();
       
-      this.photoService.photos = [];
-      this.notification('Atención', 'Se ha creado el acta de asesoría');
-      this.router.navigateByUrl('/u/execLog');
-    } else {
-      this.notification('Error', 'No se pudo crear el acta de asesoría');
-    }
+  //     this.photoService.photos = [];
+  //     this.notification('Atención', 'Se ha creado el acta de asesoría');
+  //     this.router.navigateByUrl('/u/execLog');
+  //   } else {
+  //     this.notification('Error', 'No se pudo crear el acta de asesoría');
+  //   }
   
-    this.loading.dismiss();
+  //   this.loading.dismiss();
+  // }
+
+  async handleNetworkTask() {
+  const idProveedor = this.infoUserARL.idProveedor;
+  this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
+  const files = this.getFiles();
+
+  // await this.presentLoading('Creando acta de asesoría ...');
+  await this.processTracker.startProcess('Creando acta de asesoría...');
+
+  try {
+    // 1) Crear acta
+    let creacionActa = await this.advisoryTopicService
+      .saveActaAsesoria(this.actaAsesoriaGestionada)
+      .toPromise();
+
+    creacionActa = creacionActa.split(';');
+
+    if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
+      await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
+      this.notification('Error', 'No se pudo crear el acta de asesoría');
+      return;
+    }
+
+    await this.processTracker.completeStep(0);
+
+    // 2) Subir archivos (si hay)
+    if (files && files.length) {
+      await this.processTracker.addStep('Subiendo archivos adjuntos...');
+      await this.uploadFiles(files, +creacionActa[1]);
+      await this.processTracker.completeStep(this.stepsLength() - 1);
+    }
+
+    // 3) Enviar notificación por correo (siempre)
+    await this.processTracker.addStep('Enviando notificación por correo...');
+    await this.sendEmailNotifications();
+    await this.processTracker.completeStep(this.stepsLength() - 1);
+
+    // 4) Actualizar actividades
+    await this.processTracker.addStep('Actualizando lista de actividades...');
+    await this.updateActivities();
+    await this.processTracker.completeStep(this.stepsLength() - 1);
+
+    // 5) Finalizar con éxito
+    this.photoService.photos = [];
+    await this.processTracker.finish(true, 'Se ha creado el acta de asesoría');
+    this.notification('Atención', 'Se ha creado el acta de asesoría');
+    this.router.navigateByUrl('/u/execLog');
+  } catch (error) {
+    console.error('Error en handleNetworkTask:', error);
+    await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
+    this.notification('Error', 'Error en el proceso, intente de nuevo.');
+  } finally {
+    try { 
+      // await this.loading?.dismiss(); 
+    } catch { /* empty */ }
   }
+}
+
+private stepsLength(): number {
+  return (this as any).processTracker['steps']?.length || 0;
+}
+
   
   async handleOfflineTask() {
     const idProveedor = this.infoUserARL.idProveedor;

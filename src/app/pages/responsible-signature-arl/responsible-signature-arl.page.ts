@@ -11,6 +11,7 @@ import { CacheService } from '../../services/cache/cache.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
+import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 
 @Component({
   selector: 'app-responsible-signature-arl',
@@ -76,6 +77,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private alertController: AlertController,
     private cacheService: CacheService,
     private advisoryTopicService: AdvisoryTopicService,
+    private processTracker: ProcessTrackerService,
     private toastController: ToastController
   ) {}
 
@@ -150,23 +152,61 @@ export class ResponsibleSignatureARLPage implements OnInit {
     };
   }
   
-  private async handleNetworkAvailable(files: any[]) {
-    await this.presentLoading('Creando acta de asesoría ...');
-    console.log("Estos son files: ", files)
-    try {
-      const creacionActa = await this.createActaAsesoria();
-      if (creacionActa) {
-        await this.uploadFiles(creacionActa, files);
-        await this.updateListaActividades();
-        this.notification('Atención', 'Se ha creado el acta de asesoría');
-        this.router.navigateByUrl('/u/execLog');
-      } else {
-        this.notification('Error', 'No se pudo crear el acta de asesoría');
-      }
-    } finally {
-      this.loading.dismiss();
+
+private async handleNetworkAvailable(files: any[]) {
+  // await this.presentLoading('Creando acta de asesoría ...');
+  await this.processTracker.startProcess('Creando acta de asesoría...');
+
+  try {
+    // 1) Crear acta
+    const creacionActa = await this.createActaAsesoria();
+    if (!creacionActa) {
+      await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
+      this.notification('Error', 'No se pudo crear el acta de asesoría');
+      return;
     }
+    await this.processTracker.completeStep(0);
+
+    // 2) Subir archivos (solo si hay)
+    if (files && files.length) {
+      await this.processTracker.addStep('Subiendo archivos adjuntos...');
+      await this.uploadFiles(creacionActa, files); // ahora SÓLO sube archivos
+      await this.processTracker.completeStep(this.stepsLength() - 1);
+    }
+
+    // 3) Enviar correo (siempre, independiente de los archivos)
+    await this.processTracker.addStep('Enviando notificación por correo...');
+    await this.sendCorreoNotificacion(creacionActa);
+    await this.processTracker.completeStep(this.stepsLength() - 1);
+
+    // 4) Actualizar lista de actividades
+    await this.processTracker.addStep('Actualizando lista de actividades...');
+    await this.updateListaActividades();
+    await this.processTracker.completeStep(this.stepsLength() - 1);
+
+    // 5) Finalizar
+    await this.processTracker.finish(true, 'Se ha creado el acta de asesoría');
+    this.router.navigateByUrl('/u/execLog');
+  } catch (error) {
+    console.error('Error en handleNetworkAvailable:', error);
+    await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
+    this.notification('Error', 'Error en el proceso, intente de nuevo.');
+  } finally {
+    try { 
+      // await this.loading?.dismiss(); 
+    } catch { /* empty */ }
   }
+}
+
+
+
+// Helper para obtener la cantidad actual de pasos en el servicio
+private stepsLength(): number {
+  return (this as any).processTracker['steps']?.length || 0;
+}
+
+
+
   
   private async createActaAsesoria(): Promise<string | null> {
     let creacionActa = await this.advisoryTopicService
@@ -180,13 +220,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
     for (const file of files) {
       const body = { ...file, UidActaAsesoria: +actaId };
       await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
-    }
-  
-    if (this.actaAsesoriaGestionada?.TTA_lista?.length) {
-      for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
-        const notifCorreoActa: CorreoNotificacionActaApp = { Fk_ID_ActividadMigradaPorUsuario: tta.id };
-        await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
-      }
     }
   
     this.photoService.photos = [];
@@ -243,6 +276,18 @@ export class ResponsibleSignatureARLPage implements OnInit {
       this.router.navigateByUrl('/u/execLog');
     }
   }
+
+  private async sendCorreoNotificacion(actaId: string) {
+  if (this.actaAsesoriaGestionada?.TTA_lista?.length) {
+    for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
+      const notifCorreoActa: CorreoNotificacionActaApp = {
+        Fk_ID_ActividadMigradaPorUsuario: tta.id
+      };
+      await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+    }
+  }
+}
+
   
 
   async readFile() {

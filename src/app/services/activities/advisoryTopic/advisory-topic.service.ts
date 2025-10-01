@@ -35,7 +35,9 @@ export class AdvisoryTopicService {
   // Envio correo notificacion
   enviarCorreoNotificacionActaApp(correoNotif: CorreoNotificacionActaApp): Observable<any> {
     const rq = correoNotif;
-    console.log(rq);
+    console.log("Correo Notificacion", rq);
+    //  const mockResponse: any = "false"; //borrar
+    // return of(mockResponse); //borrar
     return this.http.post(this.API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP, rq);
   }
 
