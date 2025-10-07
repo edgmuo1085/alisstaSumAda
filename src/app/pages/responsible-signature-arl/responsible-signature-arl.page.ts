@@ -162,7 +162,7 @@ private async handleNetworkAvailable(files: any[]) {
     const creacionActa = await this.createActaAsesoria();
     if (!creacionActa) {
       await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
-      this.notification('Error', 'No se pudo crear el acta de asesoría');
+      // this.notification('Error', 'No se pudo crear el acta de asesoría');
       return;
     }
     await this.processTracker.completeStep(0);
@@ -185,12 +185,12 @@ private async handleNetworkAvailable(files: any[]) {
     await this.processTracker.completeStep(this.stepsLength() - 1);
 
     // 5) Finalizar
-    await this.processTracker.finish(true, 'Se ha creado el acta de asesoría');
+    await this.processTracker.finish(true, 'Acta de asesoría creada');
     this.router.navigateByUrl('/u/execLog');
   } catch (error) {
     console.error('Error en handleNetworkAvailable:', error);
     await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
-    this.notification('Error', 'Error en el proceso, intente de nuevo.');
+    // this.notification('Error', 'Error en el proceso, intente de nuevo.');
   } finally {
     try { 
       // await this.loading?.dismiss(); 

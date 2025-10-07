@@ -286,7 +286,7 @@ export class SurveyAndSignaturePage implements OnInit {
 
     if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
       await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
-      this.notification('Error', 'No se pudo crear el acta de asesoría');
+      // this.notification('Error', 'No se pudo crear el acta de asesoría');
       return;
     }
 
@@ -311,13 +311,13 @@ export class SurveyAndSignaturePage implements OnInit {
 
     // 5) Finalizar con éxito
     this.photoService.photos = [];
-    await this.processTracker.finish(true, 'Se ha creado el acta de asesoría');
-    this.notification('Atención', 'Se ha creado el acta de asesoría');
+    await this.processTracker.finish(true, 'Acta de asesoría creada');
+    // this.notification('Atención', 'Se ha creado el acta de asesoría');
     this.router.navigateByUrl('/u/execLog');
   } catch (error) {
     console.error('Error en handleNetworkTask:', error);
     await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
-    this.notification('Error', 'Error en el proceso, intente de nuevo.');
+    // this.notification('Error', 'Error en el proceso, intente de nuevo.');
   } finally {
     try { 
       // await this.loading?.dismiss(); 
