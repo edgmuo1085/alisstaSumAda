@@ -14,7 +14,8 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/Authentication/auth.service';
 import { SettingsPage } from '../../settings/settings.page';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
-import { take } from 'rxjs/operators';
+import { finalize, take } from 'rxjs/operators';
+import { Network } from '@capacitor/network';
 
 // const { App } = Plugins;
 
@@ -259,10 +260,27 @@ export class LoginPage implements OnInit {
   }
 
   async autentication(employerId: number, userID: string, password: string): Promise<void> {
+
+      const status = await Network.getStatus();
+  if (!status.connected) {
+    await this.errorLogin(
+      'Sin conexión',
+      'No hay conexión a internet. Por favor verifica tu conexión y vuelve a intentarlo.'
+    );
+    return;
+  }
     await this.presentLoading();
 
-      this.authService.login(employerId, userID, password).pipe(take(1)).subscribe({
-        next: async (response) => {
+    this.authService
+      .login(employerId, userID, password)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.loading.dismiss();
+        })
+      )
+      .subscribe({
+        next: async response => {
           console.log('respuesta del login', response);
           const localStorageNotification: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
           let notification: boolean;
@@ -303,8 +321,8 @@ export class LoginPage implements OnInit {
           this.config.isLogged = false;
           this.form.reset();
           this.loading.dismiss();
-        }
-    });
+        },
+      });
   }
 
   /**
