@@ -42,12 +42,13 @@ export class AuthService {
             console.log('Error en el login: ', error);
 
             const errorResponse = {
+              error: true,
               header: error.error ? 'Error al procesar la solicitud' : 'Usuario o contraseña inválida',
               message: error.error
-                ? error.error.mensaje || 'Hubo un error al procesar las credenciales, por favor intente mas tarde.'
-                : 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?.',
+                ? error.error.mensaje || 'Hubo un error al procesar las credenciales, por favor intente más tarde.'
+                : 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción “¿Olvidó su contraseña?”.',
             };
-            return of({ error: true, ...errorResponse });
+            return of(errorResponse);
           })
         )
       )

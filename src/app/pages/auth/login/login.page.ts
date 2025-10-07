@@ -8,12 +8,13 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ConfigService } from 'src/app/config.service';
-import { UserAuth } from 'src/app/intarfaces/interfaces';
+import { loginMsgError, UserAuth } from 'src/app/intarfaces/interfaces';
 import { StorageService } from 'src/app/storage.service';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/Authentication/auth.service';
 import { SettingsPage } from '../../settings/settings.page';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
+import { take } from 'rxjs/operators';
 
 // const { App } = Plugins;
 
@@ -105,6 +106,10 @@ export class LoginPage implements OnInit {
   passwordTypeInput = 'password';
   showFinger = false;
   activateFinger = false;
+  loginMsgError: loginMsgError = {
+    header:'Usuario o contraseña inválida',
+    message: 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción “¿Olvidó su contraseña?”.'
+  }
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -256,15 +261,17 @@ export class LoginPage implements OnInit {
   async autentication(employerId: number, userID: string, password: string): Promise<void> {
     await this.presentLoading();
 
-    setTimeout(() => {
-      this.authService.login(employerId, userID, password).subscribe(
-        async response => {
+      this.authService.login(employerId, userID, password).pipe(take(1)).subscribe({
+        next: async (response) => {
           console.log('respuesta del login', response);
           const localStorageNotification: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
           let notification: boolean;
-          if(response.error){
-            this.loginErrorHandle();
-            return
+          if (response.error) {
+            await this.errorLogin(response.header, response.message);
+            this.config.isLogged = false;
+            this.form.reset();
+            this.loading.dismiss();
+            return;
           }
           if (localStorageNotification) {
             console.log('localStorageNotification', localStorageNotification);
@@ -290,18 +297,14 @@ export class LoginPage implements OnInit {
           console.log('no llega2');
           this.form.reset();
         },
-        () => {
-          this.loginErrorHandle();
-        }
-      );
-    }, 2000);
-  }
-
-  loginErrorHandle(){
-     this.config.isLogged = false;
-          this.errorLogin();
+        error: async (err: any) => {
+          console.error('Error inesperado:', err);
+          await this.errorLogin('Error', 'No se pudo conectar al servidor. Intente nuevamente más tarde.');
+          this.config.isLogged = false;
           this.form.reset();
           this.loading.dismiss();
+        }
+    });
   }
 
   /**
@@ -325,12 +328,11 @@ export class LoginPage implements OnInit {
    * Muestra una ventana de diálogo que le permite al usuario saber que fallo el inició de sesion
    */
 
-  async errorLogin() {
+  async errorLogin(header:string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Usuario o contraseña inválida',
+      header,
       mode: 'ios',
-      message:
-        'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña realice este proceso por la aplicación web en la opción ¿Olvidó su contraseña?',
+      message,
       buttons: ['ACEPTAR'],
     });
 
@@ -410,7 +412,7 @@ export class LoginPage implements OnInit {
             (response: any) => {
               if (response.length === 0) {
                 this.loading.dismiss();
-                this.errorLogin();
+                this.errorLogin(this.loginMsgError.header, this.loginMsgError.message);
               } else {
                 this.afterLoginSuccess(response[0]);
                 this.loading.dismiss();
@@ -418,7 +420,7 @@ export class LoginPage implements OnInit {
             },
             (error: any) => {
               this.config.isLogged = false;
-              this.errorLogin();
+              this.errorLogin(this.loginMsgError.header, this.loginMsgError.message);
               this.form.reset();
               this.loading.dismiss();
             }

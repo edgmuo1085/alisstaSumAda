@@ -28,6 +28,11 @@ export interface UserAuth {
   password: string;
 }
 
+export interface loginMsgError {
+  header: string;
+  message: string;
+}
+
 export interface RegistroAsistenteEvento {
   strTipoIdentificacionEmpresa: string;
   strNumeroDocumentoEmpresa: string;
