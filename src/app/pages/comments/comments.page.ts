@@ -15,19 +15,19 @@ export class CommentsPage implements OnInit {
   /**
    * Nombre del tipo de visita actualmente activo.
    */
-  subframe: string;
+  subframe: boolean;
 
   /**
    * Nombre para visita exitosa.
    */
-  readonly SUCCESS_FRAME = 'Exitosa';
+  readonly SUCCESS_FRAME = true;
 
   /**
    * Nombre para visita fallida.
    */
-  readonly FAIL_FRAME = 'Fallo';
+  readonly FAIL_FRAME = false;
 
-  opcionMenu: string;
+  opcionMenu: boolean;
 
   constructor(
     private cacheService: CacheService,
@@ -40,12 +40,13 @@ export class CommentsPage implements OnInit {
 
   ngOnInit() {
     const informacionVisita = this.cacheService.getSaveCommentsAdvice();
+    console.log("En el init de Comment: ", informacionVisita )
     if (Object.keys(informacionVisita).length !== 0) {
-      if (informacionVisita.type === 'Fallo') {
-        this.switchFrame('Fallo');
+      if (!informacionVisita.type) {
+        this.switchFrame(false);
       }
-      if (informacionVisita.type === 'Exitosa') {
-        this.switchFrame('Exitosa');
+      if (informacionVisita.type) {
+        this.switchFrame(true);
       }
     }
   }
@@ -55,7 +56,7 @@ export class CommentsPage implements OnInit {
    *
    * @param subframe Nombre del frame que va a volverse activo.
    */
-  switchFrame(subframe: string): void {
+  switchFrame(subframe: boolean): void {
     if (this.cacheService.typeAdvice.type === 'Proyecto') {
       this.notification('Atención', 'El tipo de asesoría seleccionada fue por Proyecto');
       this.subframe = this.SUCCESS_FRAME;

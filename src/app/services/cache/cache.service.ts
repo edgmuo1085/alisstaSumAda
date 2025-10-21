@@ -375,16 +375,15 @@ export class CacheService {
   }
 
   private setCommentAdviceInfo() {
-    if (this.commentAdvice.type === 'Fallo') {
+    if (!this.commentAdvice.type) {
       const fecha = this.commentAdvice.motive === 'R' ? this.formatDate(this.commentAdvice.newDateActivity.split('T')[0]) : '';
       this.commentFailed = {
-        RV_Exitosa: this.commentAdvice.typeSelected,
+        RV_Exitosa: this.commentAdvice.type,
         Observaciones: this.commentAdvice.description,
         RV_Motivo: this.commentAdvice.motive,
         RV_FechaServicio: fecha,
         RV_JustificacionMotivo: this.commentAdvice.justify,
       };
-      this.commentSucces = { RV_Exitosa: '', Observaciones: '' };
     } else {
       this.commentSucces = { RV_Exitosa: this.commentAdvice.type, Observaciones: this.commentAdvice.comment };
       this.commentFailed = { RV_Exitosa: '', RV_Motivo: '', RV_FechaServicio: '', RV_JustificacionMotivo: '' };
