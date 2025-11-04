@@ -2,16 +2,14 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
-import { Plugins } from '@capacitor/core';
 import { OneSignal, OSNotification, OSNotificationOpenedResult } from '@ionic-native/onesignal/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { SplashScreen } from '@capacitor/splash-screen';
 import { AlertController, Platform } from '@ionic/angular';
 import { environment } from '../environments/environment';
 import { NetworkService } from './services/network/network.service';
 import { AppVersionService } from './services/version/app-version.service';
 import { ApiUrlService } from './services/apiUrl/api-url.service';
-const { DarkMode } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -26,8 +24,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private router: Router,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
     private networkService: NetworkService,
@@ -47,14 +43,30 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      this.initializeCapacitorPlugins();
       this.checkDarkTheme();
       this.initOneSignal();
       this.networkService.initializeNetworkEvents();
       this.registerBackButtonListener();
       this.router.navigateByUrl('login');
     });
+  }
+
+    private async initializeCapacitorPlugins() {
+    try {
+      // ✅ StatusBar con Capacitor (reemplaza StatusBar de Ionic Native)
+      await StatusBar.setStyle({ 
+        style: Style.Dark // Texto blanco para mejor contraste
+      });
+      
+      // ✅ SplashScreen con Capacitor (reemplaza SplashScreen de Ionic Native)
+      await SplashScreen.hide();
+      
+      console.log('✅ Capacitor plugins initialized successfully');
+    } catch (error) {
+      // ⚠️ Esto es normal en entorno web/emulador sin plugins nativos
+      console.warn('Capacitor plugins not available in current environment:', error);
+    }
   }
 
      // Escucha cambios de estado en la app (foreground/background)
@@ -67,23 +79,55 @@ export class AppComponent {
       });
     }
 
-  async checkDarkTheme(): Promise<void> {
-    let shouldAdd: boolean;
+  // async checkDarkTheme(): Promise<void> {
+  //   let shouldAdd: boolean;
 
-    if (this.platform.is('android')) {
-      shouldAdd = (await DarkMode.isDarkModeOn()).isDarkModeOn;
+  //   if (this.platform.is('android')) {
+  //     shouldAdd = (await DarkMode.isDarkModeOn()).isDarkModeOn;
 
-      DarkMode.addListener('darkModeStateChanged', (state: any) => {
-        this.toggleDarkTheme(state.isDarkModeOn);
-      });
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-      prefersDark.addEventListener('change', mediaQuery => this.toggleDarkTheme(mediaQuery.matches));
-      shouldAdd = prefersDark.matches;
+  //     DarkMode.addListener('darkModeStateChanged', (state: any) => {
+  //       this.toggleDarkTheme(state.isDarkModeOn);
+  //     });
+  //   } else {
+  //     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  //     prefersDark.addEventListener('change', mediaQuery => this.toggleDarkTheme(mediaQuery.matches));
+  //     shouldAdd = prefersDark.matches;
+  //   }
+
+  //   this.toggleDarkTheme(shouldAdd);
+  // }
+
+  checkDarkTheme(): void {
+  try {
+    // Verificar si el navegador soporta matchMedia
+    if (!window.matchMedia) {
+      console.log('Dark mode not supported in this browser');
+      return;
     }
 
-    this.toggleDarkTheme(shouldAdd);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Aplicar tema inicial
+    this.toggleDarkTheme(prefersDark.matches);
+    
+    // Escuchar cambios (con compatibilidad cross-browser)
+    const changeHandler = (mediaQuery: MediaQueryListEvent) => {
+      this.toggleDarkTheme(mediaQuery.matches);
+    };
+    
+    // Soporte para navegadores modernos y antiguos
+    if (prefersDark.addEventListener) {
+      prefersDark.addEventListener('change', changeHandler);
+    } else if (prefersDark.addListener) {
+      // Fallback para navegadores antiguos
+      prefersDark.addListener(changeHandler);
+    }
+    
+  } catch (error) {
+    console.warn('Error in dark theme detection:', error);
+    // La app continúa funcionando normalmente
   }
+}
 
   initOneSignal(): void {
     this.oneSignal.startInit(this.apiUrlSv.ONE_SIGNAL_APP_ID, this.apiUrlSv.ONE_SIGNAL_SENDER_ID);

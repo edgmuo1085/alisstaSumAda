@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { Camera } from '@ionic-native/camera/ngx';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NetworkInterface } from '@ionic-native/network-interface/ngx';
@@ -49,7 +48,6 @@ import { MatInputModule } from '@angular/material/input';
     Network,
     NetworkInterface,
     BarcodeScanner,
-    Camera,
     Geolocation,
     FingerprintAIO,
     {

@@ -9,11 +9,9 @@ import { ComponentsModule } from 'src/app/components/components.module';
 
 import { ResponsibleSignatureARLPage } from './responsible-signature-arl.page';
 
-import { File } from '@ionic-native/file/ngx';
-
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, ResponsibleSignatureARLPageRoutingModule, ComponentsModule],
   declarations: [ResponsibleSignatureARLPage],
-  providers: [File],
+  providers: [],
 })
 export class ResponsibleSignatureARLPageModule {}

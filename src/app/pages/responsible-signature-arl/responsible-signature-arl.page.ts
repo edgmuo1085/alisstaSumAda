@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Directory, Filesystem } from '@capacitor/filesystem';
-import { File } from '@ionic-native/file/ngx';
 import { AlertController, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { AdvisoryVerificationComponent } from '../../components/advisory-verification/advisory-verification.component';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
-import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
+import { NetworkService } from '../../services/network/network.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
@@ -70,7 +69,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private net: NetworkService,
     private modalCtrl: ModalController,
     private photoService: PhotoServiceService,
-    private file: File,
     private plt: Platform,
     private router: Router,
     private loadingCtlr: LoadingController,
