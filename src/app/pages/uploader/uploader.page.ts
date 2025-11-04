@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { File } from '@ionic-native/file/ngx';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { v4 as uuidv4 } from 'uuid';
@@ -67,7 +66,6 @@ export class UploaderPage implements OnInit {
   @ViewChild('inputFile') inputFile: ElementRef;
 
   constructor(
-    private file: File,
     private alertController: AlertController,
     private formBuilder: UntypedFormBuilder,
     private router: Router,
@@ -467,40 +465,53 @@ private async attachPhotoAndSave(foto: any) {
   // Validar tipo seleccionado
   const tipoSeleccionado = this.formSupportType.get('type').value;
   const tipoArchivo = this.validarTipoArchivo(tipoSeleccionado);
+  
   if (!tipoArchivo) {
     this.notification('Atención', 'No puede adjuntar la foto sin seleccionar un tipo de archivo');
     this.disableButtons = false;
     return;
   }
 
-  // Construir objeto similar al que ya usabas
-  const objGuardar = {
-    idActividad: this.infoActivity.id,
-    tipoArchivo,
-    idTipoArchivo: tipoSeleccionado,
-    foto: foto,
-  };
-
-  this.listaDocumentos.push(objGuardar);
-
-  // Actualizamos cache de fotos y contador
   try {
+    console.log('🔄 Iniciando attachPhotoAndSave...');
+
+    // Construir objeto para guardar
+    const objGuardar = {
+      idActividad: this.infoActivity.id,
+      tipoArchivo,
+      idTipoArchivo: tipoSeleccionado,
+      foto: foto,
+    };
+
+    console.log('✅ Objeto creado, agregando a listaDocumentos...');
+
+    // Agregar a la lista
+    this.listaDocumentos.push(objGuardar);
+
+    console.log('📝 Actualizando cache...');
+
+    // Actualizar cache
     this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
+    
     const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
     this.cacheService.infoActividadPorDocumento({
       idActividad: this.infoActivity.id,
       cantidadDocumentosAdjuntos: documentosAdjuntos.length,
     });
 
-    // reset select
+    // Reset del select
     this.formSupportType.get('type').reset();
 
+    console.log('🎉 Foto adjuntada exitosamente');
+
     this.notification('Éxito', 'Foto adjuntada correctamente');
+
   } catch (e) {
-    console.error('Error guardando foto en cache:', e);
-    this.notification('Error', 'No se pudo guardar la foto');
+    console.error('❌ Error en attachPhotoAndSave:', e);
+    this.notification('Error', 'No se pudo guardar la foto: ' + e.message);
   } finally {
     this.disableButtons = false;
+    console.log('🔚 Finalizando attachPhotoAndSave');
   }
 }
 }
