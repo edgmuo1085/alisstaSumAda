@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarService } from '../navbar/navbar.service';
-import { AppVersion } from '@ionic-native/app-version/ngx';
+import { App } from '@capacitor/app';
 
 /**
  * Componente de vista de Acerca de.
@@ -10,24 +10,31 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
   templateUrl: './about.page.html',
   styleUrls: ['./about.page.scss'],
 })
-export class AboutPage implements OnInit, OnDestroy {
+export class AboutPageComponent implements OnInit, OnDestroy {
   /**
    * Versión actual de la aplicación.
    */
   versionNumber: string;
 
-  constructor(
-    private appVersion: AppVersion,
-    private navbarService: NavbarService
-  ) {
-    this.appVersion.getVersionNumber().then(v => (this.versionNumber = v));
-  }
+  constructor(private navbarService: NavbarService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.navbarService.setVisibility(false);
-  }
+    await this.loadAppVersion();
+  };
 
   ngOnDestroy(): void {
     this.navbarService.setVisibility(true);
+  };
+
+  private async loadAppVersion() {
+    try {
+      const info = await App.getInfo();
+      this.versionNumber = info.version;
+      console.log('Versión de la app:', info.version, 'Build:', info.build);
+    } catch (error) {
+      console.error('Error al obtener la versión de la app:', error);
+      this.versionNumber = 'No disponible';
+    }
   }
 }
