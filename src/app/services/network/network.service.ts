@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Network } from '@ionic-native/network/ngx';
-import { AlertController, LoadingController, Platform } from '@ionic/angular';
-import { BehaviorSubject, fromEvent, merge, Observable, of } from 'rxjs';
-import { mapTo, retry } from 'rxjs/operators';
+import { Network } from '@capacitor/network';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { retry } from 'rxjs/operators';
 import { CacheService } from '../../services/cache/cache.service';
 import { ApiUrlService } from '../apiUrl/api-url.service';
 
@@ -25,10 +25,8 @@ export class NetworkService {
   loading: any;
 
   constructor(
-    private network: Network,
     private http: HttpClient,
     private cacheService: CacheService,
-    private plt: Platform,
      private alertController: AlertController,
     private loadingCtlr: LoadingController,
     private apiUrl: ApiUrlService
@@ -49,8 +47,9 @@ export class NetworkService {
     return this.http.get(this.apiUrl.API_GET_BRANCH_OFFICE_EVENT).pipe(retry(2));
   }
 
-  public getNetworkType(): string {
-    return this.network.type;
+  public async getNetworkType(): Promise<string> {
+    const status = await Network.getStatus();
+    return status.connectionType;
   }
 
   public getNetworkStatus(): ConnectionStatusEnum {
@@ -108,22 +107,23 @@ export class NetworkService {
   }
   
 
-  initializeNetworkEvents(): void {
-    if (this.plt.is('cordova')) {
-      this.network.onConnect().subscribe(() => (this.connectionStatus = ConnectionStatusEnum.Online));
-      this.network.onDisconnect().subscribe(() => (this.connectionStatus = ConnectionStatusEnum.Offline));
+initializeNetworkEvents(): void {
+  Network.addListener('networkStatusChange', (status) => {
+    this.connectionStatus = status.connected
+      ? ConnectionStatusEnum.Online
+      : ConnectionStatusEnum.Offline;
 
-      return;
-    }
+    console.log('Network status changed:', status);
+  });
 
-    const connectionEvents = merge(
-      of(navigator.onLine),
-      fromEvent(window, 'online').pipe(mapTo(ConnectionStatusEnum.Online)),
-      fromEvent(window, 'offline').pipe(mapTo(ConnectionStatusEnum.Offline))
-    );
+  // Obtener estado inicial
+  Network.getStatus().then(status => {
+    this.connectionStatus = status.connected
+      ? ConnectionStatusEnum.Online
+      : ConnectionStatusEnum.Offline;
+  });
+}
 
-    connectionEvents.subscribe((status: ConnectionStatusEnum) => (this.connectionStatus = status));
-  }
 
     async presentLoading(message) {
     this.loading = await this.loadingCtlr.create({
