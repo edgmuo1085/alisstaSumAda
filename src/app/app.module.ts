@@ -3,14 +3,20 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { NetworkInterface } from '@ionic-native/network-interface/ngx';
-import { Network } from '@ionic-native/network/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+// Capacitor imports (reemplazan Ionic Native)
+import { Geolocation } from '@capacitor/geolocation';
+import { Device } from '@capacitor/device';
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
+import { Network } from '@capacitor/network';
+import { Biometrics } from '@capacitor/biometrics';
+import { PushNotifications } from '@capacitor/push-notifications';
+import { AppLauncher } from '@capacitor/app-launcher';
+
+// Barcode Scanner (ya es de Capacitor Community)
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -23,7 +29,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,18 +48,11 @@ import { MatInputModule } from '@angular/material/input';
     NgxMaterialTimepickerModule,
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
-    Network,
-    NetworkInterface,
-    BarcodeScanner,
-    Geolocation,
-    FingerprintAIO,
+    // Los plugins de Capacitor no necesitan providers
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy,
     },
-    OneSignal,
   ],
   bootstrap: [AppComponent],
 })

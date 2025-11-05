@@ -2,7 +2,6 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
-import { OneSignal, OSNotification, OSNotificationOpenedResult } from '@ionic-native/onesignal/ngx';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AlertController, Platform } from '@ionic/angular';
@@ -24,7 +23,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private router: Router,
-    private oneSignal: OneSignal,
     private alertCtrl: AlertController,
     private networkService: NetworkService,
     private location: Location,
@@ -45,7 +43,6 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.initializeCapacitorPlugins();
       this.checkDarkTheme();
-      this.initOneSignal();
       this.networkService.initializeNetworkEvents();
       this.registerBackButtonListener();
       this.router.navigateByUrl('login');
@@ -128,32 +125,6 @@ export class AppComponent {
     // La app continúa funcionando normalmente
   }
 }
-
-  initOneSignal(): void {
-    this.oneSignal.startInit(this.apiUrlSv.ONE_SIGNAL_APP_ID, this.apiUrlSv.ONE_SIGNAL_SENDER_ID);
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
-    this.oneSignal.handleNotificationReceived().subscribe((notification: OSNotification) => {
-      this.onNotificationReceived(notification);
-    });
-    this.oneSignal.handleNotificationOpened().subscribe((result: OSNotificationOpenedResult) => {
-      this.onNotificationOpened(result);
-    });
-    this.oneSignal.endInit();
-  }
-
-  onNotificationReceived(notification: OSNotification): void {}
-
-  async onNotificationOpened(result: OSNotificationOpenedResult) {
-    const alert = await this.alertCtrl.create({
-      header: 'Alissta SUM Comunicaciones',
-      mode: 'ios',
-      message: result.notification.payload.body,
-      buttons: ['ACEPTAR'],
-    });
-    await alert.present();
-    let communicationId = result.notification.payload.additionalData.PKConversacion;
-    this.router.navigate(['u/list-communications', communicationId]);
-  }
 
   /**
    * Alterna el modo oscuro en base al parámetro indicado.
