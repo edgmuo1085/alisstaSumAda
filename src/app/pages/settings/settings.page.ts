@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { StorageService } from 'src/app/storage.service';
 import { ToastController } from '@ionic/angular';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 
 /**
@@ -84,7 +83,6 @@ export class SettingsPage implements OnInit {
     private router: Router,
     private storageService: StorageService,
     private toastController: ToastController,
-    private oneSignal: OneSignal,
     private apiUrl: ApiUrlService
   ) {
     this.faBook = faBook;
@@ -162,12 +160,15 @@ export class SettingsPage implements OnInit {
     }
   }
 
-  switchNotifications(): void {
-    this.notifications = !this.notifications;
-    localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
-    if (this.notifications) this.oneSignal.setSubscription(true);
-    else this.oneSignal.setSubscription(false);
-  }
+switchNotifications(): void {
+  this.notifications = !this.notifications;
+  localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
+  const message = this.notifications
+    ? '¡Notificaciones activadas!'
+    : '¡Notificaciones desactivadas!';
+  this.showToast(message);
+}
+
 
   /**
    * Muestra una ventana de diálogo que le permite al usuario calificar la aplicación en el mercado
@@ -193,14 +194,13 @@ export class SettingsPage implements OnInit {
   /**
    * Método para cerrar la sesion voluntaria
    */
-  singOff() {
-    this.oneSignal.setSubscription(false);
-    this.oneSignal.deleteTag('PERSONAL');
-    this.storage.clear();
-    localStorage.clear();
-    sessionStorage.clear();
-    this.router.navigateByUrl('/login');
-  }
+singOff() {
+  this.storage.clear();
+  localStorage.clear();
+  sessionStorage.clear();
+  this.router.navigateByUrl('/login');
+}
+
 
   async showToast(message: string) {
     const toast = await this.toastController.create({
