@@ -3,8 +3,7 @@ import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } fro
 import { Router } from '@angular/router';
 // import { Plugins } from '@capacitor/core';
 import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
-import { InAppBrowser, InAppBrowserObject, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { Browser } from '@capacitor/browser';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ConfigService } from 'src/app/config.service';
@@ -12,7 +11,6 @@ import { loginMsgError, UserAuth } from 'src/app/intarfaces/interfaces';
 import { StorageService } from 'src/app/storage.service';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/Authentication/auth.service';
-import { SettingsPage } from '../../settings/settings.page';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { finalize, take } from 'rxjs/operators';
 import { Network } from '@capacitor/network';
@@ -27,25 +25,7 @@ import { Network } from '@capacitor/network';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
-  options: InAppBrowserOptions = {
-    location: 'yes', // Or 'no'
-    hidden: 'no', // Or  'yes'
-    clearcache: 'yes',
-    clearsessioncache: 'yes',
-    zoom: 'yes', // Android only ,shows browser zoom controls
-    hardwareback: 'yes',
-    mediaPlaybackRequiresUserAction: 'no',
-    shouldPauseOnSuspend: 'no', // Android only
-    closebuttoncaption: 'Cerrar', // iOS only
-    disallowoverscroll: 'no', // iOS only
-    toolbar: 'yes', // iOS only
-    enableViewportScale: 'no', // iOS only
-    allowInlineMediaPlayback: 'no', // iOS only
-    presentationstyle: 'fullscreen', // iOS only
-    fullscreen: 'yes', // Windows only
-  };
-
+export class LoginPageComponent implements OnInit {
   isProd = environment.production;
   ambientes = environment.ambientes || [];
   selectedIndex = environment.ambienteSeleccionado;
@@ -108,14 +88,14 @@ export class LoginPage implements OnInit {
   showFinger = false;
   activateFinger = false;
   loginMsgError: loginMsgError = {
-    header:'Usuario o contraseña inválida',
-    message: 'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción “¿Olvidó su contraseña?”.'
-  }
+    header: 'Usuario o contraseña inválida',
+    message:
+      'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción “¿Olvidó su contraseña?”.',
+  };
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private alertController: AlertController,
-    private iab: InAppBrowser,
     private config: ConfigService,
     private storage: Storage,
     private authService: AuthService,
@@ -124,7 +104,6 @@ export class LoginPage implements OnInit {
     private faio: FingerprintAIO,
     private storageService: StorageService,
     private platform: Platform,
-    private oneSignal: OneSignal,
     private apiUrl: ApiUrlService
   ) {
     this.initForm();
@@ -213,7 +192,7 @@ export class LoginPage implements OnInit {
    * @param error Tipo de error que se está evaluando. Si no se proporciona, se evalúa cualquier tipo de error.
    */
   shouldShowError(control: AbstractControl, error?: string): boolean {
-    const hasError = !!error ? control.hasError(error) : control.errors !== null;
+    const hasError = error ? control.hasError(error) : control.errors !== null;
 
     return hasError && (control.dirty || control.touched);
   }
@@ -259,9 +238,8 @@ export class LoginPage implements OnInit {
     }
   }
 
-  async autentication(employerId: number, userID: string, password: string): Promise<void> {
-
-      const status = await Network.getStatus();
+async autentication(employerId: number, userID: string, password: string): Promise<void> {
+  const status = await Network.getStatus();
   if (!status.connected) {
     await this.errorLogin(
       'Sin conexión',
@@ -269,61 +247,52 @@ export class LoginPage implements OnInit {
     );
     return;
   }
-    await this.presentLoading();
 
-    this.authService
-      .login(employerId, userID, password)
-      .pipe(
-        take(1),
-        finalize(() => {
-          this.loading.dismiss();
-        })
-      )
-      .subscribe({
-        next: async response => {
-          console.log('respuesta del login', response);
-          const localStorageNotification: string = localStorage.getItem(SettingsPage.NOTIFICATIONS_KEY);
-          let notification: boolean;
-          if (response.error) {
-            await this.errorLogin(response.header, response.message);
-            this.config.isLogged = false;
-            this.form.reset();
-            this.loading.dismiss();
-            return;
-          }
-          if (localStorageNotification) {
-            console.log('localStorageNotification', localStorageNotification);
-            notification = localStorageNotification == 'true';
-          } else {
-            console.log('ELSE');
-            notification = true;
-            localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, 'true');
-          }
-          this.oneSignal.setSubscription(notification);
-          console.log('setSubscription', notification);
-          this.oneSignal.sendTag('PERSONAL', response['0'].idRegistro);
-          console.log('oneSignal.sendTag');
-          this.config.isLogged = true;
-          await this.authService.saveSesion(response[0]);
-          console.log('saveSesion', response[0]);
-          this.encriptInfoUser = this.authService.encrypt(JSON.stringify(this.infoUserAuth));
-          console.log('encriptInfoUser', this.encriptInfoUser);
-          this.storageService.set('isLoginWithFinger', false);
-          this.router.navigateByUrl('u/home');
-          console.log('no llega');
-          this.loading.dismiss();
-          console.log('no llega2');
-          this.form.reset();
-        },
-        error: async (err: any) => {
-          console.error('Error inesperado:', err);
-          await this.errorLogin('Error', 'No se pudo conectar al servidor. Intente nuevamente más tarde.');
+  await this.presentLoading();
+
+  this.authService
+    .login(employerId, userID, password)
+    .pipe(
+      take(1),
+      finalize(() => {
+        this.loading.dismiss();
+      })
+    )
+    .subscribe({
+      next: async response => {
+        console.log('respuesta del login', response);
+
+        if (response.error) {
+          await this.errorLogin(response.header, response.message);
           this.config.isLogged = false;
           this.form.reset();
           this.loading.dismiss();
-        },
-      });
-  }
+          return;
+        }
+
+        this.config.isLogged = true;
+        await this.authService.saveSesion(response[0]);
+        console.log('saveSesion', response[0]);
+
+        this.encriptInfoUser = this.authService.encrypt(JSON.stringify(this.infoUserAuth));
+        console.log('encriptInfoUser', this.encriptInfoUser);
+
+        this.storageService.set('isLoginWithFinger', false);
+        this.router.navigateByUrl('u/home');
+
+        this.loading.dismiss();
+        this.form.reset();
+      },
+      error: async (err: any) => {
+        console.error('Error inesperado:', err);
+        await this.errorLogin('Error', 'No se pudo conectar al servidor. Intente nuevamente más tarde.');
+        this.config.isLogged = false;
+        this.form.reset();
+        this.loading.dismiss();
+      },
+    });
+}
+
 
   /**
    * Comprueba si el formulario es válido.
@@ -346,7 +315,7 @@ export class LoginPage implements OnInit {
    * Muestra una ventana de diálogo que le permite al usuario saber que fallo el inició de sesion
    */
 
-  async errorLogin(header:string, message: string) {
+  async errorLogin(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
       mode: 'ios',
@@ -362,10 +331,10 @@ export class LoginPage implements OnInit {
    * recuperación de contraseña.
    */
   async forgotPasswordOld(): Promise<void> {
-    const okHandler = (): void => {
-      const inAppBrowser: InAppBrowserObject = this.iab.create(this.apiUrl.RECUPERAR_PASSWORD, '_blank', this.options);
-      inAppBrowser.on('message').subscribe(() => {
-        inAppBrowser.close();
+    const okHandler = async (): Promise<void> => {
+      await Browser.open({
+        url: this.apiUrl.RECUPERAR_PASSWORD,
+        windowName: '_system',
       });
     };
 
@@ -499,9 +468,9 @@ export class LoginPage implements OnInit {
    * params void
    * return void
    */
-  forgotPassword() {
+  async forgotPassword() {
     const url = this.apiUrl.RECUPERAR_PASSWORD;
-    this.iab.create(url, '_blank', this.options);
+    await Browser.open({ url });
   }
 
   cambiarAmbiente() {
