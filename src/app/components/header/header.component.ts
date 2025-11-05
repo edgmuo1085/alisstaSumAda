@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Device } from '@ionic-native/device/ngx';
+import { Device } from '@capacitor/device';
 import { Storage } from '@ionic/storage';
 
 @Component({
@@ -23,14 +23,23 @@ export class HeaderComponent implements OnInit {
   nameUserRegister: string;
 
   constructor(
-    private device: Device,
     private storage: Storage
-  ) {
-    this.deviceUUID = this.device.uuid;
-  }
+  ) {} 
 
-  ngOnInit() {
-    this.uploadInfoUser();
+  async ngOnInit() {
+    await this.loadDeviceUUID();
+    await this.uploadInfoUser();
+  };
+
+   async loadDeviceUUID() {
+    try {
+      const { identifier } = await Device.getId();
+      this.deviceUUID = identifier;
+      console.log('UUID del dispositivo:', this.deviceUUID);
+    } catch (err) {
+      console.error('Error al obtener UUID:', err);
+      this.deviceUUID = 'UUID no disponible';
+    }
   }
 
   async uploadInfoUser() {
