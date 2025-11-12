@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { faBook, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { AppRate } from '@ionic-native/app-rate/ngx';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 import { ConfigService } from '../../config.service';
 import { Observable } from 'rxjs';
@@ -10,6 +9,7 @@ import { Storage } from '@ionic/storage';
 import { StorageService } from 'src/app/storage.service';
 import { ToastController } from '@ionic/angular';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
+import { AppLauncher } from '@capacitor/app-launcher';
 
 /**
  * Componente de la vista de configuraciones.
@@ -75,7 +75,6 @@ export class SettingsPage implements OnInit {
   isFingerFaceAvailable = false;
 
   constructor(
-    private appRate: AppRate,
     private config: ConfigService,
     private iab: InAppBrowser,
     private storage: Storage,
@@ -169,21 +168,6 @@ switchNotifications(): void {
   this.showToast(message);
 }
 
-
-  /**
-   * Muestra una ventana de diálogo que le permite al usuario calificar la aplicación en el mercado
-   * de aplicaciones.
-   */
-  async rateAppOld(): Promise<void> {
-    this.appRate.setPreferences({
-      storeAppURL: this.RATE_APP_IDS,
-      customLocale: this.RATE_APP_TEXTS,
-      simpleMode: true,
-    });
-
-    this.appRate.promptForRating(true);
-  }
-
   /**
    * Abre la dirección URL de la web de _Alissta_ en un navegador para realizar el cambio de contraseña.
    */
@@ -227,32 +211,25 @@ singOff() {
   }
   
 
-  rateApp() {
+async rateApp() {
+  const userAgent = navigator.userAgent;
+  let dispositivo = "ios";
 
-    const userAgent = navigator.userAgent;
-    let dispositivo = "ios";
-
-    if (userAgent.split("Android").length > 1) {
-      dispositivo = "android";
-    }
-
-    if (dispositivo == "android") {
-
-      this.appRate.setPreferences({
-        storeAppURL: this.RATE_APP_IDS,
-        customLocale: this.RATE_APP_TEXTS,
-        simpleMode: true,
-      });
-  
-      this.appRate.promptForRating(true);
-
-    } else {
-
-      const url = 'https://apps.apple.com/us/app/alissta-sum/id1534224945';
-      this.iab.create(url, '_blank', this.options);
-
-    }
-
+  if (userAgent.split("Android").length > 1) {
+    dispositivo = "android";
   }
+
+  if (dispositivo == "android") {
+    // Para Android - Play Store
+    await AppLauncher.openUrl({
+      url: 'market://details?id=' + this.RATE_APP_IDS
+    });
+  } else {
+    // Para iOS - App Store
+    await AppLauncher.openUrl({
+      url: 'https://apps.apple.com/us/app/alissta-sum/id1534224945'
+    });
+  }
+}
 
 }
