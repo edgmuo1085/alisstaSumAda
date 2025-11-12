@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faBook, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
+import { Browser } from '@capacitor/browser';
 import { ConfigService } from '../../config.service';
 import { Observable } from 'rxjs';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
@@ -30,24 +30,6 @@ export class SettingsPage implements OnInit {
    */
   faBook: IconDefinition;
 
-  options: InAppBrowserOptions = {
-    location: 'yes',//Or 'no' 
-    hidden: 'no', //Or  'yes'
-    clearcache: 'yes',
-    clearsessioncache: 'yes',
-    zoom: 'yes',//Android only ,shows browser zoom controls 
-    hardwareback: 'yes',
-    mediaPlaybackRequiresUserAction: 'no',
-    shouldPauseOnSuspend: 'no', //Android only 
-    closebuttoncaption: 'Cerrar', //iOS only
-    disallowoverscroll: 'no', //iOS only 
-    toolbar: 'yes', //iOS only 
-    enableViewportScale: 'no', //iOS only 
-    allowInlineMediaPlayback: 'no',//iOS only 
-    presentationstyle: 'fullscreen',//iOS only 
-    fullscreen: 'yes',//Windows only    
-  };
-
   /**
    * Cadenas de texto para la ventana de alerta de calificación de la aplicación.
    */
@@ -76,7 +58,6 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private config: ConfigService,
-    private iab: InAppBrowser,
     private storage: Storage,
     private menuConfOptions: MenuConfiguracionService,
     private router: Router,
@@ -171,9 +152,12 @@ switchNotifications(): void {
   /**
    * Abre la dirección URL de la web de _Alissta_ en un navegador para realizar el cambio de contraseña.
    */
-  async changePassword(): Promise<void> {
-    this.iab.create(this.apiUrl.RECUPERAR_PASSWORD, '_system');
-  }
+async changePassword(): Promise<void> {
+  await Browser.open({
+    url: this.apiUrl.RECUPERAR_PASSWORD,
+    presentationStyle: 'fullscreen' // Opcional - similar a tu configuración anterior
+  });
+}
 
   /**
    * Método para cerrar la sesion voluntaria

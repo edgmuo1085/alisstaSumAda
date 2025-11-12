@@ -2,7 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
+import { Browser } from '@capacitor/browser';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
@@ -50,27 +50,6 @@ export class SignaturePage implements OnInit {
   };
 
   /**
-   * Opciones del navegador embebido.
-   */
-  readonly BROWSER_OPTIONS: InAppBrowserOptions = {
-    location: 'yes',
-    hidden: 'no',
-    clearcache: 'yes',
-    clearsessioncache: 'yes',
-    zoom: 'yes',
-    hardwareback: 'yes',
-    mediaPlaybackRequiresUserAction: 'no',
-    shouldPauseOnSuspend: 'no',
-    closebuttoncaption: 'Cerrar',
-    disallowoverscroll: 'no',
-    toolbar: 'yes',
-    enableViewportScale: 'no',
-    allowInlineMediaPlayback: 'no',
-    presentationstyle: 'fullscreen',
-    fullscreen: 'yes',
-  };
-
-  /**
    * Coordenadas del dispositivo.
    */
   private coords: { lat: string; lng: string };
@@ -85,7 +64,6 @@ export class SignaturePage implements OnInit {
     private router: Router,
     private net: NetworkService,
     private alertService: AlertService,
-    private iab: InAppBrowser,
     private geolocation: Geolocation
   ) {}
 
@@ -125,15 +103,23 @@ export class SignaturePage implements OnInit {
    * @param url Dirección _url_.
    */
   async openLink(url: string): Promise<void> {
-    this.iab.create(url, '_blank', this.BROWSER_OPTIONS);
+    try {
+      await Browser.open({
+        url: url,
+        presentationStyle: 'fullscreen', // La única opción que podemos mantener
+      });
+    } catch (error) {
+      console.error('Error al abrir el navegador:', error);
+      // Fallback para web o en caso de error
+      window.open(url, '_blank');
+    }
   }
 
   /**
    * Envía los datos al servidor para su procesamiento.
    */
   async send(): Promise<void> {
-
-    console.log("LogDev Send");
+    console.log('LogDev Send');
 
     if (this.formGroup.invalid) {
       return;
@@ -205,7 +191,7 @@ export class SignaturePage implements OnInit {
       .subscribe({
         next: async r => {
           const result = JSON.stringify(r).includes('false');
-          
+
           console.log('LogDev Send Next: ', JSON.stringify(r));
 
           if (result) {
@@ -218,9 +204,9 @@ export class SignaturePage implements OnInit {
           alert.present();
           this.router.navigate(['../../../../'], { relativeTo: this.route });
         },
-        error: (err) => {
-          console.error("LogDev Send: " + JSON.stringify(err)); // Manejo de errores
-        }
+        error: err => {
+          console.error('LogDev Send: ' + JSON.stringify(err)); // Manejo de errores
+        },
       });
   }
 
@@ -295,8 +281,7 @@ export class SignaturePage implements OnInit {
    * Obtiene la geolocalización del dispositivo.
    */
   private async getGeolocation(): Promise<void> {
-
-    console.log("LogDev getGeolocation");
+    console.log('LogDev getGeolocation');
 
     const loading = await this.alertService.showLoading();
 
@@ -308,13 +293,12 @@ export class SignaturePage implements OnInit {
           lng: `${response.coords.longitude}`,
         };
 
-        console.log("LogDev getGeolocation", JSON.stringify(this.coords));
+        console.log('LogDev getGeolocation', JSON.stringify(this.coords));
 
         this.getCompany();
       })
       .catch(async error => {
-
-        console.log("LogDev getGeolocation", JSON.stringify(error.code));
+        console.log('LogDev getGeolocation', JSON.stringify(error.code));
 
         if (error.code === 1) {
           // Si se produce un error de este tipo es porque se está intentando acceder al servicio
