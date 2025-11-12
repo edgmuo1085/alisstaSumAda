@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Network } from '@ionic-native/network/ngx';
 import { LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ActivityListCompanyService } from '../../services/activities/activityListCompany/activity-list-company.service';
@@ -36,7 +35,6 @@ export class PendingVisitsPage implements OnInit {
 
   constructor(
     private listActivitiesCompany: ActivityListCompanyService,
-    private network: Network,
     private storage: Storage,
     private net: NetworkService,
     private loadingCtlr: LoadingController,
