@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { IonicModule } from '@ionic/angular';
 import { PerProjectComponent } from './per-project/per-project.component';
 import { SpecificComponent } from './specific/specific.component';
@@ -44,7 +43,6 @@ export const MY_FORMATS = {
   ],
   declarations: [VisitTypePage, SpecificComponent, PerProjectComponent],
   providers: [
-    DatePicker,
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     {
       provide: DateAdapter,

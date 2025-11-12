@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { DatePicker } from '@ionic-native/date-picker/ngx';
 import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import { CacheService } from '../../../services/cache/cache.service';
@@ -47,7 +46,6 @@ export class SpecificComponent implements OnInit {
   date: string;
 
   constructor(
-    private datePicker: DatePicker,
     private cacheService: CacheService,
     private formBuilder: UntypedFormBuilder,
     private alertController: AlertController
