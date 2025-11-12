@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { CacheService } from '../../services/cache/cache.service';
@@ -36,7 +36,6 @@ export class CompanyInfoPage {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private geolocation: Geolocation,
     private cacheService: CacheService,
     private storage: Storage,
     public alertController: AlertController,
@@ -81,26 +80,28 @@ export class CompanyInfoPage {
     });
   }
 
-  getGeolocation() {
-    this.geolocation
-      .getCurrentPosition()
-      .then(response => {
-        this.coords = response.coords.latitude + ',' + response.coords.longitude;
-        this.formInfoCompany.controls.locationCompany.setValue(this.coords);
-      })
-      .catch(async error => {
-        if (error.code === 1) {
-          // Si se produce un error de este tipo es porque se está intentando acceder al servicio
-          // de ubicación desde un origen inseguro. Se asume que entonces se está ejecutando la aplicación
-          // desde el servidor de desarrollo de Ionic. A continuación se invalida la obligatoriedad para
-          // este campo
+  async getGeolocation() {
+    try {
+      // Solicitar permisos primero
+      const permission = await Geolocation.requestPermissions();
 
-          this.formInfoCompany.controls.locationCompany.clearValidators();
-          this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
+      if (permission.location !== 'granted') {
+        throw new Error('Permisos de ubicación no concedidos');
+      }
 
-          return;
-        }
+      // Obtener ubicación con timeout
+      const response = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000,
+      });
 
+      this.coords = response.coords.latitude + ',' + response.coords.longitude;
+      this.formInfoCompany.controls.locationCompany.setValue(this.coords);
+    } catch (error: any) {
+      console.log('Error geolocalización:', error);
+
+      if (error.message?.includes('denied') || error.code === 'NOT_AUTHORIZED') {
+        // Permisos denegados - mostrar alerta
         const alert = await this.alertController.create({
           header: 'Atención',
           backdropDismiss: false,
@@ -109,8 +110,14 @@ export class CompanyInfoPage {
           buttons: ['ACEPTAR'],
         });
 
-        alert.present();
-      });
+        await alert.present();
+      } else {
+        // Cualquier otro error (timeout, desarrollo, GPS no disponible)
+        // Similar al error.code === 1 anterior - quitar validadores
+        this.formInfoCompany.controls.locationCompany.clearValidators();
+        this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
+      }
+    }
   }
 
   changeDepartment(event) {

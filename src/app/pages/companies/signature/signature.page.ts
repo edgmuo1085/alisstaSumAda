@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { Browser } from '@capacitor/browser';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { finalize } from 'rxjs/operators';
@@ -63,8 +63,7 @@ export class SignaturePage implements OnInit {
     private companiesService: CompaniesService,
     private router: Router,
     private net: NetworkService,
-    private alertService: AlertService,
-    private geolocation: Geolocation
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -285,36 +284,40 @@ export class SignaturePage implements OnInit {
 
     const loading = await this.alertService.showLoading();
 
-    this.geolocation
-      .getCurrentPosition()
-      .then(response => {
+    try {
+      const permission = await Geolocation.requestPermissions();
+
+      if (permission.location !== 'granted') {
+        throw new Error('Permisos de ubicación no concedidos');
+      }
+
+      const response = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000, // 10 segundos timeout
+      });
+
+      this.coords = {
+        lat: `${response.coords.latitude}`,
+        lng: `${response.coords.longitude}`,
+      };
+
+      console.log('LogDev getGeolocation', JSON.stringify(this.coords));
+      this.getCompany();
+    } catch (error: any) {
+      console.log('LogDev getGeolocation error', JSON.stringify(error));
+
+      // Manejo de timeout específico
+      if (error.message?.includes('timeout') || error.code === 'TIMEOUT') {
+        console.log('Timeout obteniendo ubicación');
+
+        // En caso de timeout, usar coordenadas por defecto
         this.coords = {
-          lat: `${response.coords.latitude}`,
-          lng: `${response.coords.longitude}`,
+          lat: '0',
+          lng: '0',
         };
-
-        console.log('LogDev getGeolocation', JSON.stringify(this.coords));
-
         this.getCompany();
-      })
-      .catch(async error => {
-        console.log('LogDev getGeolocation', JSON.stringify(error.code));
-
-        if (error.code === 1) {
-          // Si se produce un error de este tipo es porque se está intentando acceder al servicio
-          // de ubicación desde un origen inseguro. Se asume que entonces se está ejecutando la aplicación
-          // desde el servidor de desarrollo de Ionic
-
-          this.coords = {
-            lat: '0',
-            lng: '0',
-          };
-
-          this.getCompany();
-
-          return;
-        }
-
+      } else if (error.message?.includes('denied') || error.message?.includes('Permisos') || error.code === 'NOT_AUTHORIZED') {
+        // Permisos denegados
         const alert = await this.alertCtrl.create({
           header: 'Atención',
           backdropDismiss: false,
@@ -323,12 +326,20 @@ export class SignaturePage implements OnInit {
           buttons: ['ACEPTAR'],
         });
 
-        alert.present();
+        await alert.present();
         this.router.navigate(['../../../'], { relativeTo: this.route });
-      })
-      .finally(() => {
-        loading.dismiss();
-      });
+      } else {
+        // Otros errores (como origen inseguro en desarrollo, GPS no disponible, etc.)
+        console.log('Otro tipo de error, usando coordenadas por defecto');
+        this.coords = {
+          lat: '0',
+          lng: '0',
+        };
+        this.getCompany();
+      }
+    } finally {
+      loading.dismiss();
+    }
   }
 
   /**

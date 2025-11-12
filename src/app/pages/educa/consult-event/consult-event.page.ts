@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@capacitor/geolocation';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { ResponsableEvento } from 'src/app/intarfaces/interfaces';
@@ -54,7 +54,6 @@ export class ConsultEventPage {
     private loadingCtlr: LoadingController,
     private storage: Storage,
     private alertController: AlertController,
-    private geolocation: Geolocation,
     private router: Router
   ) {}
 
@@ -188,24 +187,40 @@ export class ConsultEventPage {
   /**
    * Al seleccionar el posicionamiento de geolocalización
    */
-  async changeGeo(event): Promise<void> {
-    if (event.detail.checked) {
-      await this.presentLoading();
+async changeGeo(event): Promise<void> {
+  if (event.detail.checked) {
+    await this.presentLoading();
 
-      this.geolocation
-        .getCurrentPosition()
-        .then(response => {
-          const coords = response.coords.latitude + ',' + response.coords.longitude;
-          this.formConsultEvent.controls.geoText.setValue(coords);
-          this.loading.dismiss();
-        })
-        .catch(error => {
-          this.loading.dismiss();
-        });
-    } else {
-      this.formConsultEvent.controls.geoText.setValue('');
+    try {
+      // Solicitar permisos primero
+      const permission = await Geolocation.requestPermissions();
+      
+      if (permission.location !== 'granted') {
+        throw new Error('Permisos de ubicación no concedidos');
+      }
+
+      // Obtener ubicación con timeout
+      const response = await Geolocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 10000
+      });
+
+      const coords = response.coords.latitude + ',' + response.coords.longitude;
+      this.formConsultEvent.controls.geoText.setValue(coords);
+
+    } catch (error: any) {
+      console.log('Error obteniendo geolocalización:', error);
+      // En caso de error, simplemente no establecer valor o manejarlo según necesites
+    } finally {
+      // Asegurar que el loading se cierre en todos los casos
+      if (this.loading) {
+        this.loading.dismiss();
+      }
     }
+  } else {
+    this.formConsultEvent.controls.geoText.setValue('');
   }
+}
 
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
