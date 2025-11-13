@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-// import { Plugins } from '@capacitor/core';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 import { Browser } from '@capacitor/browser';
 import { AlertController, LoadingController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
@@ -14,12 +12,12 @@ import { AuthService } from '../../../services/Authentication/auth.service';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { finalize, take } from 'rxjs/operators';
 import { Network } from '@capacitor/network';
+import { NativeBiometric, BiometryType } from '@capgo/capacitor-native-biometric';
 
-// const { App } = Plugins;
+interface VerifyIdentityResult {
+  verified: boolean;
+}
 
-/**
- * Componente de la vista de inicio de sesión.
- */
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -30,47 +28,15 @@ export class LoginPageComponent implements OnInit {
   ambientes = environment.ambientes || [];
   selectedIndex = environment.ambienteSeleccionado;
 
-  /**
-   * Ícono que acompaña al control de usuario de contraseña para permitir al usuario revelar y
-   * ocultar la contraseña.
-   */
   passwordToggleIcon: string;
-
-  /**
-   * Tipo del control de usuario para la contraseña.
-   *
-   * Se usa para permitir mostrar/ocultar la contraseña.
-   */
   passwordType: string;
-
-  /**
-   * Formulario.
-   */
   form: UntypedFormGroup;
 
-  /**
-   * Clase CSS del ícono para revelar contraseña en el control de usuario.
-   */
   private readonly SHOW_PASSWORD_ICON = 'eye';
-
-  /**
-   * Clase CSS del ícono para ocultar contraseña en el control de usuario.
-   */
   private readonly HIDE_PASSWORD_ICON = 'eye-off';
-
-  /**
-   * Tipo de control de usuario para contraseñas.
-   */
   private readonly INPUT_TYPE_PASSWORD = 'password';
-
-  /**
-   * Tipo de control de usuario para cadenas de textos.
-   */
   private readonly INPUT_TYPE_TEXT = 'text';
 
-  /**
-   * Cadenas de texto para la ventana de alerta de recuperación de contraseña.
-   */
   private readonly FORGOT_PASSWORD_ALERT_TEXTS = {
     title: '¿Desea recuperar su contraseña?',
     message: `Si desea recuperar su contraseña, por favor seleccione la opción Sí. Esta opción le
@@ -101,7 +67,6 @@ export class LoginPageComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private loadingCtlr: LoadingController,
-    private faio: FingerprintAIO,
     private storageService: StorageService,
     private platform: Platform,
     private apiUrl: ApiUrlService
@@ -118,15 +83,18 @@ export class LoginPageComponent implements OnInit {
   async ionViewWillEnter() {
     await this.platform.ready();
     try {
-      const ava = await this.faio.isAvailable();
-      this.storageService.set('isFingerFaceAvailable', true);
+      const result = await NativeBiometric.isAvailable();
+
+      if (result.isAvailable) {
+        await this.storageService.set('isFingerFaceAvailable', true);
+      }
 
       await this.loadFingerSettings();
       const autologin = await this.storageService.get('autologin');
 
       if (autologin) {
         await this.autoLogin();
-      } else if (this.showFinger && this.activateFinger && ava === 'face') {
+      } else if (this.showFinger && this.activateFinger && result.biometryType === BiometryType.FACE_ID) {
         this.launchFingerprintModal();
       }
     } catch (error) {
@@ -152,9 +120,6 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  /**
-   * Inicializa el formulario de inicio de sesión.
-   */
   initForm(): void {
     this.passwordToggleIcon = this.HIDE_PASSWORD_ICON;
     this.passwordType = 'password';
@@ -173,33 +138,16 @@ export class LoginPageComponent implements OnInit {
     });
   }
 
-  /**
-   * Muestra u oculta la contraseña en el control de usuario.
-   */
   togglePassword(): void {
-    console.log('entro al togle');
     this.passwordToggleIcon = this.passwordToggleIcon === this.HIDE_PASSWORD_ICON ? this.SHOW_PASSWORD_ICON : this.HIDE_PASSWORD_ICON;
     this.passwordType = this.passwordToggleIcon === this.SHOW_PASSWORD_ICON ? this.INPUT_TYPE_TEXT : this.INPUT_TYPE_PASSWORD;
   }
 
-  /**
-   * Indica si debe mostrarse un mensaje de error al usuario para este control.
-   *
-   * Un mensaje de error se muestra cuando el usuario ha interactuado con el control
-   * o cuando se haya establecido programáticamente para mostrarse.
-   *
-   * @param control Control de usuario.
-   * @param error Tipo de error que se está evaluando. Si no se proporciona, se evalúa cualquier tipo de error.
-   */
   shouldShowError(control: AbstractControl, error?: string): boolean {
     const hasError = error ? control.hasError(error) : control.errors !== null;
-
     return hasError && (control.dirty || control.touched);
   }
 
-  /**
-   * Si el formulario es válido, realiza el inicio de sesión.
-   */
   login(): void {
     const employerId = this.form.value.employerID;
     const userID = this.form.value.userID;
@@ -209,12 +157,11 @@ export class LoginPageComponent implements OnInit {
       documentoUsuario: userID,
       password,
     };
-    console.log('Usuario: ', this.infoUserAuth);
+
     const validForm = this.validateForm();
     if (validForm) {
       this.autentication(employerId, userID, password);
     }
-    // this.autentication(901247360, "1017184468", "Abc123456*");//TODO: borrar una vez se terminen pruebas
   }
 
   async autoLogin() {
@@ -222,84 +169,64 @@ export class LoginPageComponent implements OnInit {
     if (infoUserAuthSave) {
       this.decryptInfoUser = this.authService.decrypt(infoUserAuthSave);
       if (this.decryptInfoUser) {
-        // El siguiente código podría usarse para cuando se implemente el servicio de autenticación
-        // por tokens, cuando tenga que actualizarse el token de sesión y el token de refresco esté
-        // caduco
-        //
-        // this.decryptInfoUser = JSON.parse(this.decryptInfoUser);
-        // const employerId = this.decryptInfoUser.documentoEmpleador;
-        // const userID = this.decryptInfoUser.documentoUsuario;
-        // const password = this.decryptInfoUser.password;
-        // this.autentication(employerId, userID, password);
-
         const sesion = await this.storage.get('sesion');
         this.afterLoginSuccess(sesion);
       }
     }
   }
 
-async autentication(employerId: number, userID: string, password: string): Promise<void> {
-  const status = await Network.getStatus();
-  if (!status.connected) {
-    await this.errorLogin(
-      'Sin conexión',
-      'No hay conexión a internet. Por favor verifica tu conexión y vuelve a intentarlo.'
-    );
-    return;
-  }
+  async autentication(employerId: number, userID: string, password: string): Promise<void> {
+    const status = await Network.getStatus();
+    if (!status.connected) {
+      await this.errorLogin('Sin conexión', 'No hay conexión a internet. Por favor verifica tu conexión y vuelve a intentarlo.');
+      return;
+    }
 
-  await this.presentLoading();
+    await this.presentLoading();
 
-  this.authService
-    .login(employerId, userID, password)
-    .pipe(
-      take(1),
-      finalize(() => {
-        this.loading.dismiss();
-      })
-    )
-    .subscribe({
-      next: async response => {
-        console.log('respuesta del login', response);
+    this.authService
+      .login(employerId, userID, password)
+      .pipe(
+        take(1),
+        finalize(() => {
+          this.loading.dismiss();
+        })
+      )
+      .subscribe({
+        next: async response => {
+          if (response.error) {
+            await this.errorLogin(response.header, response.message);
+            this.config.isLogged = false;
+            this.form.reset();
+            this.loading.dismiss();
+            return;
+          }
 
-        if (response.error) {
-          await this.errorLogin(response.header, response.message);
+          this.config.isLogged = true;
+          await this.authService.saveSesion(response[0]);
+          this.encriptInfoUser = this.authService.encrypt(JSON.stringify(this.infoUserAuth));
+          this.storageService.set('isLoginWithFinger', false);
+          this.router.navigateByUrl('u/home');
+          this.loading.dismiss();
+          this.form.reset();
+
+          // Opcional: Guardar credenciales de forma segura
+          await NativeBiometric.setCredentials({
+            username: userID,
+            password: password,
+            server: 'alissta.gov.co',
+          });
+        },
+        error: async err => {
+          console.error('Error inesperado:', err);
+          await this.errorLogin('Error', 'No se pudo conectar al servidor. Intente nuevamente más tarde.');
           this.config.isLogged = false;
           this.form.reset();
           this.loading.dismiss();
-          return;
-        }
+        },
+      });
+  }
 
-        this.config.isLogged = true;
-        await this.authService.saveSesion(response[0]);
-        console.log('saveSesion', response[0]);
-
-        this.encriptInfoUser = this.authService.encrypt(JSON.stringify(this.infoUserAuth));
-        console.log('encriptInfoUser', this.encriptInfoUser);
-
-        this.storageService.set('isLoginWithFinger', false);
-        this.router.navigateByUrl('u/home');
-
-        this.loading.dismiss();
-        this.form.reset();
-      },
-      error: async (err: any) => {
-        console.error('Error inesperado:', err);
-        await this.errorLogin('Error', 'No se pudo conectar al servidor. Intente nuevamente más tarde.');
-        this.config.isLogged = false;
-        this.form.reset();
-        this.loading.dismiss();
-      },
-    });
-}
-
-
-  /**
-   * Comprueba si el formulario es válido.
-   *
-   * Si el formulario no es válido, marca todos los controles de usuario como si el usuario hubiese
-   * interactuado con ellos para mostrar los mensajes de error.
-   */
   validateForm(): boolean {
     if (this.form.invalid) {
       Object.keys(this.form.controls).forEach(c => {
@@ -307,13 +234,8 @@ async autentication(employerId: number, userID: string, password: string): Promi
         this.form.controls[c].markAsDirty();
       });
     }
-
     return this.form.valid;
   }
-
-  /**
-   * Muestra una ventana de diálogo que le permite al usuario saber que fallo el inició de sesion
-   */
 
   async errorLogin(header: string, message: string) {
     const alert = await this.alertController.create({
@@ -322,14 +244,9 @@ async autentication(employerId: number, userID: string, password: string): Promi
       message,
       buttons: ['ACEPTAR'],
     });
-
     await alert.present();
   }
 
-  /**
-   * Muestra una ventana de diálogo que le permite al usuario ir a la página de _Alissta_ para realizar
-   * recuperación de contraseña.
-   */
   async forgotPasswordOld(): Promise<void> {
     const okHandler = async (): Promise<void> => {
       await Browser.open({
@@ -338,16 +255,8 @@ async autentication(employerId: number, userID: string, password: string): Promi
       });
     };
 
-    const cancelButton = {
-      text: this.FORGOT_PASSWORD_ALERT_TEXTS.cancelButtonText,
-      role: 'cancel',
-    };
-
-    const okButton = {
-      text: this.FORGOT_PASSWORD_ALERT_TEXTS.okButtonText,
-      role: 'OK',
-      handler: okHandler,
-    };
+    const cancelButton = { text: this.FORGOT_PASSWORD_ALERT_TEXTS.cancelButtonText, role: 'cancel' };
+    const okButton = { text: this.FORGOT_PASSWORD_ALERT_TEXTS.okButtonText, role: 'OK', handler: okHandler };
 
     const alert = this.alertController.create({
       header: this.FORGOT_PASSWORD_ALERT_TEXTS.title,
@@ -359,31 +268,39 @@ async autentication(employerId: number, userID: string, password: string): Promi
     (await alert).present();
   }
 
-  /**
-   * Este método abre la opción para ingresar con huella dactilar
-   */
-  launchFingerprintModal() {
-    this.faio
-      .isAvailable()
-      .then((result: any) => {
-        console.log(result);
-        this.faio
-          .show({
-            cancelButtonTitle: 'Cancelar',
-            disableBackup: true,
-            title: 'INGRESAR CON HUELLA',
-          })
-          .then((result: any) => {
-            console.log('Authenticacion exitosa');
-            this.loginByFinger();
-          })
-          .catch((error: any) => {
-            console.log('Authenticacion erronea');
-          });
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  /** ✅ Nueva implementación biométrica */
+  async launchFingerprintModal() {
+    try {
+      // Verificar disponibilidad del sistema biométrico
+      const available = await NativeBiometric.isAvailable();
+
+      if (!available.isAvailable) {
+        console.log('Biometría no disponible en este dispositivo.');
+        return;
+      }
+
+      // Forzamos el tipo de retorno de verifyIdentity con "unknown" y lo convertimos después
+      const response = (await NativeBiometric.verifyIdentity({
+        reason: 'Autentícate para continuar',
+        title: 'INGRESAR CON HUELLA',
+        subtitle: 'Usa tu huella o rostro',
+        description: 'Coloca tu dedo en el sensor o usa FaceID.',
+      })) as unknown as VerifyIdentityResult;
+
+      // Validamos que la respuesta tenga la propiedad "verified"
+      if (response && typeof response.verified === 'boolean') {
+        if (response.verified) {
+          console.log('Autenticación exitosa');
+          await this.loginByFinger();
+        } else {
+          console.log('Autenticación cancelada o fallida');
+        }
+      } else {
+        console.warn('Respuesta inesperada de verifyIdentity:', response);
+      }
+    } catch (error) {
+      console.error('Error en autenticación biométrica:', error);
+    }
   }
 
   async loginByFinger(): Promise<void> {
@@ -396,7 +313,7 @@ async autentication(employerId: number, userID: string, password: string): Promi
         this.authService
           .login(this.decryptInfoUser.documentoEmpleador, this.decryptInfoUser.documentoUsuario, this.decryptInfoUser.password)
           .subscribe(
-            (response: any) => {
+            response => {
               if (response.length === 0) {
                 this.loading.dismiss();
                 this.errorLogin(this.loginMsgError.header, this.loginMsgError.message);
@@ -405,7 +322,7 @@ async autentication(employerId: number, userID: string, password: string): Promi
                 this.loading.dismiss();
               }
             },
-            (error: any) => {
+            error => {
               this.config.isLogged = false;
               this.errorLogin(this.loginMsgError.header, this.loginMsgError.message);
               this.form.reset();
@@ -414,37 +331,20 @@ async autentication(employerId: number, userID: string, password: string): Promi
           );
       }
     } else {
-      console.log('No sirvio');
+      console.log('No sirvió');
     }
   }
 
   validateShowFinger() {
     this.storageService
       .get('showLoginWithFinger')
-      .then(result => {
-        if (result != null) {
-          this.showFinger = result;
-        } else {
-          this.showFinger = false;
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        this.showFinger = false;
-      });
+      .then(result => (this.showFinger = result ?? false))
+      .catch(() => (this.showFinger = false));
+
     this.storageService
       .get('activateFinger')
-      .then(result => {
-        if (result != null) {
-          this.activateFinger = result;
-        } else {
-          this.activateFinger = false;
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        this.activateFinger = false;
-      });
+      .then(result => (this.activateFinger = result ?? false))
+      .catch(() => (this.activateFinger = false));
   }
 
   async afterLoginSuccess(response: any): Promise<void> {
@@ -463,11 +363,6 @@ async autentication(employerId: number, userID: string, password: string): Promi
     return this.loading.present();
   }
 
-  /**
-   * Recuperar contraseña
-   * params void
-   * return void
-   */
   async forgotPassword() {
     const url = this.apiUrl.RECUPERAR_PASSWORD;
     await Browser.open({ url });
