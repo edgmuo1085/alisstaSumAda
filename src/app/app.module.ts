@@ -10,7 +10,6 @@ import { Device } from '@capacitor/device';
 import { App } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 import { Network } from '@capacitor/network';
-import { Biometrics } from '@capacitor/biometrics';
 import { PushNotifications } from '@capacitor/push-notifications';
 import { AppLauncher } from '@capacitor/app-launcher';
 
