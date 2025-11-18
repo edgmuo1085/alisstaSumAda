@@ -249,7 +249,7 @@ export class CryptoService {
 
   // Encriptar datos antes de enviarlos al backend
   static encrypt(data: any): string {
-    console.info("Texto que se va a Encriptar", data)
+    console.info("Texto que se va a Encriptar", JSON.stringify(data,null,2))
     const encrypted = CryptoJS.AES.encrypt(JSON.stringify(data), CryptoJS.enc.Utf8.parse(this.secretKey), {
       iv: CryptoJS.enc.Utf8.parse(this.iv),
       mode: CryptoJS.mode.CBC,

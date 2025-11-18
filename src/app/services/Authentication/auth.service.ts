@@ -39,7 +39,7 @@ export class AuthService {
             return decryptedResponse;
           }),
           catchError(error => {
-            console.log('Error en el login: ', error);
+            console.log('Error en el login: ', JSON.stringify(error,null,2));
 
             const errorResponse = {
               error: true,

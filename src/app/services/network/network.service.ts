@@ -113,7 +113,7 @@ initializeNetworkEvents(): void {
       ? ConnectionStatusEnum.Online
       : ConnectionStatusEnum.Offline;
 
-    console.log('Network status changed:', status);
+    console.log('Network status changed:', JSON.stringify(status, null,2));
   });
 
   // Obtener estado inicial
