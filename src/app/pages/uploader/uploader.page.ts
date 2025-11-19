@@ -281,43 +281,37 @@ async loadImageFromDevice(event) {
     }
   }
 
-async adjuntar() {
-  // Validación número máximo antes de abrir opciones
+  async adjuntar() {
+  // Validación número máximo
   const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
   if (documentosAdjuntos.length >= 6) {
     this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
     return;
   }
 
-  // Abrir action sheet para elegir tipo
+  // ✅ PRIMERO validar tipo de archivo seleccionado
+  const tipoSeleccionado = this.formSupportType.get('type').value;
+  if (!tipoSeleccionado) {
+    this.notification('Atención', 'Primero seleccione el tipo de archivo');
+    return;
+  }
+
+  // Action Sheet simplificado
   const actionSheet = await this.actionSheetCtrl.create({
-    header: 'Seleccionar fuente',
+    header: 'Seleccionar tipo de archivo',
     buttons: [
       {
-        text: 'PDF',
-        icon: 'document-outline',
-        handler: () => {
-          this.accionARealizar = 'documento';
-          // abrir input file oculto
-          const tag: any = document.getElementById('file-input');
-          if (tag.value) { tag.value = ''; }
-          tag.click();
+        text: 'Tomar Foto',
+        icon: 'camera-outline',
+        handler: async () => {
+          await this.tomarFoto();
         }
       },
       {
-        text: 'Foto',
-        icon: 'camera-outline',
-        handler: async () => {
-          this.accionARealizar = 'foto';
-          this.disableButtons = true;
-          try {
-            const foto = await this.photoService.addNewToGallery();
-            // tras tomar la foto, adjuntar y guardar automáticamente
-            await this.attachPhotoAndSave(foto);
-          } catch (err) {
-            console.error('Error al tomar foto:', err);
-            this.disableButtons = false;
-          }
+        text: 'Seleccionar PDF',
+        icon: 'document-outline',
+        handler: () => {
+          this.abrirExploradorArchivos();
         }
       },
       {
@@ -330,35 +324,110 @@ async adjuntar() {
   await actionSheet.present();
 }
 
-  save() {
-    this.cacheService.cleanAttachDocs();
+// ✅ Nuevo método simplificado para tomar foto
+async tomarFoto() {
+  this.disableButtons = true;
+  
+  try {
+    console.log('📸 Iniciando toma de foto...');
     
-    this.filesAdjuntos.forEach(element => {
-      this.createDirectoryForActivitieSelected(
-        this.infoActivity.id,
-        element.documento.blob,
-        element.documento.extension,
-        element.idTipoArchivo
-      );
-    });
-
-    const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
-
-    const objSoportesPorActividad = {
-      idActividad: this.infoActivity.id,
-      cantidadDocumentosAdjuntos: documentosAdjuntos.length,
-    };
-
-    this.cacheService.infoActividadPorDocumento(objSoportesPorActividad);
-
-    this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
-
-    console.log("Save: ", this.filesAdjuntos)
-
-    this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
-
-    this.router.navigateByUrl('/u/execLog/pending-visits/visit-id/subjects');
+    const foto = await this.photoService.addNewToGallery();
+    
+    console.log('✅ Foto tomada, procediendo a guardar...');
+    
+    await this.attachPhotoAndSave(foto);
+    
+  } catch (err) {
+    console.error('❌ Error al tomar foto:', err);
+    
+    if (err.message.includes('Permisos') || err.message.includes('permission')) {
+      this.notification('Permisos requeridos', err.message);
+    } else {
+      this.notification('Error', err.message);
+    }
+    
+    this.disableButtons = false;
   }
+}
+
+// async adjuntar() {
+//   // Validación número máximo antes de abrir opciones
+//   const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+//   if (documentosAdjuntos.length >= 6) {
+//     this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
+//     return;
+//   }
+
+//   // Abrir action sheet para elegir tipo
+//   const actionSheet = await this.actionSheetCtrl.create({
+//     header: 'Seleccionar fuente',
+//     buttons: [
+//       {
+//         text: 'PDF',
+//         icon: 'document-outline',
+//         handler: () => {
+//           this.accionARealizar = 'documento';
+//           // abrir input file oculto
+//           const tag: any = document.getElementById('file-input');
+//           if (tag.value) { tag.value = ''; }
+//           tag.click();
+//         }
+//       },
+//       {
+//         text: 'Foto',
+//         icon: 'camera-outline',
+//         handler: async () => {
+//           this.accionARealizar = 'foto';
+//           this.disableButtons = true;
+//           try {
+//             const foto = await this.photoService.addNewToGallery();
+//             // tras tomar la foto, adjuntar y guardar automáticamente
+//             await this.attachPhotoAndSave(foto);
+//           } catch (err) {
+//             console.error('Error al tomar foto:', err);
+//             this.disableButtons = false;
+//           }
+//         }
+//       },
+//       {
+//         text: 'Cancelar',
+//         role: 'cancel'
+//       }
+//     ]
+//   });
+
+//   await actionSheet.present();
+// }
+
+  // save() {
+  //   this.cacheService.cleanAttachDocs();
+    
+  //   this.filesAdjuntos.forEach(element => {
+  //     this.createDirectoryForActivitieSelected(
+  //       this.infoActivity.id,
+  //       element.documento.blob,
+  //       element.documento.extension,
+  //       element.idTipoArchivo
+  //     );
+  //   });
+
+  //   const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+
+  //   const objSoportesPorActividad = {
+  //     idActividad: this.infoActivity.id,
+  //     cantidadDocumentosAdjuntos: documentosAdjuntos.length,
+  //   };
+
+  //   this.cacheService.infoActividadPorDocumento(objSoportesPorActividad);
+
+  //   this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
+
+  //   console.log("Save: ", this.filesAdjuntos)
+
+  //   this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
+
+  //   this.router.navigateByUrl('/u/execLog/pending-visits/visit-id/subjects');
+  // }
 
   validarTipoArchivo(tipo) {
     switch (tipo) {
