@@ -9,18 +9,25 @@ const securityConfigPath = path.join(__dirname, "../android/app/src/main/res/xml
 function updateManifest(allowHttp) {
   let manifest = fs.readFileSync(manifestPath, "utf8");
 
-  // Quitar posibles configuraciones anteriores
-  manifest = manifest.replace(/android:networkSecurityConfig="@xml\/network_security_config"/g, "");
-
+  // ✅ CORREGIDO: Manejo más seguro del networkSecurityConfig
+  const hasSecurityConfig = manifest.includes('android:networkSecurityConfig');
+  
   if (allowHttp) {
-    // Agregar la línea de configuración dentro del <application>
-    manifest = manifest.replace(
-      /<application([^>]*)>/,
-      `<application$1 android:networkSecurityConfig="@xml/network_security_config">`
-    );
-    console.log("✅ AndroidManifest.xml actualizado para permitir HTTP (entorno de prueba)");
+    if (!hasSecurityConfig) {
+      // Agregar la configuración si no existe
+      manifest = manifest.replace(
+        /<application([^>]*)>/,
+        `<application$1 android:networkSecurityConfig="@xml/network_security_config">`
+      );
+    }
+    // Si ya existe, no hacer nada (evitar duplicados)
+    console.log("✅ AndroidManifest.xml configurado para permitir HTTP (entorno de prueba)");
   } else {
-    console.log("✅ AndroidManifest.xml actualizado para producción (HTTP bloqueado)");
+    if (hasSecurityConfig) {
+      // Solo remover si existe y estamos en producción
+      manifest = manifest.replace(/ android:networkSecurityConfig="@xml\/network_security_config"/g, "");
+    }
+    console.log("✅ AndroidManifest.xml configurado para producción (HTTP bloqueado)");
   }
 
   fs.writeFileSync(manifestPath, manifest, "utf8");
@@ -29,22 +36,40 @@ function updateManifest(allowHttp) {
 function updateSecurityConfig(allowHttp) {
   const httpEnabled = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true" />
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">sproveedor-test.adacsc.co</domain>
         <domain includeSubdomains="true">sproveedor-test-dos.adacsc.co</domain>
         <domain includeSubdomains="true">sproveedor-test-tres.adacsc.co</domain>
+        <domain includeSubdomains="true">localhost</domain>
     </domain-config>
 </network-security-config>`;
 
   const httpsOnly = `<?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- Solo HTTPS permitido -->
-    <domain-config cleartextTrafficPermitted="false">
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">sproveedor.adacsc.co</domain>
         <domain includeSubdomains="true">test-positiva-webservice-proveedor-pre.adacsc.co</domain>
+        <domain includeSubdomains="true">localhost</domain>
     </domain-config>
 </network-security-config>`;
+
+  // Asegurar que el directorio existe
+  const configDir = path.dirname(securityConfigPath);
+  if (!fs.existsSync(configDir)) {
+    fs.mkdirSync(configDir, { recursive: true });
+  }
 
   fs.writeFileSync(securityConfigPath, allowHttp ? httpEnabled : httpsOnly, "utf8");
   console.log(
@@ -63,3 +88,5 @@ if (!env) {
 const allowHttp = env === "test";
 updateManifest(allowHttp);
 updateSecurityConfig(allowHttp);
+
+console.log("🎯 Configuración de red aplicada correctamente para entorno:", env.toUpperCase());
