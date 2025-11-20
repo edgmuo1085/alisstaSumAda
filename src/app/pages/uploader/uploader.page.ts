@@ -324,28 +324,40 @@ async loadImageFromDevice(event) {
   await actionSheet.present();
 }
 
-// ✅ Nuevo método simplificado para tomar foto
+// ✅ Método mejorado para tomar foto con manejo de errores
 async tomarFoto() {
   this.disableButtons = true;
   
   try {
     console.log('📸 Iniciando toma de foto...');
     
+    // ✅ Tomar la foto con el servicio mejorado
     const foto = await this.photoService.addNewToGallery();
     
     console.log('✅ Foto tomada, procediendo a guardar...');
     
+    // ✅ AHORA validar que el tipo de documento esté seleccionado
+    const tipoSeleccionado = this.formSupportType.get('type').value;
+    if (!tipoSeleccionado) {
+      this.notification('Atención', 'Primero seleccione el tipo de archivo antes de adjuntar');
+      return; // No guardamos la foto sin tipo
+    }
+    
+    // ✅ Adjuntar y guardar automáticamente
     await this.attachPhotoAndSave(foto);
     
   } catch (err) {
-    console.error('❌ Error al tomar foto:', err);
+    console.error('❌ Error al tomar foto:', JSON.stringify(err, null, 2));
     
-    if (err.message.includes('Permisos') || err.message.includes('permission')) {
-      this.notification('Permisos requeridos', err.message);
+    // Mostrar error específico al usuario (excepto cancelaciones)
+    if (err.message.includes('cancelada')) {
+      // No mostrar alerta si el usuario canceló
+      console.log('Usuario canceló la toma de foto');
     } else {
       this.notification('Error', err.message);
     }
     
+  } finally {
     this.disableButtons = false;
   }
 }
