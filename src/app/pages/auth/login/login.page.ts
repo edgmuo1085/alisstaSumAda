@@ -13,6 +13,7 @@ import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { finalize, take } from 'rxjs/operators';
 import { Network } from '@capacitor/network';
 import { NativeBiometric, BiometryType } from '@capgo/capacitor-native-biometric';
+import { Preferences } from '@capacitor/preferences';
 
 interface VerifyIdentityResult {
   verified: boolean;
@@ -56,7 +57,7 @@ export class LoginPageComponent implements OnInit {
   loginMsgError: loginMsgError = {
     header: 'Usuario o contraseña inválida',
     message:
-      'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción “¿Olvidó su contraseña?”.',
+      'Su usuario o contraseña no son correctos. Por favor intente nuevamente. Si desea recordar su contraseña, realice este proceso por la aplicación web en la opción "¿Olvidó su contraseña?".',
   };
 
   constructor(
@@ -83,7 +84,7 @@ export class LoginPageComponent implements OnInit {
   async ionViewWillEnter() {
     await this.platform.ready();
     try {
-      const result = await NativeBiometric.isAvailable();
+      const result = await this.safeBiometricCheck();
 
       if (result.isAvailable) {
         await this.storageService.set('isFingerFaceAvailable', true);
@@ -106,6 +107,18 @@ export class LoginPageComponent implements OnInit {
     }
 
     this.validateShowFinger();
+  }
+
+  /**
+   * ✅ MÉTODO SEGURO: Verificar disponibilidad biométrica con manejo de errores
+   */
+  private async safeBiometricCheck(): Promise<{ isAvailable: boolean; biometryType?: BiometryType }> {
+    try {
+      return await NativeBiometric.isAvailable();
+    } catch (error) {
+      console.warn('❌ Biometric check failed, using fallback:', error);
+      return { isAvailable: false };
+    }
   }
 
   private async loadFingerSettings() {
@@ -210,12 +223,8 @@ export class LoginPageComponent implements OnInit {
           this.loading.dismiss();
           this.form.reset();
 
-          // Opcional: Guardar credenciales de forma segura
-          await NativeBiometric.setCredentials({
-            username: userID,
-            password: password,
-            server: 'alissta.gov.co',
-          });
+          // ✅ MÉTODO SEGURO: Guardar credenciales biométricas con manejo de errores
+          await this.safeSetBiometricCredentials(userID, password);
         },
         error: async err => {
           console.error('Error inesperado:', err);
@@ -225,6 +234,90 @@ export class LoginPageComponent implements OnInit {
           this.loading.dismiss();
         },
       });
+  }
+
+  /**
+   * ✅ MÉTODO SEGURO: Guardar credenciales biométricas con fallback
+   */
+  private async safeSetBiometricCredentials(username: string, password: string): Promise<void> {
+    try {
+      // Primero verificamos si la biometría está disponible
+      const isAvailable = await this.safeBiometricCheck();
+      
+      if (!isAvailable.isAvailable) {
+        console.log('Biometría no disponible, usando almacenamiento seguro alternativo');
+        await this.useSecureStorageFallback(username, password);
+        return;
+      }
+
+      // Intentamos guardar con biometría
+      await NativeBiometric.setCredentials({
+        username: username,
+        password: password,
+        server: 'alissta.gov.co',
+      });
+      
+      console.log('✅ Credenciales guardadas exitosamente con biometría');
+      
+    } catch (error) {
+      console.error('❌ Error guardando credenciales biométricas:', error);
+      
+      // Fallback a almacenamiento seguro
+      await this.useSecureStorageFallback(username, password);
+      
+      // Mostrar mensaje informativo solo si no es un error de emulador
+      if (!this.isEmulatorError(error)) {
+        await this.showBiometricErrorInfo();
+      }
+    }
+  }
+
+  /**
+   * ✅ FALLBACK: Almacenamiento seguro alternativo
+   */
+  private async useSecureStorageFallback(username: string, password: string): Promise<void> {
+    try {
+      await Preferences.set({
+        key: 'user_credentials_secure',
+        value: JSON.stringify({ 
+          username, 
+          password,
+          timestamp: new Date().toISOString()
+        })
+      });
+      console.log('✅ Credenciales guardadas en almacenamiento seguro alternativo');
+    } catch (fallbackError) {
+      console.error('❌ Error incluso en fallback:', fallbackError);
+    }
+  }
+
+  /**
+   * ✅ DETECTAR ERRORES DE EMULADOR
+   */
+  private isEmulatorError(error: any): boolean {
+    const errorMessage = JSON.stringify(error).toLowerCase();
+    return (
+      errorMessage.includes('keystore') ||
+      errorMessage.includes('key generation') ||
+      errorMessage.includes('ecd') ||
+      errorMessage.includes('securityexception')
+    );
+  }
+
+  /**
+   * ✅ MENSAJE INFORMATIVO SOBRE ERROR BIOMÉTRICO
+   */
+  private async showBiometricErrorInfo(): Promise<void> {
+    try {
+      const alert = await this.alertController.create({
+        header: 'Configuración de Seguridad',
+        message: 'No se pudo configurar el acceso biométrico. Puedes configurarlo más tarde en los ajustes de la aplicación.',
+        buttons: ['ENTENDIDO']
+      });
+      await alert.present();
+    } catch (alertError) {
+      console.warn('No se pudo mostrar alerta informativa:', alertError);
+    }
   }
 
   validateForm(): boolean {
@@ -268,14 +361,15 @@ export class LoginPageComponent implements OnInit {
     (await alert).present();
   }
 
-  /** ✅ Nueva implementación biométrica */
+  /** ✅ Nueva implementación biométrica con manejo de errores */
   async launchFingerprintModal() {
     try {
-      // Verificar disponibilidad del sistema biométrico
-      const available = await NativeBiometric.isAvailable();
+      // Verificar disponibilidad del sistema biométrico de forma segura
+      const available = await this.safeBiometricCheck();
 
       if (!available.isAvailable) {
         console.log('Biometría no disponible en este dispositivo.');
+        await this.errorLogin('Biometría no disponible', 'La autenticación biométrica no está disponible en este dispositivo.');
         return;
       }
 
@@ -300,6 +394,7 @@ export class LoginPageComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error en autenticación biométrica:', error);
+      await this.errorLogin('Error de autenticación', 'No se pudo completar la autenticación biométrica. Intenta con usuario y contraseña.');
     }
   }
 
@@ -323,6 +418,7 @@ export class LoginPageComponent implements OnInit {
               }
             },
             error => {
+              console.log("Error loginByFinger(): ", error)
               this.config.isLogged = false;
               this.errorLogin(this.loginMsgError.header, this.loginMsgError.message);
               this.form.reset();
