@@ -1,68 +1,53 @@
+<!-- src/app/components/login/login.page.html -->
 <ion-content class="backgroundContent">
   <ion-grid>
-    <!-- Logo autenticación  -->
     <ion-row>
       <ion-col>
         <img src="../../../../assets/logos/logo_alissta.png" alt="" />
       </ion-col>
     </ion-row>
 
+    <!-- Selector de ambiente (solo en dev/test) -->
     <ion-item *ngIf="!isProd">
       <ion-label>Ambiente</ion-label>
       <ion-select [(ngModel)]="selectedIndex" (ionChange)="cambiarAmbiente()">
-        <ion-select-option *ngFor="let amb of ambientes; let i = index" [value]="i">{{ amb.nombre }}</ion-select-option>
+        <ion-select-option *ngFor="let amb of ambientes; let i = index" [value]="i">
+          {{ amb.nombre }}
+        </ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-row>
       <ion-col size="12">
-        <form [formGroup]="form" (ngSubmit)="login()">
+        <form [formGroup]="form" (ngSubmit)="submit()">
           <ion-grid>
             <ion-row>
-              <!-- Documento empleador -->
               <ion-col size="12">
-                <div class="form-group">
-                  <ion-input class="ion-text-center input digitoVerificacion" type="tel" inputmode="numeric"
-                    placeholder="Documento empleador" formControlName="employerID">
-                  </ion-input>
-                </div>
-                <div>
-                  <span class="mensajeError"
-                    *ngIf="!form.controls['employerID'].valid && form.controls['employerID'].touched">
-                    Este campo es obligatorio
-                  </span>
+                <ion-item>
+                  <ion-input formControlName="employerID" type="tel" inputmode="numeric"
+                    placeholder="Documento empleador"></ion-input>
+                </ion-item>
+                <div *ngIf="form.controls['employerID'].touched && form.controls['employerID'].invalid" class="mensajeError">
+                  Este campo es obligatorio
                 </div>
               </ion-col>
 
-              <!-- Documento usuario -->
               <ion-col size="12">
-                <div class="form-group">
-                  <ion-input class="ion-text-center input" type="tel" inputmode="numeric"
-                    placeholder="Documento usuario" formControlName="userID">
-                  </ion-input>
-                </div>
-                <div>
-                  <span class="mensajeError" *ngIf="!form.controls['userID'].valid && form.controls['userID'].touched">
-                    Este campo es obligatorio
-                  </span>
+                <ion-item>
+                  <ion-input formControlName="userID" type="tel" inputmode="numeric"
+                    placeholder="Documento usuario"></ion-input>
+                </ion-item>
+                <div *ngIf="form.controls['userID'].touched && form.controls['userID'].invalid" class="mensajeError">
+                  Este campo es obligatorio
                 </div>
               </ion-col>
 
-              <!-- Clave de acceso -->
               <ion-col size="12">
-                <div class="form-group password-container mt-3">
-                  <ion-input class="password-input" [type]="passwordType" inputmode="text" placeholder="Clave de acceso"
-                    formControlName="password">
-                  </ion-input>
-                  <button type="button" class="btnShowPassword" (click)="togglePassword()">
-                    <ion-icon class="iconShowPassword" slot="end" [name]="passwordToggleIcon"></ion-icon>
-                  </button>
-                </div>
-                <div>
-                  <span class="mensajeError"
-                    *ngIf="!form.controls['password'].valid && form.controls['password'].touched">
-                    Este campo es obligatorio
-                  </span>
+                <ion-item>
+                  <ion-input [type]="'password'" formControlName="password" placeholder="Clave de acceso"></ion-input>
+                </ion-item>
+                <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid" class="mensajeError">
+                  Contraseña inválida
                 </div>
               </ion-col>
             </ion-row>
@@ -71,27 +56,31 @@
       </ion-col>
     </ion-row>
 
-    <!-- fila de los botones -->
     <ion-row>
       <ion-col size="12">
-        <ion-button type="submit" expand="block" (click)="login()">INGRESAR</ion-button>
+        <ion-button expand="block" type="submit" (click)="submit()">INGRESAR</ion-button>
       </ion-col>
-      <ion-col size="12" *ngIf="showFinger && activateFinger">
-        <ion-button type="submit" color="secondary" expand="block" id="btnIngresoHuella"
-          (click)="launchFingerprintModal()">
+
+      <ion-col size="12" *ngIf="biometricAvailable">
+        <ion-button expand="block" color="secondary" (click)="loginWithBiometric()">
           <ion-icon slot="end" name="finger-print-outline"></ion-icon>
-          Ingresar con FaceID/TouchID</ion-button>
+          Ingresar con FaceID/TouchID
+        </ion-button>
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col size="2"></ion-col>
-      <ion-col size="10" class="ion-margin-top">
+      <ion-col size="12" class="ion-margin-top">
         <a (click)="forgotPassword()" class="olvidoPassword">¿Olvidó su contraseña?</a>
       </ion-col>
     </ion-row>
-    <ion-col size="2"></ion-col>
-    <!-- Logo positiva  -->
+
+    <ion-row>
+      <ion-col size="12" class="ion-margin-top">
+        <ion-button (click)="nave()">irnos</ion-button>
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col>
         <img class="logo" src="../../../../assets/logos/logo_positiva.png" alt="" />
