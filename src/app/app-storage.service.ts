@@ -15,7 +15,12 @@ export class AppStorageService {
   readonly KEY_LAST_EMPLOYER = 'lastEmployerID';
   readonly KEY_LAST_USERID = 'lastUserID';
 
-  constructor() {}
+  readonly KEY_INFO_USER_AUTH = 'infoUserAuth';
+  readonly KEY_SHOW_LOGIN_FINGER = 'showLoginWithFinger';
+  readonly KEY_ACTIVATE_FINGER = 'activateFinger';
+  readonly KEY_IS_LOGIN_WITH_FINGER = 'isLoginWithFinger';
+  readonly KEY_IS_FINGER_FACE_AVAILABLE = 'isFingerFaceAvailable';
+
 
   async set(key: string, value: any): Promise<void> {
     await Preferences.set({ key, value: JSON.stringify(value) });
@@ -28,7 +33,7 @@ export class AppStorageService {
       return JSON.parse(res.value) as T;
     } catch {
       // valor no JSON
-      return (res.value as unknown) as T;
+      return res.value as any as T;
     }
   }
 

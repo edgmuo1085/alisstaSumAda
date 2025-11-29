@@ -1,10 +1,8 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryVerificationComponent } from '../../../components/advisory-verification/advisory-verification.component';
 import { CacheService } from '../../../services/cache/cache.service';
-import { NetworkService } from '../../../services/network/network.service';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 
 @Component({
@@ -14,33 +12,24 @@ import { SignaturePadComponent } from 'src/app/components/signature-pad/signatur
 })
 export class SignatureQRComponent implements OnInit {
 
-  // tslint:disable-next-line: ban-types
-  public signaturePadOptions: Object = {
+  public signaturePadOptions: any = {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
     canvasHeight: 300,
   };
 
-  disableBtnSendTask = false;leerArchivos
+  disableBtnSendTask = false;
 
   infoUserARL: any;
   signatureEntered: any;
 
-  valueNetwork: any;
-
-  actasAsesoria = [];
-
   @Output() infoEnteredSignatureQR = new EventEmitter();
 
   constructor(
-    private storage: Storage,
+    private appStorage: AppStorageService,
     private cacheService: CacheService,
-    private router: Router,
-    private net: NetworkService,
-    private toastController: ToastController,
     private modalCtrl: ModalController,
-    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -48,23 +37,16 @@ export class SignatureQRComponent implements OnInit {
   }
 
   async getInfoUser() {
-    this.infoUserARL = await this.storage.get('sesion');
+    this.infoUserARL = await this.appStorage.get('sesion');
   }
 
   drawComplete(signature: string) {
-    // will be notified of szimek/signature_pad's onEnd event
     const firma = signature.split(',');
-    this.signatureEntered = firma[0].concat(',').concat(' ').concat(firma[1]);
-    console.log("valor firma: ", this.signatureEntered)
-    if (this.signatureEntered) {
-      this.disableBtnSendTask = true;
-    } else {
-      this.disableBtnSendTask = false;
-    }
+    this.signatureEntered = firma[0].concat(', ').concat(firma[1]);
+    this.disableBtnSendTask = !!this.signatureEntered;
   }
 
   drawStart() {
-    // will be notified of szimek/signature_pad's onBegin event
     console.log('begin drawing x2');
   }
 
@@ -74,7 +56,6 @@ export class SignatureQRComponent implements OnInit {
   }
 
   handleClear(isEmpty: boolean): void {
-    console.log('¿La firma está vacía?:', isEmpty);
     this.disableBtnSendTask = !isEmpty;
   }
 
@@ -89,16 +70,16 @@ export class SignatureQRComponent implements OnInit {
       documentoUsuarioARL: this.infoUserARL.idPersona,
       signatureEntered: this.signatureEntered,
     };
+
     this.infoEnteredSignatureQR.emit(infoSignatureQR);
   }
 
   async verification() {
     const infoActa = this.cacheService.getAllInfoToAdvisory();
+
     const modal = await this.modalCtrl.create({
       component: AdvisoryVerificationComponent,
-      componentProps: {
-        info: infoActa,
-      },
+      componentProps: { info: infoActa },
     });
 
     modal.present();

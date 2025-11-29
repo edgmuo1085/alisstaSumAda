@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { AlertController, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryVerificationComponent } from '../../components/advisory-verification/advisory-verification.component';
 import { ActivityListCompanyService } from '../../services/activities/activityListCompany/activity-list-company.service';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
@@ -53,6 +54,7 @@ export class SurveyAndSignaturePage implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private storage: Storage,
+    private appStorage: AppStorageService,
     private net: NetworkService,
     private photoService: PhotoServiceService,
     private loadingCtlr: LoadingController,
@@ -76,7 +78,7 @@ export class SurveyAndSignaturePage implements OnInit {
   }
 
   async getInfoUser() {
-    this.infoUserARL = await this.storage.get('sesion');
+    this.infoUserARL = await this.appStorage.get('sesion');
     console.log('this.infoUserARL', this.infoUserARL);
   }
 

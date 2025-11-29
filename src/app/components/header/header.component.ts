@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Device } from '@capacitor/device';
-import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -8,30 +8,20 @@ import { Storage } from '@ionic/storage';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  /**
-   * El headerComponent es el encargado de mostrar la información del usuario logueado en la aplicación
-   */
 
-  /**
-   * Identificador universal del dispositivo.
-   */
   deviceUUID: string;
-
-  /**
-   * Variable que contiene el nombre del usuario ingresado.
-   */
   nameUserRegister: string;
 
   constructor(
-    private storage: Storage
-  ) {} 
+    private appStorage: AppStorageService
+  ) {}
 
   async ngOnInit() {
     await this.loadDeviceUUID();
     await this.uploadInfoUser();
-  };
+  }
 
-   async loadDeviceUUID() {
+  async loadDeviceUUID() {
     try {
       const { identifier } = await Device.getId();
       this.deviceUUID = identifier;
@@ -43,8 +33,14 @@ export class HeaderComponent implements OnInit {
   }
 
   async uploadInfoUser() {
-    const nameUser = await this.storage.get('sesion');
-    const nombreCompleto = nameUser.nombres + ' ' + nameUser.apellidos;
-    this.nameUserRegister = nombreCompleto;
+    const userSession = await this.appStorage.get<any>(this.appStorage.KEY_SESSION);
+
+    if (userSession && userSession.nombres && userSession.apellidos) {
+      this.nameUserRegister = `${userSession.nombres} ${userSession.apellidos}`;
+    } else {
+      this.nameUserRegister = 'Usuario';
+      console.warn('No se encontró información del usuario en Preferences.');
+    }
   }
+
 }

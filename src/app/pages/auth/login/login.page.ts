@@ -6,8 +6,8 @@ import { Browser } from '@capacitor/browser';
 import { environment } from '../../../../environments/environment';
 import { AuthFacadeService } from 'src/app/services/Authentication/auth-facade.service';
 import { BiometricService } from 'src/app/services/Authentication/biometric.service';
-import { AppStorageService } from 'src/app/services/Authentication/app-storage.service';
 import { Router } from '@angular/router';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -43,6 +43,15 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
 async ngOnInit() {
+
+   // Intentar autologin por sesión guardada O con datos encriptados
+  const triedNormal = await this.facade.tryAutoLogin();
+  if (triedNormal) return;
+
+  // ✅ Intentar con datos encriptados (como en el componente antiguo)
+  const triedEncrypted = await this.facade.tryAutoLoginWithEncryptedInfo();
+  if (triedEncrypted) return;
+
   // Intentar autologin por sesión guardada (no biométrica)
   const tried = await this.facade.tryAutoLogin();
   if (tried) return;

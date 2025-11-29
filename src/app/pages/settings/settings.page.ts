@@ -5,8 +5,7 @@ import { ConfigService } from '../../config.service';
 import { Observable } from 'rxjs';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
-import { StorageService } from 'src/app/storage.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { ToastController } from '@ionic/angular';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { AppLauncher } from '@capacitor/app-launcher';
@@ -61,7 +60,7 @@ export class SettingsPage implements OnInit {
     private storage: Storage,
     private menuConfOptions: MenuConfiguracionService,
     private router: Router,
-    private storageService: StorageService,
+    private storageService: AppStorageService,
     private toastController: ToastController,
     private apiUrl: ApiUrlService
   ) {
@@ -162,8 +161,8 @@ async changePassword(): Promise<void> {
   /**
    * Método para cerrar la sesion voluntaria
    */
-singOff() {
-  this.storage.clear();
+async singOff() {
+  await this.storageService.clear();
   localStorage.clear();
   sessionStorage.clear();
   this.router.navigateByUrl('/login');
@@ -197,23 +196,18 @@ singOff() {
 
 async rateApp() {
   const userAgent = navigator.userAgent;
-  let dispositivo = "ios";
+  const dispositivo = userAgent.includes("Android") ? "android" : "ios";
 
-  if (userAgent.split("Android").length > 1) {
-    dispositivo = "android";
-  }
-
-  if (dispositivo == "android") {
-    // Para Android - Play Store
+  if (dispositivo === "android") {
     await AppLauncher.openUrl({
-      url: 'market://details?id=' + this.RATE_APP_IDS
+      url: this.RATE_APP_IDS.android
     });
   } else {
-    // Para iOS - App Store
     await AppLauncher.openUrl({
-      url: 'https://apps.apple.com/us/app/alissta-sum/id1534224945'
+      url: `https://apps.apple.com/us/app/${this.RATE_APP_IDS.ios}`
     });
   }
 }
+
 
 }

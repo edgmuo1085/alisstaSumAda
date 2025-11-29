@@ -5,6 +5,7 @@ import { ActivityListCompanyService } from '../../services/activities/activityLi
 import { LiberarActividades } from '../../intarfaces/interfaces';
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-release-activities',
@@ -12,149 +13,125 @@ import { NetworkService } from '../../services/network/network.service';
   styleUrls: ['./release-activities.page.scss'],
 })
 export class ReleaseActivitiesPage {
-  response: any[] = [
-    {
-      numeroDocumento: '123456',
-      name: 'Coca cola',
-      listaActividades: [
-        {
-          id: 1,
-          codigo: 'Codigo 1',
-        },
-        {
-          id: 2,
-          codigo: 'Codigo 2',
-        },
-      ],
-    },
-    {
-      numeroDocumento: '789012',
-      name: 'ADA',
-      listaActividades: [
-        {
-          id: 3,
-          codigo: 'Codigo 3',
-        },
-      ],
-    },
-  ];
-
   listActivity: any[] = [];
-
-  textoBuscar: string;
-
-  lines: string;
-
   actividadesSeleccionadas: any[] = [];
-
-  isSelectecActivity = false;
-
-  loading: any;
-
+  textoBuscar = '';
+  lines = 'none';
+  loading: HTMLIonLoadingElement | null = null;
   informacionUsuario: any;
 
   constructor(
     private loadingCtlr: LoadingController,
-    private cacheService: CacheService,
     private alertController: AlertController,
     private listActivitiesCompany: ActivityListCompanyService,
+    private cacheService: CacheService,
     private net: NetworkService,
-    private storage: Storage
-  ) {
-    this.lines = 'none';
-  }
+    private storage: Storage,                 // Ionic Storage para datos grandes
+    private appStorage: AppStorageService     // Preferences para 'sesion'
+  ) {}
 
   ionViewWillEnter() {
     this.listActivities();
     this.net.showIPAddress();
   }
 
+  // carga de datos (sesion en AppStorageService; listas grandes en Ionic Storage)
   async listActivities() {
-    this.informacionUsuario = await this.storage.get('sesion');
-    this.listActivity = await this.storage.get('listaActividades');
-    console.log("UsuarioStorageado: ", this.informacionUsuario)
-    // this.presentLoading();
-    // const actividades = await this.listActivitiesCompany.listActivityForCompany(this.informacionUsuario.idPersona).toPromise();
-    // this.listActivity = actividades.listActivitiesCompany;
-    console.log("LIstado de Actividades 2.0: ", this.listActivity);
-    // this.loading.dismiss();
+    try {
+      // SESION: usar AppStorageService (Preferences)
+      this.informacionUsuario = await this.appStorage.get(this.appStorage.KEY_SESSION);
+
+      // LISTA y demás: conservar en Ionic Storage (minúsculas)
+      this.listActivity = (await this.storage.get('listaActividades')) || [];
+
+      console.log('Usuario cargado:', this.informacionUsuario);
+      console.log('Listado de actividades:', this.listActivity);
+    } catch (err) {
+      console.error('Error listActivities:', err);
+      this.listActivity = [];
+    }
   }
 
-  search(event) {
-    this.textoBuscar = event.detail.value;
+  search(event: any) {
+    this.textoBuscar = event?.detail?.value ?? '';
   }
 
-  activitySelected(actividadSeleccionada) {
-    const idSelected = actividadSeleccionada.id;
-    const existe = this.actividadesSeleccionadas.find(item => item.id === idSelected);
-    if (existe) {
-      this.actividadesSeleccionadas.forEach(element => {
-        const item = element;
-        if (item === existe) {
-          this.actividadesSeleccionadas.splice(existe, 1);
-        }
-      });
+  activitySelected(actividadSeleccionada: any) {
+    const existeIndex = this.actividadesSeleccionadas.findIndex(item => item.id === actividadSeleccionada.id);
+    if (existeIndex !== -1) {
+      // quitar la actividad por índice
+      this.actividadesSeleccionadas.splice(existeIndex, 1);
     } else {
+      // agregar
       this.actividadesSeleccionadas.push(actividadSeleccionada);
     }
   }
 
   async liberarActividad() {
-    // Mostrar el indicador de carga
-    this.presentLoading();
-  
-    // Obtener los IDs de las actividades seleccionadas
-    const idActividadesSeleccionadas = this.actividadesSeleccionadas.map(element => element.id);
-  
-    // Crear el objeto para enviar al servidor
-    const objLiberar: LiberarActividades = {
-      ListaIdsActividades: idActividadesSeleccionadas,
-      direccionIP: this.cacheService.ipAddress,
-      CedulaUsuarioModifica: this.informacionUsuario.idPersona,
-    };
-  
-    // Llamada al servicio para liberar las actividades
-    const siLiberoActividades = await this.listActivitiesCompany.liberarActivities(objLiberar).toPromise();
-  
-    if (siLiberoActividades) {
-      // Notificar éxito
-      this.notification('Atención', 'Se logró liberar la(s) actividad(es) seleccionadas');
-  
-      // Obtener la lista de actividades del storage
-      const listaActividades = await this.storage.get('listaActividades') || [];
-  
-      // Recorrer cada elemento de la lista y filtrar las actividades migradas
-      listaActividades.forEach(actividad => {
-        if (actividad.listaActividadesMigradas) {
-          actividad.listaActividadesMigradas = actividad.listaActividadesMigradas.filter(
-            actMigrada => !idActividadesSeleccionadas.includes(actMigrada.id)
-          );
+    await this.presentLoading();
+
+    try {
+      const idsSeleccionados = this.actividadesSeleccionadas.map(a => a.id);
+
+      const objLiberar: LiberarActividades = {
+        ListaIdsActividades: idsSeleccionados,
+        direccionIP: this.cacheService.ipAddress, // volvemos a usar cacheService
+        CedulaUsuarioModifica: this.informacionUsuario?.idPersona,
+      };
+
+      // llamada al servicio
+      const siLiberoActividades = await this.listActivitiesCompany.liberarActivities(objLiberar).toPromise();
+
+      if (siLiberoActividades) {
+        this.notification('Atención', 'Se logró liberar la(s) actividad(es) seleccionadas');
+
+        // leer lista desde Ionic Storage (clave: 'listaActividades')
+        const listaActividades: any[] = (await this.storage.get('listaActividades')) || [];
+
+        // filtrar las actividades liberadas
+        for (const actividad of listaActividades) {
+          if (Array.isArray(actividad.listaActividadesMigradas)) {
+            actividad.listaActividadesMigradas = actividad.listaActividadesMigradas.filter(
+              actMigrada => !idsSeleccionados.includes(actMigrada.id)
+            );
+          }
         }
-      });
-  
-      // Guardar nuevamente en el storage la lista actualizada
-      await this.storage.set('listaActividades', listaActividades);
-  
-      // Lógica adicional (si es necesario refrescar la lista visible)
-      this.listActivities();
-    } else {
-      // Notificar error en la liberación
-      this.notification('Error', 'Ocurrió un error al tratar de liberar la(s) actividad(es)');
+
+        // persistir la lista actualizada en Ionic Storage (minúsculas)
+        await this.storage.set('listaActividades', listaActividades);
+
+        // refrescar vista
+        await this.listActivities();
+        this.actividadesSeleccionadas = [];
+      } else {
+        this.notification('Error', 'Ocurrió un error al tratar de liberar la(s) actividad(es)');
+      }
+    } catch (err) {
+      console.error('Error liberando actividades:', err);
+      this.notification('Error', 'Ocurrió un error al intentar liberar las actividades.');
+    } finally {
+      await this.dismissLoading();
     }
-  
-    // Cerrar el indicador de carga
-    this.loading.dismiss();
   }
-  
+
   async presentLoading() {
+    if (this.loading) return;
     this.loading = await this.loadingCtlr.create({
       mode: 'ios',
       message: 'Cargando',
     });
-    return this.loading.present();
+    await this.loading.present();
   }
 
-  async notification(titulo, notificacion) {
+  async dismissLoading() {
+    if (!this.loading) return;
+    try {
+      await this.loading.dismiss();
+    } catch {}
+    this.loading = null;
+  }
+
+  async notification(titulo: string, notificacion: string) {
     const alert = await this.alertController.create({
       header: titulo,
       backdropDismiss: false,
@@ -162,8 +139,6 @@ export class ReleaseActivitiesPage {
       message: notificacion,
       buttons: ['ACEPTAR'],
     });
-
-    alert.onDidDismiss();
 
     await alert.present();
   }

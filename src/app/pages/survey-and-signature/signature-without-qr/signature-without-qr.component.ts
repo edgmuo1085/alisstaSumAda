@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 
 @Component({
@@ -17,14 +17,11 @@ export class SignatureWithoutQRComponent implements OnInit {
   pollSelectedReg = false;
   pollSelectedDef = false;
 
-  answerPoll: {};
-
+  answerPoll: any;
   signatureEntered: string;
-
   signatureEnteredARL: string;
 
-  // tslint:disable-next-line: ban-types
-  public signaturePadOptions: Object = {
+  public signaturePadOptions: any = {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
@@ -33,17 +30,17 @@ export class SignatureWithoutQRComponent implements OnInit {
 
   @Input() namePersonSignature: any;
   @Input() verificationCodeInput: number;
+
   showSignature = false;
+  enableBtnGuardar = false;
 
   @Output() infoSignatureWithoutQR = new EventEmitter();
 
   infoUserARL: any;
 
-  enableBtnGuardar = false;
-
   constructor(
     private alertController: AlertController,
-    private storage: Storage
+    private appStorage: AppStorageService
   ) {}
 
   ngOnInit() {
@@ -51,7 +48,7 @@ export class SignatureWithoutQRComponent implements OnInit {
   }
 
   async getInfoUser() {
-    this.infoUserARL = await this.storage.get('sesion');
+    this.infoUserARL = await this.appStorage.get('sesion');
   }
 
   radioSelected(selectedPoll) {
@@ -64,6 +61,7 @@ export class SignatureWithoutQRComponent implements OnInit {
         this.showSignature = true;
         this.answerPoll = 'Excelente';
         break;
+
       case 'Bueno':
         this.pollSelectedBue = true;
         this.pollSelectedExce = false;
@@ -72,6 +70,7 @@ export class SignatureWithoutQRComponent implements OnInit {
         this.showSignature = true;
         this.answerPoll = 'Bueno';
         break;
+
       case 'Regular':
         this.pollSelectedReg = true;
         this.pollSelectedExce = false;
@@ -80,6 +79,7 @@ export class SignatureWithoutQRComponent implements OnInit {
         this.showSignature = true;
         this.answerPoll = 'Regular';
         break;
+
       case 'Deficiente':
         this.pollSelectedDef = true;
         this.pollSelectedExce = false;
@@ -88,25 +88,16 @@ export class SignatureWithoutQRComponent implements OnInit {
         this.showSignature = true;
         this.answerPoll = 'Deficiente';
         break;
-      default:
-        break;
     }
   }
 
   drawComplete(signature: string) {
-    
-    // const firma = this.signaturePad.toDataURL().split(',');
-    const firma =  signature.split(',');
-    this.signatureEntered = firma[0].concat(',').concat(' ').concat(firma[1]);
-    if (this.signatureEntered) {
-      this.enableBtnGuardar = true;
-    } else {
-      this.enableBtnGuardar = false;
-    }
+    const firma = signature.split(',');
+    this.signatureEntered = firma[0].concat(', ').concat(firma[1]);
+    this.enableBtnGuardar = !!this.signatureEntered;
   }
 
   drawStart() {
-    // will be notified of szimek/signature_pad's onBegin event
     console.log('begin drawing x3');
   }
 
@@ -116,7 +107,6 @@ export class SignatureWithoutQRComponent implements OnInit {
   }
 
   handleClear(isEmpty: boolean): void {
-    console.log('¿La firma está vacía?:', isEmpty);
     this.enableBtnGuardar = !isEmpty;
   }
 
@@ -125,6 +115,7 @@ export class SignatureWithoutQRComponent implements OnInit {
       answerPoll: this.answerPoll,
       signatureEntered: this.signatureEntered,
     };
+
     this.infoSignatureWithoutQR.emit(infoWithoutQR);
   }
 }

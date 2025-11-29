@@ -6,171 +6,173 @@ import { AlertController, LoadingController, ModalController } from '@ionic/angu
 import { ResendVerificationCodeComponent } from '../../components/resend-verification-code/resend-verification-code.component';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 import { ProgressBarValues } from 'src/app/intarfaces/interfaces';
+import { AppStorageService } from 'src/app/app-storage.service';
 
-/**
- * Componente para la vista de registro de ejecución.
- */
 @Component({
   selector: 'app-exec-log',
   templateUrl: './exec-log.page.html',
   styleUrls: ['./exec-log.page.scss'],
 })
 export class ExecLogPage implements OnInit {
-  /**
-   * Array de opciones del menú de ejecución de actividades
-   */
-  optMenuOptions: Observable<any[]>;
 
-  /**
-   * Array de opciones del menú de ayuda de ejecución de actividades
-   */
+  optMenuOptions: Observable<any[]>;
   optMenuHelpOptions: Observable<any[]>;
 
-  /**
-   * Variable que contiene el nombre del usuario ingresado.
-   */
-  nameUserRegister: string;
+  nameUserRegister = '';
 
   listActivity: any[] = [];
-  listActivityTotal: number = 0;
+  listActivityTotal = 0;
   showListPendingVisit = true;
   loading: any;
-   progressBar: ProgressBarValues | any = {
-      visible: false,
-      progress: 0,
-      records: 0,
-      refreshBtnEnable: false
-    };
+
+  progressBar: ProgressBarValues = {
+    visible: false,
+    progress: 0,
+    records: 0,
+    refreshBtnEnable: false,
+  };
 
   constructor(
-     private listActivitiesCompanySv: ActivityListCompanyService,
-     private loadingCtlr: LoadingController,
+    private listActivitiesCompanySv: ActivityListCompanyService,
+    private loadingCtlr: LoadingController,
     private menuConfOptions: MenuConfiguracionService,
     private modalCtrl: ModalController,
-    private storage: Storage,
+    private storage: Storage,                 // Ionic Storage se mantiene
+    private appStorage: AppStorageService,    // Usamos Preferences solo para la sesión
     private alertCtrl: AlertController
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.optMenuOptions = this.menuConfOptions.getMenuExceActivities();
     this.optMenuHelpOptions = this.menuConfOptions.getMenuHelpExceActivities();
-    this.uploadInfoUser();
+    await this.uploadInfoUser();
   }
 
   optionSelectedMenu(itemSelected) {
-    console.log("Item Seleccinado: ", itemSelected);
     switch (itemSelected.title) {
-      case 'Visitas pendientes':
-        break;
-      case 'Tareas por enviar':
-        break;
-      case 'Liberar actividades':
-        break;
       case 'Recordar código':
         this.showResendVerificationCode();
-        break;
-      case 'Ayuda PDF':
-        break;
-      case 'Instructivo':
-        break;
-      default:
         break;
     }
   }
 
+  // -------------------------
+  // Cargar nombre del usuario
+  // -------------------------
   async uploadInfoUser() {
-    const nameUser = await this.storage.get('sesion');
-    const nombreCompleto = nameUser.nombre1 + ' ' + nameUser.apellido1;
-    this.nameUserRegister = nombreCompleto;
+    const nameUser = await this.appStorage.get(this.appStorage.KEY_SESSION);
+    if (nameUser) {
+      const nombreCompleto = `${nameUser.nombre1} ${nameUser.apellido1}`;
+      this.nameUserRegister = nombreCompleto;
+    }
   }
 
+  // -------------------------
+  // Modal recordar código
+  // -------------------------
   async showResendVerificationCode() {
     const modal = await this.modalCtrl.create({
       component: ResendVerificationCodeComponent,
     });
-
-    return await modal.present();
+    await modal.present();
   }
 
+  // -------------------------
+  // Cargar lista de actividades
+  // -------------------------
   async listActivities() {
-    this.presentLoading();
-    const documentoUsuario = await this.storage.get('sesion');
+    await this.presentLoading();
+
+    const userSession = await this.appStorage.get(this.appStorage.KEY_SESSION);
+    if (!userSession) {
+      this.loading.dismiss();
+      return;
+    }
 
     setTimeout(() => {
-      //TODO: evaluar purgar memoria de array de la lista
-      this.listActivitiesCompanySv.listActivityForCompanyPerPage(documentoUsuario).subscribe(
+      this.listActivitiesCompanySv.listActivityForCompanyPerPage(userSession).subscribe(
         async response => {
-          console.log('Respuesta de actividade', response);
 
           if (response.listActivitiesCompany.length > 0) {
-            const listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
-            this.listActivityTotal = listActivityTotal;
 
+            this.listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
             const listActivity = response.listActivitiesCompany || [];
 
-            const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
-
-            console.log('Actas Guardadas Metodo: ', actasGuardadas);
+            const actasGuardadas: any[] =
+              (await this.storage.get('actasAsesoriaSinInternet')) || [];
 
             this.listActivitiesCompanySv.actasGuardadas = actasGuardadas;
             this.listActivitiesCompanySv.listActivitiesFilter(listActivity);
 
-            this.storage.set('departamentos', response.listDepartamentos);
-            this.storage.set('municipios', response.listMunicipios);
-            this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+            // Guardar en ionic storage (correcto para datos grandes)
+            await this.storage.set('departamentos', response.listDepartamentos);
+            await this.storage.set('municipios', response.listMunicipios);
+            await this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
+            await this.storage.set('listaActividades', listActivity);
 
-            // Guardar las actividades en un BD local.
-            this.storage.set('listaActividades', listActivity);
             this.listActivitiesCompanySv.setActivities(listActivity);
             this.validateDataListActivities();
+
             this.showListPendingVisit = false;
             this.loading.dismiss();
 
-            if (listActivity.length < listActivityTotal) {
-              this.listActivitiesCompanySv.progressBarValues$.subscribe(progressBarValues => {
-                (this.progressBar = progressBarValues), console.log('Progressss...!!: ', progressBarValues);
+            // Paginación de actividades
+            if (listActivity.length < this.listActivityTotal) {
+              this.listActivitiesCompanySv.progressBarValues$.subscribe(pb => {
+                this.progressBar = pb;
               });
-              this.listActivitiesCompanySv.listActivityForCompanyForPage(listActivityTotal);
+
+              this.listActivitiesCompanySv.listActivityForCompanyForPage(this.listActivityTotal);
+
               this.listActivitiesCompanySv.activities$.subscribe(async listActivitiesForPage => {
-                this.storage.set('listaActividades', listActivitiesForPage);
-                await this.storage.get('listaActividades');
-                this.validateDataListActivities();
+                await this.storage.set('listaActividades', listActivitiesForPage);
+                await this.validateDataListActivities();
               });
             } else {
-              this.listActivitiesCompanySv.presentToastActivitiesPaginator("Actividades cargadas con Exito.", "primary")
+              this.listActivitiesCompanySv.presentToastActivitiesPaginator(
+                'Actividades cargadas con éxito.',
+                'primary'
+              );
             }
+
           } else {
-            this.whitoutListActivitiesCompanyAlert()
+            await this.whitoutListActivitiesCompanyAlert();
             this.loading.dismiss();
           }
         },
         err => {
           this.loading.dismiss();
           this.showListPendingVisit = false;
-          console.log('Error: ', err);
         }
       );
-    }, 2000);
+    }, 600);
   }
 
+  // -------------------------
+  // Loading
+  // -------------------------
   async presentLoading() {
     this.loading = await this.loadingCtlr.create({
       mode: 'ios',
       message: 'Cargando',
     });
-    return this.loading.present();
+    await this.loading.present();
   }
 
+  // -------------------------
+  // Validar lista
+  // -------------------------
   async validateDataListActivities() {
     const dataListActivities = await this.storage.get('listaActividades');
-    if (dataListActivities) {
-      this.listActivity = dataListActivities.filter((a: any) => a.listaActividadesMigradas.length > 0);
-    } else {
-      this.listActivity = [];
-    }
+    this.listActivity = dataListActivities
+      ? dataListActivities.filter((a: any) => a.listaActividadesMigradas.length > 0)
+      : [];
   }
 
-    async whitoutListActivitiesCompanyAlert() {
+  // -------------------------
+  // Alert sin actividades
+  // -------------------------
+  async whitoutListActivitiesCompanyAlert() {
     const alert = await this.alertCtrl.create({
       mode: 'ios',
       header: 'Aviso',

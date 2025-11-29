@@ -11,6 +11,7 @@ import { NetworkService } from '../../services/network/network.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-responsible-signature-arl',
@@ -20,7 +21,7 @@ import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic
 export class ResponsibleSignatureARLPage implements OnInit {
   private promise: Promise<string>;
 
-  // tslint:disable-next-line: ban-types
+  // signature options
   public signaturePadOptions: Object = {
     maxWidth: 1,
     minWidth: 1,
@@ -28,44 +29,17 @@ export class ResponsibleSignatureARLPage implements OnInit {
     canvasHeight: 300,
   };
 
-  /**
-   * infoUserARL, esta variable permite saber la información del usuario logeado en la aplicación
-   */
   infoUserARL: any;
-
-  /**
-   * signatureEntered, Es la variable que almacena la firma ingresada por el personal de la ARL.
-   */
   signatureEntered: any;
-
-  /**
-   * valueNetwork, es la variable que almacena si hay o no internet para proceder a la creación del acta.
-   */
   valueNetwork: any;
-
-  /**
-   * loading, la variable para mostrar el loading al momento de enviar la información del acta.
-   */
   loading: any;
-
-  /**
-   * filesBase64, es un arreglo que almacena los base64 de los archivos que han sido leidos, que almacenaron en la actividad.
-   */
   filesBase64: any[] = [];
-
-  /**
-   * cargaArchivos, es solo una variable donde se almacena el resultado si es exitoso o no la carga del archivo.
-   */
   cargaArchivos: any;
-
-  /**
-   * actaAsesoriaGestionada, es la variable que almacena la respuesta de la creación del acta de asesoria, por ejemplo: 'true;32'
-   * el cual indica que fue creada con exito y ademas que el 32 es el número del acta de asesoría
-   */
   actaAsesoriaGestionada: any;
 
   constructor(
-    private storage: Storage,
+    private storage: Storage,                    // Ionic Storage -> datos grandes (listaActividades, actas, etc.)
+    private appStorage: AppStorageService,       // Preferences -> session small data (sesion)
     private net: NetworkService,
     private modalCtrl: ModalController,
     private photoService: PhotoServiceService,
@@ -80,6 +54,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // Obtener la sesión desde AppStorageService (Preferences)
     this.getInfoUser();
   }
 
@@ -87,250 +62,261 @@ export class ResponsibleSignatureARLPage implements OnInit {
     await this.readFile();
   }
 
+  // ---------------------------
+  // Info user (small) -> Preferences
+  // ---------------------------
   async getInfoUser() {
-    this.infoUserARL = await this.storage.get('sesion');
+    try {
+      // Use AppStorageService for 'sesion'
+      this.infoUserARL = await this.appStorage.get(this.appStorage.KEY_SESSION);
+      // fallback: some installations could still have it in ionic storage — try fallback but avoid overwriting pref
+      if (!this.infoUserARL) {
+        const fallback = await this.storage.get('sesion');
+        if (fallback) this.infoUserARL = fallback;
+      }
+    } catch (err) {
+      console.error('Error leyendo sesión:', err);
+      this.infoUserARL = null;
+    }
   }
 
   drawComplete(signature: string) {
+    if (!signature) return;
     const firma = signature.split(',');
-    this.signatureEntered = firma[0].concat(',').concat(' ').concat(firma[1]);
+    this.signatureEntered = `${firma[0]}, ${firma[1] ?? ''}`;
   }
 
   drawStart() {
-    // will be notified of szimek/signature_pad's onBegin event
-    console.log('begin drawing in ARL page');
+    // noop or log if needed
+    // console.log('begin drawing in ARL page');
   }
 
   clear(signaturePadComponent: SignaturePadComponent) {
-    signaturePadComponent.clear();
+    signaturePadComponent?.clear();
   }
 
   handleClear(isEmpty: boolean): void {
-    console.log('¿La firma está vacía?:', isEmpty);
+    // noop - handler placeholder
   }
 
   async verification() {
     const infoActa = this.cacheService.getAllInfoToAdvisory();
     const modal = await this.modalCtrl.create({
       component: AdvisoryVerificationComponent,
-      componentProps: {
-        info: infoActa,
-      },
+      componentProps: { info: infoActa },
     });
-
-    modal.present();
+    await modal.present();
   }
 
   async sendTask() {
     const infoSurveyResponsibleARL = this.getSurveyResponsibleData();
     this.cacheService.saveSurveyARL(infoSurveyResponsibleARL);
-  
+
     const checkNetwork = await this.net.testNetworkConnection();
-    const idProveedor = this.infoUserARL.idProveedor;
+    const idProveedor = this.infoUserARL?.idProveedor;
     this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
-  
+
     const files = this.getFiles();
-  
+
     if (checkNetwork) {
       await this.handleNetworkAvailable(files);
     } else {
       await this.handleNetworkUnavailable();
     }
   }
-  
+
   private getSurveyResponsibleData() {
     return {
-      responsableId: this.infoUserARL.idPersona,
-      responsableDocumento: this.infoUserARL.idPersona,
-      responsableNombre: `${this.infoUserARL.nombres} ${this.infoUserARL.apellidos}`,
-      responsableNumeroLicenciaSST: this.infoUserARL.idLicenciaSst,
-      responsableCargo: this.infoUserARL.cargo,
-      responsableRazonSocial: this.infoUserARL.nombreProveedor,
+      responsableId: this.infoUserARL?.idPersona,
+      responsableDocumento: this.infoUserARL?.idPersona,
+      responsableNombre: `${this.infoUserARL?.nombres ?? ''} ${this.infoUserARL?.apellidos ?? ''}`.trim(),
+      responsableNumeroLicenciaSST: this.infoUserARL?.idLicenciaSst,
+      responsableCargo: this.infoUserARL?.cargo,
+      responsableRazonSocial: this.infoUserARL?.nombreProveedor,
       responsableFirma: this.signatureEntered,
     };
   }
-  
 
-private async handleNetworkAvailable(files: any[]) {
-  // await this.presentLoading('Creando acta de asesoría ...');
-  await this.processTracker.startProcess('Creando acta de asesoría...');
+  private async handleNetworkAvailable(files: any[]) {
+    await this.processTracker.startProcess('Creando acta de asesoría...');
 
-  try {
-    // 1) Crear acta
-    const creacionActa = await this.createActaAsesoria();
-    if (!creacionActa) {
-      await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
-      // this.notification('Error', 'No se pudo crear el acta de asesoría');
-      return;
-    }
-    await this.processTracker.completeStep(0);
+    try {
+      const creacionActa = await this.createActaAsesoria();
+      if (!creacionActa) {
+        await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
+        return;
+      }
+      await this.processTracker.completeStep(0);
 
-    // 2) Subir archivos (solo si hay)
-    if (files && files.length) {
-      await this.processTracker.addStep('Subiendo archivos adjuntos...');
-      await this.uploadFiles(creacionActa, files); // ahora SÓLO sube archivos
+      if (files && files.length) {
+        await this.processTracker.addStep('Subiendo archivos adjuntos...');
+        await this.uploadFiles(creacionActa, files);
+        await this.processTracker.completeStep(this.stepsLength() - 1);
+      }
+
+      await this.processTracker.addStep('Enviando notificación por correo...');
+      await this.sendCorreoNotificacion(creacionActa);
       await this.processTracker.completeStep(this.stepsLength() - 1);
+
+      await this.processTracker.addStep('Actualizando lista de actividades...');
+      await this.updateListaActividades();
+      await this.processTracker.completeStep(this.stepsLength() - 1);
+
+      await this.processTracker.finish(true, 'Acta de asesoría creada');
+      this.router.navigateByUrl('/u/execLog');
+    } catch (error) {
+      console.error('Error en handleNetworkAvailable:', error);
+      await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
     }
-
-    // 3) Enviar correo (siempre, independiente de los archivos)
-    await this.processTracker.addStep('Enviando notificación por correo...');
-    await this.sendCorreoNotificacion(creacionActa);
-    await this.processTracker.completeStep(this.stepsLength() - 1);
-
-    // 4) Actualizar lista de actividades
-    await this.processTracker.addStep('Actualizando lista de actividades...');
-    await this.updateListaActividades();
-    await this.processTracker.completeStep(this.stepsLength() - 1);
-
-    // 5) Finalizar
-    await this.processTracker.finish(true, 'Acta de asesoría creada');
-    this.router.navigateByUrl('/u/execLog');
-  } catch (error) {
-    console.error('Error en handleNetworkAvailable:', error);
-    await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
-    // this.notification('Error', 'Error en el proceso, intente de nuevo.');
-  } finally {
-    try { 
-      // await this.loading?.dismiss(); 
-    } catch { /* empty */ }
   }
-}
 
+  private stepsLength(): number {
+    return (this as any).processTracker['steps']?.length || 0;
+  }
 
-
-// Helper para obtener la cantidad actual de pasos en el servicio
-private stepsLength(): number {
-  return (this as any).processTracker['steps']?.length || 0;
-}
-
-
-
-  
   private async createActaAsesoria(): Promise<string | null> {
-    let creacionActa = await this.advisoryTopicService
-      .saveActaAsesoria(this.actaAsesoriaGestionada)
-      .toPromise();
-    creacionActa = creacionActa.split(';');
-    return creacionActa[0] === 'true' && creacionActa[1] !== '-1' ? creacionActa[1] : null;
+    try {
+      let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
+      creacionActa = creacionActa?.split(';') ?? [];
+      return creacionActa[0] === 'true' && creacionActa[1] !== '-1' ? creacionActa[1] : null;
+    } catch (err) {
+      console.error('createActaAsesoria error:', err);
+      return null;
+    }
   }
-  
+
   private async uploadFiles(actaId: string, files: any[]) {
     for (const file of files) {
       const body = { ...file, UidActaAsesoria: +actaId };
-      await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
+      try {
+        await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
+      } catch (err) {
+        console.error('uploadFiles error for file:', file, err);
+        // continúa con el siguiente archivo
+      }
     }
-  
+    // limpiar fotos en memoria del servicio
     this.photoService.photos = [];
   }
-  
+
   private async updateListaActividades() {
-    const listaActividades = await this.storage.get('listaActividades');
-  
-    for (const actividad of listaActividades) {
-      const { listaActividadesMigradas } = actividad;
-  
-      for (const element of listaActividadesMigradas) {
-        const idActividad = element.id;
-        const TTA_LISTA = this.actaAsesoriaGestionada.TTA_lista;
-        const encontro = TTA_LISTA.find(x => x.id === idActividad);
-  
-        if (encontro) {
-          const index = listaActividadesMigradas.indexOf(element);
-          if (index > -1) {
-            listaActividadesMigradas.splice(index, 1);
+    try {
+      const listaActividades: any[] = (await this.storage.get('listaActividades')) || [];
+
+      if (!Array.isArray(listaActividades)) return;
+
+      for (const actividad of listaActividades) {
+        const { listaActividadesMigradas } = actividad;
+        if (!Array.isArray(listaActividadesMigradas)) continue;
+
+        for (const element of [...listaActividadesMigradas]) {
+          const idActividad = element.id;
+          const TTA_LISTA = this.actaAsesoriaGestionada?.TTA_lista ?? [];
+          const encontro = TTA_LISTA.find(x => x.id === idActividad);
+
+          if (encontro) {
+            const index = actividad.listaActividadesMigradas.indexOf(element);
+            if (index > -1) actividad.listaActividadesMigradas.splice(index, 1);
           }
-          actividad.listaActividadesMigradas = listaActividadesMigradas;
         }
       }
+
+      // persistir cambios en Ionic Storage (clave: 'listaActividades' en minúsculas)
+      await this.storage.set('listaActividades', listaActividades);
+    } catch (err) {
+      console.error('updateListaActividades error:', err);
     }
-  
-    await this.storage.set('listaActividades', listaActividades);
   }
-  
+
   private async handleNetworkUnavailable() {
-    const activitiesChange = [];
-    const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
-    const actSelec = JSON.parse(sessionStorage.companySelected);
-  
-    for (const actividad of actSelec.listaActividadesMigradas) {
-      const encontro = getInfoActaAsesoria.activities.find(
-        element => element.idActividad === actividad.idActividad
-      );
-  
-      if (encontro) {
-        encontro.estadoInterno = 'Por enviar';
-        activitiesChange.push(encontro);
-      } else {
-        activitiesChange.push(actividad);
+    try {
+      const activitiesChange: any[] = [];
+      const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
+      const actSelec = JSON.parse(sessionStorage.getItem('companySelected') || '{}');
+
+      for (const actividad of actSelec.listaActividadesMigradas || []) {
+        const encontro = (getInfoActaAsesoria.activities || []).find(
+          element => element.idActividad === actividad.idActividad
+        );
+
+        if (encontro) {
+          encontro.estadoInterno = 'Por enviar';
+          activitiesChange.push(encontro);
+        } else {
+          activitiesChange.push(actividad);
+        }
       }
-    }
-  
-    actSelec.listaActividadesMigradas = activitiesChange;
-    sessionStorage.setItem('companySelected', JSON.stringify(actSelec));
-  
-    const saveActaAsesoria = this.cacheService.saveActasAsesoria();
-    if (saveActaAsesoria) {
-      this.notification('Atención', 'Se guardo el acta de asesoría pero con estado pendiente por enviar');
-      this.router.navigateByUrl('/u/execLog');
+
+      actSelec.listaActividadesMigradas = activitiesChange;
+      sessionStorage.setItem('companySelected', JSON.stringify(actSelec));
+
+      const saveActaAsesoria = this.cacheService.saveActasAsesoria();
+      if (saveActaAsesoria) {
+        this.notification('Atención', 'Se guardo el acta de asesoría pero con estado pendiente por enviar');
+        this.router.navigateByUrl('/u/execLog');
+      }
+    } catch (err) {
+      console.error('handleNetworkUnavailable error:', err);
     }
   }
 
   private async sendCorreoNotificacion(actaId: string) {
-  if (this.actaAsesoriaGestionada?.TTA_lista?.length) {
-    for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
-      const notifCorreoActa: CorreoNotificacionActaApp = {
-        Fk_ID_ActividadMigradaPorUsuario: tta.id
-      };
-      await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+    try {
+      if (this.actaAsesoriaGestionada?.TTA_lista?.length) {
+        for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
+          const notifCorreoActa: CorreoNotificacionActaApp = {
+            Fk_ID_ActividadMigradaPorUsuario: tta.id
+          };
+          await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+        }
+      }
+    } catch (err) {
+      console.error('sendCorreoNotificacion error:', err);
     }
   }
-}
-
-  
 
   async readFile() {
-    const documentosAdjuntados = this.cacheService.saveAttach;
+    const documentosAdjuntados = this.cacheService.saveAttach || [];
 
     for (const documento of documentosAdjuntados) {
       const { nombreArchivo, idActividad, extensionBase64, tipoDocumento } = documento;
-    
+
       try {
         const data = await Filesystem.readFile({
           path: `${idActividad}/${nombreArchivo}`,
           directory: Directory.Data,
         });
-    
-        const base64 = extensionBase64.concat(',').concat(data.data);
+
+        const base64 = `${extensionBase64},${data.data}`;
         const objUploadFile = {
           UidActividadMigradaXUSuario: idActividad,
           TipoSoporte: tipoDocumento,
           Base64: base64,
         };
-    
         this.filesBase64.push(objUploadFile);
-      } catch { /* empty */ }
+      } catch (err) {
+        // si no existe archivo o error, continuar
+      }
     }
-    
   }
 
   removeFile() {
-    const activities = this.cacheService.saveAttach;
+    const activities = this.cacheService.saveAttach || [];
 
     for (const activity of activities) {
       const nombreArchivo = activity.nombreArchivo;
       const idActividad = activity.idActividad;
-    
+
       try {
         Filesystem.deleteFile({
           path: `${idActividad}/${nombreArchivo}`,
           directory: Directory.Data,
         });
-      } catch { /* empty */ }
+      } catch { /* continuar */ }
     }
-    
   }
 
-  async presentLoading(message) {
+  async presentLoading(message: string) {
     this.loading = await this.loadingCtlr.create({
       mode: 'ios',
       message,
@@ -338,17 +324,17 @@ private stepsLength(): number {
     return this.loading.present();
   }
 
-  async presentToast(message) {
+  async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,
       duration: 5000,
       position: 'top',
       color: 'danger'
     });
-    toast.present();
+    await toast.present();
   }
 
-  async notification(titulo, notificacion) {
+  async notification(titulo: string, notificacion: string) {
     const alert = await this.alertController.create({
       header: titulo,
       backdropDismiss: false,
@@ -357,40 +343,29 @@ private stepsLength(): number {
       buttons: ['ACEPTAR'],
     });
 
-    alert.onDidDismiss();
-
     await alert.present();
   }
 
   private getFiles(): any[] {
     const files: any[] = [];
-    const imagenesAdjuntas = this.cacheService.obtenerAdjuntosFoto();
+    const imagenesAdjuntas = this.cacheService.obtenerAdjuntosFoto() || [];
 
+    // archivos base64 en filesBase64
     for (const objAdjuntarDoc of this.filesBase64) {
       files.push(objAdjuntarDoc);
     }
-    
-    // for (const element of imagenesAdjuntas) {
-    //   element.forEach(async documento => {
-    //     const objAdjuntarImg = {
-    //       UidActividadMigradaXUSuario: documento.idActividad,
-    //       TipoSoporte: documento.idTipoArchivo,
-    //       base64: documento.foto.base64Imagen,
-    //     };
-    
-    //     files.push(objAdjuntarImg);
-    //   });
-    // }
 
+    // fotos en cacheService
     for (const documento of imagenesAdjuntas) {
-        const objAdjuntarImg = {
-          UidActividadMigradaXUSuario: documento.idActividad,
-          TipoSoporte: documento.idTipoArchivo,
-          base64: documento.foto.base64Imagen,
-        };
-        files.push(objAdjuntarImg);
+      const objAdjuntarImg = {
+        UidActividadMigradaXUSuario: documento.idActividad,
+        TipoSoporte: documento.idTipoArchivo,
+        base64: documento.foto?.base64Imagen,
       };
-      
+      files.push(objAdjuntarImg);
+    }
+
+    // eliminar archivos físicos
     this.removeFile();
 
     return files;

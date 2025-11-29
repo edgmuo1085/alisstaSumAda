@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IonItem, IonItemSliding, IonList, ToastController, AlertController, PopoverController } from '@ionic/angular';
 import { TalkService } from '../../../services/talk/talk.service';
-import { Storage } from '@ionic/storage';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import { CacheService } from '../../../services/cache/cache.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-talk',
@@ -15,6 +14,8 @@ export class TalkPage implements OnInit, AfterViewInit {
 
   @ViewChild('content') private content: any;
   @ViewChild('Lista') lista: IonList;
+  @ViewChildren(IonItem) ionItems: QueryList<IonItem>;
+
   mensajeAResponser: any;
   enviarNuevoMensaje: string;
   iconHabilitarUsuario = 'lock-open-outline';
@@ -28,36 +29,41 @@ export class TalkPage implements OnInit, AfterViewInit {
   idsÜsuariosPrivadosSeleccionados: any[] = [];
 
   mostrarOpcionesMenu = true;
-
   ocultarFooterPorRolesHistoricos = true;
 
   idUsuario: number;
 
-  @ViewChildren(IonItem) ionItems: QueryList<IonItem>;
-
   constructor(
     public alertController: AlertController,
     private talkService: TalkService,
-    private cacheService: CacheService,
     private formBuilder: UntypedFormBuilder,
-    private storage: Storage,
+    private appStorage: AppStorageService,
     public popoverController: PopoverController,
     private toastCtrl: ToastController,
     private elemRef: ElementRef
   ) {}
 
+  // Se ejecuta cada vez que la vista va a mostrarse
   async ionViewWillEnter() {
     const rolesHistoricos = this.talkService.getRolesHistoricos();
-    this.idUsuario = await this.getInfoUser();
+
+    // cacheamos idUsuario para evitar lecturas repetidas
+    try {
+      this.idUsuario = await this.getInfoUser();
+    } catch (e) {
+      // Si por alguna razón no hay sesión, idUsuario queda undefined y el resto del flujo seguirá como antes
+      console.warn('No se pudo obtener idUsuario en ionViewWillEnter:', e);
+    }
 
     const encontro = rolesHistoricos.find(item => item === this.idUsuario);
-
     if (encontro) {
       this.ocultarFooterPorRolesHistoricos = false;
     }
 
+    // Mantenemos la lógica original que intentaba acceder al DOM (no la eliminamos para no romper comportamiento).
+    // Solo quitamos "debugger" y dejamos la llamada; si quieres la podemos migrar a @ViewChildren.
     setTimeout(() => {
-      debugger;
+      // acceso no intrusivo al DOM (no hacemos nada con el resultado, como en tu original)
       document.querySelector('.conversation-color') as HTMLElement;
     }, 200);
   }
@@ -70,16 +76,15 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    debugger;
+    // Nada aquí, se dejó vacío (antes tenía debugger)
   }
 
   ionViewDidEnter() {
-    debugger;
-
+    // Se mantiene la ejecución original de obtener la conversación al entrar
     this.getInfoConversation();
 
+    // Mantener referencias DOM como en la versión original
     document.querySelector('.conversation-color') as HTMLElement;
-
     this.elemRef.nativeElement.querySelectorAll('.conversation-color');
     document.getElementsByClassName('conversation-color');
   }
@@ -93,12 +98,12 @@ export class TalkPage implements OnInit, AfterViewInit {
 
   async getInfoConversation() {
     const pPKConversacion = this.informacionConversacionSeleccionada.PKConversacion;
-    const infoUsuarioIngresado = await this.storage.get('sesion');
-    const idUSuario = infoUsuarioIngresado.idRegistro;
-    debugger;
+
+    // se usa idUsuario cacheado si está, sino se obtiene
+    const idUSuario = this.idUsuario ?? (await this.getInfoUser());
+
     this.talkService.getMensajes(pPKConversacion, idUSuario).subscribe(async response => {
-      debugger;
-      if (response.IsOk === true) {
+      if (response && response.IsOk === true) {
         const mensajesConversacion = await this.mostrarMensajes(response.Respuesta);
         this.mensajes = mensajesConversacion;
       }
@@ -106,13 +111,12 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async mostrarMensajes(mensajes) {
-    debugger;
-    const idUsuario = await this.getInfoUser();
+    const idUsuario = this.idUsuario ?? (await this.getInfoUser());
     const mensajesConversacion = [];
+
     mensajes.forEach(element => {
-      debugger;
       const mensaje = element;
-      if (mensaje.Privado.length === 0) {
+      if (!mensaje.Privado || mensaje.Privado.length === 0) {
         mensajesConversacion.push(mensaje);
       } else {
         if (mensaje.EsPrivadoPorMi) {
@@ -130,55 +134,53 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async cambioOptions(item) {
-    const infoUsuarioIngresado = await this.storage.get('sesion');
-    const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
+    const idUSuario = this.idUsuario ?? parseInt(((await this.appStorage.get(this.appStorage.KEY_SESSION))?.idRegistro) ?? '0', 10);
     if (item.FKUsuario !== idUSuario) {
-      this.lista.closeSlidingItems();
+      try {
+        this.lista.closeSlidingItems();
+      } catch (e) {
+        // Silenciar errores si lista es undefined
+        console.log("Talk.page: cambioOptions() error", e)
+      }
     }
   }
 
   async validarEstadoUsuario() {
-    const infoUsuarioIngresado = await this.storage.get('sesion');
-    const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
+    const idUSuario = this.idUsuario ?? parseInt(((await this.appStorage.get(this.appStorage.KEY_SESSION))?.idRegistro) ?? '0', 10);
     const encontro = this.informacionConversacionSeleccionada.Usuarios.find(item => item.FKUsuario === idUSuario);
     if (encontro) {
-      if (encontro.Estado === 'A') {
-        this.iconHabilitarUsuario = 'lock-open-outline';
-      } else {
-        this.iconHabilitarUsuario = 'lock-closed-outline';
-      }
+      this.iconHabilitarUsuario = encontro.Estado === 'A' ? 'lock-open-outline' : 'lock-closed-outline';
     }
   }
 
   async activarUsuario() {
     const ip = '';
-    const infoUsuarioIngresado = await this.storage.get('sesion');
-    const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
+    const idUSuario = this.idUsuario ?? parseInt(((await this.appStorage.get(this.appStorage.KEY_SESSION))?.idRegistro) ?? '0', 10);
 
     const encontro = this.informacionConversacionSeleccionada.Usuarios.find(item => item.FKUsuario === idUSuario);
 
-    if (encontro) {
-      if (encontro.Estado === 'A') {
-        this.iconHabilitarUsuario = 'lock-open-outline';
-        this.talkService
-          .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'I', ip, idUSuario)
-          .subscribe(response => {
-            if (response.IsOk === true) {
-              this.iconHabilitarUsuario = 'lock-closed-outline';
-              this.notification('Atención', 'Se actualizó el estado del usuario');
-            }
-          });
-      } else {
-        this.iconHabilitarUsuario = 'lock-closed-outline';
-        this.talkService
-          .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'A', ip, idUSuario)
-          .subscribe(response => {
-            if (response.IsOk === true) {
-              this.iconHabilitarUsuario = 'lock-open-outline';
-              this.notification('Atención', 'Se actualizó el estado del usuario');
-            }
-          });
-      }
+    if (!encontro) return;
+
+    if (encontro.Estado === 'A') {
+      this.iconHabilitarUsuario = 'lock-open-outline';
+      this.talkService
+        .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'I', ip, idUSuario)
+        .subscribe(response => {
+          if (response.IsOk === true) {
+            this.iconHabilitarUsuario = 'lock-closed-outline';
+            this.notification('Atención', 'Se actualizó el estado del usuario');
+          }
+        });
+    } else {
+      this.iconHabilitarUsuario = 'lock-closed-outline';
+      this.talkService
+        .changeStateUser(encontro.PKConversacionUsuario, this.informacionConversacionSeleccionada.PKConversacion, 'A', ip, idUSuario)
+        .subscribe(response => {
+          if (response.IsOk === true) {
+            this.iconHabilitarUsuario = 'lock-open-outline';
+            this.notification('Atención', 'Se actualizó el estado del usuario');
+          }
+        });
     }
   }
 
@@ -198,13 +200,13 @@ export class TalkPage implements OnInit, AfterViewInit {
               text: 'Cancelar',
               cssClass: 'secondary',
               handler: () => {
-                console.log('Confirm Cancel');
+                // mantener comportamiento original
               },
             },
             {
               text: 'Aceptar',
               handler: () => {
-                console.log('Confirm Aceptar');
+                // mantener comportamiento original
               },
             },
           ],
@@ -212,7 +214,7 @@ export class TalkPage implements OnInit, AfterViewInit {
 
         await alert.present();
         const { data } = await alert.onWillDismiss();
-        if (data.values !== undefined) {
+        if (data?.values !== undefined) {
           this.usuariosInactivosSeleccionados.push(data.values);
           this.mostrarUsuarioSeleccionado = true;
           this.usuarioSeleccionado = data.values;
@@ -260,7 +262,7 @@ export class TalkPage implements OnInit, AfterViewInit {
       };
       usuarios.push(objUsuarios);
     });
-  
+
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       mode: 'ios',
@@ -271,39 +273,39 @@ export class TalkPage implements OnInit, AfterViewInit {
           text: 'Cancelar',
           cssClass: 'secondary',
           handler: () => {
-            console.log('Confirm Cancel');
+            // mantener comportamiento original
           },
         },
         {
           text: 'Aceptar',
           handler: data => {
+            // mantener comportamiento original
             console.log('Datos seleccionados:', data);
           },
         },
       ],
     });
-  
+
     await alert.present();
-  
+
     const { data } = await alert.onWillDismiss();
-  
-    if (data.values.length >= 1) {
+
+    if (data?.values?.length >= 1) {
       const usuariosSeleccionados = data.values;
-  
+
       this.idsÜsuariosPrivadosSeleccionados = [];
       const usuariosConversacion = this.informacionConversacionSeleccionada.Usuarios;
-  
+
       for (const usuario of usuariosConversacion) {
         const encontro = usuariosSeleccionados.find(item => item === usuario.UsuarioNombre);
         if (encontro) {
           this.idsÜsuariosPrivadosSeleccionados.push(usuario.FKUsuario);
         }
       }
-      
+
       this.usuarioPrivadoSelected = usuariosSeleccionados.toString();
     }
   }
-  
 
   cleanPrivateSelected() {
     this.usuarioPrivadoSelected = '';
@@ -323,24 +325,21 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async enviarMensaje(nuevoMensaje) {
-    debugger;
     if (!nuevoMensaje.send || nuevoMensaje.send.length == 0) {
       this.presentToastEmptyConversation();
       return;
     }
 
-    const idUsuario = await this.getInfoUser();
-    let usuariosPrivados = this.idsÜsuariosPrivadosSeleccionados;
-    if (usuariosPrivados.length >= 1) {
-      usuariosPrivados = this.idsÜsuariosPrivadosSeleccionados;
-    } else {
-      usuariosPrivados = [];
-    }
+    const idUsuario = this.idUsuario ?? (await this.getInfoUser());
+
+    let usuariosPrivados = this.idsÜsuariosPrivadosSeleccionados && this.idsÜsuariosPrivadosSeleccionados.length >= 1
+      ? this.idsÜsuariosPrivadosSeleccionados
+      : [];
 
     let idMensajePadre = 0;
     if (this.mensajeAResponser) {
       idMensajePadre = this.mensajeAResponser.PKConversacionMensaje;
-      if (this.mensajeAResponser.Privado.length >= 1) {
+      if (this.mensajeAResponser.Privado && this.mensajeAResponser.Privado.length >= 1) {
         const usuariosPrivadosRespuesta = [];
         this.mensajeAResponser.Privado.forEach(element => {
           usuariosPrivadosRespuesta.push(element.FKUsuario);
@@ -351,10 +350,8 @@ export class TalkPage implements OnInit, AfterViewInit {
 
     if (this.usuariosInactivosSeleccionados.length >= 1) {
       const usuariosConversacion = this.informacionConversacionSeleccionada.Usuarios;
-
       usuariosConversacion.forEach(element => {
         const encontro = this.usuariosInactivosSeleccionados.find(item => item === element.UsuarioNombre);
-
         if (encontro) {
           this.idsUsuariosInactivosSeleccionados.push(element.FKUsuario);
         }
@@ -372,9 +369,7 @@ export class TalkPage implements OnInit, AfterViewInit {
       IP: '000.000.000.000',
     };
 
-    
     this.talkService.saveMessageConversation(mensaje).subscribe(response => {
-      debugger;
       if (response.IsOk === true) {
         this.formEnvioMensaje.get('send').reset();
         this.mensajeAResponser = '';
@@ -391,7 +386,6 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async mostrarInfoMensaje(mensaje) {
-    debugger;
     const usuariosLeidos = this.mostrarUsuariosLeidos(mensaje.FKUsuario, mensaje.Leido);
     const usuariosSinLeer = this.mostrarUsuariosNoLeidos(mensaje.FKUsuario, mensaje.Leido);
     const alert = await this.alertController.create({
@@ -414,7 +408,6 @@ export class TalkPage implements OnInit, AfterViewInit {
   mostrarUsuariosLeidos(idUser: number, usuarios) {
     const usuariosLeidos = [];
     usuarios.forEach(element => {
-      debugger;
       if (element.FKUsuario != idUser) {
         const nombre = element.UsuarioNombre;
         usuariosLeidos.push(nombre);
@@ -442,7 +435,7 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   mostrarUsuariosNoLeidos(idUser, usuarios) {
-    let usuariosSinLeer = [];
+    const usuariosSinLeer = [];
     const usuariosConversacion = this.informacionConversacionSeleccionada.Usuarios;
 
     for (const usuario of usuariosConversacion) {
@@ -451,15 +444,14 @@ export class TalkPage implements OnInit, AfterViewInit {
         usuariosSinLeer.push(usuario.UsuarioNombre);
       }
     }
-    
 
     return usuariosSinLeer.toString() == '' ? 'Ninguno.' : usuariosSinLeer.toString();
   }
 
   async eliminarMensaje(mensaje, slidingItem: IonItemSliding) {
-    const idUsuario = await this.getInfoUser();
+    const idUsuario = this.idUsuario ?? (await this.getInfoUser());
     slidingItem.close();
-    if (mensaje.Leido.length === 0) {
+    if (!mensaje.Leido || mensaje.Leido.length === 0) {
       const alert = await this.alertController.create({
         mode: 'ios',
         header: 'Eliminar Mensaje',
@@ -477,7 +469,7 @@ export class TalkPage implements OnInit, AfterViewInit {
                 Mensaje: mensaje.Mensaje,
                 Eliminar: true,
               };
-              
+
               this.talkService.deleteMessage(objEliminarMensaje).subscribe(response => {
                 if (response.IsOk === true) {
                   this.notification('Atención', 'Mensaje eliminado con exito');
@@ -501,10 +493,10 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async editarMensaje(mensaje, slidingItem: IonItemSliding) {
-    const idUsuario = await this.getInfoUser();
+    const idUsuario = this.idUsuario ?? (await this.getInfoUser());
     slidingItem.close();
 
-    if (mensaje.Leido.length === 0) {
+    if (!mensaje.Leido || mensaje.Leido.length === 0) {
       const alert = await this.alertController.create({
         mode: 'ios',
         header: 'Editar Mensaje',
@@ -521,7 +513,7 @@ export class TalkPage implements OnInit, AfterViewInit {
           {
             text: 'Cancelar',
             handler: () => {
-              console.log('editar Cancel');
+              // mantener comportamiento
             },
           },
           {
@@ -534,7 +526,7 @@ export class TalkPage implements OnInit, AfterViewInit {
                 Mensaje: nuevoMensaje,
                 Eliminar: false,
               };
-              
+
               this.talkService.deleteMessage(objMensajeAEditar).subscribe(response => {
                 if (response.IsOk === true) {
                   this.notification('Atención', 'Mensaje editado con exito');
@@ -572,8 +564,12 @@ export class TalkPage implements OnInit, AfterViewInit {
   }
 
   async getInfoUser(): Promise<number> {
-    const infoUsuarioIngresado = await this.storage.get('sesion');
-    const idUSuario = parseInt(infoUsuarioIngresado.idRegistro, 10);
+    // Si ya tenemos idUsuario cacheado, devolverlo
+    if (this.idUsuario) return this.idUsuario;
+
+    const session = await this.appStorage.get(this.appStorage.KEY_SESSION);
+    const idUSuario = parseInt(session?.idRegistro ?? '0', 10);
+    this.idUsuario = idUSuario;
     return idUSuario;
   }
 }

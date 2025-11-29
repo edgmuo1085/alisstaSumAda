@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,13 +10,13 @@ import { Storage } from '@ionic/storage';
 export class ProfilePage implements OnInit {
   infoProfile: any;
 
-  constructor(private storage: Storage) {}
+  constructor(private appStorage: AppStorageService) {}
 
   ngOnInit() {
     this.uploadInfoProfile();
   }
 
   async uploadInfoProfile() {
-    this.infoProfile = await this.storage.get('sesion');
+    this.infoProfile = await this.appStorage.get('sesion');
   }
 }

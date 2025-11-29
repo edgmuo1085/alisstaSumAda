@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
@@ -23,6 +24,7 @@ export class TasksToSendPage implements OnInit {
 
   constructor(
     private storage: Storage,
+    private appStorage: AppStorageService,
     private toastController: ToastController,
     private loadingCtlr: LoadingController,
     private cacheService: CacheService,
@@ -39,7 +41,7 @@ export class TasksToSendPage implements OnInit {
   }
 
   async getInfoUser() {
-    this.infoUserARL = await this.storage.get('sesion');
+    this.infoUserARL = await this.appStorage.get('sesion');
   }
 
   search(event) {

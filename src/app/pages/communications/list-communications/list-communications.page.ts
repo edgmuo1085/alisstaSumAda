@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TalkService } from '../../../services/talk/talk.service';
 import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
-import { Storage } from '@ionic/storage';
 import { Subscription } from 'rxjs';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-list-communications',
@@ -11,43 +11,33 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./list-communications.page.scss'],
 })
 export class ListCommunicationsPage implements OnInit {
-  /**
-   * formConsultEvent, es el formulario de consultar el evento.
-   */
   formConsultComunicaciones: UntypedFormGroup;
 
-  /**
-   * Este componente carga la lista de las comunicaciones vigentes para el dia de hoy
-   */
-
   minDate = new Date();
-
   customActionSheetOptions: any = {
     header: 'Temas de conversaciín',
     subHeader: 'Seleccione el tema de conversación',
   };
 
   talks: any;
-
   temasComunicacion: any;
   temaSeleccionado: string;
   infoUser: any;
 
   rolesVisualizarHistoricos: any[] = [];
-
   private paramsSubscription: Subscription;
 
   constructor(
     private router: Router,
     private formBuilder: UntypedFormBuilder,
-    private storage: Storage,
+    private appStorage: AppStorageService,
     private talkService: TalkService,
     private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
     this.createFormConsultComunication();
-    this.infoUser = await this.storage.get('sesion');
+    this.infoUser = await this.appStorage.get(this.appStorage.KEY_SESSION);
     this.getTemasComunicacion();
   }
 
@@ -56,7 +46,7 @@ export class ListCommunicationsPage implements OnInit {
   }
 
   ionViewDidLeave() {
-    this.paramsSubscription.unsubscribe();
+    this.paramsSubscription?.unsubscribe();
   }
 
   createFormConsultComunication() {
@@ -68,54 +58,34 @@ export class ListCommunicationsPage implements OnInit {
     });
   }
 
-  /**
-   * Obtener los temas de comunicación
-   */
   getTemasComunicacion() {
     this.talkService.getTemasComunicacion().subscribe(response => {
       this.temasComunicacion = response.temas;
-      // Guardar los roles que solo sirven para visualizar las comunicaciones y no permiten participar en las comunicaciones
       this.talkService.saveRolesHistoricos(response.RolVisHis);
     });
   }
 
-  /**
-   * Metodo cuando cambia el select de los temas seleccionados
-   */
   selectedTopic(event) {
-    this.temaSeleccionado = '';
     this.temaSeleccionado = event.detail.value;
   }
 
-  /**
-   * Buscar comunicaciones cuidado con el usuario que esta quemado
-   */
   buscarComunicacion() {
     const informacion = this.formConsultComunicaciones.value;
-    let temaComunicacion;
-    let fechaInicio;
-    let fechaFinal;
-    if (informacion.temaComunicacion === '') {
-      temaComunicacion = '-1';
-    } else {
-      temaComunicacion = informacion.temaComunicacion;
-    }
-    if (informacion.fechaInicial === '') {
-      fechaInicio = '';
-    } else {
+
+    const temaComunicacion = informacion.temaComunicacion || '-1';
+    let fechaInicio = '';
+    let fechaFinal = '';
+
+    if (informacion.fechaInicial !== '') {
       const fechaInicioIngresada = informacion.fechaInicial._d.toISOString().split('T')[0];
-      const fechaInicialIng = fechaInicioIngresada.split('-');
-      const fechaModificada = fechaInicialIng[2].concat('/').concat(fechaInicialIng[1]).concat('/').concat(fechaInicialIng[0]);
-      fechaInicio = fechaModificada;
+      const [y, m, d] = fechaInicioIngresada.split('-');
+      fechaInicio = `${d}/${m}/${y}`;
     }
 
-    if (informacion.fechaFinal === '') {
-      fechaFinal = '';
-    } else {
+    if (informacion.fechaFinal !== '') {
       const fechaFinalIngresada = informacion.fechaFinal._d.toISOString().split('T')[0];
-      const fechaFinalIng = fechaFinalIngresada.split('-');
-      const fechaModificada = fechaFinalIng[2].concat('/').concat(fechaFinalIng[1]).concat('/').concat(fechaFinalIng[0]);
-      fechaFinal = fechaModificada;
+      const [y, m, d] = fechaFinalIngresada.split('-');
+      fechaFinal = `${d}/${m}/${y}`;
     }
 
     this.talkService
@@ -134,25 +104,16 @@ export class ListCommunicationsPage implements OnInit {
       });
   }
 
-  /**
-   * Listar las comunicaciones activas para el día actual.
-   */
   getListTalks() {
     const informacion = this.formConsultComunicaciones.value;
-    let temaComunicacion;
-    if (informacion.temaComunicacion === '') {
-      temaComunicacion = '-1';
-    } else {
-      temaComunicacion = informacion.temaComunicacion;
-    }
-    let startDate: string = '';
-    let endDate: string = '';
+    const temaComunicacion = informacion.temaComunicacion || '-1';
+
     this.talkService
       .searchComunicacion(
         informacion.razonSocial,
         temaComunicacion,
-        startDate,
-        endDate,
+        '',
+        '',
         this.infoUser.idRegistro,
         this.infoUser.idRol
       )
@@ -161,10 +122,10 @@ export class ListCommunicationsPage implements OnInit {
           this.talks = response.Respuesta;
 
           this.paramsSubscription = this.route.params.subscribe(params => {
-            let param = params['communicationId'];
+            const param = params['communicationId'];
             if (param) {
-              let communicationId: number = +param;
-              let talk = this.talks.find(talk => talk.PKConversacion == communicationId);
+              const communicationId: number = +param;
+              const talk = this.talks.find(t => t.PKConversacion == communicationId);
               this.selectTalk(talk);
             }
           });
@@ -173,13 +134,9 @@ export class ListCommunicationsPage implements OnInit {
   }
 
   private dateToString(date: Date): string {
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   }
 
-  /**
-   * @param selectedTalk este es el metodo que permite seleccionar una conversación para ver los diferentes
-   * comentarios que esta tiene.
-   */
   selectTalk(selectedTalk) {
     this.talkService.saveSelectedCoversation(selectedTalk);
     this.router.navigateByUrl(`u/talk/${selectedTalk.PKConversacion}`);

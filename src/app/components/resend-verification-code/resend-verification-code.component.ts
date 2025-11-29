@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class ResendVerificationCodeComponent {
   constructor(
     private modalCtrl: ModalController,
     private listActivitiesCompany: ActivityListCompanyService,
-    private storage: Storage,
+    private appStorage: AppStorageService,
     private activityListCompany: ActivityListCompanyService,
     private loadingCtlr: LoadingController,
     private alertController: AlertController
@@ -36,7 +36,7 @@ export class ResendVerificationCodeComponent {
    * listActivities() lista las actividades dependiendo de las actividades migradas al usuario que se logueo en la app
    */
 async listActivities() {
-    this.listaResponsables = await this.storage.get('listaActividades');
+    this.listaResponsables = await this.appStorage.get('listaActividades');
     let responsables = [];
     for (const responsable of this.listaResponsables) {
       if (responsable.listaReposables.length > 0) {

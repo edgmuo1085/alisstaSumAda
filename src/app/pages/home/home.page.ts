@@ -4,7 +4,7 @@ import { MenuConfiguracionService } from '../../services/menu-configuracion.serv
 import { Router } from '@angular/router';
 import { Platform, ToastController, AlertController } from '@ionic/angular';
 import { NativeBiometric, BiometryType } from '@capgo/capacitor-native-biometric';
-import { StorageService } from 'src/app/storage.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +23,7 @@ export class HomePage implements OnInit {
     private alertController: AlertController,
     private menuService: MenuConfiguracionService,
     private platform: Platform,
-    private storageService: StorageService
+    private storageService: AppStorageService
   ) {}
 
   ngOnInit() {

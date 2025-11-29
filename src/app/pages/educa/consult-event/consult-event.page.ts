@@ -3,10 +3,10 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { ResponsableEvento } from 'src/app/intarfaces/interfaces';
 import { CacheService } from '../../../services/cache/cache.service';
 import { EventService } from '../../../services/event/event.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-consult-event',
@@ -14,45 +14,23 @@ import { EventService } from '../../../services/event/event.service';
   styleUrls: ['./consult-event.page.scss'],
 })
 export class ConsultEventPage {
-  /**
-   * formConsultEvent, es el formulario de consultar el evento.
-   */
   formConsultEvent: UntypedFormGroup;
 
-  /**
-   * dataEvent, la variable de la fecha actual del sistema
-   * dateMin, para validar que el usuario no seleccione una fecha pasada
-   * customPickerOptions, para que las opciones del iondatetime sean personalizadas.
-   */
-  dateEvent;
+  dateEvent: string;
   dateMin = Date();
-  customPickerOption: any;
-  months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  /**
-   * Variable que almacenara las sucursales
-   */
   branchOffices: any[] = [];
-
-  /**
-   * Variable que almacena los municipios
-   */
   municipalities: any[] = [];
-
-  /**
-   * Variable que almacena los eventos
-   */
   eventsBranchOffice: any[] = [];
-  eventSelectedList: any;
 
-  loading: any;
+  loading: HTMLIonLoadingElement | null = null;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private eventService: EventService,
     private cacheService: CacheService,
     private loadingCtlr: LoadingController,
-    private storage: Storage,
+    private storage: AppStorageService,
     private alertController: AlertController,
     private router: Router
   ) {}
@@ -67,10 +45,7 @@ export class ConsultEventPage {
     this.getBranchsEvent();
   }
 
-  /**
-   * Método para crear el formulario para consultar el evento
-   */
-
+  /** Crear formulario */
   createFormConsultEvent() {
     this.formConsultEvent = this.formBuilder.group({
       dateEvent: [{ value: this.dateEvent, disabled: true }, Validators.required],
@@ -78,158 +53,126 @@ export class ConsultEventPage {
       municipality: ['', Validators.required],
       event: ['', Validators.required],
       geo: [false, Validators.required],
-      geoText: [''],
+      geoText: ['']
     });
   }
 
-  /**
-   * Cargar las sucursales de los eventos acorde a la fecha del sistema
-   */
-  async getBranchsEvent(): Promise<void> {
-    await this.presentLoading();
-
-    setTimeout(() => {
-      this.eventService.getBranchOfficeEvent().subscribe(
-        response => {
-          this.branchOffices = response.Sucursales;
-          this.loading.dismiss();
-        },
-        err => {
-          this.loading.dismiss();
-        }
-      );
-    }, 1500);
+  /** Loading */
+  async presentLoading(message = 'Cargando') {
+    this.loading = await this.loadingCtlr.create({ mode: 'ios', message });
+    await this.loading.present();
   }
 
-  /**
-   * Cuando seleccionan una sucursal y de esta manera cargan los municipios
-   */
-  async selectedBranchOffice(branchSelected: any): Promise<void> {
-    const branchOfficeId = branchSelected.detail.value;
-
-    if ([undefined, null, ''].indexOf(branchOfficeId) > -1) {
-      return;
+  async dismissLoading() {
+    if (this.loading) {
+      await this.loading.dismiss();
+      this.loading = null;
     }
-
-    await this.presentLoading();
-
-    setTimeout(() => {
-      this.eventService.getMunicipyBrachOffice(branchOfficeId).subscribe(
-        response => {
-          this.municipalities = [];
-          this.municipalities = response.Municipios;
-          this.loading.dismiss();
-        },
-        err => {
-          this.loading.dismiss();
-        }
-      );
-    }, 1500);
   }
 
-  /**
-   * Cuando selecciona un municipio y de esta manera cargan los eventos que hay en el municipio.
-   */
-  async selectedMunicipy(municipySelected: any): Promise<void> {
-    const municipyId = municipySelected.detail.value;
-
-    if ([undefined, null, ''].indexOf(municipyId) > -1) {
-      return;
-    }
-
+  /** Cargar sucursales */
+  async getBranchsEvent() {
     await this.presentLoading();
 
-    this.eventService.getEventForMunicipy(municipyId).subscribe(
-      response => {
-        this.eventsBranchOffice = [];
-        this.eventsBranchOffice = response.Eventos;
-        this.loading.dismiss();
+    this.eventService.getBranchOfficeEvent().subscribe({
+      next: res => {
+        this.branchOffices = res.Sucursales || [];
+        this.dismissLoading();
       },
-      err => {
-        this.loading.dismiss();
-      }
-    );
+      error: () => this.dismissLoading()
+    });
   }
 
-  /**
-   * Cuando se se da click a seleccionar al evento para realizar el registro
-   * Este metodo primero saca la información del usuario que esta en el storage en una variable llamada sesion
-   * Se crea un objeto newRegisterResponsibleEvent el cual se enviara para guardar el registro de
-   * responsable del evento, si es exitoso lo redirecciona a selectRegisterEvent
-   */
-  async selectEvent() {
-    const documentUsuarioRegistrado = await this.storage.get('sesion');
-    setTimeout(() => {
-      sessionStorage.nombreEvento = this.formConsultEvent.value.event.Evento;
-      if (this.formConsultEvent.valid) {
-        const newRegisterResponsibleEvent: ResponsableEvento = {
-          FK_ID_Evento: this.formConsultEvent.controls.event.value.Fk_Id_Evento,
-          strDocumentoUsuario: documentUsuarioRegistrado.idPersona,
-          dtmFechaRegistro: this.formConsultEvent.controls.dateEvent.value,
-          strGeoposicionamiento: this.formConsultEvent.controls.geoText.value,
-        };
-        this.cacheService.saveRegisterEvent(newRegisterResponsibleEvent);
-        this.eventService.createEventResponsible(newRegisterResponsibleEvent).subscribe(
-          response => {
-            this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent');
-          },
-          err => {
-            this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent');
-          }
-        );
-        this.formConsultEvent.reset();
-      } else {
-        this.Alert();
-      }
-    }, 1000);
-  }
+  /** Seleccionar sucursal */
+  async selectedBranchOffice(ev: any) {
+    const branchOfficeId = ev.detail.value;
+    if (!branchOfficeId) return;
 
-  /**
-   * Al seleccionar el posicionamiento de geolocalización
-   */
-async changeGeo(event): Promise<void> {
-  if (event.detail.checked) {
     await this.presentLoading();
+
+    this.eventService.getMunicipyBrachOffice(branchOfficeId).subscribe({
+      next: res => {
+        this.municipalities = res.Municipios || [];
+        this.dismissLoading();
+      },
+      error: () => this.dismissLoading()
+    });
+  }
+
+  /** Seleccionar municipio */
+  async selectedMunicipy(ev: any) {
+    const municipyId = ev.detail.value;
+    if (!municipyId) return;
+
+    await this.presentLoading();
+
+    this.eventService.getEventForMunicipy(municipyId).subscribe({
+      next: res => {
+        this.eventsBranchOffice = res.Eventos || [];
+        this.dismissLoading();
+      },
+      error: () => this.dismissLoading()
+    });
+  }
+
+  /** Registrar evento */
+  async selectEvent() {
+    const sesion = await this.storage.get(this.storage.KEY_SESSION);   // ← MIGRADO CORRECTO
+
+    if (!sesion || !this.formConsultEvent.valid) {
+      return this.Alert();
+    }
+
+    sessionStorage.nombreEvento = this.formConsultEvent.value.event?.Evento;
+
+    const payload: ResponsableEvento = {
+      FK_ID_Evento: this.formConsultEvent.value.event.Fk_Id_Evento,
+      strDocumentoUsuario: sesion.idPersona,
+      dtmFechaRegistro: this.formConsultEvent.controls.dateEvent.value,
+      strGeoposicionamiento: this.formConsultEvent.value.geoText
+    };
+
+    this.cacheService.saveRegisterEvent(payload);
+
+    this.eventService.createEventResponsible(payload).subscribe({
+      next: () => this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent'),
+      error: () => this.router.navigateByUrl('/u/consultEvent/selectRegisterEvent')
+    });
+
+    this.formConsultEvent.reset({ geo: false });
+  }
+
+  /** Geolocalización */
+  async changeGeo(event: any) {
+    if (!event.detail.checked) {
+      this.formConsultEvent.controls.geoText.setValue('');
+      return;
+    }
+
+    await this.presentLoading('Obteniendo ubicación...');
 
     try {
-      // Solicitar permisos primero
       const permission = await Geolocation.requestPermissions();
-      
       if (permission.location !== 'granted') {
-        throw new Error('Permisos de ubicación no concedidos');
+        throw new Error();
       }
 
-      // Obtener ubicación con timeout
-      const response = await Geolocation.getCurrentPosition({
+      const pos = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 10000
       });
 
-      const coords = response.coords.latitude + ',' + response.coords.longitude;
+      const coords = `${pos.coords.latitude},${pos.coords.longitude}`;
       this.formConsultEvent.controls.geoText.setValue(coords);
-
-    } catch (error: any) {
-      console.log('Error obteniendo geolocalización:', error);
-      // En caso de error, simplemente no establecer valor o manejarlo según necesites
-    } finally {
-      // Asegurar que el loading se cierre en todos los casos
-      if (this.loading) {
-        this.loading.dismiss();
-      }
+    } catch {
+      this.formConsultEvent.controls.geo.setValue(false);
+      this.formConsultEvent.controls.geoText.setValue('');
     }
-  } else {
-    this.formConsultEvent.controls.geoText.setValue('');
-  }
-}
 
-  async presentLoading() {
-    this.loading = await this.loadingCtlr.create({
-      mode: 'ios',
-      message: 'Cargando',
-    });
-    return this.loading.present();
+    await this.dismissLoading();
   }
 
+  /** Alert */
   async Alert() {
     const alert = await this.alertController.create({
       header: 'Atención',
@@ -237,7 +180,6 @@ async changeGeo(event): Promise<void> {
       message: 'Todos los campos son obligatorios.',
       buttons: ['ACEPTAR'],
     });
-
     await alert.present();
   }
 }

@@ -3,8 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 import { CacheService } from '../../services/cache/cache.service';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Component({
   selector: 'app-company-info',
@@ -19,33 +19,27 @@ export class CompanyInfoPage {
   coords: string;
 
   departments = [];
-
   cities = [];
-
   getCities: any[] = [];
 
-  /**
-   * Ruta de la vista de comentarios.
-   */
   private readonly COMMENTS_PATH = '/u/execLog/pending-visits/visit-id/company-info/comments';
-
-  /**
-   * Ruta de la vista de recomendaciones.
-   */
   private readonly RECOMMENDATION_PATH = '/u/execLog/pending-visits/visit-id/recommendation';
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private cacheService: CacheService,
-    private storage: Storage,
+    private appStorage: AppStorageService,
     public alertController: AlertController,
     private router: Router
   ) {}
 
   async ionViewWillEnter() {
     this.infoCompany = JSON.parse(sessionStorage.companySelected);
-    this.departments = await this.storage.get('departamentos');
-    this.cities = await this.storage.get('municipios');
+
+    // 🟢 Migrado a AppStorageService
+    this.departments = await this.appStorage.get('departamentos');
+    this.cities = await this.appStorage.get('municipios');
+
     const departamento = {
       detail: {
         value: this.infoCompany.departamentoDescripcion,
@@ -56,6 +50,7 @@ export class CompanyInfoPage {
 
   ionViewDidEnter() {
     this.createFormInfoCompany();
+
     const infoCompany = this.cacheService.getSaveInfoCompany();
 
     this.formInfoCompany.patchValue({
@@ -82,14 +77,12 @@ export class CompanyInfoPage {
 
   async getGeolocation() {
     try {
-      // Solicitar permisos primero
       const permission = await Geolocation.requestPermissions();
 
       if (permission.location !== 'granted') {
         throw new Error('Permisos de ubicación no concedidos');
       }
 
-      // Obtener ubicación con timeout
       const response = await Geolocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 10000,
@@ -98,10 +91,8 @@ export class CompanyInfoPage {
       this.coords = response.coords.latitude + ',' + response.coords.longitude;
       this.formInfoCompany.controls.locationCompany.setValue(this.coords);
     } catch (error: any) {
-      console.log('Error geolocalización:', error);
 
       if (error.message?.includes('denied') || error.code === 'NOT_AUTHORIZED') {
-        // Permisos denegados - mostrar alerta
         const alert = await this.alertController.create({
           header: 'Atención',
           backdropDismiss: false,
@@ -112,8 +103,6 @@ export class CompanyInfoPage {
 
         await alert.present();
       } else {
-        // Cualquier otro error (timeout, desarrollo, GPS no disponible)
-        // Similar al error.code === 1 anterior - quitar validadores
         this.formInfoCompany.controls.locationCompany.clearValidators();
         this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
       }
@@ -122,9 +111,7 @@ export class CompanyInfoPage {
 
   changeDepartment(event) {
     const departmentSelected = event.detail.value;
-    this.getCities = [];
-    const result = this.cities.filter(x => x.NombreDepartamento === departmentSelected);
-    this.getCities = result;
+    this.getCities = this.cities.filter(x => x.NombreDepartamento === departmentSelected);
   }
 
   async showAlertInfoCompany() {
@@ -141,14 +128,15 @@ export class CompanyInfoPage {
   next() {
     if (this.formInfoCompany.invalid) {
       this.showAlertInfoCompany();
-
       return;
     }
 
     const depart = this.departments.find(dep => dep.Nombre === this.formInfoCompany.value.Department);
     const departId = depart.IdDepartamento;
+
     const munic = this.cities.find(munic => munic.NombreDepartamento === this.formInfoCompany.value.Department);
     const municipioId = munic.IdMunicipio;
+
     const coordenadas = this.formInfoCompany.value.locationCompany.split(',');
 
     const infoCompanySelected = {
@@ -159,7 +147,7 @@ export class CompanyInfoPage {
       latitud: coordenadas[0],
       longitud: coordenadas[1],
       telefono: this.formInfoCompany.value.phoneContact,
-      emailContacto: this.formInfoCompany.value.emailContact,
+      emailContacto: this.infoCompany.emailContacto ?? null,
       departamento: this.formInfoCompany.value.Department,
       departamentoId: departId,
       municipio: this.formInfoCompany.value.municipality,
@@ -167,20 +155,14 @@ export class CompanyInfoPage {
     };
 
     this.cacheService.saveInfoCompany(infoCompanySelected);
+
     const path = this.getNextPage();
     this.router.navigateByUrl(path);
   }
 
-  /**
-   * Determina la ruta de la siguiente página de acuerdo a si en el conjunto de actividades
-   * seleccionada existe alguna con recomendaciones, por lo que hay que mostrar el formulario
-   * de recomendaciones. De no existir ninguna, sigue a la vista de comentarios de la visita.
-   */
   private getNextPage(): string {
     const actividadesSeleccionadas = this.cacheService.activitiesSelectedForExec;
     const found = actividadesSeleccionadas.find(a => a.siniestro);
-    const path = found ? `${this.RECOMMENDATION_PATH}/${found.id}` : this.COMMENTS_PATH;
-
-    return path;
+    return found ? `${this.RECOMMENDATION_PATH}/${found.id}` : this.COMMENTS_PATH;
   }
 }

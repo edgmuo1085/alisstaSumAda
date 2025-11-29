@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { finalize } from 'rxjs/operators';
+import { AppStorageService } from 'src/app/app-storage.service';
 import { AlertService } from 'src/app/services/alert/alert.service';
 import { CompaniesService } from 'src/app/services/companies/companies.service';
-import { StorageService } from 'src/app/storage.service';
 
 /**
  * Componente para la vista de listado de empresas migradas.
@@ -26,7 +26,7 @@ export class ListPage {
 
   constructor(
     private companiesService: CompaniesService,
-    private storageService: StorageService,
+    private storageService: AppStorageService,
     private alertService: AlertService
   ) {}
 
