@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import { CacheService } from '../../services/cache/cache.service';
-import { AppStorageService } from 'src/app/app-storage.service';
+// import { AppStorageService } from 'src/app/app-storage.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-company-info',
@@ -28,7 +29,8 @@ export class CompanyInfoPage {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private cacheService: CacheService,
-    private appStorage: AppStorageService,
+    // private appStorage: AppStorageService,
+    private storage: Storage,
     public alertController: AlertController,
     private router: Router
   ) {}
@@ -37,8 +39,8 @@ export class CompanyInfoPage {
     this.infoCompany = JSON.parse(sessionStorage.companySelected);
 
     // 🟢 Migrado a AppStorageService
-    this.departments = await this.appStorage.get('departamentos');
-    this.cities = await this.appStorage.get('municipios');
+    this.departments = await this.storage.get('departamentos');
+    this.cities = await this.storage.get('municipios');
 
     const departamento = {
       detail: {
