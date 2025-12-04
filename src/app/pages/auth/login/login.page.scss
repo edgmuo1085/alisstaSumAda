@@ -28,6 +28,7 @@ ion-grid {
       border: 1px solid #516f7a;
       border-radius: 50px;
       padding: 2px 15px;
+      margin-top: 10px;
     }
 
     /* Ajuste del input */
@@ -35,6 +36,10 @@ ion-grid {
       flex-grow: 1;
       text-align: center;
       font-size: 16px;
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
     }
 
     /* Estilos del botón de mostrar/ocultar */
@@ -48,6 +53,7 @@ ion-grid {
       align-items: center;
       justify-content: center;
       z-index: 10;
+      padding: 8px;
     }
 
     .iconShowPassword {
@@ -64,10 +70,16 @@ ion-grid {
       width: 100%;
       text-align: center;
       font-size: 16px;
+      background: var(--ion-background-color, #fff);
+      
+      &.digitoVerificacion {
+        font-size: 13.5px;
+      }
     }
 
-    .digitoVerificacion {
-      font-size: 13.5px;
+    /* Clase para el grupo del formulario */
+    .form-group {
+      width: 100%;
     }
 
     /* Mensaje de error */
@@ -75,6 +87,26 @@ ion-grid {
       font-size: 15px;
       margin-left: 10px;
       color: red;
+      margin-top: 5px;
+      display: block;
     }
   }
+}
+
+/* Ajustes adicionales para el enlace de olvidó contraseña */
+.olvidoPassword {
+  color: #304b58;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Ajustes para el logo */
+.logo {
+  margin-top: 20px;
+}
+
+/* Clase para el margen superior */
+.mt-3 {
+  margin-top: 1rem;
 }

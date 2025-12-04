@@ -22,30 +22,41 @@
         <form [formGroup]="form" (ngSubmit)="submit()">
           <ion-grid>
             <ion-row>
+              <!-- Documento empleador -->
               <ion-col size="12">
-                <ion-item>
-                  <ion-input formControlName="employerID" type="tel" inputmode="numeric"
-                    placeholder="Documento empleador"></ion-input>
-                </ion-item>
+                <div class="form-group">
+                  <ion-input class="ion-text-center input digitoVerificacion" type="tel" inputmode="numeric"
+                    placeholder="Documento empleador" formControlName="employerID">
+                  </ion-input>
+                </div>
                 <div *ngIf="form.controls['employerID'].touched && form.controls['employerID'].invalid" class="mensajeError">
                   Este campo es obligatorio
                 </div>
               </ion-col>
 
+              <!-- Documento usuario -->
               <ion-col size="12">
-                <ion-item>
-                  <ion-input formControlName="userID" type="tel" inputmode="numeric"
-                    placeholder="Documento usuario"></ion-input>
-                </ion-item>
+                <div class="form-group">
+                  <ion-input class="ion-text-center input" type="tel" inputmode="numeric"
+                    placeholder="Documento usuario" formControlName="userID">
+                  </ion-input>
+                </div>
                 <div *ngIf="form.controls['userID'].touched && form.controls['userID'].invalid" class="mensajeError">
                   Este campo es obligatorio
                 </div>
               </ion-col>
 
+              <!-- Clave de acceso -->
               <ion-col size="12">
-                <ion-item>
-                  <ion-input [type]="'password'" formControlName="password" placeholder="Clave de acceso"></ion-input>
-                </ion-item>
+                <div class="form-group password-container mt-3">
+                  <ion-input class="password-input" [type]="passwordType" inputmode="text" placeholder="Clave de acceso"
+                    formControlName="password">
+                  </ion-input>
+                  <!-- Botón para mostrar/ocultar contraseña -->
+                  <button type="button" class="btnShowPassword" (click)="togglePassword()">
+                    <ion-icon class="iconShowPassword" slot="end" [name]="passwordToggleIcon"></ion-icon>
+                  </button>
+                </div>
                 <div *ngIf="form.controls['password'].touched && form.controls['password'].invalid" class="mensajeError">
                   Contraseña inválida
                 </div>
@@ -56,6 +67,7 @@
       </ion-col>
     </ion-row>
 
+    <!-- Botones -->
     <ion-row>
       <ion-col size="12">
         <ion-button expand="block" type="submit" (click)="submit()">INGRESAR</ion-button>
@@ -70,11 +82,14 @@
     </ion-row>
 
     <ion-row>
-      <ion-col size="12" class="ion-margin-top">
+      <ion-col size="2"></ion-col>
+      <ion-col size="10" class="ion-margin-top">
         <a (click)="forgotPassword()" class="olvidoPassword">¿Olvidó su contraseña?</a>
       </ion-col>
     </ion-row>
+    <ion-col size="2"></ion-col>
 
+    <!-- Logo positiva -->
     <ion-row>
       <ion-col>
         <img class="logo" src="../../../../assets/logos/logo_positiva.png" alt="" />

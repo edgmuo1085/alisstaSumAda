@@ -35,6 +35,12 @@ export class LoginPageComponent implements OnInit {
   ambientes = environment.ambientes || [];
   selectedIndex:number;
   isProd = environment.production;
+  
+  // Variables para mostrar/ocultar contraseña (como en el antiguo)
+  passwordToggleIcon = 'eye-off';
+  passwordType = 'password';
+  private readonly SHOW_PASSWORD_ICON = 'eye';
+  private readonly HIDE_PASSWORD_ICON = 'eye-off';
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -80,7 +86,7 @@ export class LoginPageComponent implements OnInit {
     this.biometricAvailable = !!creds;
   }
 
-    private async loadSelectedAmbiente() {
+  private async loadSelectedAmbiente() {
     try {
       // Obtener el ambiente guardado del storage
       const ambienteGuardado = await this.storage.get('ambienteSeleccionado');
@@ -97,6 +103,16 @@ export class LoginPageComponent implements OnInit {
       console.error('Error cargando ambiente:', error);
       this.selectedIndex = environment.ambienteSeleccionado;
     }
+  }
+
+  /**
+   * Muestra u oculta la contraseña en el control de usuario.
+   * (Funcionalidad del componente antiguo)
+   */
+  togglePassword(): void {
+    this.passwordToggleIcon = this.passwordToggleIcon === this.HIDE_PASSWORD_ICON ? this.SHOW_PASSWORD_ICON : this.HIDE_PASSWORD_ICON;
+    this.passwordType = this.passwordToggleIcon === this.SHOW_PASSWORD_ICON ? 'text' : 'password';
+    console.log("pass toggle: ", this.passwordType)
   }
 
   async submit() {
