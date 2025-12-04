@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { Ambiente } from 'src/environments/environment.interface';
+import { AppStorageService } from 'src/app/app-storage.service';
 
-const STORAGE_KEY = 'ambienteSeleccionado';
 
 @Injectable({
   providedIn: 'root',
@@ -13,38 +13,60 @@ export class ApiUrlService {
   private loginUrlSubject$: BehaviorSubject<string>;
   private baseUrlRecoveryPassSubject$: BehaviorSubject<string>;
   private ambienteNombreSubject: BehaviorSubject<string>;
+  private initializedSubject = new BehaviorSubject<boolean>(false);
+  public initialized$ = this.initializedSubject.asObservable();
 
   public baseUrl$; 
   public loginUrl$;
   public ambienteNombre$;
 
-  constructor() {
-    const almacenado = localStorage.getItem(STORAGE_KEY);
-    const index = almacenado !== null ? parseInt(almacenado, 10) : environment.ambienteSeleccionado;
-
-    const ambiente: Ambiente = !environment.production
-      ? environment.ambientes[index] || environment.ambientes[0]
-      : { nombre: 'Producción', url: environment.ambienteFijo, recoveryPass: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM' };
-
-    this.baseUrlSubject$ = new BehaviorSubject<string>(ambiente.url);
-    this.loginUrlSubject$ = new BehaviorSubject<string>(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
-    this.baseUrlRecoveryPassSubject$ = new BehaviorSubject<string>(ambiente.recoveryPass);
-    this.ambienteNombreSubject = new BehaviorSubject<string>(ambiente.nombre);
-
-    this.baseUrl$ = this.baseUrlSubject$.asObservable();
-    this.loginUrl$ = this.loginUrlSubject$.asObservable();
-    this.ambienteNombre$ = this.ambienteNombreSubject.asObservable();
+ constructor(private appStorage: AppStorageService) {
+    this.initializeService();
   }
 
-  public setAmbiente(index: number): void {
+private async initializeService() {
+    try {
+      const almacenado = await this.appStorage.get('ambienteSeleccionado');
+      const index = almacenado !== null ? parseInt(almacenado, 10) : environment.ambienteSeleccionado;
+
+      const ambiente: Ambiente = !environment.production
+        ? environment.ambientes[index] || environment.ambientes[0]
+        : { 
+            nombre: 'Producción', 
+            url: environment.ambienteFijo, 
+            recoveryPass: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM' 
+          };
+
+      this.baseUrlSubject$ = new BehaviorSubject<string>(ambiente.url);
+      this.loginUrlSubject$ = new BehaviorSubject<string>(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
+      this.baseUrlRecoveryPassSubject$ = new BehaviorSubject<string>(ambiente.recoveryPass);
+      this.ambienteNombreSubject = new BehaviorSubject<string>(ambiente.nombre);
+
+      this.baseUrl$ = this.baseUrlSubject$.asObservable();
+      this.loginUrl$ = this.loginUrlSubject$.asObservable();
+      this.ambienteNombre$ = this.ambienteNombreSubject.asObservable();
+
+      // Marcar como inicializado
+      this.initializedSubject.next(true);
+      
+    } catch (error) {
+      console.error('Error inicializando ApiUrlService:', error);
+      this.initializedSubject.next(false);
+    }
+  }
+
+    public async setAmbiente(index: number): Promise<void> {
     if (!environment.production) {
       const ambiente = environment.ambientes[index];
       if (ambiente) {
-        localStorage.setItem(STORAGE_KEY, index.toString());
+        // Guardar en AppStorageService en lugar de localStorage
+        await this.appStorage.set('ambienteSeleccionado', index.toString());
+        
         this.baseUrlSubject$.next(ambiente.url);
         this.loginUrlSubject$.next(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
         this.baseUrlRecoveryPassSubject$.next(ambiente.recoveryPass);
         this.ambienteNombreSubject.next(ambiente.nombre);
+        
         console.log('Cambiado a ambiente:', ambiente.nombre, "url: ", this.baseUrlSubject$.value, "login: ", this.loginUrlSubject$.value);
       }
     }

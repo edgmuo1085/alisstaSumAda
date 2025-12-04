@@ -9,6 +9,7 @@ import { AppStorageService } from 'src/app/app-storage.service';
 import { ToastController } from '@ionic/angular';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { AppLauncher } from '@capacitor/app-launcher';
+import { Storage } from '@ionic/storage';
 
 /**
  * Componente de la vista de configuraciones.
@@ -57,10 +58,10 @@ export class SettingsPage implements OnInit {
 
   constructor(
     private config: ConfigService,
-    private storage: Storage,
     private menuConfOptions: MenuConfiguracionService,
     private router: Router,
-    private storageService: AppStorageService,
+    private appStorageSv: AppStorageService,
+    private ionicStorage: Storage,
     private toastController: ToastController,
     private apiUrl: ApiUrlService
   ) {
@@ -69,7 +70,7 @@ export class SettingsPage implements OnInit {
 
   ngOnInit(): void {
     this.optMenuOptions = this.menuConfOptions.getMenuOpts();
-    this.storageService
+    this.appStorageSv
       .get('autologin')
       .then(result => {
         if (result != null) {
@@ -79,7 +80,7 @@ export class SettingsPage implements OnInit {
       .catch(e => {
         console.log('error: ' + e);
       });
-    this.storageService
+    this.appStorageSv
       .get('activateFinger')
       .then(result => {
         if (result != null) {
@@ -89,7 +90,7 @@ export class SettingsPage implements OnInit {
       .catch(e => {
         console.log('error: ' + e);
       });
-    this.storageService
+    this.appStorageSv
       .get('isFingerFaceAvailable')
       .then(result => {
         if (result != null) {
@@ -139,35 +140,64 @@ export class SettingsPage implements OnInit {
     }
   }
 
-switchNotifications(): void {
-  this.notifications = !this.notifications;
-  localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
-  const message = this.notifications
-    ? '¡Notificaciones activadas!'
-    : '¡Notificaciones desactivadas!';
-  this.showToast(message);
-}
+  switchNotifications(): void {
+    this.notifications = !this.notifications;
+    localStorage.setItem(SettingsPage.NOTIFICATIONS_KEY, this.notifications ? 'true' : 'false');
+    const message = this.notifications ? '¡Notificaciones activadas!' : '¡Notificaciones desactivadas!';
+    this.showToast(message);
+  }
 
   /**
    * Abre la dirección URL de la web de _Alissta_ en un navegador para realizar el cambio de contraseña.
    */
-async changePassword(): Promise<void> {
-  await Browser.open({
-    url: this.apiUrl.RECUPERAR_PASSWORD,
-    presentationStyle: 'fullscreen' // Opcional - similar a tu configuración anterior
-  });
-}
+  async changePassword(): Promise<void> {
+    await Browser.open({
+      url: this.apiUrl.RECUPERAR_PASSWORD,
+      presentationStyle: 'fullscreen', // Opcional - similar a tu configuración anterior
+    });
+  }
 
   /**
    * Método para cerrar la sesion voluntaria
    */
 async singOff() {
-  await this.storageService.clear();
-  localStorage.clear();
-  sessionStorage.clear();
-  this.router.navigateByUrl('/login');
-}
+  try {
+    // 1. Obtener TODAS las claves de biometría ANTES de limpiar
+    const biometricData = await this.appStorageSv.get('isFingerFaceAvailable');
+    const activateFinger = await this.appStorageSv.get('activateFinger');
+    const biometricEnabled = await this.appStorageSv.get(this.appStorageSv.KEY_BIOMETRIC_ENABLED); // ← NUEVA
+    const ambienteSeleccionado = await this.appStorageSv.get('ambienteSeleccionado');
 
+    // 2. Limpiar ambos storages
+    await this.appStorageSv.clear();
+    await this.ionicStorage.clear();
+
+    // 3. Limpiar otros storages
+    localStorage.clear();
+    sessionStorage.clear();
+
+    // 4. Restaurar TODAS las claves importantes
+    if (biometricData !== null) {
+      await this.appStorageSv.set('isFingerFaceAvailable', biometricData);
+    }
+    if (activateFinger !== null) {
+      await this.appStorageSv.set('activateFinger', activateFinger);
+    }
+    if (biometricEnabled !== null) {
+      await this.appStorageSv.set(this.appStorageSv.KEY_BIOMETRIC_ENABLED, biometricEnabled); // ← NUEVA
+    }
+    if (ambienteSeleccionado !== null) {
+      await this.appStorageSv.set('ambienteSeleccionado', ambienteSeleccionado);
+    }
+
+    // 5. Navegar al login
+    this.router.navigateByUrl('/login');
+
+  } catch (error) {
+    console.error('Error durante cierre de sesión:', error);
+    this.router.navigateByUrl('/login');
+  }
+}
 
   async showToast(message: string) {
     const toast = await this.toastController.create({
@@ -176,38 +206,31 @@ async singOff() {
     });
     toast.present();
   }
-  
+
   switchTouchFaceID(): void {
-    this.storageService.set('activateFinger', this.touchfaceid);
-    const message = this.touchfaceid
-      ? '¡TouchID/FaceID activado!'
-      : '¡TouchID/FaceID desactivado!';
+    this.appStorageSv.set('activateFinger', this.touchfaceid);
+    const message = this.touchfaceid ? '¡TouchID/FaceID activado!' : '¡TouchID/FaceID desactivado!';
     this.showToast(message);
   }
-  
+
   switchAutologin(): void {
-    this.storageService.set('autologin', this.autologin);
-    const message = this.autologin
-      ? '¡Autologin activado!'
-      : '¡Autologin desactivado!';
+    this.appStorageSv.set('autologin', this.autologin);
+    const message = this.autologin ? '¡Autologin activado!' : '¡Autologin desactivado!';
     this.showToast(message);
   }
-  
 
-async rateApp() {
-  const userAgent = navigator.userAgent;
-  const dispositivo = userAgent.includes("Android") ? "android" : "ios";
+  async rateApp() {
+    const userAgent = navigator.userAgent;
+    const dispositivo = userAgent.includes('Android') ? 'android' : 'ios';
 
-  if (dispositivo === "android") {
-    await AppLauncher.openUrl({
-      url: this.RATE_APP_IDS.android
-    });
-  } else {
-    await AppLauncher.openUrl({
-      url: `https://apps.apple.com/us/app/${this.RATE_APP_IDS.ios}`
-    });
+    if (dispositivo === 'android') {
+      await AppLauncher.openUrl({
+        url: this.RATE_APP_IDS.android,
+      });
+    } else {
+      await AppLauncher.openUrl({
+        url: `https://apps.apple.com/us/app/${this.RATE_APP_IDS.ios}`,
+      });
+    }
   }
-}
-
-
 }
