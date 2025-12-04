@@ -12,25 +12,28 @@ import { AppStorageService } from 'src/app/app-storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss']
+  styleUrls: ['./login.page.scss'],
 })
 export class LoginPageComponent implements OnInit {
   form = this.fb.group({
     employerID: ['', Validators.required],
     userID: ['', Validators.required],
-    password: ['', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(15),
-      Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+\-=\[\]{};':",.<>?/¿¡|°~`¬]).{6,15}$/)
-    ]]
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(15),
+        Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+\-=\[\]{};':",.<>?/¿¡|°~`¬]).{6,15}$/),
+      ],
+    ],
   });
 
   biometricAvailable = false;
 
   // Ambiente
   ambientes = environment.ambientes || [];
-  selectedIndex = environment.ambienteSeleccionado;
+  selectedIndex:number;
   isProd = environment.production;
 
   constructor(
@@ -39,43 +42,62 @@ export class LoginPageComponent implements OnInit {
     private biometric: BiometricService,
     private apiUrl: ApiUrlService,
     private storage: AppStorageService,
-     private router: Router,
+    private router: Router
   ) {}
 
-async ngOnInit() {
+  async ngOnInit() {
 
-   // Intentar autologin por sesión guardada O con datos encriptados
-  const triedNormal = await this.facade.tryAutoLogin();
-  if (triedNormal) return;
+    await this.loadSelectedAmbiente();
+    // Intentar autologin por sesión guardada O con datos encriptados
+    const triedNormal = await this.facade.tryAutoLogin();
+    if (triedNormal) return;
 
-  // ✅ Intentar con datos encriptados (como en el componente antiguo)
-  const triedEncrypted = await this.facade.tryAutoLoginWithEncryptedInfo();
-  if (triedEncrypted) return;
+    // ✅ Intentar con datos encriptados (como en el componente antiguo)
+    const triedEncrypted = await this.facade.tryAutoLoginWithEncryptedInfo();
+    if (triedEncrypted) return;
 
-  // Intentar autologin por sesión guardada (no biométrica)
-  const tried = await this.facade.tryAutoLogin();
-  if (tried) return;
+    // Intentar autologin por sesión guardada (no biométrica)
+    const tried = await this.facade.tryAutoLogin();
+    if (tried) return;
 
-  // --- Reglas para mostrar el botón biométrico ---
-  // 1) El dispositivo debe soportar biometría
-  const deviceHasBiometry = await this.biometric.isAvailable();
-  if (!deviceHasBiometry) {
-    this.biometricAvailable = false;
-    return;
+    // --- Reglas para mostrar el botón biométrico ---
+    // 1) El dispositivo debe soportar biometría
+    const deviceHasBiometry = await this.biometric.isAvailable();
+    if (!deviceHasBiometry) {
+      this.biometricAvailable = false;
+      return;
+    }
+
+    // 2) El usuario debe haber activado biometría (flag en storage)
+    const enabled = await this.storage.get<boolean>(this.storage.KEY_BIOMETRIC_ENABLED);
+    if (!enabled) {
+      this.biometricAvailable = false;
+      return;
+    }
+
+    // 3) Deben existir credenciales guardadas por el plugin biométrico
+    const creds = await this.biometric.getCredentials();
+    this.biometricAvailable = !!creds;
   }
 
-  // 2) El usuario debe haber activado biometría (flag en storage)
-  const enabled = await this.storage.get<boolean>(this.storage.KEY_BIOMETRIC_ENABLED);
-  if (!enabled) {
-    this.biometricAvailable = false;
-    return;
+    private async loadSelectedAmbiente() {
+    try {
+      // Obtener el ambiente guardado del storage
+      const ambienteGuardado = await this.storage.get('ambienteSeleccionado');
+      
+      if (ambienteGuardado !== null) {
+        this.selectedIndex = parseInt(ambienteGuardado, 10);
+      } else {
+        // Valor por defecto si no hay nada guardado
+        this.selectedIndex = environment.ambienteSeleccionado;
+      }
+      
+      console.log('Ambiente cargado:', this.selectedIndex);
+    } catch (error) {
+      console.error('Error cargando ambiente:', error);
+      this.selectedIndex = environment.ambienteSeleccionado;
+    }
   }
-
-  // 3) Deben existir credenciales guardadas por el plugin biométrico
-  const creds = await this.biometric.getCredentials();
-  this.biometricAvailable = !!creds;
-}
-
 
   async submit() {
     if (this.form.invalid) {
@@ -91,18 +113,18 @@ async ngOnInit() {
     const pass = this.form.value.password;
 
     console.log('[LoginPage] login() CLICKED');
-    await this.facade.loginWithPassword(emp, user, pass);
+    const ok = await this.facade.loginWithPassword(emp, user, pass);
+
+    if (ok) this.form.reset();
   }
 
   async loginWithBiometric() {
     await this.facade.loginWithBiometric();
   }
 
-  cambiarAmbiente() {
+  async cambiarAmbiente() {
     if (this.selectedIndex == null) return;
-    this.apiUrl.setAmbiente(this.selectedIndex);
-    localStorage.setItem('ambienteSeleccionado', String(this.selectedIndex));
-    console.log('Ambiente cambiado a índice:', this.selectedIndex);
+    await this.apiUrl.setAmbiente(this.selectedIndex);
   }
 
   async forgotPassword() {
@@ -116,9 +138,5 @@ async ngOnInit() {
     } catch (e) {
       console.error('Error abriendo recuperación de contraseña:', JSON.stringify(e, null, 2));
     }
-  }
-
-  nave(){
-     this.router.navigate(['u/home']);
   }
 }

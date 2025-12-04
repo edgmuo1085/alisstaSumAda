@@ -14,6 +14,7 @@ export class AppStorageService {
   readonly KEY_AUTOLOGIN = 'autologin';
   readonly KEY_LAST_EMPLOYER = 'lastEmployerID';
   readonly KEY_LAST_USERID = 'lastUserID';
+  readonly KEY_AMBIENTE = 'ambienteSeleccionado';
 
   readonly KEY_INFO_USER_AUTH = 'infoUserAuth';
   readonly KEY_SHOW_LOGIN_FINGER = 'showLoginWithFinger';
