@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Geolocation } from '@capacitor/geolocation';
 import { AlertController } from '@ionic/angular';
 import { CacheService } from '../../services/cache/cache.service';
 // import { AppStorageService } from 'src/app/app-storage.service';
 import { Storage } from '@ionic/storage';
+import { GeolocationService } from 'src/app/services/geolocation/geolocation.service';
+import { GeolocationResult } from 'src/app/intarfaces/interfaces';
 
 @Component({
   selector: 'app-company-info',
@@ -32,7 +33,8 @@ export class CompanyInfoPage {
     // private appStorage: AppStorageService,
     private storage: Storage,
     public alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private geolocationSv: GeolocationService
   ) {}
 
   async ionViewWillEnter() {
@@ -77,39 +79,42 @@ export class CompanyInfoPage {
     });
   }
 
-  async getGeolocation() {
-    try {
-      const permission = await Geolocation.requestPermissions();
+async getGeolocation() {
+  const location = await this.geolocationSv.getGeolocation();
 
-      if (permission.location !== 'granted') {
-        throw new Error('Permisos de ubicación no concedidos');
-      }
-
-      const response = await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 10000,
-      });
-
-      this.coords = response.coords.latitude + ',' + response.coords.longitude;
-      this.formInfoCompany.controls.locationCompany.setValue(this.coords);
-    } catch (error: any) {
-
-      if (error.message?.includes('denied') || error.code === 'NOT_AUTHORIZED') {
-        const alert = await this.alertController.create({
-          header: 'Atención',
-          backdropDismiss: false,
-          mode: 'ios',
-          message: 'No se ha podido determinar la ubicación de su dispositivo. Intente nuevamente.',
-          buttons: ['ACEPTAR'],
-        });
-
-        await alert.present();
-      } else {
-        this.formInfoCompany.controls.locationCompany.clearValidators();
-        this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
-      }
-    }
+  if (location.success && location.coords) {
+    this.coords = `${location.coords.lat},${location.coords.lng}`;
+    this.formInfoCompany.controls.locationCompany.setValue(this.coords);
+  } else {
+    // Mostrar alerta según el tipo de error
+    await this.showGeolocationError(location);
+    
+    // Limpiar validadores
+    this.formInfoCompany.controls.locationCompany.setValue('');
+    this.formInfoCompany.controls.locationCompany.clearValidators();
+    this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
   }
+}
+
+private async showGeolocationError(location: GeolocationResult) {
+  let message = location.error || 'Error desconocido al obtener la ubicación';
+  
+  if (location.errorCode === 'PERMISSION_DENIED') {
+    message = 'Permiso de ubicación denegado. Active los permisos en la configuración de su dispositivo.';
+  } else if (location.errorCode === 'NOT_SUPPORTED') {
+    message = 'La geolocalización no está disponible en este dispositivo.';
+  }
+
+  const alert = await this.alertController.create({
+    header: 'Atención',
+    backdropDismiss: false,
+    mode: 'ios',
+    message: message,
+    buttons: ['ACEPTAR']
+  });
+
+  await alert.present();
+}
 
   changeDepartment(event) {
     const departmentSelected = event.detail.value;

@@ -201,3 +201,15 @@ export interface FotoAdjunta {
     idFoto: string;
   };
 }
+
+export interface GeolocationResult {
+  success: boolean;
+  coords?: Coords; // Formato: "latitud,longitud"
+  error?: string;
+  errorCode?: string;
+}
+
+export interface Coords {
+  lat: number;
+  lng: number;
+}
