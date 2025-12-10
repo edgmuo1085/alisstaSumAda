@@ -18,7 +18,6 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular'
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ComponentsModule } from './components/components.module';
@@ -44,7 +43,6 @@ import { MatInputModule } from '@angular/material/input';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxMaterialTimepickerModule,
   ],
   providers: [
     // Los plugins de Capacitor no necesitan providers

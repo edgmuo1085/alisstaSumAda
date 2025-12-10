@@ -6,7 +6,6 @@ import { PerProjectComponent } from './per-project/per-project.component';
 import { SpecificComponent } from './specific/specific.component';
 import { VisitTypePageRoutingModule } from './visit-type-routing.module';
 import { VisitTypePage } from './visit-type.page';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 // import { MatDatepickerModule, MatNativeDateModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -34,7 +33,6 @@ export const MY_FORMATS = {
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    NgxMaterialTimepickerModule,
     VisitTypePageRoutingModule,
     MatDatepickerModule,
     MatNativeDateModule,
