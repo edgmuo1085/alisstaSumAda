@@ -10,6 +10,7 @@ import { NetworkService } from './services/network/network.service';
 import { AppVersionService } from './services/version/app-version.service';
 import { ApiUrlService } from './services/apiUrl/api-url.service';
 import { Subscription } from 'rxjs';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private networkService: NetworkService,
     private location: Location,
     private AppVersionSv: AppVersionService,
-    private apiUrlSv: ApiUrlService
+    private apiUrlSv: ApiUrlService,
+    private storage: Storage, //TODO: VAlidar la migracion de todas las importaciones a ul servicio
   ) {
     this.initializeApp();
     this.listenToAppState();
@@ -59,6 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.storage.create(); //TODO: Validar migrar el uso del storage a el servicio
       this.initializeCapacitorPlugins();
       this.checkDarkTheme();
       this.networkService.initializeNetworkEvents();
