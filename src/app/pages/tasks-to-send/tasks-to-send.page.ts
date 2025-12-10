@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { CacheService } from '../../services/cache/cache.service';

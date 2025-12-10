@@ -5,7 +5,7 @@ import { CacheService } from '../../services/cache/cache.service';
 import { Router } from '@angular/router';
 import { AdvisoryVerificationComponent } from '../../components/advisory-verification/advisory-verification.component';
 import { NetworkService } from '../../services/network/network.service';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { ToastController } from '@ionic/angular';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { uploadFile } from '../../intarfaces/interfaces';

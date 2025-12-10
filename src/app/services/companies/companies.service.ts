@@ -4,7 +4,7 @@ import { defer, from, Observable } from 'rxjs';
 import { concatMap, map, tap } from 'rxjs/operators';
 import { ApiUrlService } from '../apiUrl/api-url.service';
 import { AppStorageService } from 'src/app/app-storage.service';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 
 @Injectable({
   providedIn: 'root',

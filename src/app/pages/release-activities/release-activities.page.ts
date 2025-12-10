@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { ActivityListCompanyService } from '../../services/activities/activityListCompany/activity-list-company.service';
 import { LiberarActividades } from '../../intarfaces/interfaces';
 import { CacheService } from '../../services/cache/cache.service';

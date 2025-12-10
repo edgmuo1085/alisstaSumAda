@@ -17,7 +17,7 @@ import { AppLauncher } from '@capacitor/app-launcher';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { IonicStorageModule } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage-angular'
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

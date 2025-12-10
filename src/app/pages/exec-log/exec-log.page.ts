@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
 import { Observable } from 'rxjs';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ResendVerificationCodeComponent } from '../../components/resend-verification-code/resend-verification-code.component';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';

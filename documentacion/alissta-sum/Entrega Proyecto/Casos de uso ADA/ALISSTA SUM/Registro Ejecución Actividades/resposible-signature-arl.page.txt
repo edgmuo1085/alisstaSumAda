@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SignaturePad } from 'angular2-signaturepad/signature-pad';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { NetworkService } from '../../services/network/network.service';
 import { AlertController, ToastController, LoadingController } from '@ionic/angular';
 import { ModalController, Platform } from '@ionic/angular';

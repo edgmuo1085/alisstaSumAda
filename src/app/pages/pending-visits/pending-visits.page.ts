@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { Subscription } from 'rxjs';
 
 import { ActivityListCompanyService } from '../../services/activities/activityListCompany/activity-list-company.service';

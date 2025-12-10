@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import * as moment from 'moment';
 import { FotoAdjunta, LoadedPDFInfo, RegistroAsistenteEvento, ResponsableEvento } from 'src/app/intarfaces/interfaces';
 import { ActaAsesoria } from '../../intarfaces/interfaces';

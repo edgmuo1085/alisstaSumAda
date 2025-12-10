@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { v4 as uuidv4 } from 'uuid';
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';

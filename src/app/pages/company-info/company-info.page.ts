@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CacheService } from '../../services/cache/cache.service';
 // import { AppStorageService } from 'src/app/app-storage.service';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { GeolocationService } from 'src/app/services/geolocation/geolocation.service';
 import { GeolocationResult } from 'src/app/intarfaces/interfaces';
 

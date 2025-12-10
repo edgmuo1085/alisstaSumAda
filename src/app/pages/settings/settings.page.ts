@@ -9,7 +9,7 @@ import { AppStorageService } from 'src/app/app-storage.service';
 import { ToastController } from '@ionic/angular';
 import { ApiUrlService } from 'src/app/services/apiUrl/api-url.service';
 import { AppLauncher } from '@capacitor/app-launcher';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 
 /**
  * Componente de la vista de configuraciones.

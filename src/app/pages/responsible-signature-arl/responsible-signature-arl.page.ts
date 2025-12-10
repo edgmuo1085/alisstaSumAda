@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { AlertController, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';;
 import { AdvisoryVerificationComponent } from '../../components/advisory-verification/advisory-verification.component';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
