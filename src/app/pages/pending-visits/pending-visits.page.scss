@@ -14,47 +14,43 @@ ion-header {
     }
   }
 }
+
 ion-item {
   margin-bottom: 10px;
   border-radius: 15px;
 }
 
 ion-content {
-  ion-slides {
-    height: 90%;
-    border: 1px solid #344b56;
-    border-radius: 50px;
-    margin-top: -15px;
-    ion-slide {
-      ion-grid {
-        ion-row {
-          ion-col {
-            & .titulo {
-              margin-top: -30px;
-              font-weight: bold;
-              color: #344b56;
-            }
-            & .imgIcono {
-              width: auto !important;
-              max-width: 65% !important;
-              height: auto !important;
-              max-height: 65% !important;
-            }
-            ion-icon {
-              width: 100%;
-              height: 40px;
-              margin-bottom: 30px;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  & ion-list {
+  ion-list {
     margin-bottom: 100px;
     background-color: transparent;
   }
+}
+
+::ng-deep swiper-container {
+  height: 90%;
+  border: 1px solid #344b56;
+  border-radius: 50px;
+  margin-top: -15px;
+}
+
+::ng-deep swiper-slide .titulo {
+  margin-top: -30px;
+  font-weight: bold;
+  color: #344b56;
+}
+
+::ng-deep swiper-slide .imgIcono {
+  width: auto !important;
+  max-width: 65% !important;
+  height: auto !important;
+  max-height: 65% !important;
+}
+
+::ng-deep swiper-slide ion-icon {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 30px;
 }
 
 .labelEnProceso {
@@ -71,9 +67,7 @@ cdk-virtual-scroll-viewport {
   height: 100%;
   width: 100%;
 
-  &::ng-deep {
-    & .cdk-virtual-scroll-content-wrapper {
-      width: 100%;
-    }
+  &::ng-deep .cdk-virtual-scroll-content-wrapper {
+    width: 100%;
   }
 }

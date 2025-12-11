@@ -1,8 +1,9 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy } from '@angular/router';
+
 
 // Capacitor imports (reemplazan Ionic Native)
 import { Geolocation } from '@capacitor/geolocation';
@@ -28,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -51,6 +53,7 @@ import { MatInputModule } from '@angular/material/input';
       useClass: IonicRouteStrategy,
     },
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

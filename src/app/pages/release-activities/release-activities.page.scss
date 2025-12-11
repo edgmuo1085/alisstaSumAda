@@ -3,14 +3,17 @@ ion-header {
     padding: 0px;
     background: #95a6b1;
     color: white;
+
     ion-row {
       ion-col {
         padding: 0px;
         background: #95a6b1;
+
         ion-item {
           width: 100%;
         }
       }
+
       ion-toolbar {
         padding: 0px;
       }
@@ -23,39 +26,37 @@ ion-content {
     --border-radius: 30px;
   }
 
-  ion-slides {
+  /* Migración ion-slides -> Swiper */
+  ::ng-deep swiper-container {
     height: 80%;
     border: 1px solid #344b56;
     border-radius: 50px;
     margin-top: 40px;
-    ion-slide {
-      ion-grid {
-        ion-row {
-          ion-col {
-            & .tituloSlide {
-              margin-top: -30px;
-              font-weight: bold;
-              color: #344b56;
-              font-size: 19px;
-              text-align: center;
-            }
-            & .imgIcono {
-              width: auto !important;
-              max-width: 70% !important;
-              height: auto !important;
-              max-height: 70% !important;
-            }
-          }
-        }
-      }
-    }
   }
+
+  ::ng-deep swiper-slide .tituloSlide {
+    margin-top: -30px;
+    font-weight: bold;
+    color: #344b56;
+    font-size: 19px;
+    text-align: center;
+  }
+
+  ::ng-deep swiper-slide .imgIcono {
+    width: auto !important;
+    max-width: 70% !important;
+    height: auto !important;
+    max-height: 70% !important;
+  }
+
   ion-list {
     ion-row {
       ion-card {
         margin: 0px;
+
         ion-card-content {
           padding: 0px;
+
           ion-list {
             ion-item {
               ion-grid {
@@ -65,6 +66,7 @@ ion-content {
           }
         }
       }
+
       ion-button {
         --border-radius: 50px;
       }
@@ -81,14 +83,14 @@ ion-content {
 }
 
 .boton-flotante {
-  position: fixed; 
-  bottom: 20px;    
-  left: 50%;       
-  transform: translateX(-50%); 
-  z-index: 100;    
-  
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  
+
   border-radius: 50px;
 
   --padding-top: 12px;

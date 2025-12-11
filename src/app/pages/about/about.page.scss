@@ -1,15 +1,18 @@
-ion-content {
-  ion-slides {
+::ng-deep ion-content {
+  swiper-container {
     margin-top: 110px;
-    ion-slide {
+
+    swiper-slide {
       ion-card {
         ion-card-header {
-          padding: 0px;
+          padding: 0;
         }
       }
+
       ion-fab {
         transform: translate(8px, -30px);
         outline: none;
+
         ion-fab-button {
           transform: rotate(180deg);
           --background: none;

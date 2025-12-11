@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -11,5 +11,6 @@ import { SelectRegisterEventPage } from './select-register-event.page';
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, SelectRegisterEventPageRoutingModule],
   declarations: [SelectRegisterEventPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SelectRegisterEventPageModule {}

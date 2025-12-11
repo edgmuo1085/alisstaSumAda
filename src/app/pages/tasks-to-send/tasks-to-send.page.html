@@ -18,8 +18,8 @@
 <ion-content class="ion-padding">
   <ion-searchbar animated color="primary" placeholder="Buscar" (ionChange)="search($event)"></ion-searchbar>
 
-  <ion-slides mode="ios" *ngIf="!listAdvisory?.length">
-    <ion-slide>
+  <swiper-container *ngIf="!listAdvisory?.length">
+    <swiper-slide>
       <ion-grid>
         <ion-row>
           <ion-col size="12">
@@ -36,8 +36,8 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-    </ion-slide>
-  </ion-slides>
+    </swiper-slide>
+  </swiper-container>
 
   <ion-list>
     <ion-item color="secondary" *ngFor="let AdvisoryAct of listAdvisory; let i = index">

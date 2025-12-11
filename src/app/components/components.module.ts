@@ -1,4 +1,4 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { IonicModule } from '@ionic/angular';
@@ -86,6 +86,7 @@ registerLocaleData(localeEn, 'en');
         },
         { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
         { provide: LOCALE_ID, useValue: 'es' },
-    ]
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ComponentsModule {}

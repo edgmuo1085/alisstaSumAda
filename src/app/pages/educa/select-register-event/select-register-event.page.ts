@@ -16,10 +16,7 @@ import { ScannerQrComponent } from 'src/app/components/scanner-qr/scanner-qr.com
  * Este componente es el encargado de seleccionar la opción del registro
  */
 export class SelectRegisterEventPage implements OnInit {
-  swiperOpts = {
-    allowSlidePrev: false,
-    allowSlideNext: false,
-  };
+
 
   nombreEvento: string;
   hiddenForm: boolean = false;
