@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.initializeApp();
     this.listenToAppState();
-    this.AppVersionSv.checkForUpdate(); 
+    this.AppVersionSv.checkForUpdate();
   }
 
   ngOnInit() {
@@ -70,16 +70,16 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-    private async initializeCapacitorPlugins() {
+  private async initializeCapacitorPlugins() {
     try {
       // ✅ StatusBar con Capacitor (reemplaza StatusBar de Ionic Native)
-      await StatusBar.setStyle({ 
+      await StatusBar.setStyle({
         style: Style.Dark // Texto blanco para mejor contraste
       });
-      
+
       // ✅ SplashScreen con Capacitor (reemplaza SplashScreen de Ionic Native)
       await SplashScreen.hide();
-      
+
       console.log('✅ Capacitor plugins initialized successfully');
     } catch (error) {
       // ⚠️ Esto es normal en entorno web/emulador sin plugins nativos
@@ -87,15 +87,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-     // Escucha cambios de estado en la app (foreground/background)
-     listenToAppState(): void {
-      App.addListener('appStateChange', ({ isActive }) => {
-        if (isActive) {
-          console.log('La app volvió al primer plano.');
-          this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
-        }
-      });
-    }
+  // Escucha cambios de estado en la app (foreground/background)
+  listenToAppState(): void {
+    App.addListener('appStateChange', ({ isActive }) => {
+      if (isActive) {
+        console.log('La app volvió al primer plano.');
+        this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
+      }
+    });
+  }
 
   // async checkDarkTheme(): Promise<void> {
   //   let shouldAdd: boolean;
@@ -116,44 +116,49 @@ export class AppComponent implements OnInit, OnDestroy {
   // }
 
   checkDarkTheme(): void {
-  try {
-    // Verificar si el navegador soporta matchMedia
-    if (!window.matchMedia) {
-      console.log('Dark mode not supported in this browser');
-      return;
-    }
+    try {
+      // Verificar si el navegador soporta matchMedia
+      if (!window.matchMedia) {
+        console.log('Dark mode not supported in this browser');
+        return;
+      }
 
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Aplicar tema inicial
-    this.toggleDarkTheme(prefersDark.matches);
-    
-    // Escuchar cambios (con compatibilidad cross-browser)
-    const changeHandler = (mediaQuery: MediaQueryListEvent) => {
-      this.toggleDarkTheme(mediaQuery.matches);
-    };
-    
-    // Soporte para navegadores modernos y antiguos
-    if (prefersDark.addEventListener) {
-      prefersDark.addEventListener('change', changeHandler);
-    } else if (prefersDark.addListener) {
-      // Fallback para navegadores antiguos
-      prefersDark.addListener(changeHandler);
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+      // Aplicar tema inicial
+      this.toggleDarkTheme(prefersDark.matches);
+
+      // Escuchar cambios (con compatibilidad cross-browser)
+      const changeHandler = (mediaQuery: MediaQueryListEvent) => {
+        this.toggleDarkTheme(mediaQuery.matches);
+      };
+
+      // Soporte para navegadores modernos y antiguos
+      if (prefersDark.addEventListener) {
+        prefersDark.addEventListener('change', changeHandler);
+      } else if (prefersDark.addListener) {
+        // Fallback para navegadores antiguos
+        prefersDark.addListener(changeHandler);
+      }
+
+    } catch (error) {
+      console.warn('Error in dark theme detection:', error);
+      // La app continúa funcionando normalmente
     }
-    
-  } catch (error) {
-    console.warn('Error in dark theme detection:', error);
-    // La app continúa funcionando normalmente
   }
-}
 
   /**
    * Alterna el modo oscuro en base al parámetro indicado.
    *
    * @param shouldAdd Indica si activar o no el modo oscuro.
    */
-  private toggleDarkTheme(shouldAdd: boolean): void {
-    document.body.classList.toggle('dark', shouldAdd);
+  private toggleDarkTheme(enable: boolean): void {
+    const ionApp = document.querySelector('ion-app');
+    if (!ionApp) {
+      console.warn('ion-app not found');
+      return;
+    }
+    ionApp.classList.toggle('dark', enable);
   }
 
   /**
@@ -212,7 +217,7 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         {
           text: 'CANCELAR',
-          handler: () => {},
+          handler: () => { /* empty */ },
         },
       ],
     });
