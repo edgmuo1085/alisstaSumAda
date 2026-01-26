@@ -45,11 +45,23 @@ export class SpecificComponent implements OnInit {
 
   date: string;
 
+  showStartHourModal = false;
+  showEndHourModal = false;
+
+  openStartHour() {
+    this.showStartHourModal = true;
+  }
+
+  openEndHour() {
+    if (!this.customStartDate) return;
+    this.showEndHourModal = true;
+  }
+
   constructor(
     private cacheService: CacheService,
     private formBuilder: UntypedFormBuilder,
     private alertController: AlertController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initFormDateSpecific();
@@ -72,9 +84,9 @@ export class SpecificComponent implements OnInit {
 
   initFormDateSpecific() {
     this.formDateSpecific = this.formBuilder.group({
-      startTodaySecific: ['', Validators.required],
-      startHour: ['', Validators.required],
-      endHour: ['', Validators.required],
+      startTodaySecific: [{ value: '', disabled: false }, Validators.required],
+      startHour: [{ value: '', disabled: true }, Validators.required],
+      endHour: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
@@ -87,31 +99,29 @@ export class SpecificComponent implements OnInit {
     this.setVisitDate(moment().startOf('day').toISOString().split('T')[0]);
 
     this.showDateButton = true;
+
+    this.formDateSpecific.get('startHour')?.enable();
+    this.formDateSpecific.get('endHour')?.enable();
+
+    this.formDateSpecific.get('startTodaySecific')?.disable();
   }
 
   changeHourStar(event) {
     console.log('changeHourStar..!! ', event.detail.value);
     console.log('Hora Actual', new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }));
-  
-    if (!event.detail.value) {
-      // Obtener la hora local en formato HH:mm:ss
-      const now = new Date().toLocaleTimeString('es-CO', {
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'America/Bogota'
-      });
-  
-      this.setInitialHour(now);
-    } else {
-      this.setInitialHour(event.detail.value.split('T')[1]);
-    }
+
+    if (!event.detail.value) return;
+
+    const normalized = this.normalizeHour(event.detail.value);
+    this.setInitialHour(normalized);
+    this.showStartHourModal = false;
   }
-  
+
 
   changeHourEnd(event) {
-    this.setEndHour(event.detail.value.split('T')[1]);
+    const normalized = this.normalizeHour(event.detail.value);
+    this.setEndHour(normalized);
+    this.showEndHourModal = false;
   }
 
   async validateHours(hourStart, hourEnd, hourMigrated): Promise<string> {
@@ -247,33 +257,46 @@ export class SpecificComponent implements OnInit {
 
         break;
       default:
-        { const now = moment();
-        const realStartDate = now.format('YYYY-MM-DD') + `T${this.customStartDate}`;
-        const realEndDate = now.format('YYYY-MM-DD') + `T${this.customEndDate}`;
-        const start = moment(realStartDate);
-        const end = moment(realEndDate);
-        const duration = moment.duration(end.diff(start));
-        const _hours = Math.floor(duration.asHours());
-        const _minutes = Math.floor(duration.asMinutes() % 60);
-        const totalHours = _hours + _minutes / 60;
+        {
+          const now = moment();
+          const realStartDate = now.format('YYYY-MM-DD') + `T${this.customStartDate}`;
+          const realEndDate = now.format('YYYY-MM-DD') + `T${this.customEndDate}`;
+          const start = moment(realStartDate);
+          const end = moment(realEndDate);
+          const duration = moment.duration(end.diff(start));
+          const _hours = Math.floor(duration.asHours());
+          const _minutes = Math.floor(duration.asMinutes() % 60);
+          const totalHours = _hours + _minutes / 60;
 
-        if (totalHours < horasMigradas) {
-          showButton = false;
-          this.totalHours = 0;
-          this.formDateSpecific.controls.endHour.reset();
+          if (totalHours < horasMigradas) {
+            showButton = false;
+            this.totalHours = 0;
+            this.formDateSpecific.controls.endHour.reset();
 
-          // REFACTOR: Debe normalizarse el mostrar notificaciones. O bien lo hace este método, o lo hace el
-          // de validación de horas.
-          this.notification(`No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`);
-        } else {
-          showButton = !!this.date;
-          this.totalHours = _hours + ' Horas ' + _minutes + ' Minutos';
-        } }
+            // REFACTOR: Debe normalizarse el mostrar notificaciones. O bien lo hace este método, o lo hace el
+            // de validación de horas.
+            this.notification(`No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`);
+          } else {
+            showButton = !!this.date;
+            this.totalHours = _hours + ' Horas ' + _minutes + ' Minutos';
+          }
+        }
     }
 
     this.specificStartHourSelected.emit(this.customStartDate);
     this.specificEndHourSelected.emit(this.customEndDate);
     this.specificTotalHour.emit(this.totalHours);
     this.showButtonNext.emit(showButton);
+  }
+
+  private normalizeHour(value: string): string {
+    const time = value.split('T')[1] || value;
+    const [hh, mm] = time.split(':');
+    return `${hh}:${mm}:00`;
+  }
+
+  formatForDisplay(time: string): string {
+    if (!time) return '';
+    return time.substring(0, 5); // HH:mm
   }
 }
