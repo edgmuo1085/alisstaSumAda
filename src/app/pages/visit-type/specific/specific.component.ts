@@ -297,6 +297,7 @@ export class SpecificComponent implements OnInit {
 
   formatForDisplay(time: string): string {
     if (!time) return '';
-    return time.substring(0, 5); // HH:mm
+    const normalized = time.length === 8 ? `1970-01-01T${time}` : time;
+    return moment(normalized).format('hh:mm A');
   }
 }
