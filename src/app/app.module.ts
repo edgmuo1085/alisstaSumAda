@@ -28,10 +28,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ProcessTrackerModalComponent } from './pages/process-tracker-modal/process-tracker-modal.component';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProcessTrackerModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

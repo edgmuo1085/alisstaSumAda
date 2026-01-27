@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ header }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list lines="none">
+    <ion-item *ngFor="let step of steps; let i = index">
+      <ion-icon slot="start" [name]="step.done ? 'checkmark-circle' : 'ellipse-outline'" [color]="step.done ? 'success' : 'medium'">
+      </ion-icon>
+
+      <ion-label>{{ step.text }}</ion-label>
+
+      <ion-spinner *ngIf="!step.done && i === activeIndex && !finished" slot="end"> </ion-spinner>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer *ngIf="finished">
+  <ion-toolbar>
+    <ion-button expand="block" color="primary" (click)="close()"> Aceptar </ion-button>
+  </ion-toolbar>
+</ion-footer>

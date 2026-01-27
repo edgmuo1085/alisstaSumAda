@@ -22,7 +22,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
   private promise: Promise<string>;
 
   // signature options
-  public signaturePadOptions: Object = {
+  public signaturePadOptions: object = {
     maxWidth: 1,
     minWidth: 1,
     canvasWidth: 300,
@@ -51,7 +51,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private advisoryTopicService: AdvisoryTopicService,
     private processTracker: ProcessTrackerService,
     private toastController: ToastController
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Obtener la sesión desde AppStorageService (Preferences)
@@ -141,38 +141,42 @@ export class ResponsibleSignatureARLPage implements OnInit {
     await this.processTracker.startProcess('Creando acta de asesoría...');
 
     try {
-      const creacionActa = await this.createActaAsesoria();
-      if (!creacionActa) {
+      // 1️⃣ Crear acta
+      const actaId = await this.createActaAsesoria();
+      if (!actaId) {
         await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
         return;
       }
-      await this.processTracker.completeStep(0);
 
-      if (files && files.length) {
+      await this.processTracker.completeLastStep();
+
+      // 2️⃣ Subir archivos
+      if (files.length > 0) {
         await this.processTracker.addStep('Subiendo archivos adjuntos...');
-        await this.uploadFiles(creacionActa, files);
-        await this.processTracker.completeStep(this.stepsLength() - 1);
+        await this.uploadFiles(actaId, files);
+        await this.processTracker.completeLastStep();
       }
 
+      // 3️⃣ Enviar correos
       await this.processTracker.addStep('Enviando notificación por correo...');
-      await this.sendCorreoNotificacion(creacionActa);
-      await this.processTracker.completeStep(this.stepsLength() - 1);
+      await this.sendCorreoNotificacion(actaId);
+      await this.processTracker.completeLastStep();
 
+      // 4️⃣ Actualizar actividades
       await this.processTracker.addStep('Actualizando lista de actividades...');
       await this.updateListaActividades();
-      await this.processTracker.completeStep(this.stepsLength() - 1);
+      await this.processTracker.completeLastStep();
 
+      // 5️⃣ Final exitoso
       await this.processTracker.finish(true, 'Acta de asesoría creada');
       this.router.navigateByUrl('/u/execLog');
+
     } catch (error) {
-      console.error('Error en handleNetworkAvailable:', error);
-      await this.processTracker.finish(false, 'Error en el proceso, intente de nuevo.');
+      console.error('handleNetworkAvailable error:', error);
+      await this.processTracker.finish(false, 'Error en el proceso, intente nuevamente.');
     }
   }
 
-  private stepsLength(): number {
-    return (this as any).processTracker['steps']?.length || 0;
-  }
 
   private async createActaAsesoria(): Promise<string | null> {
     try {
