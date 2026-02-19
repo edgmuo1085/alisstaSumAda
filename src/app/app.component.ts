@@ -152,14 +152,18 @@ export class AppComponent implements OnInit, OnDestroy {
    *
    * @param shouldAdd Indica si activar o no el modo oscuro.
    */
+  // private toggleDarkTheme(enable: boolean): void {
+  //   const ionApp = document.querySelector('ion-app');
+  //   if (!ionApp) {
+  //     console.warn('ion-app not found');
+  //     return;
+  //   }
+  //   ionApp.classList.toggle('dark', enable);
+  // }
   private toggleDarkTheme(enable: boolean): void {
-    const ionApp = document.querySelector('ion-app');
-    if (!ionApp) {
-      console.warn('ion-app not found');
-      return;
-    }
-    ionApp.classList.toggle('dark', enable);
+    document.body.classList.toggle('dark', enable);
   }
+
 
   /**
    * Registra el agente de escucha para el evento de uso del botón físico de atrás de _Android_.

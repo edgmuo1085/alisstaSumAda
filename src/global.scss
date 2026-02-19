@@ -123,11 +123,11 @@
   }
 }
 
-body {
-  &:not([class*='dark']) {
-    --ion-background-color: #ffffff;
-  }
-}
+// body {
+//   &:not([class*='dark']) {
+//     --ion-background-color: #ffffff;
+//   }
+// }
 
 /** Bordes **/
 
