@@ -49,3 +49,9 @@ ion-list {
   --padding-top: 16px;
   --padding-bottom: 16px;
 }
+
+ion-datetime-button::part(native) {
+  background: var(--datetime-btn-bg);
+  color: var(--datetime-btn-color);
+  border-radius: 12px;
+}

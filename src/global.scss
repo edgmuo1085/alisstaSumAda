@@ -9,8 +9,23 @@
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
 
-/** Variables personalizadas **/
-@import './variables.scss';
+
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$primary: mat.define-palette(mat.$orange-palette, 500);
+$accent: mat.define-palette(mat.$blue-palette, 500);
+
+$theme: mat.define-light-theme((color: (primary: $primary,
+        accent: $accent,
+      )));
+
+@include mat.all-component-themes($theme);
+
+
+
+
 
 /* Core CSS required for Ionic components to work properly */
 @import '~@ionic/angular/css/core.css';
@@ -28,6 +43,10 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
+/** Variables personalizadas **/
+@import './variables.scss';
+@import './theme/variables.scss';
+
 :root {
   --pace-0: #{$pace-0};
   --pace-1: #{$pace-1};
@@ -35,6 +54,9 @@
   --pace-3: #{$pace-3};
   --pace-4: #{$pace-4};
   --pace-5: #{$pace-5};
+
+  --datetime-btn-bg: #898c92;
+  --datetime-btn-color: var(--ion-color-secondary);
 }
 
 /*
@@ -528,4 +550,29 @@ body.scanner-active {
   --height: 60%;
   --max-height: 80%;
   --border-radius: 16px;
+}
+
+ion-action-sheet.my-custom-action-sheet {
+  --background: var(--ion-color-light);
+  --backdrop-opacity: 0.4;
+  --button-background-selected: var(--ion-color-primary-tint);
+  --button-color: var(--ion-color-secondary);
+  --color: var(--ion-text-color);
+}
+
+ion-action-sheet.my-custom-action-sheet .action-sheet-cancel {
+  --background: var(--ion-color-light);
+}
+
+body.dark ion-action-sheet.my-custom-action-sheet .action-sheet-cancel {
+  --background: #2a2a2a;
+}
+
+.dark {
+  --datetime-btn-bg: var(--ion-color-primary);
+  --datetime-btn-color: #ffffff;
+}
+
+ion-datetime {
+  --background: var(--ion-overlay-background-color);
 }

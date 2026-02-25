@@ -31,14 +31,7 @@
                 "output": "./svg"
               }
             ],
-            "styles": [
-              {
-                "input": "src/theme/variables.scss"
-              },
-              {
-                "input": "src/global.scss"
-              }
-            ],
+            "styles": ["src/global.scss"],
             "scripts": []
           },
           "configurations": {
@@ -69,7 +62,7 @@
                 }
               ]
             },
-              "test": {
+            "test": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -135,10 +128,7 @@
   },
   "cli": {
     "analytics": false,
-    "schematicCollections": [
-      "angular-eslint",
-      "@ionic/angular-toolkit"
-    ]
+    "schematicCollections": ["angular-eslint", "@ionic/angular-toolkit"]
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

@@ -73,7 +73,7 @@ export class UploaderPage implements OnInit {
     private cacheService: CacheService,
     public photoService: PhotoServiceService,
     private actionSheetCtrl: ActionSheetController
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     this.cargarInformación();
@@ -94,18 +94,18 @@ export class UploaderPage implements OnInit {
       this.filesAdjuntos = [];
 
       adjuntosPDF.forEach(documento => {
-          if (actividadSeleccionada.id === documento.idActividad) {
-            this.filesAdjuntos.push(documento);
-          }
-        });
+        if (actividadSeleccionada.id === documento.idActividad) {
+          this.filesAdjuntos.push(documento);
+        }
+      });
     }
-     if (fotosAdjuntas.length > 0) {
+    if (fotosAdjuntas.length > 0) {
       this.listaDocumentos = [];
       fotosAdjuntas.forEach(imagenes => {
-          if (actividadSeleccionada.id === imagenes.idActividad) {
-            this.listaDocumentos.push(imagenes);
-          }
-        });
+        if (actividadSeleccionada.id === imagenes.idActividad) {
+          this.listaDocumentos.push(imagenes);
+        }
+      });
     }
   }
 
@@ -182,63 +182,63 @@ export class UploaderPage implements OnInit {
     return zoneOriginalInstance || fileReader;
   }
 
-async loadImageFromDevice(event) {
-  let objFile = {};
+  async loadImageFromDevice(event) {
+    let objFile = {};
 
-  const file = event.target.files[0];
-  if (!file) { return; }
+    const file = event.target.files[0];
+    if (!file) { return; }
 
-  if (file.type !== 'application/pdf') {
-    this.notification('Alerta', 'Señor usuario, solo se permiten subir archivos PDF');
-    // limpiar input
-    this.inputFile.nativeElement.value = '';
-    return;
-  }
-
-  const peso = file.size / 1048576;
-  if (peso >= 1) {
-    this.inputFile.nativeElement.value = '';
-    this.notification('Atención', 'El archivo supera el limite permitido de 1MB');
-    return;
-  }
-
-  this.disableButtons = true;
-
-  const newInstance = this.getFileReader();
-  newInstance.readAsDataURL(file);
-  newInstance.onload = async () => {
-    try {
-      const urlFileBase64 = newInstance.result.toString();
-      this.extensionFile = urlFileBase64.split(',')[0];
-      const realData = urlFileBase64.split(',')[1];
-      const contentype = urlFileBase64.split(',')[0];
-      const contentype1 = contentype.split(';');
-      const contentype2 = contentype1[0].split(':');
-      this.blob = this.b64toBlob(realData, contentype2[1]);
-
-      objFile = {
-        id: uuidv4(),
-        file,
-        blob: this.blob,
-        extension: this.extensionFile,
-        fileAsistenciaEventos: this.asistenteEventosPYP,
-        fileEvaluacionEventos: this.evaluacionEventos,
-      };
-
-      this.archivo = objFile;
-      // Adjuntar y guardar automáticamente
-      await this.attachDocumentAndSave(this.archivo);
-
+    if (file.type !== 'application/pdf') {
+      this.notification('Alerta', 'Señor usuario, solo se permiten subir archivos PDF');
       // limpiar input
       this.inputFile.nativeElement.value = '';
-    } catch (err) {
-      console.error('Error procesando PDF:', err);
-      this.notification('Error', 'No se pudo procesar el archivo');
-    } finally {
-      this.disableButtons = false;
+      return;
     }
-  };
-}
+
+    const peso = file.size / 1048576;
+    if (peso >= 1) {
+      this.inputFile.nativeElement.value = '';
+      this.notification('Atención', 'El archivo supera el limite permitido de 1MB');
+      return;
+    }
+
+    this.disableButtons = true;
+
+    const newInstance = this.getFileReader();
+    newInstance.readAsDataURL(file);
+    newInstance.onload = async () => {
+      try {
+        const urlFileBase64 = newInstance.result.toString();
+        this.extensionFile = urlFileBase64.split(',')[0];
+        const realData = urlFileBase64.split(',')[1];
+        const contentype = urlFileBase64.split(',')[0];
+        const contentype1 = contentype.split(';');
+        const contentype2 = contentype1[0].split(':');
+        this.blob = this.b64toBlob(realData, contentype2[1]);
+
+        objFile = {
+          id: uuidv4(),
+          file,
+          blob: this.blob,
+          extension: this.extensionFile,
+          fileAsistenciaEventos: this.asistenteEventosPYP,
+          fileEvaluacionEventos: this.evaluacionEventos,
+        };
+
+        this.archivo = objFile;
+        // Adjuntar y guardar automáticamente
+        await this.attachDocumentAndSave(this.archivo);
+
+        // limpiar input
+        this.inputFile.nativeElement.value = '';
+      } catch (err) {
+        console.error('Error procesando PDF:', err);
+        this.notification('Error', 'No se pudo procesar el archivo');
+      } finally {
+        this.disableButtons = false;
+      }
+    };
+  }
 
   b64toBlob(b64Data, contentType) {
     const byteCharacters = atob(b64Data);
@@ -282,138 +282,139 @@ async loadImageFromDevice(event) {
   }
 
   async adjuntar() {
-  // Validación número máximo
-  const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
-  if (documentosAdjuntos.length >= 6) {
-    this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
-    return;
-  }
+    // Validación número máximo
+    const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+    if (documentosAdjuntos.length >= 6) {
+      this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
+      return;
+    }
 
-  // ✅ PRIMERO validar tipo de archivo seleccionado
-  const tipoSeleccionado = this.formSupportType.get('type').value;
-  if (!tipoSeleccionado) {
-    this.notification('Atención', 'Primero seleccione el tipo de archivo');
-    return;
-  }
-
-  // Action Sheet simplificado
-  const actionSheet = await this.actionSheetCtrl.create({
-    header: 'Seleccionar tipo de archivo',
-    buttons: [
-      {
-        text: 'Tomar Foto',
-        icon: 'camera-outline',
-        handler: async () => {
-          await this.tomarFoto();
-        }
-      },
-      {
-        text: 'Seleccionar PDF',
-        icon: 'document-outline',
-        handler: () => {
-          this.abrirExploradorArchivos();
-        }
-      },
-      {
-        text: 'Cancelar',
-        role: 'cancel'
-      }
-    ]
-  });
-
-  await actionSheet.present();
-}
-
-// ✅ Método mejorado para tomar foto con manejo de errores
-async tomarFoto() {
-  this.disableButtons = true;
-  
-  try {
-    console.log('📸 Iniciando toma de foto...');
-    
-    // ✅ Tomar la foto con el servicio mejorado
-    const foto = await this.photoService.addNewToGallery();
-    
-    console.log('✅ Foto tomada, procediendo a guardar...');
-    
-    // ✅ AHORA validar que el tipo de documento esté seleccionado
+    // ✅ PRIMERO validar tipo de archivo seleccionado
     const tipoSeleccionado = this.formSupportType.get('type').value;
     if (!tipoSeleccionado) {
-      this.notification('Atención', 'Primero seleccione el tipo de archivo antes de adjuntar');
-      return; // No guardamos la foto sin tipo
+      this.notification('Atención', 'Primero seleccione el tipo de archivo');
+      return;
     }
-    
-    // ✅ Adjuntar y guardar automáticamente
-    await this.attachPhotoAndSave(foto);
-    
-  } catch (err) {
-    console.error('❌ Error al tomar foto:', JSON.stringify(err, null, 2));
-    
-    // Mostrar error específico al usuario (excepto cancelaciones)
-    if (err.message.includes('cancelada')) {
-      // No mostrar alerta si el usuario canceló
-      console.log('Usuario canceló la toma de foto');
-    } else {
-      this.notification('Error', err.message);
-    }
-    
-  } finally {
-    this.disableButtons = false;
+
+    // Action Sheet simplificado
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Seleccionar tipo de archivo',
+      cssClass: 'my-custom-action-sheet',
+      buttons: [
+        {
+          text: 'Tomar Foto',
+          icon: 'camera-outline',
+          handler: async () => {
+            await this.tomarFoto();
+          }
+        },
+        {
+          text: 'Seleccionar PDF',
+          icon: 'document-outline',
+          handler: () => {
+            this.abrirExploradorArchivos();
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await actionSheet.present();
   }
-}
 
-// async adjuntar() {
-//   // Validación número máximo antes de abrir opciones
-//   const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
-//   if (documentosAdjuntos.length >= 6) {
-//     this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
-//     return;
-//   }
+  // ✅ Método mejorado para tomar foto con manejo de errores
+  async tomarFoto() {
+    this.disableButtons = true;
 
-//   // Abrir action sheet para elegir tipo
-//   const actionSheet = await this.actionSheetCtrl.create({
-//     header: 'Seleccionar fuente',
-//     buttons: [
-//       {
-//         text: 'PDF',
-//         icon: 'document-outline',
-//         handler: () => {
-//           this.accionARealizar = 'documento';
-//           // abrir input file oculto
-//           const tag: any = document.getElementById('file-input');
-//           if (tag.value) { tag.value = ''; }
-//           tag.click();
-//         }
-//       },
-//       {
-//         text: 'Foto',
-//         icon: 'camera-outline',
-//         handler: async () => {
-//           this.accionARealizar = 'foto';
-//           this.disableButtons = true;
-//           try {
-//             const foto = await this.photoService.addNewToGallery();
-//             // tras tomar la foto, adjuntar y guardar automáticamente
-//             await this.attachPhotoAndSave(foto);
-//           } catch (err) {
-//             console.error('Error al tomar foto:', err);
-//             this.disableButtons = false;
-//           }
-//         }
-//       },
-//       {
-//         text: 'Cancelar',
-//         role: 'cancel'
-//       }
-//     ]
-//   });
+    try {
+      console.log('📸 Iniciando toma de foto...');
 
-//   await actionSheet.present();
-// }
+      // ✅ Tomar la foto con el servicio mejorado
+      const foto = await this.photoService.addNewToGallery();
+
+      console.log('✅ Foto tomada, procediendo a guardar...');
+
+      // ✅ AHORA validar que el tipo de documento esté seleccionado
+      const tipoSeleccionado = this.formSupportType.get('type').value;
+      if (!tipoSeleccionado) {
+        this.notification('Atención', 'Primero seleccione el tipo de archivo antes de adjuntar');
+        return; // No guardamos la foto sin tipo
+      }
+
+      // ✅ Adjuntar y guardar automáticamente
+      await this.attachPhotoAndSave(foto);
+
+    } catch (err) {
+      console.error('❌ Error al tomar foto:', JSON.stringify(err, null, 2));
+
+      // Mostrar error específico al usuario (excepto cancelaciones)
+      if (err.message.includes('cancelada')) {
+        // No mostrar alerta si el usuario canceló
+        console.log('Usuario canceló la toma de foto');
+      } else {
+        this.notification('Error', err.message);
+      }
+
+    } finally {
+      this.disableButtons = false;
+    }
+  }
+
+  // async adjuntar() {
+  //   // Validación número máximo antes de abrir opciones
+  //   const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+  //   if (documentosAdjuntos.length >= 6) {
+  //     this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
+  //     return;
+  //   }
+
+  //   // Abrir action sheet para elegir tipo
+  //   const actionSheet = await this.actionSheetCtrl.create({
+  //     header: 'Seleccionar fuente',
+  //     buttons: [
+  //       {
+  //         text: 'PDF',
+  //         icon: 'document-outline',
+  //         handler: () => {
+  //           this.accionARealizar = 'documento';
+  //           // abrir input file oculto
+  //           const tag: any = document.getElementById('file-input');
+  //           if (tag.value) { tag.value = ''; }
+  //           tag.click();
+  //         }
+  //       },
+  //       {
+  //         text: 'Foto',
+  //         icon: 'camera-outline',
+  //         handler: async () => {
+  //           this.accionARealizar = 'foto';
+  //           this.disableButtons = true;
+  //           try {
+  //             const foto = await this.photoService.addNewToGallery();
+  //             // tras tomar la foto, adjuntar y guardar automáticamente
+  //             await this.attachPhotoAndSave(foto);
+  //           } catch (err) {
+  //             console.error('Error al tomar foto:', err);
+  //             this.disableButtons = false;
+  //           }
+  //         }
+  //       },
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel'
+  //       }
+  //     ]
+  //   });
+
+  //   await actionSheet.present();
+  // }
 
   // save() {
   //   this.cacheService.cleanAttachDocs();
-    
+
   //   this.filesAdjuntos.forEach(element => {
   //     this.createDirectoryForActivitieSelected(
   //       this.infoActivity.id,
@@ -461,7 +462,7 @@ async tomarFoto() {
         return 'Registro de exámenes de programa de vigilancia epidemiológica';
       case 'SR':
         return 'Seguimiento recomendaciones';
-        case 'ITR':
+      case 'ITR':
         return 'Informe Técnico de Reclasificación';
       default:
         break;
@@ -496,103 +497,103 @@ async tomarFoto() {
   }
 
   private async attachDocumentAndSave(archivoObj: any) {
-  // Validar que el tipo esté seleccionado
-  const tipoSeleccionado = this.formSupportType.get('type').value;
-  const tipoArchivo = this.validarTipoArchivo(tipoSeleccionado);
-  if (!tipoArchivo) {
-    this.notification('Atención', 'No puede adjuntar el documento sin seleccionar un tipo de archivo');
-    return;
-  }
+    // Validar que el tipo esté seleccionado
+    const tipoSeleccionado = this.formSupportType.get('type').value;
+    const tipoArchivo = this.validarTipoArchivo(tipoSeleccionado);
+    if (!tipoArchivo) {
+      this.notification('Atención', 'No puede adjuntar el documento sin seleccionar un tipo de archivo');
+      return;
+    }
 
-  // Construir objeto para la lista
-  const objGuardarDocumento = {
-    idActividad: this.infoActivity.id,
-    tipoArchivo,
-    idTipoArchivo: tipoSeleccionado,
-    documento: archivoObj,
-  };
-
-  // Agregar a la lista visible
-  this.filesAdjuntos.push(objGuardarDocumento);
-
-  // Guardar físicamente el archivo (Filesystem) y actualizar cache
-  try {
-    await this.createDirectoryForActivitieSelected(
-      this.infoActivity.id,
-      archivoObj.blob,
-      archivoObj.extension,
-      tipoSeleccionado
-    );
-
-    // Actualizar el cache con la lista de pdf adjuntos (mantenemos el mismo formato que usabas)
-    this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
-    // Actualizar contador por actividad
-    const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
-    this.cacheService.infoActividadPorDocumento({
-      idActividad: this.infoActivity.id,
-      cantidadDocumentosAdjuntos: documentosAdjuntos.length,
-    });
-
-    // reset del select
-    this.formSupportType.get('type').reset();
-    this.notification('Éxito', 'Documento adjuntado y guardado correctamente');
-  } catch (e) {
-    console.error('Error guardando documento:', e);
-    this.notification('Error', 'No se pudo guardar el documento');
-  }
-}
-
-private async attachPhotoAndSave(foto: any) {
-  // Validar tipo seleccionado
-  const tipoSeleccionado = this.formSupportType.get('type').value;
-  const tipoArchivo = this.validarTipoArchivo(tipoSeleccionado);
-  
-  if (!tipoArchivo) {
-    this.notification('Atención', 'No puede adjuntar la foto sin seleccionar un tipo de archivo');
-    this.disableButtons = false;
-    return;
-  }
-
-  try {
-    console.log('🔄 Iniciando attachPhotoAndSave...');
-
-    // Construir objeto para guardar
-    const objGuardar = {
+    // Construir objeto para la lista
+    const objGuardarDocumento = {
       idActividad: this.infoActivity.id,
       tipoArchivo,
       idTipoArchivo: tipoSeleccionado,
-      foto: foto,
+      documento: archivoObj,
     };
 
-    console.log('✅ Objeto creado, agregando a listaDocumentos...');
+    // Agregar a la lista visible
+    this.filesAdjuntos.push(objGuardarDocumento);
 
-    // Agregar a la lista
-    this.listaDocumentos.push(objGuardar);
+    // Guardar físicamente el archivo (Filesystem) y actualizar cache
+    try {
+      await this.createDirectoryForActivitieSelected(
+        this.infoActivity.id,
+        archivoObj.blob,
+        archivoObj.extension,
+        tipoSeleccionado
+      );
 
-    console.log('📝 Actualizando cache...');
+      // Actualizar el cache con la lista de pdf adjuntos (mantenemos el mismo formato que usabas)
+      this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
+      // Actualizar contador por actividad
+      const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+      this.cacheService.infoActividadPorDocumento({
+        idActividad: this.infoActivity.id,
+        cantidadDocumentosAdjuntos: documentosAdjuntos.length,
+      });
 
-    // Actualizar cache
-    this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
-    
-    const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
-    this.cacheService.infoActividadPorDocumento({
-      idActividad: this.infoActivity.id,
-      cantidadDocumentosAdjuntos: documentosAdjuntos.length,
-    });
-
-    // Reset del select
-    this.formSupportType.get('type').reset();
-
-    console.log('🎉 Foto adjuntada exitosamente');
-
-    this.notification('Éxito', 'Foto adjuntada correctamente');
-
-  } catch (e) {
-    console.error('❌ Error en attachPhotoAndSave:', e);
-    this.notification('Error', 'No se pudo guardar la foto: ' + e.message);
-  } finally {
-    this.disableButtons = false;
-    console.log('🔚 Finalizando attachPhotoAndSave');
+      // reset del select
+      this.formSupportType.get('type').reset();
+      this.notification('Éxito', 'Documento adjuntado y guardado correctamente');
+    } catch (e) {
+      console.error('Error guardando documento:', e);
+      this.notification('Error', 'No se pudo guardar el documento');
+    }
   }
-}
+
+  private async attachPhotoAndSave(foto: any) {
+    // Validar tipo seleccionado
+    const tipoSeleccionado = this.formSupportType.get('type').value;
+    const tipoArchivo = this.validarTipoArchivo(tipoSeleccionado);
+
+    if (!tipoArchivo) {
+      this.notification('Atención', 'No puede adjuntar la foto sin seleccionar un tipo de archivo');
+      this.disableButtons = false;
+      return;
+    }
+
+    try {
+      console.log('🔄 Iniciando attachPhotoAndSave...');
+
+      // Construir objeto para guardar
+      const objGuardar = {
+        idActividad: this.infoActivity.id,
+        tipoArchivo,
+        idTipoArchivo: tipoSeleccionado,
+        foto: foto,
+      };
+
+      console.log('✅ Objeto creado, agregando a listaDocumentos...');
+
+      // Agregar a la lista
+      this.listaDocumentos.push(objGuardar);
+
+      console.log('📝 Actualizando cache...');
+
+      // Actualizar cache
+      this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
+
+      const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+      this.cacheService.infoActividadPorDocumento({
+        idActividad: this.infoActivity.id,
+        cantidadDocumentosAdjuntos: documentosAdjuntos.length,
+      });
+
+      // Reset del select
+      this.formSupportType.get('type').reset();
+
+      console.log('🎉 Foto adjuntada exitosamente');
+
+      this.notification('Éxito', 'Foto adjuntada correctamente');
+
+    } catch (e) {
+      console.error('❌ Error en attachPhotoAndSave:', e);
+      this.notification('Error', 'No se pudo guardar la foto: ' + e.message);
+    } finally {
+      this.disableButtons = false;
+      console.log('🔚 Finalizando attachPhotoAndSave');
+    }
+  }
 }
