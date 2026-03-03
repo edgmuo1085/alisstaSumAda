@@ -40,7 +40,7 @@
       </ion-button>
 
       <!-- Hora Inicio -->
-      <ion-item lines="none" class="mt-3">
+      <ion-item *ngIf="showDateButton" lines="none" class="mt-3">
         <ion-icon name="time-outline" slot="start"></ion-icon>
         <ion-input
           readonly
@@ -51,7 +51,7 @@
         </ion-input>
       </ion-item>
 
-      <ion-modal [isOpen]="showStartHourModal" handle="false" class="center-modal" [backdropDismiss]="false" handle="false">
+      <ion-modal [isOpen]="showStartHourModal" handle="false" class="center-modal" [backdropDismiss]="false">
         <ng-template>
           <ion-datetime
             presentation="time"
@@ -68,7 +68,7 @@
       </ion-modal>
 
       <!-- Hora Final -->
-      <ion-item class="mt-3">
+      <ion-item *ngIf="showDateButton && customStartDate" class="mt-3">
         <ion-icon name="time-outline" slot="start"></ion-icon>
         <ion-input
           readonly
@@ -79,7 +79,7 @@
         </ion-input>
       </ion-item>
 
-      <ion-modal [isOpen]="showEndHourModal" handle="false" class="center-modal" [keepContentsMounted]="true">
+      <ion-modal [isOpen]="showEndHourModal" handle="false" class="center-modal" [backdropDismiss]="false">
         <ng-template>
           <ion-datetime
             presentation="time"
@@ -89,15 +89,15 @@
             cancelText="Cancelar"
             doneText="Aceptar"
             (ionChange)="changeHourEnd($event)"
-            (ionCancel)="showEndHourModal = false"
-            (ionConfirm)="showEndHourModal = false"
+            (ionCancel)="closeDateTimeModal('end')"
+            (ionConfirm)="closeDateTimeModal('end')"
           >
           </ion-datetime>
         </ng-template>
       </ion-modal>
 
       <!-- Contador de horas totales -->
-      <ion-item class="mt-3">
+      <ion-item *ngIf="showDateButton && customStartDate && customEndDate" class="mt-3">
         <strong>
           <ion-label *ngIf="!totalHours">Horas totales: 0</ion-label>
         </strong>

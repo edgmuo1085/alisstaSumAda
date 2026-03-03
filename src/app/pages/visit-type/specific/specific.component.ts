@@ -121,9 +121,14 @@ export class SpecificComponent implements OnInit {
 
 
   changeHourEnd(event) {
+
+    let value = event.detail.value;
+
+    if (!value) value = this.getCurrentHour();
+
     const normalized = this.normalizeHour(event.detail.value);
     this.setEndHour(normalized);
-    this.showEndHourModal = false;
+    this.closeDateTimeModal('end');
   };
 
   private getCurrentHour(): string {
