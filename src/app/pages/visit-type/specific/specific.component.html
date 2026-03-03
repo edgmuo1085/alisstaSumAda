@@ -51,7 +51,7 @@
         </ion-input>
       </ion-item>
 
-      <ion-modal [isOpen]="showStartHourModal" handle="false" class="center-modal" [keepContentsMounted]="true">
+      <ion-modal [isOpen]="showStartHourModal" handle="false" class="center-modal" [backdropDismiss]="false" handle="false">
         <ng-template>
           <ion-datetime
             presentation="time"
@@ -60,8 +60,8 @@
             cancelText="Cancelar"
             doneText="Aceptar"
             (ionChange)="changeHourStar($event)"
-            (ionCancel)="showStartHourModal = false"
-            (ionConfirm)="showStartHourModal = false"
+            (ionCancel)="closeDateTimeModal('start')"
+            (ionConfirm)="closeDateTimeModal('start')"
           >
           </ion-datetime>
         </ng-template>

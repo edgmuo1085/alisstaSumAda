@@ -107,14 +107,16 @@ export class SpecificComponent implements OnInit {
   }
 
   changeHourStar(event) {
-    console.log('changeHourStar..!! ', event.detail.value);
+
+    let value = event.detail.value;
+    console.log('changeHourStar..!! ', value);
     console.log('Hora Actual', new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }));
 
-    if (!event.detail.value) return;
+    if (!value) value = this.getCurrentHour();
 
-    const normalized = this.normalizeHour(event.detail.value);
+    const normalized = this.normalizeHour(value);
     this.setInitialHour(normalized);
-    this.showStartHourModal = false;
+    this.closeDateTimeModal('start');
   }
 
 
@@ -122,6 +124,26 @@ export class SpecificComponent implements OnInit {
     const normalized = this.normalizeHour(event.detail.value);
     this.setEndHour(normalized);
     this.showEndHourModal = false;
+  };
+
+  private getCurrentHour(): string {
+    const now = new Date();
+
+    const bogotaTime = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'America/Bogota',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    }).format(now);
+
+    return `${bogotaTime}`;
+  };
+
+  closeDateTimeModal(modal: string) {
+    setTimeout(() => {
+      if (modal === 'start') { this.showStartHourModal = false } else this.showEndHourModal = false;
+    }, 500)
   }
 
   async validateHours(hourStart, hourEnd, hourMigrated): Promise<string> {
