@@ -10,10 +10,8 @@
     <!-- Selector de ambiente (solo en dev/test) -->
     <ion-item *ngIf="!isProd">
       <ion-label>Ambiente</ion-label>
-      <ion-select [(ngModel)]="selectedIndex" (ionChange)="cambiarAmbiente()">
-        <ion-select-option *ngFor="let amb of ambientes; let i = index" [value]="i">
-          {{ amb.nombre }}
-        </ion-select-option>
+      <ion-select interface="popover" justify="end" [(ngModel)]="selectedIndex" (ionChange)="cambiarAmbiente()">
+        <ion-select-option *ngFor="let amb of ambientes; let i = index" [value]="i"> {{ amb.nombre }} </ion-select-option>
       </ion-select>
     </ion-item>
 
@@ -25,8 +23,13 @@
               <!-- Documento empleador -->
               <ion-col size="12">
                 <div class="form-group">
-                  <ion-input class="ion-text-center input digitoVerificacion" type="tel" inputmode="numeric"
-                    placeholder="Documento empleador" formControlName="employerID">
+                  <ion-input
+                    class="ion-text-center input digitoVerificacion"
+                    type="tel"
+                    inputmode="numeric"
+                    placeholder="Documento empleador"
+                    formControlName="employerID"
+                  >
                   </ion-input>
                 </div>
                 <div *ngIf="form.controls['employerID'].touched && form.controls['employerID'].invalid" class="mensajeError">
@@ -37,8 +40,13 @@
               <!-- Documento usuario -->
               <ion-col size="12">
                 <div class="form-group">
-                  <ion-input class="ion-text-center input" type="tel" inputmode="numeric"
-                    placeholder="Documento usuario" formControlName="userID">
+                  <ion-input
+                    class="ion-text-center input"
+                    type="tel"
+                    inputmode="numeric"
+                    placeholder="Documento usuario"
+                    formControlName="userID"
+                  >
                   </ion-input>
                 </div>
                 <div *ngIf="form.controls['userID'].touched && form.controls['userID'].invalid" class="mensajeError">
@@ -49,8 +57,13 @@
               <!-- Clave de acceso -->
               <ion-col size="12">
                 <div class="form-group password-container mt-3">
-                  <ion-input class="password-input" [type]="passwordType" inputmode="text" placeholder="Clave de acceso"
-                    formControlName="password">
+                  <ion-input
+                    class="password-input"
+                    [type]="passwordType"
+                    inputmode="text"
+                    placeholder="Clave de acceso"
+                    formControlName="password"
+                  >
                   </ion-input>
                   <!-- Botón para mostrar/ocultar contraseña -->
                   <button type="button" class="btnShowPassword" (click)="togglePassword()">

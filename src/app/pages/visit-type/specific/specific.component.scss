@@ -51,7 +51,7 @@ ion-list {
 }
 
 ion-datetime-button::part(native) {
-  background: var(--datetime-btn-bg);
+  background: var(--ion-color-primary);
   color: var(--datetime-btn-color);
   border-radius: 12px;
 }
