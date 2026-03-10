@@ -25,7 +25,7 @@ export class AuthFacadeService {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private configSv: ConfigService
-  ) {}
+  ) { }
 
   private async presentLoading(message = 'Cargando') {
     const l = await this.loadingCtrl.create({

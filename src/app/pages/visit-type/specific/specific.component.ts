@@ -38,24 +38,13 @@ export class SpecificComponent implements OnInit {
   customStartDate;
   customEndDate;
   totalHours;
+  minEndHour: string | null = null;
 
   showStartTodaySpecificAdvice = false;
 
   disabledBtnDateStart = false;
 
   date: string;
-
-  showStartHourModal = false;
-  showEndHourModal = false;
-
-  openStartHour() {
-    this.showStartHourModal = true;
-  }
-
-  openEndHour() {
-    if (!this.customStartDate) return;
-    this.showEndHourModal = true;
-  }
 
   constructor(
     private cacheService: CacheService,
@@ -116,7 +105,7 @@ export class SpecificComponent implements OnInit {
 
     const normalized = this.normalizeHour(value);
     this.setInitialHour(normalized);
-    this.closeDateTimeModal('start');
+    this.minEndHour = value;
   }
 
 
@@ -128,7 +117,6 @@ export class SpecificComponent implements OnInit {
 
     const normalized = this.normalizeHour(event.detail.value);
     this.setEndHour(normalized);
-    this.closeDateTimeModal('end');
   };
 
   private getCurrentHour(): string {
@@ -145,11 +133,13 @@ export class SpecificComponent implements OnInit {
     return `${bogotaTime}`;
   };
 
-  closeDateTimeModal(modal: string) {
-    setTimeout(() => {
-      if (modal === 'start') { this.showStartHourModal = false } else this.showEndHourModal = false;
-    }, 500)
-  }
+  // closeDateTimeModal(modal: string) {
+  //   if (modal === 'start') {
+  //     this.showStartHourModal = false;
+  //   } else {
+  //     this.showEndHourModal = false;
+  //   }
+  // }
 
   async validateHours(hourStart, hourEnd, hourMigrated): Promise<string> {
     // REFACTOR: No debe usarse una cadena arbitraria como _NO SE PUEDE_ para cubrir un escenario.

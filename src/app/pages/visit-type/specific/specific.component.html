@@ -40,57 +40,55 @@
       </ion-button>
 
       <!-- Hora Inicio -->
-      <ion-item *ngIf="showDateButton" lines="none" class="mt-3">
+      <ion-item *ngIf="showDateButton">
         <ion-icon name="time-outline" slot="start"></ion-icon>
-        <ion-input
-          readonly
-          placeholder="Seleccionar hora Inicial"
-          [value]="customStartDate ? formatForDisplay(customStartDate) : ''"
-          (click)="openStartHour()"
-        >
-        </ion-input>
+        <ion-label>
+          <strong>Hora inicial:</strong>
+          <!-- {{ customStartDate ? formatForDisplay(customStartDate) : 'Seleccionar' }} -->
+        </ion-label>
+
+        <ion-datetime-button datetime="startHour"></ion-datetime-button>
       </ion-item>
 
-      <ion-modal [isOpen]="showStartHourModal" handle="false" class="center-modal" [backdropDismiss]="false">
+      <ion-modal keepContentsMounted="true">
         <ng-template>
           <ion-datetime
+            id="startHour"
             presentation="time"
-            class="time-picker"
+            preferWheel="true"
+            [value]="customStartDate"
             [showDefaultButtons]="true"
             cancelText="Cancelar"
             doneText="Aceptar"
             (ionChange)="changeHourStar($event)"
-            (ionCancel)="closeDateTimeModal('start')"
-            (ionConfirm)="closeDateTimeModal('start')"
           >
           </ion-datetime>
         </ng-template>
       </ion-modal>
 
       <!-- Hora Final -->
-      <ion-item *ngIf="showDateButton && customStartDate" class="mt-3">
-        <ion-icon name="time-outline" slot="start"></ion-icon>
-        <ion-input
-          readonly
-          placeholder="Seleccionar hora Final"
-          [value]="customEndDate ? formatForDisplay(customEndDate) : ''"
-          (click)="openEndHour()"
-        >
-        </ion-input>
+      <ion-item *ngIf="showDateButton && customStartDate">
+        <ion-icon name="time-outline" slot="start" size="large"></ion-icon>
+        <ion-label>
+          <strong>Hora final:</strong>
+          <!-- {{ customEndDate ? formatForDisplay(customEndDate) : 'Seleccionar' }} -->
+        </ion-label>
+
+        <ion-datetime-button datetime="endHour"></ion-datetime-button>
       </ion-item>
 
-      <ion-modal [isOpen]="showEndHourModal" handle="false" class="center-modal" [backdropDismiss]="false">
+      <ion-modal keepContentsMounted="true">
         <ng-template>
           <ion-datetime
+            id="endHour"
             presentation="time"
             preferWheel="true"
-            class="time-picker"
+            [value]="customEndDate"
+            [min]="minEndHour"
             [showDefaultButtons]="true"
             cancelText="Cancelar"
             doneText="Aceptar"
             (ionChange)="changeHourEnd($event)"
-            (ionCancel)="closeDateTimeModal('end')"
-            (ionConfirm)="closeDateTimeModal('end')"
           >
           </ion-datetime>
         </ng-template>
