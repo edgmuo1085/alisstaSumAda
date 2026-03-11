@@ -37,6 +37,7 @@ export class SpecificComponent implements OnInit {
    */
   customStartDate;
   customEndDate;
+  customStartDateISO
   totalHours;
   minEndHour: string | null = null;
 
@@ -98,14 +99,13 @@ export class SpecificComponent implements OnInit {
   changeHourStar(event) {
 
     let value = event.detail.value;
-    console.log('changeHourStar..!! ', value);
-    console.log('Hora Actual', new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' }));
 
-    if (!value) value = this.getCurrentHour();
+    if (!value) value = new Date().toISOString();
 
     const normalized = this.normalizeHour(value);
-    this.setInitialHour(normalized);
+    this.customStartDate = normalized;
     this.minEndHour = value;
+    this.checkIfReady();
   }
 
 
@@ -113,24 +113,11 @@ export class SpecificComponent implements OnInit {
 
     let value = event.detail.value;
 
-    if (!value) value = this.getCurrentHour();
+    if (!value) value = new Date().toISOString();
 
-    const normalized = this.normalizeHour(event.detail.value);
-    this.setEndHour(normalized);
-  };
-
-  private getCurrentHour(): string {
-    const now = new Date();
-
-    const bogotaTime = new Intl.DateTimeFormat('en-GB', {
-      timeZone: 'America/Bogota',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).format(now);
-
-    return `${bogotaTime}`;
+    this.customEndDate = this.normalizeHour(value);
+    this.customStartDateISO = value;
+    this.checkIfReady();
   };
 
   /**
@@ -191,6 +178,15 @@ export class SpecificComponent implements OnInit {
    * sea menor o igual que la estimada para la actividad. Si todo está en orden, emite los valores para
    * el componente padre.
    */
+
+  private checkIfReady(): void {
+
+    if (!this.customStartDate || !this.customEndDate) {
+      return;
+    }
+
+    this.validateVisitDuration();
+  }
 
   private async validateVisitDuration(): Promise<void> {
 
