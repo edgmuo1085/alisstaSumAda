@@ -36,95 +36,6 @@ export class AuthFacadeService {
     return l;
   }
 
-  /**
-   * Login con usuario/clave.
-   * - Llama a AuthService.login (usa CryptoService internamente)
-   * - Guarda sesión en AppStorageService
-   * - Guarda last employer / user
-   * - Ofrece activar biometría (si está disponible)
-   */
-  // Dentro de AuthFacadeService
-
-  // async loginWithPassword(employerID: number, userID: string, password: string): Promise<void> {
-  //   console.log('[AuthFacade] loginWithPassword START');//delete
-  //   const loading = await this.presentLoading('Iniciando sesión...');
-  //    console.log('[AuthFacade] Loading presented'); //delete
-
-  //   this.auth
-  //     .login(employerID, userID, password)
-  //     .pipe(take(1))
-  //     .subscribe(
-  //       async (response: any) => {
-  //         console.log('[AuthFacade] login response:', JSON.stringify(response, null, 2)); //delete
-  //         try {
-  //           if (response?.error) {
-  //              console.log('[AuthFacade] Login error returned by server'); //delete
-  //               this.configSv.isLogged = false;
-  //             const alertErr = await this.alertCtrl.create({
-  //               header: response.header || 'Error',
-  //               message: response.message || 'Error en el inicio de sesión',
-  //               buttons: ['ACEPTAR'],
-  //             });
-  //             await alertErr.present();
-  //             return;
-  //           }
-
-  //          const session = Array.isArray(response) ? response[0] : response;
-  //           console.log('[AuthFacade] Parsed session:', JSON.stringify(session, null, 2)); //delete
-
-  //           this.configSv.isLogged = true;
-
-  //           await this.storage.set(this.storage.KEY_SESSION, session);
-  //           console.log('[AuthFacade] Session saved'); //delete
-
-  //           await this.storage.set(this.storage.KEY_LAST_EMPLOYER, employerID);
-  //           console.log('[AuthFacade] employerID saved'); //delete
-
-  //           await this.storage.set(this.storage.KEY_LAST_USERID, userID);
-  //           console.log('[AuthFacade] userID saved'); //delete
-
-  //           // 3) Cerrar loader ANTES de preguntar por biometría para que la UI quede interactiva.
-  //           try { await loading.dismiss();
-  //             console.log('[AuthFacade] Loading dismissed'); //delete
-  //            } catch (e) {console.log("[AuthFacade] Error dismissing loading:", JSON.stringify(e, null, 2)); }
-
-  //           // 4) Preguntar al usuario si quiere activar biometría y esperar su decisión.
-  //           //    maybeAskEnableBiometric ahora devuelve Promise<boolean> que resuelve cuando termina todo el flujo.
-  //           console.log('[AuthFacade] Calling maybeAskEnableBiometric...');//delete
-  //           await this.maybeAskEnableBiometric(employerID, userID, password);
-  //           console.log('[AuthFacade] maybeAskEnableBiometric finished');//delete
-
-  //           // 5) Navegar al dashboard (siempre)
-  //          console.log('[AuthFacade] NAVIGATING to /u/u/home ...');
-  //           await this.router.navigateByUrl('/u/home');
-  //           console.log('[AuthFacade] Navigation executed');
-  //         } catch (err) {
-  //           console.error('Error handling login response:', JSON.stringify(err, null, 2));
-  //           // Asegurar que cerramos el loader si algo falla
-  //           try { await loading.dismiss(); } catch (e) {console.log("Error en el login.dismiss: ", JSON.stringify(e, null, 2))}
-  //           const alert = await this.alertCtrl.create({
-  //             header: 'Error',
-  //             message: 'Ocurrió un error durante el proceso de inicio de sesión.',
-  //             buttons: ['ACEPTAR'],
-  //           });
-  //           await alert.present();
-  //         }
-  //       },
-  //       async err => {
-  //         // error HTTP
-  //          this.configSv.isLogged = false;
-  //         try { await loading.dismiss(); } catch (e) {console.log("erroe en HTTP Login: ", JSON.stringify(e, null, 2))}
-  //         console.error('Login HTTP error:', JSON.stringify(err, null, 2));
-  //         const alert = await this.alertCtrl.create({
-  //           header: 'Error',
-  //           message: 'No se pudo conectar al servidor. Intente nuevamente más tarde.',
-  //           buttons: ['ACEPTAR'],
-  //         });
-  //         await alert.present();
-  //       }
-  //     );
-  // }
-
   async loginWithPassword(employerID: number, userID: string, password: string): Promise<boolean> {
     return new Promise(async resolve => {
       console.log('[AuthFacade] loginWithPassword START');
@@ -137,7 +48,6 @@ export class AuthFacadeService {
           async (response: any) => {
             try {
               if (response?.error) {
-                this.configSv.isLogged = false;
                 await loading.dismiss();
 
                 const alertErr = await this.alertCtrl.create({
@@ -152,7 +62,6 @@ export class AuthFacadeService {
 
               const session = Array.isArray(response) ? response[0] : response;
 
-              this.configSv.isLogged = true;
               await this.saveSessionWithValidation(session);
 
               const userAuth = { documentoEmpleador: employerID, documentoUsuario: userID, password };
@@ -175,7 +84,6 @@ export class AuthFacadeService {
             }
           },
           async err => {
-            this.configSv.isLogged = false;
             await loading.dismiss();
 
             const alert = await this.alertCtrl.create({
@@ -270,7 +178,6 @@ export class AuthFacadeService {
 
           if (session) {
             console.log('[AuthFacade] Auto-login successful with encrypted info');
-            this.configSv.isLogged = true;
             await this.router.navigateByUrl('/u/home');
             return true;
           }
@@ -442,7 +349,6 @@ export class AuthFacadeService {
       .subscribe(
         async (response: any) => {
           if (response?.error) {
-            this.configSv.isLogged = false;
             const alert = await this.alertCtrl.create({
               header: response.header || 'Error',
               message: response.message || 'Error en el inicio de sesión',
@@ -453,12 +359,10 @@ export class AuthFacadeService {
           }
 
           const session = Array.isArray(response) ? response[0] : response;
-          this.configSv.isLogged = true;
           await this.storage.set(this.storage.KEY_SESSION, session);
           await this.router.navigateByUrl('/u/home');
         },
         async err => {
-          this.configSv.isLogged = false;
           console.error('Error loginWithBiometric -> login:', JSON.stringify(err, null, 2));
           const alert = await this.alertCtrl.create({
             header: 'Error',

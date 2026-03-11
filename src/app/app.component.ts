@@ -59,14 +59,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.storage.create(); //TODO: Validar migrar el uso del storage a el servicio
+  async initializeApp() {
+    this.platform.ready().then(async () => {
+      await this.storage.create(); //TODO: Validar migrar el uso del storage a el servicio
       this.initializeCapacitorPlugins();
       this.checkDarkTheme();
       this.networkService.initializeNetworkEvents();
       this.registerBackButtonListener();
-      this.router.navigateByUrl('login');
     });
   }
 

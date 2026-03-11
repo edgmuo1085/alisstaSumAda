@@ -12,10 +12,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/navbar/navbar.module').then(m => m.NavbarPageModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

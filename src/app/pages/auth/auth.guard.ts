@@ -1,30 +1,26 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ConfigService } from '../../config.service';
+import { AppStorageService } from '../../app-storage.service';
 
-/**
- * Comprueba que el usuario esté autenticado.
- */
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  /**
-   * Dirección URL para la página de inicio de sesión dentro del módulo de autenticación.
-   */
-  private readonly LOGIN_URL = 'auth/login';
 
   constructor(
     private router: Router,
-    private config: ConfigService
-  ) {}
+    private storage: AppStorageService
+  ) { }
 
-  canActivate(): boolean {
-    const existe = this.config.isLogged;
-    if (existe) {
+  async canActivate(): Promise<boolean> {
+
+    const session = await this.storage.get(this.storage.KEY_SESSION);
+
+    if (session) {
       return true;
-    } else {
-      return false;
     }
+
+    await this.router.navigateByUrl('/login');
+    return false;
   }
 }

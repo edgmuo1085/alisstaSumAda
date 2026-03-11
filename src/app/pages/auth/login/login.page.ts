@@ -33,9 +33,9 @@ export class LoginPageComponent implements OnInit {
 
   // Ambiente
   ambientes = environment.ambientes || [];
-  selectedIndex:number;
+  selectedIndex: number;
   isProd = environment.production;
-  
+
   // Variables para mostrar/ocultar contraseña (como en el antiguo)
   passwordToggleIcon = 'eye-off';
   passwordType = 'password';
@@ -49,22 +49,29 @@ export class LoginPageComponent implements OnInit {
     private apiUrl: ApiUrlService,
     private storage: AppStorageService,
     private router: Router
-  ) {}
+  ) { }
 
   async ngOnInit() {
 
     await this.loadSelectedAmbiente();
+
+    const session = await this.storage.get(this.storage.KEY_SESSION);
+
+    if (session) {
+      this.router.navigateByUrl('/u/home');
+    }
+
     // Intentar autologin por sesión guardada O con datos encriptados
-    const triedNormal = await this.facade.tryAutoLogin();
-    if (triedNormal) return;
+    // const triedNormal = await this.facade.tryAutoLogin();
+    // if (triedNormal) return;
 
     // ✅ Intentar con datos encriptados (como en el componente antiguo)
-    const triedEncrypted = await this.facade.tryAutoLoginWithEncryptedInfo();
-    if (triedEncrypted) return;
+    // const triedEncrypted = await this.facade.tryAutoLoginWithEncryptedInfo();
+    // if (triedEncrypted) return;
 
     // Intentar autologin por sesión guardada (no biométrica)
-    const tried = await this.facade.tryAutoLogin();
-    if (tried) return;
+    // const tried = await this.facade.tryAutoLogin();
+    // if (tried) return;
 
     // --- Reglas para mostrar el botón biométrico ---
     // 1) El dispositivo debe soportar biometría
@@ -90,14 +97,14 @@ export class LoginPageComponent implements OnInit {
     try {
       // Obtener el ambiente guardado del storage
       const ambienteGuardado = await this.storage.get('ambienteSeleccionado');
-      
+
       if (ambienteGuardado !== null) {
         this.selectedIndex = parseInt(ambienteGuardado, 10);
       } else {
         // Valor por defecto si no hay nada guardado
         this.selectedIndex = environment.ambienteSeleccionado;
       }
-      
+
       console.log('Ambiente cargado:', this.selectedIndex);
     } catch (error) {
       console.error('Error cargando ambiente:', error);

@@ -40,7 +40,7 @@ export class ConfigService {
   /**
    *  Variable para indicar si inicio sesion
    */
-  isLogged = false;
+  // isLogged = false;
 
   /**
    * Dirección URL de la web de _Alissta_ para la recuperación de contraseña.
