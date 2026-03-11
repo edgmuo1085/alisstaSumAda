@@ -32,6 +32,7 @@
               }
             ],
             "styles": ["src/global.scss"],
+            "inlineStyleLanguage": "scss",
             "scripts": []
           },
           "configurations": {
