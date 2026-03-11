@@ -133,61 +133,6 @@ export class SpecificComponent implements OnInit {
     return `${bogotaTime}`;
   };
 
-  // closeDateTimeModal(modal: string) {
-  //   if (modal === 'start') {
-  //     this.showStartHourModal = false;
-  //   } else {
-  //     this.showEndHourModal = false;
-  //   }
-  // }
-
-  async validateHours(hourStart, hourEnd, hourMigrated): Promise<string> {
-    // REFACTOR: No debe usarse una cadena arbitraria como _NO SE PUEDE_ para cubrir un escenario.
-    // Podría definirse que este método regrese el número de horas de diferencia entre la inicial
-    // y la final, y en cualquier otro caso, se usase _undefined_
-
-    const start = hourStart.split(':');
-    const end = hourEnd.split(':');
-
-    if (parseInt(end[0], 10) === parseInt(start[0], 10)) {
-      const resultHour = parseInt(end[0], 10) - parseInt(start[0], 10);
-      if (resultHour < hourMigrated) {
-        return 'No se puede';
-      }
-    }
-
-    if (parseInt(end[0], 10) > parseInt(start[0], 10)) {
-      const resultHour = parseInt(end[0], 10) - parseInt(start[0], 10);
-      const resultMinutes = +this.validateMinutes(hourStart, hourEnd, hourMigrated);
-      const registeredMinutes = await this.cacheService.getRegisteredTime();
-
-      if (resultHour * 60 + resultMinutes + registeredMinutes <= 600) {
-        if (resultHour >= hourMigrated) {
-          return resultHour.toString();
-        } else {
-          return 'No se puede';
-        }
-      } else {
-        this.notification('Excede las horas permitidas a ejecutar. Las cuales son hasta 10 horas por día');
-      }
-    } else {
-      this.totalHours = 0;
-      this.notification('La hora final no puede ser menor a la hora inicial');
-    }
-  }
-
-  validateMinutes(hourStart, hourEnd, hourMigrated): string {
-    const start = hourStart.split(':');
-    const end = hourEnd.split(':');
-    if (parseInt(end[1], 10) > parseInt(start[1], 10)) {
-      const resultMinutes = parseInt(end[1], 10) - parseInt(start[1], 10);
-      return resultMinutes.toString();
-    } else {
-      const resultMinutes = parseInt(start[1], 10) - parseInt(end[1], 10);
-      return resultMinutes.toString();
-    }
-  }
-
   /**
    * Esta es la popUp cuando pasa alguna excepción en la selección de las horas.
    */
@@ -246,64 +191,47 @@ export class SpecificComponent implements OnInit {
    * sea menor o igual que la estimada para la actividad. Si todo está en orden, emite los valores para
    * el componente padre.
    */
+
   private async validateVisitDuration(): Promise<void> {
-    console.log("validateVisitDuration Funcion: ", "Inicial: ", this.customStartDate, "Final: ", this.customEndDate)
+
     if (!this.customStartDate || !this.customEndDate) {
       return;
     }
 
     const horasMigradas = this.cacheService.migratedHours;
-    const hours = await this.validateHours(this.customStartDate, this.customEndDate, horasMigradas);
-    let showButton: boolean;
 
-    switch (hours) {
-      case undefined:
-        showButton = false;
-        this.totalHours = 0;
-        this.formDateSpecific.controls.endHour.reset();
+    const start = moment(`1970-01-01T${this.customStartDate}`);
+    const end = moment(`1970-01-01T${this.customEndDate}`);
 
-        break;
-      case 'No se puede':
-        showButton = false;
-        this.totalHours = 0;
-        this.formDateSpecific.controls.endHour.reset();
-
-        // REFACTOR: Debe normalizarse el mostrar notificaciones. O bien lo hace este método, o lo hace el
-        // de validación de horas.
-        this.notification(`No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`);
-
-        break;
-      default:
-        {
-          const now = moment();
-          const realStartDate = now.format('YYYY-MM-DD') + `T${this.customStartDate}`;
-          const realEndDate = now.format('YYYY-MM-DD') + `T${this.customEndDate}`;
-          const start = moment(realStartDate);
-          const end = moment(realEndDate);
-          const duration = moment.duration(end.diff(start));
-          const _hours = Math.floor(duration.asHours());
-          const _minutes = Math.floor(duration.asMinutes() % 60);
-          const totalHours = _hours + _minutes / 60;
-
-          if (totalHours < horasMigradas) {
-            showButton = false;
-            this.totalHours = 0;
-            this.formDateSpecific.controls.endHour.reset();
-
-            // REFACTOR: Debe normalizarse el mostrar notificaciones. O bien lo hace este método, o lo hace el
-            // de validación de horas.
-            this.notification(`No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`);
-          } else {
-            showButton = !!this.date;
-            this.totalHours = _hours + ' Horas ' + _minutes + ' Minutos';
-          }
-        }
+    if (end.isBefore(start)) {
+      this.notification('La hora final no puede ser menor a la hora inicial');
+      this.totalHours = 0;
+      return;
     }
+
+    const duration = moment.duration(end.diff(start));
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    const totalDecimal = hours + minutes / 60;
+
+    if (totalDecimal < horasMigradas) {
+
+      this.notification(
+        `No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`
+      );
+
+      this.totalHours = 0;
+      return;
+    }
+
+    this.totalHours = `${hours} Horas ${minutes} Minutos`;
 
     this.specificStartHourSelected.emit(this.customStartDate);
     this.specificEndHourSelected.emit(this.customEndDate);
     this.specificTotalHour.emit(this.totalHours);
-    this.showButtonNext.emit(showButton);
+
+    this.showButtonNext.emit(true);
   }
 
   private normalizeHour(value: string): string {

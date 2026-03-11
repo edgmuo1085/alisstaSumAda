@@ -41,10 +41,9 @@
 
       <!-- Hora Inicio -->
       <ion-item *ngIf="showDateButton">
-        <ion-icon name="time-outline" slot="start"></ion-icon>
+        <ion-icon name="time-outline" slot="start" size="large"></ion-icon>
         <ion-label>
           <strong>Hora inicial:</strong>
-          <!-- {{ customStartDate ? formatForDisplay(customStartDate) : 'Seleccionar' }} -->
         </ion-label>
 
         <ion-datetime-button datetime="startHour"></ion-datetime-button>
@@ -57,6 +56,7 @@
             presentation="time"
             preferWheel="true"
             [value]="customStartDate"
+            minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
             [showDefaultButtons]="true"
             cancelText="Cancelar"
             doneText="Aceptar"
@@ -71,7 +71,6 @@
         <ion-icon name="time-outline" slot="start" size="large"></ion-icon>
         <ion-label>
           <strong>Hora final:</strong>
-          <!-- {{ customEndDate ? formatForDisplay(customEndDate) : 'Seleccionar' }} -->
         </ion-label>
 
         <ion-datetime-button datetime="endHour"></ion-datetime-button>
@@ -85,6 +84,7 @@
             preferWheel="true"
             [value]="customEndDate"
             [min]="minEndHour"
+            minuteValues="0,5,10,15,20,25,30,35,40,45,50,55"
             [showDefaultButtons]="true"
             cancelText="Cancelar"
             doneText="Aceptar"
