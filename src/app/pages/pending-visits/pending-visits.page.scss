@@ -71,3 +71,44 @@ cdk-virtual-scroll-viewport {
     width: 100%;
   }
 }
+
+.progress-full-width {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.progress-row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.progress-row ion-col {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.progress-label {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.progress-bar-custom {
+  width: 100%;
+  // --progress-background: #e0e0e0;
+  height: 10px;
+  border-radius: 6px;
+}
+
+.hours {
+  font-size: 11px;
+  text-align: center;
+  opacity: 0.8;
+}
