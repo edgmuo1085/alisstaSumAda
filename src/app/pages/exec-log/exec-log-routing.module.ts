@@ -20,10 +20,14 @@ const routes: Routes = [
     path: 'releaseActivities',
     loadChildren: () => import('../release-activities/release-activities.module').then(m => m.ReleaseActivitiesPageModule),
   },
+  {
+    path: 'visitsHistory',
+    loadChildren: () => import('../visits-history/visits-history.module').then(m => m.VisitsHistoryPageModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ExecLogPageRoutingModule {}
+export class ExecLogPageRoutingModule { }

@@ -13,5 +13,10 @@
     "icon": "../../../assets/icon/icono_liberar_actividades.svg",
     "title": "Liberar actividades",
     "redirecTo": "releaseActivities"
+  },
+  {
+    "icon": "../../../assets/icon/icono_encuesta.svg",
+    "title": "Histórico de Acta",
+    "redirecTo": "visitsHistory"
   }
 ]
