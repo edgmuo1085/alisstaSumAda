@@ -79,7 +79,7 @@ export class CacheService {
   // Variable para guardar la ip adress
   ipAddress: any;
 
-  constructor(private storage: Storage) {}
+  constructor(private storage: Storage) { }
 
   // --------------------------- MÓDULO EJECUCIÓN ACTIVIDADES --------------------\\
 
@@ -190,7 +190,7 @@ export class CacheService {
     this.saveAttach.push(attachsDocs);
   }
 
-   cleanAttachDocs() {
+  cleanAttachDocs() {
     this.saveAttach = []
   }
 
@@ -208,60 +208,80 @@ export class CacheService {
   }
 
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
-  infoFotosAdjuntas(fotosAdjuntas) {
-    this.fotosAdjuntas.push(fotosAdjuntas);
-  }
+  infoFotosAdjuntas(fotosAdjuntas: any[]) {
+    // Aplanar si recibe un array de arrays (por compatibilidad)
+    const fotosParaAgregar = Array.isArray(fotosAdjuntas[0]) ?
+      (fotosAdjuntas as any[]).reduce((acc, curr) => acc.concat(curr), []) :
+      fotosAdjuntas;
 
-  removeFotoAdjunta(id: string) {
-    this.fotosAdjuntas.forEach(f => {
-      const index = f.findIndex((ff: any) => ff.foto.idFoto === id);
+    // Agregar cada foto individualmente, evitando duplicados
+    fotosParaAgregar.forEach(foto => {
+      const clave = `${foto.foto?.idFoto}-${foto.idTipoArchivo}`;
+      const existe = this.fotosAdjuntas.some(existing => {
+        const existingClave = `${existing.foto?.idFoto}-${existing.idTipoArchivo}`;
+        return existingClave === clave;
+      });
 
-      if (index < 0) {
-        return;
+      if (!existe) {
+        this.fotosAdjuntas.push(foto);
       }
-
-      const deleted = f.splice(index, 1);
-      const registry = this.infoDocumentosPorActividad.find(r => r.idActividad === deleted[0].idActividad);
-
-      if (!registry) {
-        return;
-      }
-
-      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
     });
   }
 
+  removeFotoAdjunta(id: string) {
+    // Buscar directamente en el array plano
+    const index = this.fotosAdjuntas.findIndex(foto => foto.foto?.idFoto === id);
+
+    if (index !== -1) {
+      const deleted = this.fotosAdjuntas.splice(index, 1);
+      const registry = this.infoDocumentosPorActividad.find(r => r.idActividad === deleted[0].idActividad);
+
+      if (registry) {
+        registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
+      }
+    }
+  }
+
   obtenerAdjuntosFoto() {
-    return this.imgAdjuntosFilter();
+    // Ya no necesita filtrar, devuelve array plano
+    return [...this.fotosAdjuntas];
   }
 
   // Metodo que permite guardar la información del a actividad con la cantidad de documentos adjuntos
-  infoPDFAdjuntos(pdfAdjuntos) {
-    this.pdfAdjuntos.push(pdfAdjuntos);
+  infoPDFAdjuntos(pdfAdjuntos: any[]) {
+    // Aplanar si recibe un array de arrays (por compatibilidad)
+    const pdfsParaAgregar = Array.isArray(pdfAdjuntos[0]) ?
+      (pdfAdjuntos as any[]).reduce((acc, curr) => acc.concat(curr), []) :
+      pdfAdjuntos;
+
+    // Agregar cada PDF individualmente, evitando duplicados
+    pdfsParaAgregar.forEach(pdf => {
+      const existe = this.pdfAdjuntos.some(existing => existing.documento?.id === pdf.documento?.id);
+
+      if (!existe) {
+        this.pdfAdjuntos.push(pdf);
+      }
+    });
     console.log('Ya en el servicio Pdf Adjuntos: ', this.pdfAdjuntos);
   }
 
   removePDFAdjunto(id: string) {
-    this.pdfAdjuntos.forEach(a => {
-      const index = a.findIndex((aa: any) => aa.documento.id === id);
+    // Buscar directamente en el array plano
+    const index = this.pdfAdjuntos.findIndex(pdf => pdf.documento?.id === id);
 
-      if (index < 0) {
-        return;
-      }
-
-      const deleted = a.splice(index, 1);
+    if (index !== -1) {
+      const deleted = this.pdfAdjuntos.splice(index, 1);
       const registry = this.infoDocumentosPorActividad.find(r => r.idActividad === deleted[0].idActividad);
 
-      if (!registry) {
-        return;
+      if (registry) {
+        registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
       }
-
-      registry.cantidadDocumentosAdjuntos = registry.cantidadDocumentosAdjuntos > 0 ? registry.cantidadDocumentosAdjuntos - 1 : 0;
-    });
+    }
   }
 
   obtenerAdjuntosPDF() {
-   return this.pdfAdjuntosFilter()
+    // Ya no necesita filtrar, devuelve array plano
+    return [...this.pdfAdjuntos];
   }
 
   createActaAsesoria(idProveedor: string) {
@@ -342,19 +362,19 @@ export class CacheService {
   private transformRecomendaciones(recomendaciones: any[] | null): any[] | null {
     return recomendaciones
       ? recomendaciones.map(r => ({
-          Pk_Id_SiniestroRecomendaciones: r.Pk_Id_SiniestroRecomendaciones,
-          Recomendacion: r.Recomendacion,
-          implementada: r.implementada,
-          fueronEficaces: r.fueronEficaces ?? false,
-          Fecha_Implementacion: r.Fecha_Implementacion ?? null,
-          informacionEvidencia: r.InformacionEnvidencia ?? null,
-          causaNoImplementancion: r.causaNoImplementancion ?? null,
-          fueGestionadaAPP: true,
-          tipoFuente: r.tipoFuente,
-          tipoMedio: r.tipoMedio,
-          tipoTrabajo: r.tipoTrabajo,
-          InformacionEnvidencia: r.InformacionEnvidencia ?? null,
-        }))
+        Pk_Id_SiniestroRecomendaciones: r.Pk_Id_SiniestroRecomendaciones,
+        Recomendacion: r.Recomendacion,
+        implementada: r.implementada,
+        fueronEficaces: r.fueronEficaces ?? false,
+        Fecha_Implementacion: r.Fecha_Implementacion ?? null,
+        informacionEvidencia: r.InformacionEnvidencia ?? null,
+        causaNoImplementancion: r.causaNoImplementancion ?? null,
+        fueGestionadaAPP: true,
+        tipoFuente: r.tipoFuente,
+        tipoMedio: r.tipoMedio,
+        tipoTrabajo: r.tipoTrabajo,
+        InformacionEnvidencia: r.InformacionEnvidencia ?? null,
+      }))
       : null;
   }
 
@@ -521,23 +541,23 @@ export class CacheService {
     const pdfFilter = [].concat(...this.pdfAdjuntos);
 
     const pdfAdjuntosFiltered = Array.from(
-      new Map( pdfFilter.map( obj => [obj.documento.id, obj])).values()
+      new Map(pdfFilter.map(obj => [obj.documento.id, obj])).values()
     )
     return pdfAdjuntosFiltered
   }
 
- imgAdjuntosFilter(): FotoAdjunta[] {
- const aplanado = this.fotosAdjuntas.reduce((acc:FotoAdjunta[], curr:FotoAdjunta[]) => acc.concat(curr), []);
+  imgAdjuntosFilter(): FotoAdjunta[] {
+    const aplanado = this.fotosAdjuntas.reduce((acc: FotoAdjunta[], curr: FotoAdjunta[]) => acc.concat(curr), []);
 
-  const filtrado = Array.from(
-    new Map<string, FotoAdjunta>(
-      aplanado.map(obj => {
-        const clave = `${obj.foto.idFoto}-${obj.idTipoArchivo}`;
-        return [clave, obj];
-      })
-    ).values()
-  );
+    const filtrado = Array.from(
+      new Map<string, FotoAdjunta>(
+        aplanado.map(obj => {
+          const clave = `${obj.foto.idFoto}-${obj.idTipoArchivo}`;
+          return [clave, obj];
+        })
+      ).values()
+    );
 
-  return filtrado;
-}
+    return filtrado;
+  }
 }

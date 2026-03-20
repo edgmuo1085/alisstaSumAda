@@ -261,8 +261,6 @@ export class SurveyAndSignaturePage implements OnInit {
 
       creacionActa = creacionActa.split(';');
 
-      console.log("Survey and Signature Rta: ", creacionActa)
-
       if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
         await this.processTracker.finish(false, `No se pudo crear el acta de asesoría. \n Error: ${creacionActa[1]}`);
         return;

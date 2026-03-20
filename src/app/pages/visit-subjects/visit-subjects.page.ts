@@ -38,65 +38,65 @@ export class VisitSubjectsPage implements OnInit {
 
   private readonly MAX_HOURS_PER_DAY = 10;
 
-/**
- * Textos para las alertas utilizadas en la validación.
- */
-private readonly ALERT_TEXTS = {
-  MAX_SUBJECTS: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'Puede seleccionar un máximo de cuatro (4) actividades por formulario.',
-    okButtonText: 'Aceptar',
-  },
-  MIN_ACTIVITY: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'Se debe seleccionar por lo menos (1) actividad para continuar.',
-    okButtonText: 'Aceptar',
-  },
-  MAX_HOURS: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'No puede seleccionar las actividades, debido a que excede las horas permitidas a ejecutar. Las cuales son 10 horas por día.',
-    okButtonText: 'Aceptar',
-  },
-  INVALID_COVERAGE_OR_HOURS: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'Debe ingresar el valor de la cobertura o el de las horas ejecutadas para la actividad seleccionada.',
-    okButtonText: 'Aceptar',
-  },
-  HOURS_EXCEED: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'La cantidad de horas a ejecutar es mayor a la de horas migradas para realizar la actividad.',
-    okButtonText: 'Aceptar',
-  },
-  HOURS_LESS_THAN_ONE: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'La hora estimada debe ser mayor a cero.',
-    okButtonText: 'Aceptar',
-  },
-  COVERAGE_LESS_THAN_ONE: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'La cobertura no puede ser menor que uno.',
-    okButtonText: 'Aceptar',
-  },
-  EDUCA_ACTIVITY_REQUIRED: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'Debe adjuntar archivos para las actividades EVENTOS POSITIVA o indicar código de evento.',
-    okButtonText: 'Aceptar',
-  },
-  INVESTIGATION_HOURS_MISMATCH: {
-    title: 'Atención',
-    mode: 'ios' as 'ios' | 'md',
-    message: 'Compruebe que la cantidad de horas ejecutadas coincida con la cantidad de horas migradas.',
-    okButtonText: 'Aceptar',
-  }
-};
+  /**
+   * Textos para las alertas utilizadas en la validación.
+   */
+  private readonly ALERT_TEXTS = {
+    MAX_SUBJECTS: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'Puede seleccionar un máximo de cuatro (4) actividades por formulario.',
+      okButtonText: 'Aceptar',
+    },
+    MIN_ACTIVITY: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'Se debe seleccionar por lo menos (1) actividad para continuar.',
+      okButtonText: 'Aceptar',
+    },
+    MAX_HOURS: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'No puede seleccionar las actividades, debido a que excede las horas permitidas a ejecutar. Las cuales son 10 horas por día.',
+      okButtonText: 'Aceptar',
+    },
+    INVALID_COVERAGE_OR_HOURS: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'Debe ingresar el valor de la cobertura o el de las horas ejecutadas para la actividad seleccionada.',
+      okButtonText: 'Aceptar',
+    },
+    HOURS_EXCEED: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'La cantidad de horas a ejecutar es mayor a la de horas migradas para realizar la actividad.',
+      okButtonText: 'Aceptar',
+    },
+    HOURS_LESS_THAN_ONE: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'La hora estimada debe ser mayor a cero.',
+      okButtonText: 'Aceptar',
+    },
+    COVERAGE_LESS_THAN_ONE: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'La cobertura no puede ser menor que uno.',
+      okButtonText: 'Aceptar',
+    },
+    EDUCA_ACTIVITY_REQUIRED: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'Debe adjuntar archivos para las actividades EVENTOS POSITIVA o indicar código de evento.',
+      okButtonText: 'Aceptar',
+    },
+    INVESTIGATION_HOURS_MISMATCH: {
+      title: 'Atención',
+      mode: 'ios' as 'ios' | 'md',
+      message: 'Compruebe que la cantidad de horas ejecutadas coincida con la cantidad de horas migradas.',
+      okButtonText: 'Aceptar',
+    }
+  };
 
   /**
    * Esta variable permitira insertar la actividad seleccionada,
@@ -119,12 +119,12 @@ private readonly ALERT_TEXTS = {
     private alertController: AlertController,
     private router: Router,
     public cacheService: CacheService
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     for (const doc of this.cacheService.infoDocumentosPorActividad) {
       const idActividadDocumentos = doc.idActividad;
-      
+
       for (const element of this.subjects) {
         if (element.id === idActividadDocumentos) {
           element.cantidadDocumentos = doc.cantidadDocumentosAdjuntos;
@@ -132,7 +132,7 @@ private readonly ALERT_TEXTS = {
       }
     }
   }
-  
+
 
   ngOnInit() {
     this.cacheService.limpiarVariablesAsesoria();
@@ -194,14 +194,14 @@ private readonly ALERT_TEXTS = {
   async toggleIncludeSubject(subject: VisitSubject): Promise<void> {
     const existe = this.searchSubject(subject);
     const validate = this.searchSubject2(subject);
-  
+
     if (existe) {
       this.removeSubject(subject);
       return;
     }
-  
+
     subject.estadoInterno = 'Proceso';
-  
+
     if (this.subjectsSelected.length > 0 && validate) {
       if (this.isSameContract(subject)) {
         this.addSubject(subject);
@@ -216,24 +216,24 @@ private readonly ALERT_TEXTS = {
       this.removeSubject(subject);
       this.checkFollowUpActivity(subject);
     }
-  
+
     await this.validateSubjectLimits();
   }
-  
+
   /**
    * Agrega un sujeto a la lista de seleccionados y valida si debe cargar documentos.
    */
   private addSubject(subject: VisitSubject): void {
     this.subjectsSelected.push(subject);
     this.redirectTo = 'type';
-  
+
     for (const selectedSubject of this.subjectsSelected) {
       this.cacheService.saveActionLine(selectedSubject.lineaAccion);
-  
+
       if (selectedSubject.lineaAccion === 'ED') {
         const attachments = selectedSubject.cantidadDocumentos || 0;
         const showInputCode = selectedSubject.showInputCode;
-  
+
         if (attachments < 1 && !showInputCode) {
           this.notification('Atención', 'Como la linea de acción es EDUCA, es obligatorio cargar los soportes Asistencia a eventos de PyP y Evaluación de eventos');
           this.attachDocs(subject);
@@ -242,7 +242,7 @@ private readonly ALERT_TEXTS = {
       }
     }
   }
-  
+
   /**
    * Elimina un sujeto de la lista de seleccionados.
    */
@@ -250,14 +250,14 @@ private readonly ALERT_TEXTS = {
     this.subjectsSelected = this.subjectsSelected.filter(item => item !== subject);
     this.redirectTo = this.subjectsSelected.length > 0 ? 'type' : '';
   }
-  
+
   /**
    * Verifica si todas las actividades seleccionadas tienen el mismo contrato.
    */
   private isSameContract(subject: any): boolean {
     return this.subjectsSelected.every(item => item.numeroContrato === subject.numeroContrato);
   }
-  
+
   /**
    * Muestra una notificación si se intenta hacer seguimiento a observaciones en la misma acta.
    */
@@ -269,7 +269,7 @@ private readonly ALERT_TEXTS = {
       subject.include = false;
     }, 1000);
   }
-  
+
   /**
    * Valida que la cantidad de sujetos seleccionados esté dentro de los límites permitidos.
    */
@@ -278,14 +278,14 @@ private readonly ALERT_TEXTS = {
       await this.mostrarAlerta(this.ALERT_TEXTS.MIN_ACTIVITY);
       return;
     }
-  
+
     if (this.subjectsSelected.length > this.MAX_SUBJECTS) {
       this.redirectTo = '';
       await this.mostrarAlerta(this.ALERT_TEXTS.MAX_SUBJECTS);
       return;
     }
   }
-  
+
   /**
    * Busca la actividad seleccionada para validar si se checkea o se descheckea para lograr hacer
    * la gestión del acta de asesoría
@@ -318,7 +318,7 @@ private readonly ALERT_TEXTS = {
   updateListAdvisoryTopic() {
     const listActivMigradas = JSON.parse(sessionStorage.companySelected).listaActividadesMigradas;
     this.subjects = listActivMigradas;
-    console.log("Lista Act Migradas", listActivMigradas )
+    console.log("Lista Act Migradas", listActivMigradas)
     this.subjectForm = new UntypedFormGroup({});
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.subjects.length; i++) {
@@ -393,7 +393,7 @@ private readonly ALERT_TEXTS = {
 
   validateTarjetas(actividesSeleccionadas, tarjetas): Array<any> {
     const tarjetasSeleccionadas = [];
-  
+
     for (const element of actividesSeleccionadas) {
       const encontro = tarjetas.find(item => item.id === element.id);
       if (encontro) {
@@ -403,10 +403,10 @@ private readonly ALERT_TEXTS = {
         tarjetasSeleccionadas.push(encontro);
       }
     }
-  
+
     return tarjetasSeleccionadas;
   }
-  
+
 
   /**
    * Este metodo valida varias cosas:
@@ -420,122 +420,129 @@ private readonly ALERT_TEXTS = {
    * cada información ingresada por parte de la gestión del acta de asesoria.
    */
 
-/**
- * Función principal que se ejecuta al continuar.
- */
-public async next(): Promise<void> {
-  let tarjetas = await this.obtenerTarjetas();
+  /**
+   * Función principal que se ejecuta al continuar.
+   */
+  public async next(): Promise<void> {
+    console.log("Numero CERO");
+    let tarjetas = await this.obtenerTarjetas();
 
-  if (!this.validarTarjetas(tarjetas)) {
-    return;
-  }
-
-  this.cacheService.saveMigratedHours(tarjetas.reduce((sum, t) => sum + parseInt(t.horasEjecutadas, 10), 0));
-
-  if (this.subjectsSelected.length === 0) {
-    return this.mostrarAlerta(this.ALERT_TEXTS.MIN_ACTIVITY);
-  }
-
-  if (this.subjectsSelected.length > this.MAX_SUBJECTS) {
-    return this.mostrarAlerta(this.ALERT_TEXTS.MAX_SUBJECTS);
-  }
-
-  if (this.redirect) {
-    this.cacheService.saveActivities(tarjetas);
-    this.router.navigateByUrl('u/execLog/pending-visits/visit-id/subjects/type');
-  }
-}
-
-/**
- * Obtiene las tarjetas del formulario y las valida.
- */
-private async obtenerTarjetas(): Promise<any[]> {
-  const formSubject = this.subjectForm.value;
-  const fields = [
-    'include', 'id', 'idActividad', 'descripcionActividad', 'Observaciones', 
-    'horasAEjecutar', 'unidadMedida', 'horasEjecutadas', 'coverage', 
-    'registroCodigoEventosEduca', 'codeEduca', 'fechaFinContrato', 'firmaQR', 
-    'estadoInterno', 'fkIdSiniestro', 'siniestro', 'siniestroOpActividad'
-  ];
-  
-  let tarjetas = [];
-  for (let i = 0; i < Object.keys(formSubject).length / fields.length; i++) {
-    const tarjeta: any = {};
-    fields.forEach(f => tarjeta[f] = formSubject[i + f]);
-    tarjetas.push(tarjeta);
-  }
-
-  return await this.validateTarjetas(this.subjectsSelected, tarjetas);
-}
-
-/**
- * Valida las tarjetas antes de continuar.
- */
-private validarTarjetas(tarjetas: any[]): boolean {
-  let cantidadHorasAEjecutar = 0;
-
-  for (const tarjeta of tarjetas) {
-    if (!tarjeta.coverage || !tarjeta.horasEjecutadas) {
-      this.mostrarAlerta(this.ALERT_TEXTS.INVALID_COVERAGE_OR_HOURS);
-      return false;
+    if (!this.validarTarjetas(tarjetas)) {
+      console.log("Numero UNO");
+      return;
     }
 
-    if (parseInt(tarjeta.horasEjecutadas, 10) > tarjeta.horasAEjecutar) {
-      this.mostrarAlerta(this.ALERT_TEXTS.HOURS_EXCEED);
-      return false;
+    this.cacheService.saveMigratedHours(tarjetas.reduce((sum, t) => sum + parseInt(t.horasEjecutadas, 10), 0));
+
+    if (this.subjectsSelected.length === 0) {
+      console.log("Numero DOS");
+      return this.mostrarAlerta(this.ALERT_TEXTS.MIN_ACTIVITY);
     }
 
-    if (parseInt(tarjeta.horasEjecutadas, 10) < 1) {
-      this.mostrarAlerta(this.ALERT_TEXTS.HOURS_LESS_THAN_ONE);
-      return false;
+    if (this.subjectsSelected.length > this.MAX_SUBJECTS) {
+      console.log("Numero TRES");
+      return this.mostrarAlerta(this.ALERT_TEXTS.MAX_SUBJECTS);
     }
 
-    if (tarjeta.coverage < 1) {
-      this.mostrarAlerta(this.ALERT_TEXTS.COVERAGE_LESS_THAN_ONE);
-      return false;
-    }
-
-    if (!this.validarActividadesED(tarjetas)) {
-      this.mostrarAlerta(this.ALERT_TEXTS.EDUCA_ACTIVITY_REQUIRED);
-      return false;
-    }
-
-    if (tarjeta.siniestro && parseInt(tarjeta.horasEjecutadas, 10) < tarjeta.horasAEjecutar) {
-      this.mostrarAlerta(this.ALERT_TEXTS.INVESTIGATION_HOURS_MISMATCH);
-      return false;
-    }
-
-    if (['HORA', 'Horas'].includes(tarjeta.unidadMedida)) {
-      cantidadHorasAEjecutar += parseInt(tarjeta.horasEjecutadas, 10);
+    if (this.redirect) {
+      console.log("Numero CUATRO");
+      this.cacheService.saveActivities(tarjetas);
+      this.router.navigateByUrl('u/execLog/pending-visits/visit-id/subjects/type');
     }
   }
 
-  if (cantidadHorasAEjecutar > this.MAX_HOURS_PER_DAY) {
-    this.mostrarAlerta(this.ALERT_TEXTS.MAX_HOURS);
-    return false;
+  /**
+   * Obtiene las tarjetas del formulario y las valida.
+   */
+  private async obtenerTarjetas(): Promise<any[]> {
+    console.log("Obtener tarjeta UNO");
+    const formSubject = this.subjectForm.value;
+    const fields = [
+      'include', 'id', 'idActividad', 'descripcionActividad', 'Observaciones',
+      'horasAEjecutar', 'unidadMedida', 'horasEjecutadas', 'coverage',
+      'registroCodigoEventosEduca', 'codeEduca', 'fechaFinContrato', 'firmaQR',
+      'estadoInterno', 'fkIdSiniestro', 'siniestro', 'siniestroOpActividad'
+    ];
+
+    let tarjetas = [];
+    for (let i = 0; i < Object.keys(formSubject).length / fields.length; i++) {
+      const tarjeta: any = {};
+      fields.forEach(f => tarjeta[f] = formSubject[i + f]);
+      tarjetas.push(tarjeta);
+    }
+
+    console.log("Obtener tarjeta DOS");
+    return await this.validateTarjetas(this.subjectsSelected, tarjetas);
   }
 
-  return true;
-}
+  /**
+   * Valida las tarjetas antes de continuar.
+   */
+  private validarTarjetas(tarjetas: any[]): boolean {
+    let cantidadHorasAEjecutar = 0;
 
-/**
- * Muestra una alerta utilizando los textos especificados en el objeto de configuración.
- */
-private async mostrarAlerta(alertText: { title: string; message: string; okButtonText: string; mode: 'ios' | 'md'  }): Promise<void> {
-  const alert = await this.alertController.create({
-    mode: alertText.mode,
-    header: alertText.title,
-    message: alertText.message,
-    buttons: [
-      {
-        text: alertText.okButtonText,
-        role: 'OK'
+    for (const tarjeta of tarjetas) {
+      if (!tarjeta.coverage || !tarjeta.horasEjecutadas) {
+        this.mostrarAlerta(this.ALERT_TEXTS.INVALID_COVERAGE_OR_HOURS);
+        return false;
       }
-    ]
-  });
-  await alert.present();
-}
-  
+
+      if (parseInt(tarjeta.horasEjecutadas, 10) > tarjeta.horasAEjecutar) {
+        this.mostrarAlerta(this.ALERT_TEXTS.HOURS_EXCEED);
+        return false;
+      }
+
+      if (parseInt(tarjeta.horasEjecutadas, 10) < 1) {
+        this.mostrarAlerta(this.ALERT_TEXTS.HOURS_LESS_THAN_ONE);
+        return false;
+      }
+
+      if (tarjeta.coverage < 1) {
+        this.mostrarAlerta(this.ALERT_TEXTS.COVERAGE_LESS_THAN_ONE);
+        return false;
+      }
+
+      if (!this.validarActividadesED(tarjetas)) {
+        this.mostrarAlerta(this.ALERT_TEXTS.EDUCA_ACTIVITY_REQUIRED);
+        return false;
+      }
+
+      if (tarjeta.siniestro && parseInt(tarjeta.horasEjecutadas, 10) < tarjeta.horasAEjecutar) {
+        this.mostrarAlerta(this.ALERT_TEXTS.INVESTIGATION_HOURS_MISMATCH);
+        return false;
+      }
+
+      if (['HORA', 'Horas'].includes(tarjeta.unidadMedida)) {
+        cantidadHorasAEjecutar += parseInt(tarjeta.horasEjecutadas, 10);
+      }
+    }
+
+    if (cantidadHorasAEjecutar > this.MAX_HOURS_PER_DAY) {
+      this.mostrarAlerta(this.ALERT_TEXTS.MAX_HOURS);
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Muestra una alerta utilizando los textos especificados en el objeto de configuración.
+   */
+  private async mostrarAlerta(alertText: { title: string; message: string; okButtonText: string; mode: 'ios' | 'md' }): Promise<void> {
+    const alert = await this.alertController.create({
+      mode: alertText.mode,
+      header: alertText.title,
+      message: alertText.message,
+      buttons: [
+        {
+          text: alertText.okButtonText,
+          role: 'OK'
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   private validarActividadesED(tarjetas: any[]): boolean {
     const actividadesED = this.subjectsSelected.filter(s => s.lineaAccion === 'ED');
 
@@ -552,11 +559,9 @@ private async mostrarAlerta(alertText: { title: string; message: string; okButto
 
       const hasCode = !!tarjeta.codeEduca;
 
-      const archivos = [];
-      this.cacheService.pdfAdjuntos.forEach(arr => archivos.push(...arr));
-
-      const fotos = [];
-      this.cacheService.fotosAdjuntas.forEach(arr => fotos.push(...arr));
+      // Usar los métodos getter que devuelven arrays planos
+      const archivos = this.cacheService.obtenerAdjuntosPDF();
+      const fotos = this.cacheService.obtenerAdjuntosFoto();
 
       const archivosActividad = archivos.filter(f => f.idActividad === tarjeta.id && ['AEP', 'EE'].indexOf(f.idTipoArchivo) >= 0);
 

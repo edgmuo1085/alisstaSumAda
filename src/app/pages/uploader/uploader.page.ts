@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { FotoAdjunta, LoadedPDFInfo } from '../../intarfaces/interfaces';
 
 /**
  * Componente para carga de soportes de visita.
@@ -27,11 +28,11 @@ export class UploaderPage implements OnInit {
 
   formSupportType: UntypedFormGroup;
 
-  urlFile: any;
+  urlFile: string;
 
   fileAttach: any[] = [];
 
-  filesAdjuntos: any[] = [];
+  filesAdjuntos: LoadedPDFInfo[] = [];
 
   private blob: Blob;
 
@@ -53,7 +54,7 @@ export class UploaderPage implements OnInit {
 
   fotosTomadas: any[] = [];
 
-  listaDocumentos: any[] = [];
+  listaDocumentos: FotoAdjunta[] = [];
 
   accionARealizar: string;
 
@@ -141,38 +142,53 @@ export class UploaderPage implements OnInit {
 
   abrirExploradorArchivos() {
     this.accionARealizar = 'documento';
-    const tag: any = document.getElementById('file-input');
-    if (tag.value) {
+    const tag = document.getElementById('file-input') as HTMLInputElement;
+    if (tag && tag.value) {
       tag.value = '';
     }
-    tag.click();
-  }
-
-  deletePhoto(photoSelected) {
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.fotosTomadas.length; i++) {
-      const element = this.fotosTomadas[i];
-      const valorBuscar = photoSelected.foto;
-      const idFoto = element.foto ? element.foto.idFoto : element.idFoto;
-
-      if (idFoto === valorBuscar.idFoto) {
-        this.fotosTomadas.splice(i, 1);
-        this.listaDocumentos.splice(i, 1);
-        this.cacheService.removeFotoAdjunta(valorBuscar.idFoto);
-      }
+    if (tag) {
+      tag.click();
     }
   }
 
-  deleteDocs(doctSelected) {
-    const valorBuscar = doctSelected;
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < this.filesAdjuntos.length; i++) {
-      const element = this.filesAdjuntos[i];
-      if (element === valorBuscar) {
-        this.filesAdjuntos.splice(i, 1);
-        this.fileAttach.splice(i, 1);
-        this.cacheService.removePDFAdjunto(valorBuscar.documento.id);
+  deletePhoto(photoSelected: any) {
+    // Buscar el índice en listaDocumentos usando idFoto
+    const idFoto = photoSelected.foto.idFoto;
+    const index = this.listaDocumentos.findIndex(doc => doc.foto?.idFoto === idFoto);
+
+    if (index !== -1) {
+      // Eliminar de listaDocumentos
+      this.listaDocumentos.splice(index, 1);
+
+      // También eliminar de fotosTomadas si existe allí
+      const fotoIndex = this.fotosTomadas.findIndex(foto => {
+        const fotoId = foto.foto ? foto.foto.idFoto : foto.idFoto;
+        return fotoId === idFoto;
+      });
+      if (fotoIndex !== -1) {
+        this.fotosTomadas.splice(fotoIndex, 1);
       }
+
+      // Actualizar cache
+      this.cacheService.removeFotoAdjunta(idFoto);
+    }
+  }
+
+  deleteDocs(doctSelected: any) {
+    const docId = doctSelected.documento.id;
+    const index = this.filesAdjuntos.findIndex(doc => doc.documento?.id === docId);
+
+    if (index !== -1) {
+      // Eliminar de filesAdjuntos
+      this.filesAdjuntos.splice(index, 1);
+
+      // También eliminar de fileAttach si existe (usando el mismo índice)
+      if (this.fileAttach.length > index) {
+        this.fileAttach.splice(index, 1);
+      }
+
+      // Actualizar cache
+      this.cacheService.removePDFAdjunto(docId);
     }
   }
 
@@ -182,10 +198,11 @@ export class UploaderPage implements OnInit {
     return zoneOriginalInstance || fileReader;
   }
 
-  async loadImageFromDevice(event) {
-    let objFile = {};
+  async loadImageFromDevice(event: Event) {
+    let objFile: any = {};
 
-    const file = event.target.files[0];
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (!file) { return; }
 
     if (file.type !== 'application/pdf') {
@@ -240,7 +257,7 @@ export class UploaderPage implements OnInit {
     };
   }
 
-  b64toBlob(b64Data, contentType) {
+  b64toBlob(b64Data: string, contentType: string): Blob {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
     const sliceSize = 512;
@@ -257,33 +274,36 @@ export class UploaderPage implements OnInit {
     return blob;
   }
 
-  async createDirectoryForActivitieSelected(idActividad, blob, extensionBase64, idTipoArchivo) {
+  async createDirectoryForActivitieSelected(idActividad: number, blob: Blob, extensionBase64: string, idTipoArchivo: string): Promise<void> {
     try {
-      const UUID = `${idActividad}` + '-' + new Date().getTime().toString(16);
+      const UUID = `${idActividad}-${new Date().getTime().toString(16)}`;
+
+      const base64Data = await this.blobToBase64(blob);
 
       await Filesystem.writeFile({
         path: `${idActividad}/${UUID}.pdf`,
         directory: Directory.Data,
-        data: await this.blobToBase64(blob),
+        data: base64Data,
         recursive: true,
       });
 
       const objetoActividad = {
         idActividad,
-        nombreArchivo: UUID + '.pdf',
+        nombreArchivo: `${UUID}.pdf`,
         tipoDocumento: idTipoArchivo,
         extensionBase64,
       };
 
       this.cacheService.saveAttachDocs(objetoActividad);
     } catch (e) {
-      console.log("Este es un ctach que toca borrar: ", e);
+      console.error('Error creando directorio para actividad:', e);
+      throw new Error('No se pudo guardar el archivo en el dispositivo');
     }
   }
 
   async adjuntar() {
     // Validación número máximo
-    const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+    const documentosAdjuntos = (this.listaDocumentos as any[]).concat(this.filesAdjuntos as any[]);
     if (documentosAdjuntos.length >= 6) {
       this.notification('Alerta', 'No se pueden adjuntar mas de 6 documentos');
       return;
@@ -442,7 +462,7 @@ export class UploaderPage implements OnInit {
   //   this.router.navigateByUrl('/u/execLog/pending-visits/visit-id/subjects');
   // }
 
-  validarTipoArchivo(tipo) {
+  validarTipoArchivo(tipo: string): string | undefined {
     switch (tipo) {
       case 'AEP':
         return 'Asistencia a eventos de P y P';
@@ -465,11 +485,11 @@ export class UploaderPage implements OnInit {
       case 'ITR':
         return 'Informe Técnico de Reclasificación';
       default:
-        break;
+        return undefined;
     }
   }
 
-  async notification(titulo, notificacion) {
+  async notification(titulo: string, notificacion: string) {
     const alert = await this.alertController.create({
       header: titulo,
       backdropDismiss: false,
@@ -489,7 +509,7 @@ export class UploaderPage implements OnInit {
    * @param blob Representación _Blob_.
    */
   private blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       const reader = this.getFileReader();
       reader.onloadend = () => resolve(reader.result.toString());
       reader.readAsDataURL(blob);
@@ -506,7 +526,7 @@ export class UploaderPage implements OnInit {
     }
 
     // Construir objeto para la lista
-    const objGuardarDocumento = {
+    const objGuardarDocumento: LoadedPDFInfo = {
       idActividad: this.infoActivity.id,
       tipoArchivo,
       idTipoArchivo: tipoSeleccionado,
@@ -528,10 +548,10 @@ export class UploaderPage implements OnInit {
       // Actualizar el cache con la lista de pdf adjuntos (mantenemos el mismo formato que usabas)
       this.cacheService.infoPDFAdjuntos(this.filesAdjuntos);
       // Actualizar contador por actividad
-      const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+      const totalDocumentos = this.listaDocumentos.length + this.filesAdjuntos.length;
       this.cacheService.infoActividadPorDocumento({
         idActividad: this.infoActivity.id,
-        cantidadDocumentosAdjuntos: documentosAdjuntos.length,
+        cantidadDocumentosAdjuntos: totalDocumentos,
       });
 
       // reset del select
@@ -558,7 +578,7 @@ export class UploaderPage implements OnInit {
       console.log('🔄 Iniciando attachPhotoAndSave...');
 
       // Construir objeto para guardar
-      const objGuardar = {
+      const objGuardar: FotoAdjunta = {
         idActividad: this.infoActivity.id,
         tipoArchivo,
         idTipoArchivo: tipoSeleccionado,
@@ -575,10 +595,10 @@ export class UploaderPage implements OnInit {
       // Actualizar cache
       this.cacheService.infoFotosAdjuntas(this.listaDocumentos);
 
-      const documentosAdjuntos = this.listaDocumentos.concat(this.filesAdjuntos);
+      const totalDocumentos = this.listaDocumentos.length + this.filesAdjuntos.length;
       this.cacheService.infoActividadPorDocumento({
         idActividad: this.infoActivity.id,
-        cantidadDocumentosAdjuntos: documentosAdjuntos.length,
+        cantidadDocumentosAdjuntos: totalDocumentos,
       });
 
       // Reset del select
