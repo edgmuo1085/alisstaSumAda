@@ -143,10 +143,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
     try {
       // 1️⃣ Crear acta
       const actaId = await this.createActaAsesoria();
-      if (!actaId) {
-        await this.processTracker.finish(false, 'No se pudo crear el acta de asesoría');
-        return;
-      }
+
+      if (!actaId) return;
 
       await this.processTracker.completeLastStep();
 
@@ -182,8 +180,15 @@ export class ResponsibleSignatureARLPage implements OnInit {
     try {
       let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
       creacionActa = creacionActa?.split(';') ?? [];
-      return creacionActa[0] === 'true' && creacionActa[1] !== '-1' ? creacionActa[1] : null;
+      console.log("Responsible-signature respuesta: ", creacionActa);
+      if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
+        return creacionActa[1]
+      } else {
+        await this.processTracker.finish(false, `No se pudo crear el acta de asesoría\n Error: ${creacionActa[1]}`);
+        return null;
+      }
     } catch (err) {
+      await this.processTracker.finish(false, `Error al procesar la solicitud. \n Error: ${err}`);
       console.error('createActaAsesoria error:', err);
       return null;
     }
