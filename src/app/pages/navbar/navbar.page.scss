@@ -1,17 +1,19 @@
 .color {
   --background: #4c4c4c;
-  --background: -webkit-gradient(
-    left top,
-    right top,
-    color-stop(0%, #4c4c4c),
-    color-stop(22%, #304b58),
-    color-stop(50%, #516f7a),
-    color-stop(79%, #304b58),
-    color-stop(100%, #304b58)
-  );
+  --background: -webkit-gradient(left top,
+      right top,
+      color-stop(0%, #4c4c4c),
+      color-stop(22%, #304b58),
+      color-stop(50%, #516f7a),
+      color-stop(79%, #304b58),
+      color-stop(100%, #304b58));
   background: linear-gradient(to right, #4c4c4c 0%, #304b58 22%, #516f7a 50%, #304b58 79%, #304b58 100%);
 }
 
+/* El padding-top para safe-area se maneja globalmente en ion-app y ion-content */
+/* Cuando el status bar está en modo overlay, el contenido fluye detrás del status bar */
+/* Por lo tanto, no se necesita padding-top adicional aquí */
 ion-tabs {
-  padding-top: env(safe-area-inset-top);
+  /* padding-top: env(safe-area-inset-top); */
+  /* Comentado para modo overlay */
 }

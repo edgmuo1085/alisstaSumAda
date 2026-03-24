@@ -71,15 +71,24 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private async initializeCapacitorPlugins() {
     try {
-      // ✅ StatusBar con Capacitor (reemplaza StatusBar de Ionic Native)
+      // ✅ StatusBar con Capacitor - Configuración para Ionic 8
+      // Primero establecemos el estilo del texto
+      // Usamos Style.Light porque el header tiene fondo oscuro (gradiente)
       await StatusBar.setStyle({
-        style: Style.Dark // Texto blanco para mejor contraste
+        style: Style.Light // Texto claro para mejor contraste sobre fondos oscuros
       });
+
+      // ✅ Configurar para que el contenido se muestre DETRÁS del status bar (overlay)
+      // Esto permite que el contenido fluya detrás del status bar
+      await StatusBar.setOverlaysWebView({ overlay: true });
+
+      // ✅ Para Android, podemos también establecer el color de fondo transparente
+      // await StatusBar.setBackgroundColor({ color: '#00000000' }); // Transparente
 
       // ✅ SplashScreen con Capacitor (reemplaza SplashScreen de Ionic Native)
       await SplashScreen.hide();
 
-      console.log('✅ Capacitor plugins initialized successfully');
+      console.log('✅ Capacitor plugins initialized successfully for Ionic 8');
     } catch (error) {
       // ⚠️ Esto es normal en entorno web/emulador sin plugins nativos
       console.warn('Capacitor plugins not available in current environment:', error);
