@@ -271,4 +271,14 @@ export interface ListaActividadesMigrada {
   Siniestro: any | null;
 }
 
+export interface ParsedResponse {
+  responseBoolean: boolean;
+  idActa: number;
+  idEmpresa: number;
+  pendiente: number;
+  acumulado: number;
+  idActividadMigUsuario: number;
+  modulo: string;
+}
+
 // Nota: Estas interfaces ya existen en el código, pero las mantenemos aquí por completitud.

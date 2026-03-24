@@ -8,10 +8,11 @@ import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/ad
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
-import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
+import { CorreoNotificacionActaApp, ParsedResponse } from 'src/app/intarfaces/interfaces';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 import { AppStorageService } from 'src/app/app-storage.service';
+import { ResponseToObject } from 'src/app/services/activities/updateActivityHours/updateActivityHours.service';
 
 @Component({
   selector: 'app-responsible-signature-arl',
@@ -50,7 +51,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private cacheService: CacheService,
     private advisoryTopicService: AdvisoryTopicService,
     private processTracker: ProcessTrackerService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private responseToObjectSv: ResponseToObject
   ) { }
 
   ngOnInit() {
@@ -142,7 +144,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
     try {
       // 1️⃣ Crear acta
-      const actaId = await this.createActaAsesoria();
+      const creacionActa = await this.createActaAsesoria();
+      const actaId = creacionActa[1];
 
       if (!actaId) return;
 
@@ -162,7 +165,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
       // 4️⃣ Actualizar actividades
       await this.processTracker.addStep('Actualizando lista de actividades...');
-      await this.updateListaActividades();
+      await this.updateListaActividades(this.responseToObjectSv.responseParser(creacionActa));
       await this.processTracker.completeLastStep();
 
       // 5️⃣ Final exitoso
@@ -179,10 +182,11 @@ export class ResponsibleSignatureARLPage implements OnInit {
   private async createActaAsesoria(): Promise<string | null> {
     try {
       let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
+      console.log("responsible-signature-arl: ", creacionActa);
       creacionActa = creacionActa?.split(';') ?? [];
       console.log("Responsible-signature respuesta: ", creacionActa);
       if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
-        return creacionActa[1]
+        return creacionActa
       } else {
         await this.processTracker.finish(false, `No se pudo crear el acta de asesoría\n Error: ${creacionActa[1]}`);
         return null;
@@ -208,13 +212,21 @@ export class ResponsibleSignatureARLPage implements OnInit {
     this.photoService.photos = [];
   }
 
-  private async updateListaActividades() {
+  private async updateListaActividades(response: ParsedResponse) {
     try {
       const listaActividades: any[] = (await this.storage.get('listaActividades')) || [];
 
       if (!Array.isArray(listaActividades)) return;
 
       for (const actividad of listaActividades) {
+
+        if (actividad.Modulo === response.modulo && actividad.id === response.idEmpresa) {
+          actividad.intHorasEjecutadas = response.acumulado;
+          actividad.intHorasPendientes = response.pendiente;
+          console.log("Entro en if: ", actividad)
+
+        }
+
         const { listaActividadesMigradas } = actividad;
         if (!Array.isArray(listaActividadesMigradas)) continue;
 
