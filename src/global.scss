@@ -50,45 +50,7 @@ $theme: mat.define-light-theme((color: (primary: $primary,
 /** Estilos para manejo de StatusBar en Ionic 8 con Capacitor **/
 /** El contenido debe fluir detrás del status bar **/
 
-/* Asegurar que ion-app y ion-content respeten el safe area */
-ion-app {
-  /* Para iOS: asegurar que el contenido respete las áreas seguras */
-  padding-top: env(safe-area-inset-top);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* Ajustar ion-header para que tenga padding top del safe area */
-ion-header {
-  padding-top: env(safe-area-inset-top);
-}
-
-/* Si el header tiene un toolbar, ajustar su padding */
-ion-header ion-toolbar {
-  padding-top: env(safe-area-inset-top);
-  /* Para dispositivos con notch, agregar un mínimo de padding */
-  min-height: calc(44px + env(safe-area-inset-top));
-}
-
-/* Asegurar que el contenido principal no tenga padding extra que cause solapamiento */
-ion-content {
-  --padding-top: env(safe-area-inset-top);
-  --padding-bottom: env(safe-area-inset-bottom);
-  --padding-start: env(safe-area-inset-left);
-  --padding-end: env(safe-area-inset-right);
-}
-
-/* Clase utilitaria para agregar safe area top */
-.safe-area-top {
-  padding-top: env(safe-area-inset-top);
-}
-
-/* Clase utilitaria para remover safe area top cuando sea necesario */
-.no-safe-area {
-  padding-top: 0 !important;
-  --padding-top: 0 !important;
-}
+/* Ionic maneja automáticamente las safe areas en iOS cuando se usa StatusBar.setOverlaysWebView({ overlay: true }) */
 
 :root {
   --pace-0: #{$pace-0};
