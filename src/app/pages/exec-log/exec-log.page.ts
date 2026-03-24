@@ -40,12 +40,26 @@ export class ExecLogPage implements OnInit {
     private storage: Storage,                 // Ionic Storage se mantiene
     private appStorage: AppStorageService,    // Usamos Preferences solo para la sesión
     private alertCtrl: AlertController
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.optMenuOptions = this.menuConfOptions.getMenuExceActivities();
     this.optMenuHelpOptions = this.menuConfOptions.getMenuHelpExceActivities();
     await this.uploadInfoUser();
+
+    // Suscribirse a los observables del servicio
+    this.listActivitiesCompanySv.progressBarValues$.subscribe(pb => {
+      this.progressBar = pb;
+    });
+
+    this.listActivitiesCompanySv.activities$.subscribe(activities => {
+      this.listActivity = activities.filter((a: any) => a.listaActividadesMigradas?.length > 0);
+      this.listActivityTotal = activities.length > 0
+        ? (activities[0]?.intTotalRegistros ?? activities.length)
+        : 0;
+    });
+
+    console.log("Progress: ", this.progressBar)
   }
 
   optionSelectedMenu(itemSelected) {
@@ -83,69 +97,19 @@ export class ExecLogPage implements OnInit {
   async listActivities() {
     await this.presentLoading();
 
-    const userSession = await this.appStorage.get(this.appStorage.KEY_SESSION);
-    if (!userSession) {
-      this.loading.dismiss();
-      return;
-    }
+    this.progressBar.refreshBtnEnable = true;
 
-    setTimeout(() => {
-      this.listActivitiesCompanySv.listActivityForCompanyPerPage(userSession).subscribe(
-        async response => {
-
-          if (response.listActivitiesCompany.length > 0) {
-
-            this.listActivityTotal = response.listActivitiesCompany[0].intTotalRegistros;
-            const listActivity = response.listActivitiesCompany || [];
-
-            const actasGuardadas: any[] =
-              (await this.storage.get('actasAsesoriaSinInternet')) || [];
-
-            this.listActivitiesCompanySv.actasGuardadas = actasGuardadas;
-            this.listActivitiesCompanySv.listActivitiesFilter(listActivity);
-
-            // Guardar en ionic storage (correcto para datos grandes)
-            await this.storage.set('departamentos', response.listDepartamentos);
-            await this.storage.set('municipios', response.listMunicipios);
-            await this.storage.set('listArchivosSoporte', response.listArchivosSoporte);
-            await this.storage.set('listaActividades', listActivity);
-
-            this.listActivitiesCompanySv.setActivities(listActivity);
-            this.validateDataListActivities();
-
-            this.showListPendingVisit = false;
-            this.loading.dismiss();
-
-            // Paginación de actividades
-            if (listActivity.length < this.listActivityTotal) {
-              this.listActivitiesCompanySv.progressBarValues$.subscribe(pb => {
-                this.progressBar = pb;
-              });
-
-              this.listActivitiesCompanySv.listActivityForCompanyForPage(this.listActivityTotal);
-
-              this.listActivitiesCompanySv.activities$.subscribe(async listActivitiesForPage => {
-                await this.storage.set('listaActividades', listActivitiesForPage);
-                await this.validateDataListActivities();
-              });
-            } else {
-              this.listActivitiesCompanySv.presentToastActivitiesPaginator(
-                'Actividades cargadas con éxito.',
-                'primary'
-              );
-            }
-
-          } else {
-            await this.whitoutListActivitiesCompanyAlert();
-            this.loading.dismiss();
-          }
-        },
-        err => {
-          this.loading.dismiss();
-          this.showListPendingVisit = false;
-        }
-      );
-    }, 600);
+    // Usar el nuevo método del servicio que encapsula toda la lógica
+    this.listActivitiesCompanySv.loadAllActivities().subscribe({
+      next: () => {
+        this.showListPendingVisit = false;
+        this.loading.dismiss();
+      },
+      error: () => {
+        this.showListPendingVisit = false;
+        this.loading.dismiss();
+      }
+    });
   }
 
   // -------------------------
@@ -159,27 +123,4 @@ export class ExecLogPage implements OnInit {
     await this.loading.present();
   }
 
-  // -------------------------
-  // Validar lista
-  // -------------------------
-  async validateDataListActivities() {
-    const dataListActivities = await this.storage.get('listaActividades');
-    this.listActivity = dataListActivities
-      ? dataListActivities.filter((a: any) => a.listaActividadesMigradas.length > 0)
-      : [];
-  }
-
-  // -------------------------
-  // Alert sin actividades
-  // -------------------------
-  async whitoutListActivitiesCompanyAlert() {
-    const alert = await this.alertCtrl.create({
-      mode: 'ios',
-      header: 'Aviso',
-      message: 'El Usuario no tiene Actividades Migradas.',
-      buttons: ['OK'],
-    });
-
-    await alert.present();
-  }
 }

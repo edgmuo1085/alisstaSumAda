@@ -50,6 +50,20 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.validateDataListActivities();
     this.net.showIPAddress();
+
+    // Suscribirse a los observables del servicio
+    const pbSub = this.listActivitiesCompany.progressBarValues$
+      .subscribe(pb => this.progressBar = pb);
+    this.subs.push(pbSub);
+
+    const activitiesSub = this.listActivitiesCompany.activities$
+      .subscribe(activities => {
+        this.listActivity = activities.filter((a: any) => (a.listaActividadesMigradas?.length ?? 0) > 0);
+        this.listActivityTotal = activities.length > 0
+          ? (activities[0]?.intTotalRegistros ?? activities.length)
+          : 0;
+      });
+    this.subs.push(activitiesSub);
   }
 
   ngOnDestroy() {
@@ -81,94 +95,24 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
 
   /**
    * Carga las actividades (método principal).
-   *
-   * NOTA: usamos AppStorageService solo para 'sesion' y
-   * mantenemos Ionic Storage para claves grandes/offline.
+   * Usa el nuevo método del servicio que encapsula toda la lógica.
    */
   async listActivities() {
     await this.presentLoading();
 
-    try {
-      // SESIÓN (small) -> Preferences via AppStorageService
-      const documentoUsuario = await this.appStorage.get(this.appStorage.KEY_SESSION);
-      if (!documentoUsuario) {
-        // no hay sesión -> cerrar loader y devolver
-        await this.dismissLoading();
+    // Usar el nuevo método del servicio que encapsula toda la lógica
+    const sub = this.listActivitiesCompany.loadAllActivities().subscribe({
+      next: () => {
         this.showListPendingVisit = false;
-        return;
+        this.dismissLoading();
+      },
+      error: () => {
+        this.showListPendingVisit = false;
+        this.dismissLoading();
       }
+    });
 
-      // Llamada al servicio que trae las actividades
-      const sub = this.listActivitiesCompany.listActivityForCompanyPerPage(documentoUsuario)
-        .subscribe({
-          next: async response => {
-            try {
-              const listActivity = response.listActivitiesCompany || [];
-              this.listActivityTotal = listActivity[0]?.intTotalRegistros ?? listActivity.length;
-
-              // ACTAS GUARDADAS -> estas son OFFLINE: mantener en Ionic Storage
-              const actasGuardadas: any[] = (await this.storage.get('actasAsesoriaSinInternet')) || [];
-              this.listActivitiesCompany.actasGuardadas = actasGuardadas;
-
-              // Filtrado inicial (servicio)
-              this.listActivitiesCompany.listActivitiesFilter(listActivity);
-
-              // Guardar catálogos y listas grandes EN IONIC STORAGE (SQLite)
-              await this.storage.set('departamentos', response.listDepartamentos || []);
-              await this.storage.set('municipios', response.listMunicipios || []);
-              await this.storage.set('listArchivosSoporte', response.listArchivosSoporte || []);
-
-              // Guardar actividades (primer lote) EN IONIC STORAGE
-              await this.storage.set('listaActividades', listActivity);
-              this.listActivitiesCompany.setActivities(listActivity);
-
-              // Actualizar vista
-              await this.validateDataListActivities();
-              this.showListPendingVisit = false;
-
-              // Si hay paginación (más registros por cargar)
-              if (listActivity.length < this.listActivityTotal) {
-                // Observamos progress bar values
-                const pbSub = this.listActivitiesCompany.progressBarValues$
-                  .subscribe(pb => this.progressBar = pb);
-                this.subs.push(pbSub);
-
-                // Solicitar páginas restantes (el servicio llenará activities$)
-                this.listActivitiesCompany.listActivityForCompanyForPage(this.listActivityTotal);
-
-                const activitiesSub = this.listActivitiesCompany.activities$
-                  .subscribe(async listActivitiesForPage => {
-                    // Reescribir lista completa en Storage (lote final)
-                    await this.storage.set('listaActividades', listActivitiesForPage || []);
-                    await this.validateDataListActivities();
-                  });
-
-                this.subs.push(activitiesSub);
-              } else {
-                // todo cargado
-                this.listActivitiesCompany.presentToastActivitiesPaginator('Actividades cargadas con éxito.', 'primary');
-              }
-
-            } catch (innerErr) {
-              console.error('Error procesando respuesta de actividades:', innerErr);
-            } finally {
-              await this.dismissLoading();
-            }
-          },
-          error: async err => {
-            console.error('Error al traer actividades:', err);
-            await this.dismissLoading();
-            this.showListPendingVisit = false;
-          }
-        });
-
-      this.subs.push(sub);
-
-    } catch (err) {
-      console.error('listActivities error:', err);
-      await this.dismissLoading();
-      this.showListPendingVisit = false;
-    }
+    this.subs.push(sub);
   }
 
   async presentLoading() {
