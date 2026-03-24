@@ -4,6 +4,11 @@ import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import { CacheService } from '../../../services/cache/cache.service';
 
+interface ValidationResult {
+  valid: boolean;
+  message?: string;
+}
+
 /**
  * Componente de la vista de tipo de visita específica.
  */
@@ -35,17 +40,15 @@ export class SpecificComponent implements OnInit {
    * Estas tres variables se encargan de interpolar los valores por medio del [(ngModel)] en el html
    * para cada una de las horas, fecha inicial, hora inicial, hora final y total de horas.
    */
-  customStartDate;
-  customEndDate;
-  customStartDateISO
-  totalHours;
+  customStartDate: string;
+  customEndDate: string;
+  customStartDateISO: string;
+  totalHours: string;
   minEndHour: string | null = null;
 
   showStartTodaySpecificAdvice = false;
-
   disabledBtnDateStart = false;
-
-  date: string;
+  date: string; // Fecha de hoy en formato YYYY-MM-DD
 
   constructor(
     private cacheService: CacheService,
@@ -86,7 +89,7 @@ export class SpecificComponent implements OnInit {
     // marcado el botón de asignación de fecha
     this.notification('Está seguro de iniciar la actividad en este momento, recuerde que esta fecha no puede modificarse.');
 
-    this.setVisitDate(moment().startOf('day').toISOString().split('T')[0]);
+    this.setVisitDate(moment().startOf('day').format('YYYY-MM-DD'));
 
     this.showDateButton = true;
 
@@ -97,34 +100,46 @@ export class SpecificComponent implements OnInit {
   }
 
   changeHourStar(event) {
-
     let value = event.detail.value;
-
     if (!value) value = new Date().toISOString();
 
     const normalized = this.normalizeHour(value);
     this.customStartDate = normalized;
-    this.minEndHour = value;
-    this.checkIfReady();
+    this.customStartDateISO = value;
+
+    // Establecer minEndHour con fecha de hoy y hora inicial
+    if (this.date) {
+      this.minEndHour = `${this.date}T${normalized}`;
+    } else {
+      this.minEndHour = value;
+    }
+
+    // Validar inmediatamente si ya existe hora final
+    if (this.customEndDate) {
+      this.validateAndEmit();
+    } else {
+      this.clearValidation();
+    }
   }
 
-
   changeHourEnd(event) {
-
     let value = event.detail.value;
-
     if (!value) value = new Date().toISOString();
 
     this.customEndDate = this.normalizeHour(value);
-    this.customStartDateISO = value;
-    this.checkIfReady();
-  };
+
+    // Validar inmediatamente si ya existe hora inicial
+    if (this.customStartDate) {
+      this.validateAndEmit();
+    } else {
+      this.clearValidation();
+    }
+  }
 
   /**
    * Esta es la popUp cuando pasa alguna excepción en la selección de las horas.
    */
-
-  async notification(notificacion) {
+  async notification(notificacion: string) {
     const alert = await this.alertController.create({
       header: 'Atención',
       backdropDismiss: false,
@@ -134,7 +149,6 @@ export class SpecificComponent implements OnInit {
     });
 
     alert.onDidDismiss();
-
     await alert.present();
   }
 
@@ -158,9 +172,15 @@ export class SpecificComponent implements OnInit {
    * @param initialHour Hora inicial de la visita.
    */
   private setInitialHour(initialHour: string): void {
-    console.log("Llego al seteo de la hora inicial::: ", initialHour)
+    console.log("Llego al seteo de la hora inicial::: ", initialHour);
     this.customStartDate = initialHour;
-    this.validateVisitDuration();
+    // Actualizar minEndHour para el picker
+    if (this.date) {
+      this.minEndHour = `${this.date}T${initialHour}`;
+    }
+    if (this.customEndDate) {
+      this.validateAndEmit();
+    }
   }
 
   /**
@@ -170,72 +190,106 @@ export class SpecificComponent implements OnInit {
    */
   private setEndHour(endHour: string): void {
     this.customEndDate = endHour;
-    this.validateVisitDuration();
+    if (this.customStartDate) {
+      this.validateAndEmit();
+    }
   }
 
   /**
-   * Comprueba que las horas inicial y final de la visita sean válidas y que la duración de la visita
-   * sea menor o igual que la estimada para la actividad. Si todo está en orden, emite los valores para
-   * el componente padre.
+   * Valida las horas y emite eventos si son válidas.
    */
-
-  private checkIfReady(): void {
-
-    if (!this.customStartDate || !this.customEndDate) {
+  private validateAndEmit(): void {
+    if (!this.customStartDate || !this.customEndDate || !this.date) {
       return;
     }
 
-    this.validateVisitDuration();
-  }
-
-  private async validateVisitDuration(): Promise<void> {
-
-    if (!this.customStartDate || !this.customEndDate) {
+    const validation = this.validateTimes(this.customStartDate, this.customEndDate);
+    if (!validation.valid) {
+      this.notification(validation.message);
+      this.totalHours = '0';
+      this.showButtonNext.emit(false);
       return;
     }
 
-    const horasMigradas = this.cacheService.migratedHours;
-
-    const start = moment(`1970-01-01T${this.customStartDate}`);
-    const end = moment(`1970-01-01T${this.customEndDate}`);
-
-    if (end.isBefore(start)) {
-      this.notification('La hora final no puede ser menor a la hora inicial');
-      this.totalHours = 0;
-      return;
-    }
-
+    // Calcular duración para mostrar
+    const start = moment(`${this.date}T${this.customStartDate}`);
+    const end = moment(`${this.date}T${this.customEndDate}`);
     const duration = moment.duration(end.diff(start));
     const hours = duration.hours();
     const minutes = duration.minutes();
-
-    const totalDecimal = hours + minutes / 60;
-
-    if (totalDecimal < horasMigradas) {
-
-      this.notification(
-        `No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`
-      );
-
-      this.totalHours = 0;
-      return;
-    }
-
     this.totalHours = `${hours} Horas ${minutes} Minutos`;
 
+    // Emitir valores al padre
     this.specificStartHourSelected.emit(this.customStartDate);
     this.specificEndHourSelected.emit(this.customEndDate);
     this.specificTotalHour.emit(this.totalHours);
-
     this.showButtonNext.emit(true);
   }
 
-  private normalizeHour(value: string): string {
-    const time = value.split('T')[1] || value;
-    const [hh, mm] = time.split(':');
-    return `${hh}:${mm}:00`;
+  /**
+   * Limpia la validación cuando falta alguna hora.
+   */
+  private clearValidation(): void {
+    this.totalHours = '0';
+    this.showButtonNext.emit(false);
   }
 
+  /**
+   * Valida que las horas sean correctas.
+   * - La hora final debe ser posterior a la inicial.
+   * - Ninguna hora puede ser futura (fecha es hoy).
+   * - La duración debe ser >= migratedHours.
+   */
+  private validateTimes(startTime: string, endTime: string): ValidationResult {
+    const now = moment();
+    const today = this.date || now.format('YYYY-MM-DD');
+
+    // Combinar fecha actual con horas
+    const start = moment(`${today}T${startTime}`);
+    const end = moment(`${today}T${endTime}`);
+
+    // 1. Validar que start < end
+    if (!end.isAfter(start)) {
+      return { valid: false, message: 'La hora final no puede ser menor a la hora inicial' };
+    }
+
+    // 2. Validar que ninguna hora sea futura (fecha es hoy)
+    if (start.isAfter(now)) {
+      return { valid: false, message: 'La hora inicial no puede ser en el futuro' };
+    }
+    if (end.isAfter(now)) {
+      return { valid: false, message: 'La hora final no puede ser en el futuro' };
+    }
+
+    // 3. Validar duración mínima (migratedHours)
+    const duration = moment.duration(end.diff(start));
+    const totalHours = duration.asHours();
+    const horasMigradas = this.cacheService.migratedHours || 0;
+
+    if (totalHours < horasMigradas) {
+      return {
+        valid: false,
+        message: `No es posible ya que las horas de esta actividad no pueden ser menores a ${horasMigradas} horas.`
+      };
+    }
+
+    return { valid: true };
+  }
+
+  /**
+   * Normaliza una hora en formato ISO o time string a "HH:mm:00".
+   */
+  private normalizeHour(value: string): string {
+    // Si es ISO string (ej: "2026-03-24T14:30:00.000Z"), extraer parte de tiempo
+    const timePart = value.split('T')[1] || value;
+    // Tomar HH:mm (ignorar segundos y milisegundos)
+    const [hh, mm] = timePart.split(':');
+    return `${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:00`;
+  }
+
+  /**
+   * Formatea una hora para mostrar en la UI.
+   */
   formatForDisplay(time: string): string {
     if (!time) return '';
     const normalized = time.length === 8 ? `1970-01-01T${time}` : time;
