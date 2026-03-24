@@ -48,7 +48,7 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    await this.validateDataListActivities();
+    await this.validateDataHistoricActivities();
     this.net.showIPAddress();
 
     // Suscribirse a los observables del servicio
@@ -64,6 +64,7 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
           : 0;
       });
     this.subs.push(activitiesSub);
+    this.listActivities();
   }
 
   ngOnDestroy() {
@@ -94,14 +95,14 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Carga las actividades (método principal).
-   * Usa el nuevo método del servicio que encapsula toda la lógica.
+   * Carga las actividades históricas (método principal).
+   * Usa el nuevo método del servicio que encapsula toda la lógica para histórico.
    */
   async listActivities() {
     await this.presentLoading();
 
-    // Usar el nuevo método del servicio que encapsula toda la lógica
-    const sub = this.listActivitiesCompany.loadAllActivities().subscribe({
+    // Usar el nuevo método del servicio que encapsula toda la lógica para histórico
+    const sub = this.listActivitiesCompany.loadAllHistoricActivities().subscribe({
       next: () => {
         this.showListPendingVisit = false;
         this.dismissLoading();
@@ -134,18 +135,18 @@ export class VisitsHistoryPageComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Valida/lee la lista de actividades desde Ionic Storage (clave grande)
+   * Valida/lee la lista de actividades históricas desde Ionic Storage (clave grande)
    */
-  async validateDataListActivities() {
+  async validateDataHistoricActivities() {
     try {
-      const dataListActivities: any[] = await this.storage.get('listaActividades');
-      if (Array.isArray(dataListActivities)) {
-        this.listActivity = dataListActivities.filter((a: any) => (a.listaActividadesMigradas?.length ?? 0) > 0);
+      const dataHistoricActivities: any[] = await this.storage.get('historialActividades');
+      if (Array.isArray(dataHistoricActivities)) {
+        this.listActivity = dataHistoricActivities.filter((a: any) => (a.listaActividadesMigradas?.length ?? 0) > 0);
       } else {
         this.listActivity = [];
       }
     } catch (err) {
-      console.error('Error leyendo listaActividades desde Storage:', err);
+      console.error('Error leyendo historialActividades desde Storage:', err);
       this.listActivity = [];
     }
   }

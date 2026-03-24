@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
-import { LiberarActividades, ProgressBarValues } from 'src/app/intarfaces/interfaces';
+import { HistorialActividades, LiberarActividades, ProgressBarValues } from 'src/app/intarfaces/interfaces';
 import { ApiUrlService } from '../../apiUrl/api-url.service';
 import { AppStorageService } from 'src/app/app-storage.service';
 
@@ -21,6 +21,7 @@ export class ActivityListCompanyService {
   private activitiesSubject = new BehaviorSubject<any[]>([]);
   private progressBarValues = new BehaviorSubject<ProgressBarValues>(this.progressBar);
   private cantidadRegistrosPorPagina: number = 10;
+  private cantidadRegistrosPorPaginaHistorico: number = 10; // Fijo para histórico
   public activities$ = this.activitiesSubject.asObservable();
   public progressBarValues$ = this.progressBarValues.asObservable();
   public actasGuardadas = [];
@@ -45,6 +46,7 @@ export class ActivityListCompanyService {
 
   API_REGISTROS_PAGINA = this.apiUrl.API_GET_Cantidad_Registros_Por_Pagina;
   API_LISTACTIVITYCOMPANY: string = '';
+  API_HISTORICACTIVITYCOMPANY: string = '';
   API_LIBERAR_ACTIVIDADES = this.apiUrl.API_LIBERAR_ACTIVIDADES;
   API_RECOVERY_VERIFICATION_CODE;
 
@@ -90,6 +92,16 @@ export class ActivityListCompanyService {
     return this.http.post(url, null);
   }
 
+  listHistoricForCompanyPerPage(userSession: any): Observable<HistorialActividades> {
+    this.API_HISTORICACTIVITYCOMPANY = '';
+    this.API_HISTORICACTIVITYCOMPANY = this.apiUrl.API_GET_Historic_Empresa;
+    const idRegistro = userSession.idRegistro;
+    const params: string = `?intIDUsuario=${idRegistro}&numPag=${1}&intCantReg=${this.cantidadRegistrosPorPaginaHistorico}`
+    this.API_HISTORICACTIVITYCOMPANY = `${this.API_HISTORICACTIVITYCOMPANY}${params}`
+    console.log('Servicio de lista de actividades históricas ->', this.API_HISTORICACTIVITYCOMPANY);
+    return this.http.post<HistorialActividades>(this.API_HISTORICACTIVITYCOMPANY, null);
+  }
+
   listActivityForCompanyForPage(listActivityTotal) {
 
     this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades.", "primary")
@@ -108,6 +120,21 @@ export class ActivityListCompanyService {
     console.log('Servicio de lista de actividades buble ->', listActivityTotal);
     console.log('Total Paginas numero', totalPages);
 
+  }
+
+  listHistoricForCompanyForPage(pagination: any, idRegistro: number) {
+    this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades Históricas.", "primary")
+    this.progressBar.visible = true;
+    this.progressBar.records = pagination.totalRegistros;
+    this.progressBarValues.next(this.progressBar);
+
+    let totalPages: number = pagination.totalPaginas;
+    let currentPage: number = pagination.paginaActual + 1; // Siguiente página
+
+    this.listHistoricForCompanyBucle(idRegistro, currentPage, totalPages);
+
+    console.log('Servicio de lista de actividades históricas bucle ->', pagination.totalRegistros);
+    console.log('Total Paginas numero histórico', totalPages);
   }
 
   listActivityForCompanyBucle(url: string, currentPage: number, totalPages: number) {
@@ -164,10 +191,72 @@ export class ActivityListCompanyService {
       }
     )
   }
+
+  listHistoricForCompanyBucle(idRegistro: number, currentPage: number, totalPages: number) {
+    if (currentPage > totalPages) {
+      console.log('Todas las páginas históricas han sido procesadas');
+      this.progressBar = {
+        visible: false,
+        progress: 0,
+        records: 0,
+        refreshBtnEnable: false
+      };
+
+      setTimeout(() => {
+        this.progressBarValues.next(this.progressBar);
+      }, 2000);
+      this.presentToastActivitiesPaginator("Actividades históricas cargadas con Exito.", "primary")
+      return;
+    }
+
+    this.getListHistoricForPage(idRegistro, currentPage).subscribe(
+      async response => {
+        try {
+          const currentActivities = this.activitiesSubject.getValue();
+          const newActivities = response.listActivitiesCompany;
+          // No aplicar filtro de actas para histórico
+          const activities = currentActivities.concat(newActivities)
+
+          // Guardar actividades históricas acumuladas en storage
+          await this.storage.set('historialActividades', activities);
+
+          this.activitiesSubject.next(activities)
+          this.progressBar.visible = true;
+          this.progressBar.progress = Number((activities.length / this.progressBar.records).toFixed(1))
+          this.progressBar.refreshBtnEnable = true;
+          this.progressBarValues.next(this.progressBar);
+
+          console.log('Grupo llamadas histórico...!!: ', idRegistro, currentPage + 1, totalPages);
+          this.listHistoricForCompanyBucle(idRegistro, currentPage + 1, totalPages);
+        } catch (error) {
+          console.error(`Error procesando página histórica ${currentPage}:`, error);
+        }
+      },
+      error => {
+        console.error(`Error en la página histórica ${currentPage}:`, error);
+        this.progressBar.visible = false;
+        this.progressBar.refreshBtnEnable = false;
+        this.progressBarValues.next(this.progressBar);
+        this.presentToastActivitiesPaginator("Error al cargar las actividades históricas, intentalo nuevamente por favor.", "danger")
+      },
+      () => {
+        console.log(`Llamada a la página histórica ${currentPage} completada`);
+      }
+    )
+  }
+
   getListActivitiesForPage(url: string, page: number): Observable<any> {
     url = `${url}&numPag=${page}`
     console.log("Current PAge: ", url)
     return this.http.post(url, {}); // Llamado POST a la API
+  }
+
+  getListHistoricForPage(idRegistro: number, page: number): Observable<HistorialActividades> {
+    this.API_HISTORICACTIVITYCOMPANY = '';
+    this.API_HISTORICACTIVITYCOMPANY = this.apiUrl.API_GET_Historic_Empresa;
+    const url = `${this.API_HISTORICACTIVITYCOMPANY}?intIDUsuario=${idRegistro}&numPag=${page}&intCantReg=${this.cantidadRegistrosPorPaginaHistorico}`;
+    console.log("Current Page histórico: ", url)
+    return this.http.post<HistorialActividades>(url, {});
   }
 
   listActivitiesFilter(listActivity): void {
@@ -203,6 +292,27 @@ export class ActivityListCompanyService {
   loadAllActivities(): Observable<void> {
     return new Observable(observer => {
       this.loadAllActivitiesInternal().then(
+        () => {
+          observer.next(undefined);
+          observer.complete();
+        },
+        error => {
+          observer.error(error);
+        }
+      );
+    });
+  }
+
+  /**
+   * Método principal que encapsula toda la lógica de carga de actividades históricas.
+   * Obtiene la sesión del usuario, obtiene la primera página de histórico,
+   * guarda en storage y gestiona la paginación si es necesaria.
+   * Emite progreso a través de progressBarValues$ y actividades completas a través de activities$.
+   * @returns Observable que emite cuando la carga inicial está completa
+   */
+  loadAllHistoricActivities(): Observable<void> {
+    return new Observable(observer => {
+      this.loadAllHistoricActivitiesInternal().then(
         () => {
           observer.next(undefined);
           observer.complete();
@@ -262,6 +372,47 @@ export class ActivityListCompanyService {
     } catch (error) {
       console.error('Error en loadAllActivities:', error);
       this.presentToastActivitiesPaginator('Error al cargar las actividades, inténtalo nuevamente por favor.', 'danger');
+      throw error;
+    }
+  }
+
+  /**
+   * Implementación interna asíncrona de loadAllHistoricActivities
+   */
+  private async loadAllHistoricActivitiesInternal(): Promise<void> {
+    try {
+      // 1. Obtener sesión del usuario
+      const userSession = await this.appStorage.get(this.appStorage.KEY_SESSION);
+      if (!userSession) {
+        throw new Error('No hay sesión de usuario');
+      }
+
+      // 2. Obtener primera página de actividades históricas
+      const firstPageResponse = await firstValueFrom(this.listHistoricForCompanyPerPage(userSession));
+
+      if (!firstPageResponse.listActivitiesCompany || firstPageResponse.listActivitiesCompany.length === 0) {
+        // No hay actividades históricas
+        this.presentToastActivitiesPaginator('El Usuario no tiene Actividades Históricas.', 'primary');
+        return;
+      }
+
+      const listActivity = firstPageResponse.listActivitiesCompany || [];
+      const pagination = firstPageResponse.pagination;
+
+      // 3. Guardar actividades históricas iniciales y emitir
+      await this.storage.set('historialActividades', listActivity);
+      this.setActivities(listActivity);
+
+      // 4. Iniciar paginación si es necesario
+      if (pagination.paginaActual < pagination.totalPaginas) {
+        this.listHistoricForCompanyForPage(pagination, userSession.idRegistro);
+      } else {
+        this.presentToastActivitiesPaginator('Actividades históricas cargadas con éxito.', 'primary');
+      }
+
+    } catch (error) {
+      console.error('Error en loadAllHistoricActivities:', error);
+      this.presentToastActivitiesPaginator('Error al cargar las actividades históricas, inténtalo nuevamente por favor.', 'danger');
       throw error;
     }
   }

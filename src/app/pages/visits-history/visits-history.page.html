@@ -75,7 +75,9 @@
         detail
       >
         <div style="width: 100%">
-          <ion-label class="labelEnProceso">En proceso 0 de {{activity.listaActividadesMigradas.length}}</ion-label>
+          <ion-label class="labelEnProceso"
+            >{{activity.listaActividadesMigradas.length}} {{activity.listaActividadesMigradas.length >= 2 ? "Actividades" : "Actividad"}}
+          </ion-label>
           <ion-grid>
             <ion-row>
               <ion-col size="12">

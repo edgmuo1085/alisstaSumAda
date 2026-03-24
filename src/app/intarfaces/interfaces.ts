@@ -150,7 +150,7 @@ export interface UploadFile {
 export interface CorreoNotificacionActaApp {
   Fk_ID_ActividadMigradaPorUsuario: number;
 }
-  
+
 export interface ResponsibleCode {
   id?: number;
   nombre?: string;
@@ -173,19 +173,19 @@ export interface ProgressBarValues {
 }
 
 export interface LoadedPDFInfo {
-    idActividad:   number;
-    tipoArchivo:   string;
-    idTipoArchivo: string;
-    documento:     Documento;
+  idActividad: number;
+  tipoArchivo: string;
+  idTipoArchivo: string;
+  documento: Documento;
 }
 
 export interface Documento {
-    id:                    string;
-    file:                  Blob;
-    blob:                  Blob;
-    extension:             string;
-    fileAsistenciaEventos: boolean;
-    fileEvaluacionEventos: boolean;
+  id: string;
+  file: Blob;
+  blob: Blob;
+  extension: string;
+  fileAsistenciaEventos: boolean;
+  fileEvaluacionEventos: boolean;
 }
 
 // export interface Blob {
@@ -213,3 +213,62 @@ export interface Coords {
   lat: number;
   lng: number;
 }
+
+export interface Pagination {
+  totalRegistros: number;
+  totalPaginas: number;
+  paginaActual: number;
+  cantidadPorPagina: number;
+}
+
+export interface HistorialActividades {
+  listActivitiesCompany: ListActivitiesCompany[];
+  pagination: Pagination;
+}
+
+export interface ListActivitiesCompany {
+  id: number;
+  name: string;
+  tipoDocumentoDescripcion: string;
+  numeroDocumento: string;
+  departamentoId: number;
+  departamentoDescripcion: string | null;
+  municipioId: number;
+  minicipioDescripcion: string | null;
+  direccion: string | null;
+  telefonoContacto: string | null;
+  correoContacto: string | null;
+  Modulo: string;
+  ModuloNombre: string;
+  intTotalRegistros: number;
+  intHorasTotales: number;
+  intHorasPendientes: number;
+  intHorasEjecutadas: number;
+  listaActividadesMigradas: ListaActividadesMigrada[];
+  listaReposables: any[] | null;
+}
+
+export interface ListaActividadesMigrada {
+  id: number;
+  idActividad: string;
+  descripcionActividad: string;
+  firmamaQR: number;
+  observaciones: string | null;
+  cobertura: number;
+  estadoInterno: string | null;
+  cantidadHorasEjecutar: number;
+  uniadMedidaId: number;
+  uniadMedidaDescripcion: string | null;
+  registroCodigoEventosEduca: string | null;
+  fechaFinContrato: Date;
+  numeroAutorizacion: string | null;
+  numeroActividad: string | null;
+  numeroContrato: string | null;
+  lineaAccion: string | null;
+  Fk_Id_Siniestro: number;
+  SiniestroOpsActividad: number;
+  strUrlActa: string;
+  Siniestro: any | null;
+}
+
+// Nota: Estas interfaces ya existen en el código, pero las mantenemos aquí por completitud.

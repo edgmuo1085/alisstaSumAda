@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { CacheService } from '../../services/cache/cache.service';
 import { VisitSubject } from './visit-history-detail.typings';
+import { Browser } from '@capacitor/browser';
 
 /**
  * Componente para la vista de temas de visita.
@@ -56,7 +57,16 @@ export class VisitHistoryDetailPageComponent implements OnInit {
 
   }
 
-  next() {
-    console.log("Navegar")
+  async goToActivitySupport(url: string) {
+    try {
+      if (url) {
+        await Browser.open({ url });
+      } else {
+        console.warn('URL de recuperación de contraseña no disponible');
+        return
+      }
+    } catch (e) {
+      console.error('Error abriendo recuperación de contraseña:', JSON.stringify(e, null, 2));
+    }
   }
 }
