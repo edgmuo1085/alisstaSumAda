@@ -10,8 +10,9 @@ import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/ad
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
-import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
+import { CorreoNotificacionActaApp, ParsedResponse } from 'src/app/intarfaces/interfaces';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
+import { ResponseToObject } from 'src/app/services/activities/updateActivityHours/updateActivityHours.service';
 
 @Component({
   selector: 'app-survey-and-signature',
@@ -63,7 +64,8 @@ export class SurveyAndSignaturePage implements OnInit {
     private toastController: ToastController,
     private modalCtrl: ModalController,
     private alertController: AlertController,
-    private processTracker: ProcessTrackerService
+    private processTracker: ProcessTrackerService,
+    private responseToObjectSv: ResponseToObject,
   ) { }
 
   async ionViewWillEnter() {
@@ -259,6 +261,8 @@ export class SurveyAndSignaturePage implements OnInit {
         .saveActaAsesoria(this.actaAsesoriaGestionada)
         .toPromise();
 
+      console.log("survey-and-signature", creacionActa);
+
       creacionActa = creacionActa.split(';');
 
       if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
@@ -282,7 +286,7 @@ export class SurveyAndSignaturePage implements OnInit {
 
       // 4️⃣ Actualizar actividades
       await this.processTracker.addStep('Actualizando lista de actividades...');
-      await this.updateActivities();
+      await this.updateActivities(this.responseToObjectSv.responseParser(creacionActa));
       await this.processTracker.completeLastStep();
 
       // 5️⃣ Final
@@ -354,10 +358,18 @@ export class SurveyAndSignaturePage implements OnInit {
     }
   }
 
-  async updateActivities() {
+  async updateActivities(response: ParsedResponse) {
     const listaActividades = await this.storage.get('listaActividades');
 
     for (const actividad of listaActividades) {
+
+      if (actividad.Modulo === response.modulo && actividad.id === response.idEmpresa) {
+        actividad.intHorasEjecutadas = response.acumulado;
+        actividad.intHorasPendientes = response.pendiente;
+        console.log("Entro en if: ", actividad)
+
+      }
+
       const actividadesMigradas = actividad.listaActividadesMigradas;
       const ids: number[] = [];
 
