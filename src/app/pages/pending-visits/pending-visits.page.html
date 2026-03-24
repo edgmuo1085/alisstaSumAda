@@ -103,11 +103,11 @@
                     <div class="progress-container">
                       <span class="progress-label">Acumulado</span>
                       <ion-progress-bar
-                        [value]="activity.horasEjecutadas/ activity.horasTotales"
+                        [value]="activity.intHorasEjecutadas/ activity.intHorasTotales"
                         color="success"
                         class="progress-bar-custom"
                       ></ion-progress-bar>
-                      <span class="hours">{{activity.horasEjecutadas}} H</span>
+                      <span class="hours">{{activity.intHorasEjecutadas}} H</span>
                     </div>
                   </ion-col>
 
@@ -115,11 +115,11 @@
                     <div class="progress-container">
                       <span class="progress-label">Pendiente</span>
                       <ion-progress-bar
-                        [value]="activity.horasPendientes/ activity.horasTotales"
+                        [value]="activity.intHorasPendientes/ activity.intHorasTotales"
                         color="danger"
                         class="progress-bar-custom"
                       ></ion-progress-bar>
-                      <span class="hours">{{activity.horasPendientes}} H</span>
+                      <span class="hours">{{activity.intHorasPendientes}} H</span>
                     </div>
                   </ion-col>
                 </ion-row>

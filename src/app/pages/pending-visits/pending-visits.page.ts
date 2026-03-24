@@ -42,7 +42,6 @@ export class PendingVisitsPage implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.validateDataListActivities();
     this.net.showIPAddress();
-    this.getHours();
   }
 
   ngOnDestroy() {
@@ -85,19 +84,5 @@ export class PendingVisitsPage implements OnInit, OnDestroy {
       console.error('Error leyendo listaActividades desde Storage:', err);
       this.listActivity = [];
     }
-  }
-
-  getHours() {
-    this.listActivity
-      .map(activity => {
-        let horasTotales = 0;
-        activity.listaActividadesMigradas
-          .map(act => {
-            horasTotales += act.cantidadHorasEjecutar;
-          });
-        activity.horasTotales = horasTotales
-        activity.horasEjecutadas = 1
-        activity.horasPendientes = activity.horasTotales - activity.horasEjecutadas;
-      })
   }
 }
