@@ -16,26 +16,26 @@ export class ApiUrlService {
   private initializedSubject = new BehaviorSubject<boolean>(false);
   public initialized$ = this.initializedSubject.asObservable();
 
-  public baseUrl$; 
+  public baseUrl$;
   public loginUrl$;
   public ambienteNombre$;
 
- constructor(private appStorage: AppStorageService) {
+  constructor(private appStorage: AppStorageService) {
     this.initializeService();
   }
 
-private async initializeService() {
+  private async initializeService() {
     try {
       const almacenado = await this.appStorage.get('ambienteSeleccionado');
       const index = almacenado !== null ? parseInt(almacenado, 10) : environment.ambienteSeleccionado;
 
       const ambiente: Ambiente = !environment.production
         ? environment.ambientes[index] || environment.ambientes[0]
-        : { 
-            nombre: 'Producción', 
-            url: environment.ambienteFijo, 
-            recoveryPass: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM' 
-          };
+        : {
+          nombre: 'Producción',
+          url: environment.ambienteFijo,
+          recoveryPass: 'https://alissta.gov.co/SUM/AdminUsuariosSum/RecuperarClaveSUM'
+        };
 
       this.baseUrlSubject$ = new BehaviorSubject<string>(ambiente.url);
       this.loginUrlSubject$ = new BehaviorSubject<string>(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
@@ -48,25 +48,25 @@ private async initializeService() {
 
       // Marcar como inicializado
       this.initializedSubject.next(true);
-      
+
     } catch (error) {
       console.error('Error inicializando ApiUrlService:', error);
       this.initializedSubject.next(false);
     }
   }
 
-    public async setAmbiente(index: number): Promise<void> {
+  public async setAmbiente(index: number): Promise<void> {
     if (!environment.production) {
       const ambiente = environment.ambientes[index];
       if (ambiente) {
         // Guardar en AppStorageService en lugar de localStorage
         await this.appStorage.set('ambienteSeleccionado', index.toString());
-        
+
         this.baseUrlSubject$.next(ambiente.url);
         this.loginUrlSubject$.next(ambiente.url + 'UsuarioSumServicio/login_app_ssum');
         this.baseUrlRecoveryPassSubject$.next(ambiente.recoveryPass);
         this.ambienteNombreSubject.next(ambiente.nombre);
-        
+
         console.log('Cambiado a ambiente:', ambiente.nombre, "url: ", this.baseUrlSubject$.value, "login: ", this.loginUrlSubject$.value);
       }
     }
@@ -122,6 +122,10 @@ private async initializeService() {
 
   public get API_GET_Avtividades_Empresa() {
     return this.baseUrlSubject$.value + 'Actividad/Actividades-Empresa';
+  }
+
+  public get API_GET_Historic_Empresa() {
+    return this.baseUrlSubject$.value + 'Actividad/Historicos-Empresa';
   }
 
   public get API_GET_Cantidad_Registros_Por_Pagina() {
