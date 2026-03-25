@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private appStorage: AppStorageService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.loadDeviceUUID();
@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
   }
 
   async uploadInfoUser() {
+    console.log('Se ejecutó uploadInfoUser');
     const userSession = await this.appStorage.get<any>(this.appStorage.KEY_SESSION);
 
     if (userSession && userSession.nombres && userSession.apellidos) {

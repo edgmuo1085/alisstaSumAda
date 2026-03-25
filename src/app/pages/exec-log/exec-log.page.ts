@@ -82,6 +82,7 @@ export class ExecLogPage implements OnInit {
   async showResendVerificationCode() {
     const modal = await this.modalCtrl.create({
       component: ResendVerificationCodeComponent,
+      cssClass: 'resend-verification-modal'
     });
     await modal.present();
   }

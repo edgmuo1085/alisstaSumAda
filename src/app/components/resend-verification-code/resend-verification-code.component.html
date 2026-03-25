@@ -1,10 +1,9 @@
-<ion-header class="ion-no-border">
+<ion-header>
   <ion-toolbar color="tertiary">
     <ion-grid>
-      <ion-row style="align-items: center;">
+      <ion-row style="align-items: center">
         <ion-col size="2">
-          <ion-back-button defaultHref="" text="" (click)="regresar()" class="custom-back-button"
-            color="primary"></ion-back-button>
+          <ion-back-button defaultHref="" text="" (click)="regresar()" class="custom-back-button" color="primary"></ion-back-button>
         </ion-col>
         <ion-col size="10">
           <ion-title class="titulo">Reenviar código de verificación</ion-title>
@@ -29,8 +28,7 @@
           <ion-col size="12">
             <strong>
               <p class="tituloSlide">
-                No tienes actividades migradas, por ende, no existe una lista de responsables para reenvíar el código de
-                verificación
+                No tienes actividades migradas, por ende, no existe una lista de responsables para reenvíar el código de verificación
               </p>
             </strong>
           </ion-col>
@@ -40,16 +38,16 @@
   </swiper-container>
 
   <ng-template #responsables>
-    <ion-list class="mb-4">
+    <ion-list style="margin-top: 30px">
       <ion-row class="ion-margin-bottom" *ngFor="let company of responsableList; let i = index">
         <ion-col size="12">
           <div class="ion-text-center">
             <div class="bold">Nombre Empresa</div>
-            <div>{{company.empresaInfo.nameEmpresa}}</div>
+            <div>{{ company.empresaInfo.nameEmpresa }}</div>
           </div>
           <div class="ion-text-center">
             <div class="bold">Documento Identificación</div>
-            <div>{{company.empresaInfo.docEmpresa}}</div>
+            <div>{{ company.empresaInfo.docEmpresa }}</div>
           </div>
         </ion-col>
         <ion-col size="12" *ngFor="let resp of company.responsables; let j = index">
@@ -65,7 +63,9 @@
                     </ion-row>
                     <ion-row>
                       <ion-col size="12">
-                        <p><small>{{resp.element.Nombre}}</small></p>
+                        <p>
+                          <small>{{ resp.element.Nombre }}</small>
+                        </p>
                       </ion-col>
                     </ion-row>
                     <ion-row>
@@ -75,7 +75,9 @@
                     </ion-row>
                     <ion-row>
                       <ion-col size="12">
-                        <p><small>{{resp.element.correo}}</small></p>
+                        <p>
+                          <small>{{ resp.element.correo }}</small>
+                        </p>
                       </ion-col>
                     </ion-row>
                   </ion-grid>

@@ -557,6 +557,82 @@ body.scanner-active {
   --border-radius: 16px;
 }
 
+/* Safe area handling for resend verification modal */
+.resend-verification-modal {
+
+  /* Header extends behind status bar, content visible below */
+  ion-header {
+    /* Pull header background up behind status bar */
+    margin-top: calc(-1 * env(safe-area-inset-top));
+
+    /* Add padding to create space for status bar */
+    padding-top: env(safe-area-inset-top);
+
+    /* Set header height to include safe area */
+    height: calc(56px + env(safe-area-inset-top));
+
+    ion-toolbar {
+      /* Normal toolbar height plus safe area */
+      min-height: calc(56px + env(safe-area-inset-top));
+
+      /* Remove any padding from toolbar */
+      padding-top: 0;
+
+      /* Use flexbox to position content at bottom of header */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+
+      /* Ensure grid and contents align properly */
+      ion-grid {
+        /* Remove any extra padding */
+        padding-top: 0;
+        height: auto;
+
+        ion-row {
+          /* Align items at the bottom */
+          align-items: flex-end;
+          height: auto;
+
+          /* Position content near bottom edge */
+          padding-bottom: 8px;
+
+          /* Target the back button and title specifically */
+          ion-col {
+            display: flex;
+            align-items: flex-end;
+
+            /* Ensure back button aligns with title */
+            ion-back-button {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: auto;
+            }
+
+            /* Ensure title aligns with back button */
+            ion-title {
+              display: flex;
+              align-items: flex-end;
+              height: auto;
+              padding: 0;
+              margin: 0;
+              font-size: 14.5px;
+              line-height: 1.2;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* Ensure modal content starts below status bar */
+  ion-content {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
 ion-action-sheet.my-custom-action-sheet {
   --background: var(--ion-color-light);
   --backdrop-opacity: 0.4;
