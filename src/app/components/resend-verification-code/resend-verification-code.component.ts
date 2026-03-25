@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, AlertController, LoadingController } from '@ionic/angular';
-import { AppStorageService } from 'src/app/app-storage.service';
+import { Storage } from '@ionic/storage-angular';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 
 @Component({
@@ -22,11 +22,11 @@ export class ResendVerificationCodeComponent {
   constructor(
     private modalCtrl: ModalController,
     private listActivitiesCompany: ActivityListCompanyService,
-    private appStorage: AppStorageService,
+    private storage: Storage,
     private activityListCompany: ActivityListCompanyService,
     private loadingCtlr: LoadingController,
     private alertController: AlertController
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     this.listActivities();
@@ -35,8 +35,8 @@ export class ResendVerificationCodeComponent {
   /**
    * listActivities() lista las actividades dependiendo de las actividades migradas al usuario que se logueo en la app
    */
-async listActivities() {
-    this.listaResponsables = await this.appStorage.get('listaActividades');
+  async listActivities() {
+    this.listaResponsables = await this.storage.get('listaActividades');
     let responsables = [];
     for (const responsable of this.listaResponsables) {
       if (responsable.listaReposables.length > 0) {
@@ -44,19 +44,19 @@ async listActivities() {
         const nameEmpresa = responsable.name;
         const docEmpresa = responsable.numeroDocumento;
         const empresaInfo = { nameEmpresa, docEmpresa };
-  
+
         for (const element of responsable.listaReposables) {
           responsables.push({ idEmpresa, element });
         }
-  
+
         this.responsableList.push({ empresaInfo, responsables });
         responsables = [];
       }
     }
-  
+
     this.listaResponsables = responsables;
   }
-  
+
 
   /**
    * Buscar el responsable al que se le quiere reenviar el código de verificación
