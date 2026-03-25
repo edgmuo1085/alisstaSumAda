@@ -135,6 +135,7 @@ export class TasksToSendPage implements OnInit {
   async sendTask(acta: any, files: any[] = []): Promise<boolean> {
     let response: boolean;
     let creacionActa = await this.advisoryTopicService.saveActaAsesoria(acta).toPromise();
+    console.log("task-to-send: ", creacionActa);
     creacionActa = creacionActa.split(';');
 
     if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {

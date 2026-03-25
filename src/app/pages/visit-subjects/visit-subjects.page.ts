@@ -424,28 +424,23 @@ export class VisitSubjectsPage implements OnInit {
    * Función principal que se ejecuta al continuar.
    */
   public async next(): Promise<void> {
-    console.log("Numero CERO");
     let tarjetas = await this.obtenerTarjetas();
 
     if (!this.validarTarjetas(tarjetas)) {
-      console.log("Numero UNO");
       return;
     }
 
     this.cacheService.saveMigratedHours(tarjetas.reduce((sum, t) => sum + parseInt(t.horasEjecutadas, 10), 0));
 
     if (this.subjectsSelected.length === 0) {
-      console.log("Numero DOS");
       return this.mostrarAlerta(this.ALERT_TEXTS.MIN_ACTIVITY);
     }
 
     if (this.subjectsSelected.length > this.MAX_SUBJECTS) {
-      console.log("Numero TRES");
       return this.mostrarAlerta(this.ALERT_TEXTS.MAX_SUBJECTS);
     }
 
     if (this.redirect) {
-      console.log("Numero CUATRO");
       this.cacheService.saveActivities(tarjetas);
       this.router.navigateByUrl('u/execLog/pending-visits/visit-id/subjects/type');
     }
@@ -455,7 +450,6 @@ export class VisitSubjectsPage implements OnInit {
    * Obtiene las tarjetas del formulario y las valida.
    */
   private async obtenerTarjetas(): Promise<any[]> {
-    console.log("Obtener tarjeta UNO");
     const formSubject = this.subjectForm.value;
     const fields = [
       'include', 'id', 'idActividad', 'descripcionActividad', 'Observaciones',
@@ -471,7 +465,6 @@ export class VisitSubjectsPage implements OnInit {
       tarjetas.push(tarjeta);
     }
 
-    console.log("Obtener tarjeta DOS");
     return await this.validateTarjetas(this.subjectsSelected, tarjetas);
   }
 
