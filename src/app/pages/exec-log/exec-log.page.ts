@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuConfiguracionService } from '../../services/menu-configuracion.service';
 import { Observable } from 'rxjs';
-import { Storage } from '@ionic/storage-angular';;
-import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ResendVerificationCodeComponent } from '../../components/resend-verification-code/resend-verification-code.component';
 import { ActivityListCompanyService } from 'src/app/services/activities/activityListCompany/activity-list-company.service';
 import { ProgressBarValues } from 'src/app/intarfaces/interfaces';
 import { AppStorageService } from 'src/app/app-storage.service';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-exec-log',
@@ -16,7 +15,6 @@ import { AppStorageService } from 'src/app/app-storage.service';
 export class ExecLogPage implements OnInit {
 
   optMenuOptions: Observable<any[]>;
-  optMenuHelpOptions: Observable<any[]>;
 
   nameUserRegister = '';
 
@@ -37,14 +35,11 @@ export class ExecLogPage implements OnInit {
     private loadingCtlr: LoadingController,
     private menuConfOptions: MenuConfiguracionService,
     private modalCtrl: ModalController,
-    private storage: Storage,                 // Ionic Storage se mantiene
-    private appStorage: AppStorageService,    // Usamos Preferences solo para la sesión
-    private alertCtrl: AlertController
+    private appStorage: AppStorageService,
   ) { }
 
   async ngOnInit() {
     this.optMenuOptions = this.menuConfOptions.getMenuExceActivities();
-    this.optMenuHelpOptions = this.menuConfOptions.getMenuHelpExceActivities();
     await this.uploadInfoUser();
 
     // Suscribirse a los observables del servicio
