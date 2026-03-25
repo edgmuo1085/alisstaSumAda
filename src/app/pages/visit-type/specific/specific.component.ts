@@ -254,12 +254,13 @@ export class SpecificComponent implements OnInit {
     }
 
     // 2. Validar que ninguna hora sea futura (fecha es hoy)
-    if (start.isAfter(now)) {
-      return { valid: false, message: 'La hora inicial no puede ser en el futuro' };
-    }
-    if (end.isAfter(now)) {
-      return { valid: false, message: 'La hora final no puede ser en el futuro' };
-    }
+    // if (start.isAfter(now)) {
+    //   return { valid: false, message: 'La hora inicial no puede ser en el futuro' };
+    // }
+
+    // if (end.isAfter(now)) {
+    //   return { valid: false, message: 'La hora final no puede ser en el futuro' };
+    // }
 
     // 3. Validar duración mínima (migratedHours)
     const duration = moment.duration(end.diff(start));
