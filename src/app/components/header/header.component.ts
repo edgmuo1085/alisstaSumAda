@@ -18,7 +18,11 @@ export class HeaderComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadDeviceUUID();
-    await this.uploadInfoUser();
+    this.appStorage.user$.subscribe(user => {
+      this.nameUserRegister = user
+        ? `${user.nombres} ${user.apellidos}`
+        : 'Usuario';
+    });
   }
 
   async loadDeviceUUID() {
@@ -31,17 +35,4 @@ export class HeaderComponent implements OnInit {
       this.deviceUUID = 'UUID no disponible';
     }
   }
-
-  async uploadInfoUser() {
-    console.log('Se ejecutó uploadInfoUser');
-    const userSession = await this.appStorage.get<any>(this.appStorage.KEY_SESSION);
-
-    if (userSession && userSession.nombres && userSession.apellidos) {
-      this.nameUserRegister = `${userSession.nombres} ${userSession.apellidos}`;
-    } else {
-      this.nameUserRegister = 'Usuario';
-      console.warn('No se encontró información del usuario en Preferences.');
-    }
-  }
-
 }

@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppStorageService {
+  private userSubject = new BehaviorSubject<any>(null);
+  public user$ = this.userSubject.asObservable();
 
   // Keys usados en la app
   readonly KEY_CREDENTIALS = 'credentials'; // { nit, documento, password } (opcional: password puede omitirse)
@@ -44,5 +47,20 @@ export class AppStorageService {
 
   async clear(): Promise<void> {
     await Preferences.clear();
+  }
+
+  async setSession(user: any) {
+    await this.set(this.KEY_SESSION, user);
+    this.userSubject.next(user);
+  }
+
+  async clearSession() {
+    await this.remove(this.KEY_SESSION);
+    this.userSubject.next(null);
+  }
+
+  async loadSession() {
+    const user = await this.get(this.KEY_SESSION);
+    this.userSubject.next(user);
   }
 }

@@ -160,44 +160,45 @@ export class SettingsPage implements OnInit {
   /**
    * Método para cerrar la sesion voluntaria
    */
-async singOff() {
-  try {
-    // 1. Obtener TODAS las claves de biometría ANTES de limpiar
-    const biometricData = await this.appStorageSv.get('isFingerFaceAvailable');
-    const activateFinger = await this.appStorageSv.get('activateFinger');
-    const biometricEnabled = await this.appStorageSv.get(this.appStorageSv.KEY_BIOMETRIC_ENABLED); // ← NUEVA
-    const ambienteSeleccionado = await this.appStorageSv.get('ambienteSeleccionado');
+  async singOff() {
+    try {
+      // 1. Obtener TODAS las claves de biometría ANTES de limpiar
+      const biometricData = await this.appStorageSv.get('isFingerFaceAvailable');
+      const activateFinger = await this.appStorageSv.get('activateFinger');
+      const biometricEnabled = await this.appStorageSv.get(this.appStorageSv.KEY_BIOMETRIC_ENABLED); // ← NUEVA
+      const ambienteSeleccionado = await this.appStorageSv.get('ambienteSeleccionado');
 
-    // 2. Limpiar ambos storages
-    await this.appStorageSv.clear();
-    await this.ionicStorage.clear();
+      // 2. Limpiar ambos storages
+      await this.appStorageSv.clear();
+      await this.appStorageSv.clearSession();
+      await this.ionicStorage.clear();
 
-    // 3. Limpiar otros storages
-    localStorage.clear();
-    sessionStorage.clear();
+      // 3. Limpiar otros storages
+      localStorage.clear();
+      sessionStorage.clear();
 
-    // 4. Restaurar TODAS las claves importantes
-    if (biometricData !== null) {
-      await this.appStorageSv.set('isFingerFaceAvailable', biometricData);
+      // 4. Restaurar TODAS las claves importantes
+      if (biometricData !== null) {
+        await this.appStorageSv.set('isFingerFaceAvailable', biometricData);
+      }
+      if (activateFinger !== null) {
+        await this.appStorageSv.set('activateFinger', activateFinger);
+      }
+      if (biometricEnabled !== null) {
+        await this.appStorageSv.set(this.appStorageSv.KEY_BIOMETRIC_ENABLED, biometricEnabled); // ← NUEVA
+      }
+      if (ambienteSeleccionado !== null) {
+        await this.appStorageSv.set('ambienteSeleccionado', ambienteSeleccionado);
+      }
+
+      // 5. Navegar al login
+      this.router.navigateByUrl('/login');
+
+    } catch (error) {
+      console.error('Error durante cierre de sesión:', error);
+      this.router.navigateByUrl('/login');
     }
-    if (activateFinger !== null) {
-      await this.appStorageSv.set('activateFinger', activateFinger);
-    }
-    if (biometricEnabled !== null) {
-      await this.appStorageSv.set(this.appStorageSv.KEY_BIOMETRIC_ENABLED, biometricEnabled); // ← NUEVA
-    }
-    if (ambienteSeleccionado !== null) {
-      await this.appStorageSv.set('ambienteSeleccionado', ambienteSeleccionado);
-    }
-
-    // 5. Navegar al login
-    this.router.navigateByUrl('/login');
-
-  } catch (error) {
-    console.error('Error durante cierre de sesión:', error);
-    this.router.navigateByUrl('/login');
   }
-}
 
   async showToast(message: string) {
     const toast = await this.toastController.create({

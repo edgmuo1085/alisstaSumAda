@@ -122,7 +122,7 @@ export class AuthFacadeService {
     }
 
     // Guardar nueva sesión
-    await this.storage.set(this.storage.KEY_SESSION, newSession);
+    await this.storage.setSession(newSession);
   }
 
   /**
@@ -359,7 +359,7 @@ export class AuthFacadeService {
           }
 
           const session = Array.isArray(response) ? response[0] : response;
-          await this.storage.set(this.storage.KEY_SESSION, session);
+          await this.storage.setSession(session);
           await this.router.navigateByUrl('/u/home');
         },
         async err => {
@@ -400,6 +400,7 @@ export class AuthFacadeService {
       }
     }
     await this.storage.clear();
+    await this.storage.clearSession();
     await this.router.navigateByUrl('/login');
   }
 }

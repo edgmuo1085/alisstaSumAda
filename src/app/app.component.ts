@@ -11,6 +11,7 @@ import { AppVersionService } from './services/version/app-version.service';
 import { ApiUrlService } from './services/apiUrl/api-url.service';
 import { Subscription } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
+import { AppStorageService } from './app-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -32,13 +33,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private AppVersionSv: AppVersionService,
     private apiUrlSv: ApiUrlService,
     private storage: Storage, //TODO: VAlidar la migracion de todas las importaciones a ul servicio
+    private appStorage: AppStorageService,
   ) {
     this.initializeApp();
     this.listenToAppState();
     this.AppVersionSv.checkForUpdate();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     if (!this.isProduction) {
       // Esperar a que el servicio esté inicializado
       this.subscription.add(
@@ -53,6 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
         })
       );
     }
+    await this.appStorage.loadSession();
   }
 
   ngOnDestroy() {
