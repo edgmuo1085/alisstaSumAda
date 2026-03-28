@@ -15,11 +15,6 @@
     "redirecTo": "releaseActivities"
   },
   {
-    "icon": "../../../assets/icon/icono_encuesta.svg",
-    "title": "Histórico de Acta",
-    "redirecTo": "visitsHistory"
-  },
-  {
     "icon": "../../../assets/icon/icono_recordar_codigo.svg",
     "title": "Recordar código"
   }
