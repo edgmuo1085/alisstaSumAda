@@ -366,6 +366,16 @@ export class ActivityListCompanyService {
       if (listActivity.length < listActivityTotal) {
         this.listActivityForCompanyForPage(listActivityTotal);
       } else {
+        this.progressBar = {
+          visible: false,
+          progress: 0,
+          records: 0,
+          refreshBtnEnable: false
+        };
+
+        setTimeout(() => {
+          this.progressBarValues.next(this.progressBar);
+        }, 2000);
         this.presentToastActivitiesPaginator('Actividades cargadas con éxito.', 'primary');
       }
 
