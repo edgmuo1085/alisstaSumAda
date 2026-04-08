@@ -123,7 +123,7 @@ export class ActivityListCompanyService {
   }
 
   listHistoricForCompanyForPage(pagination: any, idRegistro: number) {
-    this.presentToastActivitiesPaginator("Espera mientras se descargan las Actividades Históricas.", "primary")
+    this.presentToastActivitiesPaginator("Espera mientras se descarga el Historial de las Actividades.", "primary")
     this.progressBar.visible = true;
     this.progressBar.records = pagination.totalRegistros;
     this.progressBarValues.next(this.progressBar);
@@ -205,7 +205,7 @@ export class ActivityListCompanyService {
       setTimeout(() => {
         this.progressBarValues.next(this.progressBar);
       }, 2000);
-      this.presentToastActivitiesPaginator("Actividades históricas cargadas con Exito.", "primary")
+      this.presentToastActivitiesPaginator("Historial de Actividades cargado con Exito.", "primary")
       return;
     }
 
@@ -237,7 +237,7 @@ export class ActivityListCompanyService {
         this.progressBar.visible = false;
         this.progressBar.refreshBtnEnable = false;
         this.progressBarValues.next(this.progressBar);
-        this.presentToastActivitiesPaginator("Error al cargar las actividades históricas, intentalo nuevamente por favor.", "danger")
+        this.presentToastActivitiesPaginator("Error al cargar el historial de actividades, intentalo nuevamente por favor.", "danger")
       },
       () => {
         console.log(`Llamada a la página histórica ${currentPage} completada`);
@@ -402,7 +402,7 @@ export class ActivityListCompanyService {
 
       if (!firstPageResponse.listActivitiesCompany || firstPageResponse.listActivitiesCompany.length === 0) {
         // No hay actividades históricas
-        this.presentToastActivitiesPaginator('El Usuario no tiene Actividades Históricas.', 'primary');
+        this.presentToastActivitiesPaginator('El Usuario no tiene Historial de Actividades.', 'primary');
         return;
       }
 
@@ -417,12 +417,12 @@ export class ActivityListCompanyService {
       if (pagination.paginaActual < pagination.totalPaginas) {
         this.listHistoricForCompanyForPage(pagination, userSession.idRegistro);
       } else {
-        this.presentToastActivitiesPaginator('Actividades históricas cargadas con éxito.', 'primary');
+        this.presentToastActivitiesPaginator('Historial de Actividades cargado con éxito.', 'primary');
       }
 
     } catch (error) {
       console.error('Error en loadAllHistoricActivities:', error);
-      this.presentToastActivitiesPaginator('Error al cargar las actividades históricas, inténtalo nuevamente por favor.', 'danger');
+      this.presentToastActivitiesPaginator('Error al cargar el historial de actividades, inténtalo nuevamente por favor.', 'danger');
       throw error;
     }
   }
