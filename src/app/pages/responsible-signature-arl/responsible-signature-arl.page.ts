@@ -116,7 +116,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
     const checkNetwork = await this.net.testNetworkConnection();
     const idProveedor = this.infoUserARL?.idProveedor;
-    this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
+    this.actaAsesoriaGestionada = await this.cacheService.createActaAsesoria(idProveedor);
 
     const files = this.getFiles();
 

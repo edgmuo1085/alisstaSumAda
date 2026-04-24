@@ -116,7 +116,7 @@ export class TasksToSendPage implements OnInit {
       });
 
       toast.present();
-      const acta = this.buildActa(a);
+      const acta = await this.buildActa(a);
       const response = await this.sendTask(acta, a.files);
       this.cacheService.limpiarVariablesAsesoria();
 
@@ -172,7 +172,7 @@ export class TasksToSendPage implements OnInit {
    *
    * @param acta Acta.
    */
-  private buildActa(acta: any): any {
+  private async buildActa(acta: any): Promise<any> {
     this.cacheService.saveSurveyARL(acta.infoSurveyARL);
     this.cacheService.saveSurveyQR(acta.infoSurveyQR);
     this.cacheService.saveTypeAdvice(acta.typeAdvisory);
@@ -180,7 +180,7 @@ export class TasksToSendPage implements OnInit {
     this.cacheService.saveActivities(acta.activities);
     this.cacheService.saveCommentsAdvice(acta.commentsAdvice);
     const idProveedor = this.infoUserARL.idProveedor;
-    const body = this.cacheService.createActaAsesoria(idProveedor);
+    const body = await this.cacheService.createActaAsesoria(idProveedor);
 
     return body;
   }

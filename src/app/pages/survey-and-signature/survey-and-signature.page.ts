@@ -250,7 +250,7 @@ export class SurveyAndSignaturePage implements OnInit {
 
   async handleNetworkTask() {
     const idProveedor = this.infoUserARL.idProveedor;
-    this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
+    this.actaAsesoriaGestionada = await this.cacheService.createActaAsesoria(idProveedor);
     const files = this.getFiles();
 
     await this.processTracker.startProcess('Creando acta de asesoría...');
@@ -260,8 +260,6 @@ export class SurveyAndSignaturePage implements OnInit {
       let creacionActa = await this.advisoryTopicService
         .saveActaAsesoria(this.actaAsesoriaGestionada)
         .toPromise();
-
-      console.log("survey-and-signature", creacionActa);
 
       creacionActa = creacionActa.split(';');
 
@@ -303,7 +301,6 @@ export class SurveyAndSignaturePage implements OnInit {
 
   async handleOfflineTask() {
     const idProveedor = this.infoUserARL.idProveedor;
-    this.actaAsesoriaGestionada = this.cacheService.createActaAsesoria(idProveedor);
 
     const activitiesChange = [];
     const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();

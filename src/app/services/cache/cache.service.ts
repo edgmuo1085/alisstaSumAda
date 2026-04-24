@@ -3,6 +3,8 @@ import { Storage } from '@ionic/storage-angular';;
 import * as moment from 'moment';
 import { FotoAdjunta, LoadedPDFInfo, RegistroAsistenteEvento, ResponsableEvento } from 'src/app/intarfaces/interfaces';
 import { ActaAsesoria } from '../../intarfaces/interfaces';
+import { firstValueFrom } from 'rxjs';
+import { AppStorageService } from 'src/app/app-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -79,7 +81,10 @@ export class CacheService {
   // Variable para guardar la ip adress
   ipAddress: any;
 
-  constructor(private storage: Storage) { }
+  constructor(
+    private storage: Storage,
+    private appStorage: AppStorageService,
+  ) { }
 
   // --------------------------- MÓDULO EJECUCIÓN ACTIVIDADES --------------------\\
 
@@ -284,8 +289,9 @@ export class CacheService {
     return [...this.pdfAdjuntos];
   }
 
-  createActaAsesoria(idProveedor: string) {
+  async createActaAsesoria(idProveedor: string) {
     const TTA_LISTA = this.transformActivities(this.getAllInfoToAdvisory().activities);
+    const user = await firstValueFrom(this.appStorage.user$);
 
     this.setTypeAdviceInfo();
     this.setCommentAdviceInfo();
@@ -323,6 +329,7 @@ export class CacheService {
       RE_ResponsableFirma: usarInfoARL ? this.infoSurveyQR.signature : '',
 
       RA_ResposableId: usarInfoARL ? this.infoSurveyARL.responsableId : this.infoSurveyQR.documentoResponsableARL,
+      RA_IDUsuario: user.idRegistro,
       RA_ResposableDocumento: usarInfoARL ? this.infoSurveyARL.responsableDocumento : this.infoSurveyQR.documentoResponsableARL,
       RA_ResposableNombre: usarInfoARL
         ? this.infoSurveyARL.responsableNombre

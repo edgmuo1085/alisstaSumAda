@@ -13,7 +13,7 @@ export class AdvisoryTopicService {
   API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP = this.apiUrl.API_ENVIAR_CORREO_NOTIFICACION_ACTA_APP;
   httpHeaders: HttpHeaders;
 
-  constructor(private http: HttpClient, private apiUrl: ApiUrlService) {}
+  constructor(private http: HttpClient, private apiUrl: ApiUrlService) { }
 
   saveActaAsesoria(actaAses: ActaAsesoria): Observable<any> {
     const rq = actaAses;
