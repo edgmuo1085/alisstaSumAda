@@ -139,28 +139,49 @@ export class ResponsibleSignatureARLPage implements OnInit {
     };
   }
 
+  /** ------------------------------------------------------------------
+   *  handleNetworkAvailable: proceso principal con conexión a internet
+   *  ------------------------------------------------------------------
+   *  Cada paso valida el resultado y muestra un mensaje amigable
+   *  antes de detener el proceso si algo falla.
+   */
   private async handleNetworkAvailable(files: any[]) {
     await this.processTracker.startProcess('Creando acta de asesoría...');
 
     try {
       // 1️⃣ Crear acta
       const creacionActa = await this.createActaAsesoria();
+      if (!creacionActa) {
+        return; // createActaAsesoria ya mostró el error con finish()
+      }
+
       const actaId = creacionActa[1];
-
-      if (!actaId) return;
-
       await this.processTracker.completeLastStep();
 
       // 2️⃣ Subir archivos
       if (files.length > 0) {
         await this.processTracker.addStep('Subiendo archivos adjuntos...');
-        await this.uploadFiles(actaId, files);
+        const archivosOk = await this.uploadFiles(actaId, files);
+        if (!archivosOk) {
+          await this.processTracker.finish(
+            false,
+            'El acta se creó correctamente, pero algunos archivos adjuntos no pudieron subirse.'
+          );
+          return;
+        }
         await this.processTracker.completeLastStep();
       }
 
       // 3️⃣ Enviar correos
       await this.processTracker.addStep('Enviando notificación por correo...');
-      await this.sendCorreoNotificacion(actaId);
+      const correosOk = await this.sendCorreoNotificacion();
+      if (!correosOk) {
+        await this.processTracker.finish(
+          false,
+          'El acta se creó y los archivos se subieron, pero no se pudo enviar la notificación por correo.\n\nPor favor, contacta a soporte para verificar que el correo de notificación se envió correctamente.'
+        );
+        return;
+      }
       await this.processTracker.completeLastStep();
 
       // 4️⃣ Actualizar actividades
@@ -168,50 +189,80 @@ export class ResponsibleSignatureARLPage implements OnInit {
       await this.updateListaActividades(this.responseToObjectSv.responseParser(creacionActa));
       await this.processTracker.completeLastStep();
 
-      // 5️⃣ Final exitoso
-      await this.processTracker.finish(true, 'Acta de asesoría creada');
+      // 5️⃣ Limpiar archivos locales solo si TODO fue exitoso
+      this.photoService.photos = [];
+      this.removeFile();
+
+      // 6️⃣ Final exitoso
+      await this.processTracker.finish(true, 'Acta de asesoría creada exitosamente');
       this.router.navigateByUrl('/u/execLog');
 
     } catch (error) {
       console.error('handleNetworkAvailable error:', error);
-      await this.processTracker.finish(false, 'Error en el proceso, intente nuevamente.');
+      await this.processTracker.finish(
+        false,
+        'Ocurrió un error inesperado durante el proceso.\n\nPor favor intenta nuevamente. Si el problema persiste, contacta a soporte.'
+      );
     }
   }
 
-
-  private async createActaAsesoria(): Promise<string | null> {
+  /**
+   * Crea el acta de asesoría en el backend.
+   * @returns arreglo con la respuesta parseada o null si falló
+   */
+  private async createActaAsesoria(): Promise<string[] | null> {
     try {
-      let creacionActa = await this.advisoryTopicService.saveActaAsesoria(this.actaAsesoriaGestionada).toPromise();
-      console.log("responsible-signature-arl: ", creacionActa);
+      let creacionActa = await this.advisoryTopicService
+        .saveActaAsesoria(this.actaAsesoriaGestionada)
+        .toPromise();
+
       creacionActa = creacionActa?.split(';') ?? [];
-      console.log("Responsible-signature respuesta: ", creacionActa);
+
       if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
-        return creacionActa
-      } else {
-        await this.processTracker.finish(false, `No se pudo crear el acta de asesoría\n Error: ${creacionActa[1]}`);
-        return null;
+        return creacionActa;
       }
+
+      await this.processTracker.finish(
+        false,
+        `No se pudo crear el acta de asesoría.\n\nLog enviado al equipo de soporte.'}`
+      );
+      return null;
+
     } catch (err) {
-      await this.processTracker.finish(false, `Error al procesar la solicitud. \n Error: ${err}`);
       console.error('createActaAsesoria error:', err);
+      await this.processTracker.finish(
+        false,
+        'Error de conexión al crear el acta de asesoría.\n\nVerifica tu conexión a internet e intenta nuevamente.'
+      );
       return null;
     }
   }
 
-  private async uploadFiles(actaId: string, files: any[]) {
+  /**
+   * Sube archivos adjuntos al acta.
+   * @returns true si todos se subieron bien, false si alguno falló
+   */
+  private async uploadFiles(actaId: string, files: any[]): Promise<boolean> {
+    let allSuccess = true;
+
     for (const file of files) {
       const body = { ...file, UidActaAsesoria: +actaId };
       try {
         await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
       } catch (err) {
-        console.error('uploadFiles error for file:', file, err);
+        console.error('Error al subir archivo:', file?.nombreArchivo || 'desconocido', err);
+        allSuccess = false;
         // continúa con el siguiente archivo
       }
     }
-    // limpiar fotos en memoria del servicio
-    this.photoService.photos = [];
+
+    return allSuccess;
   }
 
+  /**
+   * Actualiza la lista de actividades en almacenamiento local
+   * (horas ejecutadas, horas pendientes y actividades migradas).
+   */
   private async updateListaActividades(response: ParsedResponse) {
     try {
       const listaActividades: any[] = (await this.storage.get('listaActividades')) || [];
@@ -233,7 +284,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
         for (const element of [...listaActividadesMigradas]) {
           const idActividad = element.id;
           const TTA_LISTA = this.actaAsesoriaGestionada?.TTA_lista ?? [];
-          const encontro = TTA_LISTA.find(x => x.id === idActividad);
+          const encontro = TTA_LISTA.find((x: any) => x.id === idActividad);
 
           if (encontro) {
             const index = actividad.listaActividadesMigradas.indexOf(element);
@@ -249,6 +300,10 @@ export class ResponsibleSignatureARLPage implements OnInit {
     }
   }
 
+  /** ------------------------------------------------------------------
+   *  handleNetworkUnavailable: guarda el acta localmente sin conexión
+   *  ------------------------------------------------------------------
+   */
   private async handleNetworkUnavailable() {
     try {
       const activitiesChange: any[] = [];
@@ -257,7 +312,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
       for (const actividad of actSelec.listaActividadesMigradas || []) {
         const encontro = (getInfoActaAsesoria.activities || []).find(
-          element => element.idActividad === actividad.idActividad
+          (element: any) => element.idActividad === actividad.idActividad
         );
 
         if (encontro) {
@@ -271,28 +326,46 @@ export class ResponsibleSignatureARLPage implements OnInit {
       actSelec.listaActividadesMigradas = activitiesChange;
       sessionStorage.setItem('companySelected', JSON.stringify(actSelec));
 
-      const saveActaAsesoria = this.cacheService.saveActasAsesoria();
-      if (saveActaAsesoria) {
-        this.notification('Atención', 'Se guardo el acta de asesoría pero con estado pendiente por enviar');
-        this.router.navigateByUrl('/u/execLog');
-      }
+      await this.cacheService.saveActasAsesoria();
+      this.notification(
+        'Atención',
+        'No hay conexión a internet. El acta se guardó con estado pendiente por enviar.\n\nCuando tengas conexión, puedes enviarla desde la opción "Actas por Enviar".'
+      );
+      this.router.navigateByUrl('/u/execLog');
+
     } catch (err) {
       console.error('handleNetworkUnavailable error:', err);
     }
   }
 
-  private async sendCorreoNotificacion(actaId: string) {
+  /**
+   * Envía notificaciones por correo a los responsables del acta.
+   * @returns true si todos los correos se enviaron bien, false si alguno falló
+   */
+  private async sendCorreoNotificacion(): Promise<boolean> {
     try {
-      if (this.actaAsesoriaGestionada?.TTA_lista?.length) {
-        for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
-          const notifCorreoActa: CorreoNotificacionActaApp = {
-            Fk_ID_ActividadMigradaPorUsuario: tta.id
-          };
+      if (!this.actaAsesoriaGestionada?.TTA_lista?.length) {
+        return true; // no hay correos que enviar, se considera exitoso
+      }
+
+      let allSuccess = true;
+
+      for (const tta of this.actaAsesoriaGestionada.TTA_lista) {
+        const notifCorreoActa: CorreoNotificacionActaApp = {
+          Fk_ID_ActividadMigradaPorUsuario: tta.id
+        };
+        try {
           await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+        } catch (err) {
+          console.error('Error al enviar correo de notificación para actividad', tta.id, err);
+          allSuccess = false;
         }
       }
+
+      return allSuccess;
     } catch (err) {
       console.error('sendCorreoNotificacion error:', err);
+      return false;
     }
   }
 
@@ -315,8 +388,9 @@ export class ResponsibleSignatureARLPage implements OnInit {
           Base64: base64,
         };
         this.filesBase64.push(objUploadFile);
-      } catch (err) {
+      } catch {
         // si no existe archivo o error, continuar
+
       }
     }
   }
@@ -367,6 +441,11 @@ export class ResponsibleSignatureARLPage implements OnInit {
     await alert.present();
   }
 
+  /**
+   * Obtiene la lista de archivos a subir (documentos + fotos).
+   * IMPORTANTE: Ya NO elimina los archivos físicos aquí;
+   * la limpieza se hace solo si el proceso completo es exitoso.
+   */
   private getFiles(): any[] {
     const files: any[] = [];
     const imagenesAdjuntas = this.cacheService.obtenerAdjuntosFoto() || [];
@@ -385,9 +464,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
       };
       files.push(objAdjuntarImg);
     }
-
-    // eliminar archivos físicos
-    this.removeFile();
 
     return files;
   }
