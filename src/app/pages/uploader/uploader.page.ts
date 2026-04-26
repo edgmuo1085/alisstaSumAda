@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActionSheetController, AlertController } from '@ionic/angular';
@@ -69,6 +69,7 @@ export class UploaderPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private formBuilder: UntypedFormBuilder,
+    private ngZone: NgZone,
     private router: Router,
     private storage: Storage,
     private cacheService: CacheService,
@@ -91,23 +92,16 @@ export class UploaderPage implements OnInit {
     const adjuntosPDF = this.cacheService.obtenerAdjuntosPDF();
     const actividadSeleccionada = this.cacheService.obtenerInfoActividadAttachDocs();
     const fotosAdjuntas = this.cacheService.obtenerAdjuntosFoto();
-    if (adjuntosPDF.length > 0) {
-      this.filesAdjuntos = [];
 
-      adjuntosPDF.forEach(documento => {
-        if (actividadSeleccionada.id === documento.idActividad) {
-          this.filesAdjuntos.push(documento);
-        }
-      });
-    }
-    if (fotosAdjuntas.length > 0) {
-      this.listaDocumentos = [];
-      fotosAdjuntas.forEach(imagenes => {
-        if (actividadSeleccionada.id === imagenes.idActividad) {
-          this.listaDocumentos.push(imagenes);
-        }
-      });
-    }
+    // Filtrar PDFs de la actividad actual (nueva referencia)
+    this.filesAdjuntos = adjuntosPDF.filter(
+      documento => actividadSeleccionada.id === documento.idActividad
+    );
+
+    // Filtrar fotos de la actividad actual (nueva referencia)
+    this.listaDocumentos = fotosAdjuntas.filter(
+      imagenes => actividadSeleccionada.id === imagenes.idActividad
+    );
   }
 
   createFormSupportType() {
@@ -152,44 +146,30 @@ export class UploaderPage implements OnInit {
   }
 
   deletePhoto(photoSelected: any) {
-    // Buscar el índice en listaDocumentos usando idFoto
-    const idFoto = photoSelected.foto.idFoto;
-    const index = this.listaDocumentos.findIndex(doc => doc.foto?.idFoto === idFoto);
+    // Buscar el idFoto
+    const idFoto = photoSelected.foto?.idFoto;
 
-    if (index !== -1) {
-      // Eliminar de listaDocumentos
-      this.listaDocumentos.splice(index, 1);
+    // Eliminar de listaDocumentos (nueva referencia)
+    this.listaDocumentos = this.listaDocumentos.filter(doc => doc.foto?.idFoto !== idFoto);
 
-      // También eliminar de fotosTomadas si existe allí
-      const fotoIndex = this.fotosTomadas.findIndex(foto => {
-        const fotoId = foto.foto ? foto.foto.idFoto : foto.idFoto;
-        return fotoId === idFoto;
-      });
-      if (fotoIndex !== -1) {
-        this.fotosTomadas.splice(fotoIndex, 1);
-      }
+    // También eliminar de fotosTomadas si existe allí (nueva referencia)
+    this.fotosTomadas = this.fotosTomadas.filter(foto => {
+      const fotoId = foto.foto ? foto.foto.idFoto : foto.idFoto;
+      return fotoId !== idFoto;
+    });
 
-      // Actualizar cache
-      this.cacheService.removeFotoAdjunta(idFoto);
-    }
+    // Actualizar cache
+    this.cacheService.removeFotoAdjunta(idFoto);
   }
 
   deleteDocs(doctSelected: any) {
     const docId = doctSelected.documento.id;
-    const index = this.filesAdjuntos.findIndex(doc => doc.documento?.id === docId);
 
-    if (index !== -1) {
-      // Eliminar de filesAdjuntos
-      this.filesAdjuntos.splice(index, 1);
+    // Eliminar de filesAdjuntos (nueva referencia para forzar detección de cambios)
+    this.filesAdjuntos = this.filesAdjuntos.filter(doc => doc.documento?.id !== docId);
 
-      // También eliminar de fileAttach si existe (usando el mismo índice)
-      if (this.fileAttach.length > index) {
-        this.fileAttach.splice(index, 1);
-      }
-
-      // Actualizar cache
-      this.cacheService.removePDFAdjunto(docId);
-    }
+    // Actualizar cache
+    this.cacheService.removePDFAdjunto(docId);
   }
 
   getFileReader(): FileReader {
@@ -223,37 +203,41 @@ export class UploaderPage implements OnInit {
 
     const newInstance = this.getFileReader();
     newInstance.readAsDataURL(file);
-    newInstance.onload = async () => {
-      try {
-        const urlFileBase64 = newInstance.result.toString();
-        this.extensionFile = urlFileBase64.split(',')[0];
-        const realData = urlFileBase64.split(',')[1];
-        const contentype = urlFileBase64.split(',')[0];
-        const contentype1 = contentype.split(';');
-        const contentype2 = contentype1[0].split(':');
-        this.blob = this.b64toBlob(realData, contentype2[1]);
+    newInstance.onload = () => {
+      // El FileReader sin Zone.js ejecuta onload fuera del NgZone de Angular,
+      // por eso envolvemos el callback en ngZone.run() para que Angular detecte los cambios
+      this.ngZone.run(async () => {
+        try {
+          const urlFileBase64 = newInstance.result.toString();
+          this.extensionFile = urlFileBase64.split(',')[0];
+          const realData = urlFileBase64.split(',')[1];
+          const contentype = urlFileBase64.split(',')[0];
+          const contentype1 = contentype.split(';');
+          const contentype2 = contentype1[0].split(':');
+          this.blob = this.b64toBlob(realData, contentype2[1]);
 
-        objFile = {
-          id: uuidv4(),
-          file,
-          blob: this.blob,
-          extension: this.extensionFile,
-          fileAsistenciaEventos: this.asistenteEventosPYP,
-          fileEvaluacionEventos: this.evaluacionEventos,
-        };
+          objFile = {
+            id: uuidv4(),
+            file,
+            blob: this.blob,
+            extension: this.extensionFile,
+            fileAsistenciaEventos: this.asistenteEventosPYP,
+            fileEvaluacionEventos: this.evaluacionEventos,
+          };
 
-        this.archivo = objFile;
-        // Adjuntar y guardar automáticamente
-        await this.attachDocumentAndSave(this.archivo);
+          this.archivo = objFile;
+          // Adjuntar y guardar automáticamente
+          await this.attachDocumentAndSave(this.archivo);
 
-        // limpiar input
-        this.inputFile.nativeElement.value = '';
-      } catch (err) {
-        console.error('Error procesando PDF:', err);
-        this.notification('Error', 'No se pudo procesar el archivo');
-      } finally {
-        this.disableButtons = false;
-      }
+          // limpiar input
+          this.inputFile.nativeElement.value = '';
+        } catch (err) {
+          console.error('Error procesando PDF:', err);
+          this.notification('Error', 'No se pudo procesar el archivo');
+        } finally {
+          this.disableButtons = false;
+        }
+      });
     };
   }
 
@@ -455,8 +439,8 @@ export class UploaderPage implements OnInit {
       documento: archivoObj,
     };
 
-    // Agregar a la lista visible
-    this.filesAdjuntos.push(objGuardarDocumento);
+    // Agregar a la lista visible (nueva referencia para detectar cambios)
+    this.filesAdjuntos = [...this.filesAdjuntos, objGuardarDocumento];
 
     // Guardar físicamente el archivo (Filesystem) y actualizar cache
     try {
@@ -509,8 +493,8 @@ export class UploaderPage implements OnInit {
 
       console.log('✅ Objeto creado, agregando a listaDocumentos...');
 
-      // Agregar a la lista
-      this.listaDocumentos.push(objGuardar);
+      // Agregar a la lista (nueva referencia para detectar cambios)
+      this.listaDocumentos = [...this.listaDocumentos, objGuardar];
 
       console.log('📝 Actualizando cache...');
 
