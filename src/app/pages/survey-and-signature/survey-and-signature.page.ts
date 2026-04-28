@@ -307,6 +307,8 @@ export class SurveyAndSignaturePage implements OnInit {
   async handleOfflineTask() {
     const idProveedor = this.infoUserARL.idProveedor;
 
+    this.actaAsesoriaGestionada = await this.cacheService.createActaAsesoria(idProveedor);
+
     const activitiesChange = [];
     const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
     const actSelec = JSON.parse(sessionStorage.companySelected);
