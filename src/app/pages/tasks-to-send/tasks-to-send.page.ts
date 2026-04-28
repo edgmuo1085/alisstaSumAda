@@ -5,6 +5,7 @@ import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasks-to-send',
@@ -30,7 +31,8 @@ export class TasksToSendPage implements OnInit {
     private cacheService: CacheService,
     private alertController: AlertController,
     private advisoryTopicService: AdvisoryTopicService,
-    private net: NetworkService
+    private net: NetworkService,
+    private router: Router
   ) {
     this.actas = [];
   }
@@ -130,6 +132,7 @@ export class TasksToSendPage implements OnInit {
     this.listAdvisory = this.listAdvisory.filter(a => actasEnviadas.find(aa => aa === a) === undefined);
     this.storage.set('actasAsesoriaSinInternet', this.listAdvisory);
     this.notification('Atención', 'Los documentos seleccionados se enviaron satisfactoriamente a la web.');
+    this.router.navigateByUrl('/u/home');
   }
 
   async sendTask(acta: any, files: any[] = []): Promise<boolean> {
