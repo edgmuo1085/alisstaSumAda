@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Browser } from '@capacitor/browser';
-import { AlertController, Platform } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { environment } from '../../../environments/environment'
+import { UpdateAlertComponent } from '../../components/update-alert/update-alert.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class AppVersionService {
 
   constructor(
     private http: HttpClient,
-    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
     private platform: Platform
-  ) {}
+  ) { }
 
   // Método asíncrono para verificar la versión
   async checkForUpdate(): Promise<void> {
@@ -37,11 +38,11 @@ export class AppVersionService {
     try {
       const appInfo = await App.getInfo(); // Obtiene la versión actual
       this.appVersion = appInfo.version;
-  
+
       const response: any = await this.http.get(apiVersionUrl).toPromise();
-  
-        console.log('Url de entorno: ', apiVersionUrl)
-  
+
+      console.log('Url de entorno: ', apiVersionUrl)
+
       if (this.isVersionOutdated(this.appVersion, response)) {
         this.showUpdateAlert(response);
       }
@@ -64,111 +65,44 @@ export class AppVersionService {
     return false; // Las versiones son iguales
   }
 
-  // Mostrar alerta con dos botones
+  // Mostrar modal de actualización
   private async showUpdateAlert(apiVersion: string): Promise<void> {
     const isIos = this.platform.is('ios'); // Detectar si la plataforma es iOS
 
-    const alert = await this.alertCtrl.create({
-      header: '', // Dejarlo vacío para personalizar el mensaje
-      message: `
-        <div style="text-align: center;">
-          <img src="../assets/logos/logo_alissta_alert.png" alt="App Icon" style="width: 70px; max-width: 70px !important; display: block; margin: 0 auto;"/>
-          <h2 style="margin: 0;">Actualización disponible</h2>
-          <p style="margin: 5px 0;">Versión actual: <strong>${this.appVersion}</strong></p>
-          <p style="margin: 5px 0;">Versión disponible: <strong>${apiVersion}</strong></p>
-          <p style="margin: 10px 0;">
-            ${isIos 
-            ? '¡Actualiza desde la App Store para seguir disfrutando de las nuevas mejoras!'
-            : '¡Actualiza para seguir disfrutando de las nuevas mejoras!'}
-          </p>
-        </div>
-      `,
-    buttons: isIos
-      ? [
-        {
-          text: 'Más tarde',
-          role: 'cancel',
-        }
-      ] // En iOS no hay botones
-      : [
-          {
-            text: 'Actualizar ahora',
-            handler: () => {
-              this.redirectToStore(); // Redirigir a la tienda
-            },
-          },
-          {
-            text: 'Más tarde',
-            role: 'cancel',
-          },
-        ],
-    mode: 'ios',
-    cssClass: 'custom-update-alert',
-    backdropDismiss: false,
+    const modal = await this.modalCtrl.create({
+      component: UpdateAlertComponent,
+      componentProps: {
+        appVersion: this.appVersion,
+        apiVersion: apiVersion,
+        isIos: isIos
+      },
+      backdropDismiss: false,
+      cssClass: 'process-tracker-centered-modal'
     });
-    await alert.present();
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    // Si el usuario hizo clic en "Actualizar ahora", redirigir a la tienda
+    if (data === 'update') {
+      this.redirectToStore();
+    }
   }
-  
 
-  // Redirigir a la tienda adecuada
-  // private redirectToStore(): void {
-  //   if (this.platform.is('android')) {
-  //     window.open('https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share', '_system');
-  //   } else if (this.platform.is('ios')) {
-  //     window.open('https://apps.apple.com/co/app/alissta/id1306274186', '_system');
-  //   }
-  // }
-  // async redirectToStore(): Promise<void> {
-  //   const androidUrl = 'https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share';
-  //   const iosUrl = 'itms-apps://itunes.apple.com/app/id1306274186';
-
-  //   if (this.platform.is('android')) {
-  //     // Abre Play Store
-  //     await Browser.open({ url: androidUrl });
-  //   } else if (this.platform.is('ios')) {
-  //     // Abre App Store directamente
-  //     await Browser.open({ url: iosUrl });
-  //   } else {
-  //     console.log('Plataforma no soportada para redirección a la tienda.');
-  //   }
-  // }
-
-  // async redirectToStore(): Promise<void> {
-  //   const androidUrl = 'market://details?id=co.gov.alissta';
-  //   const iosUrl = 'itms-apps://itunes.apple.com/app/id1306274186';
-  //   const fallbackAndroidUrl = 'https://play.google.com/store/apps/details?id=co.gov.alissta&pcampaignid=web_share';
-  //   const fallbackIosUrl = 'https://apps.apple.com/co/app/alissta/id1306274186';
-  
-  //   try {
-  //     if (this.platform.is('android')) {
-  //       // Intenta abrir Play Store directamente
-  //       await App.openUrl({ url: androidUrl });
-  //     } else if (this.platform.is('ios')) {
-  //       // Intenta abrir App Store directamente
-  //       await App.openUrl({ url: iosUrl });
-  //     } else {
-  //       console.log('Plataforma no soportada para redirección a la tienda.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error al abrir la tienda, intentando fallback:', error);
-  //     // Fallback al navegador si falla
-  //     const fallbackUrl = this.platform.is('android') ? fallbackAndroidUrl : fallbackIosUrl;
-  //     window.open(fallbackUrl, '_system');
-  //   }
-  // }
 
   async redirectToStore(): Promise<void> {
     const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
     const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
-  
+
     try {
       const url = this.platform.is('android') ? androidUrl : iosUrl;
-  
+
       // Asegúrate de manejar plataformas no soportadas
       if (!url) {
         throw new Error('Plataforma no soportada para redirección a la tienda.');
       }
-  
+
       // Abre el enlace en el navegador
       await Browser.open({ url });
     } catch (error) {

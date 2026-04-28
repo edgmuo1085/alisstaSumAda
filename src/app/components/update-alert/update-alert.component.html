@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Actualización disponible</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="update-container">
+    <div class="logo-container">
+      <img src="../../../assets/logos/logo_positiva.png" alt="App Icon" />
+    </div>
+
+    <div class="info-container">
+      <h2>¡Nueva versión disponible!</h2>
+
+      <div class="version-row">
+        <span class="version-label">Versión actual:</span>
+        <span class="version-value">{{ appVersion }}</span>
+      </div>
+
+      <div class="version-row">
+        <span class="version-label">Versión disponible:</span>
+        <span class="version-value">{{ apiVersion }}</span>
+      </div>
+
+      <p class="message">
+        {{
+          isIos
+            ? '¡Actualiza desde la App Store para seguir disfrutando de las nuevas mejoras!'
+            : '¡Actualiza para seguir disfrutando de las nuevas mejoras!'
+        }}
+      </p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="button-container">
+      <ion-button *ngIf="!isIos" expand="block" color="primary" (click)="updateNow()"> Actualizar ahora </ion-button>
+      <ion-button expand="block" fill="outline" color="medium" (click)="later()"> Más tarde </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
