@@ -10,9 +10,10 @@ import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/ad
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
-import { CorreoNotificacionActaApp, ParsedResponse } from 'src/app/intarfaces/interfaces';
+import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 import { ResponseToObject } from 'src/app/services/activities/updateActivityHours/updateActivityHours.service';
+import { UpdateListaActividadesService } from 'src/app/services/activities/updateListaActividades/update-lista-actividades.service';
 
 @Component({
   selector: 'app-survey-and-signature',
@@ -66,6 +67,7 @@ export class SurveyAndSignaturePage implements OnInit {
     private alertController: AlertController,
     private processTracker: ProcessTrackerService,
     private responseToObjectSv: ResponseToObject,
+    private updateListaActividadesSv: UpdateListaActividadesService,
   ) { }
 
   async ionViewWillEnter() {
@@ -284,7 +286,10 @@ export class SurveyAndSignaturePage implements OnInit {
 
       // 4️⃣ Actualizar actividades
       await this.processTracker.addStep('Actualizando lista de actividades...');
-      await this.updateActivities(this.responseToObjectSv.responseParser(creacionActa));
+      await this.updateListaActividadesSv.update(
+        this.responseToObjectSv.responseParser(creacionActa),
+        this.actaAsesoriaGestionada
+      );
       await this.processTracker.completeLastStep();
 
       // 5️⃣ Final
@@ -353,37 +358,6 @@ export class SurveyAndSignaturePage implements OnInit {
         await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
       }
     }
-  }
-
-  async updateActivities(response: ParsedResponse) {
-    const listaActividades = await this.storage.get('listaActividades');
-
-    for (const actividad of listaActividades) {
-
-      if (actividad.Modulo === response.modulo && actividad.id === response.idEmpresa) {
-        actividad.intHorasEjecutadas = response.acumulado;
-        actividad.intHorasPendientes = response.pendiente;
-        console.log("Entro en if: ", actividad)
-
-      }
-
-      const actividadesMigradas = actividad.listaActividadesMigradas;
-      const ids: number[] = [];
-
-      for (const element of actividadesMigradas) {
-        const idActividad = element.id;
-        const TTA_LISTA = this.actaAsesoriaGestionada.TTA_lista;
-        const index = TTA_LISTA.findIndex(x => x.id === idActividad);
-
-        if (index > -1) {
-          ids.push(idActividad);
-        }
-      }
-
-      actividad.listaActividadesMigradas = actividadesMigradas.filter(a => !ids.includes(a.id));
-    }
-
-    this.storage.set('listaActividades', listaActividades);
   }
 
   async readFile() {

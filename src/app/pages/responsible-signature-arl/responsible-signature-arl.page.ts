@@ -8,11 +8,12 @@ import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/ad
 import { PhotoServiceService } from '../../services/attach/photo-service.service';
 import { CacheService } from '../../services/cache/cache.service';
 import { NetworkService } from '../../services/network/network.service';
-import { CorreoNotificacionActaApp, ParsedResponse } from 'src/app/intarfaces/interfaces';
+import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 import { SignaturePadComponent } from 'src/app/components/signature-pad/signature-pad.component';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 import { AppStorageService } from 'src/app/app-storage.service';
 import { ResponseToObject } from 'src/app/services/activities/updateActivityHours/updateActivityHours.service';
+import { UpdateListaActividadesService } from 'src/app/services/activities/updateListaActividades/update-lista-actividades.service';
 
 @Component({
   selector: 'app-responsible-signature-arl',
@@ -52,7 +53,8 @@ export class ResponsibleSignatureARLPage implements OnInit {
     private advisoryTopicService: AdvisoryTopicService,
     private processTracker: ProcessTrackerService,
     private toastController: ToastController,
-    private responseToObjectSv: ResponseToObject
+    private responseToObjectSv: ResponseToObject,
+    private updateListaActividadesSv: UpdateListaActividadesService
   ) { }
 
   ngOnInit() {
@@ -186,7 +188,10 @@ export class ResponsibleSignatureARLPage implements OnInit {
 
       // 4️⃣ Actualizar actividades
       await this.processTracker.addStep('Actualizando lista de actividades...');
-      await this.updateListaActividades(this.responseToObjectSv.responseParser(creacionActa));
+      await this.updateListaActividadesSv.update(
+        this.responseToObjectSv.responseParser(creacionActa),
+        this.actaAsesoriaGestionada
+      );
       await this.processTracker.completeLastStep();
 
       // 5️⃣ Limpiar archivos locales solo si TODO fue exitoso
@@ -257,47 +262,6 @@ export class ResponsibleSignatureARLPage implements OnInit {
     }
 
     return allSuccess;
-  }
-
-  /**
-   * Actualiza la lista de actividades en almacenamiento local
-   * (horas ejecutadas, horas pendientes y actividades migradas).
-   */
-  private async updateListaActividades(response: ParsedResponse) {
-    try {
-      const listaActividades: any[] = (await this.storage.get('listaActividades')) || [];
-
-      if (!Array.isArray(listaActividades)) return;
-
-      for (const actividad of listaActividades) {
-
-        if (actividad.Modulo === response.modulo && actividad.id === response.idEmpresa) {
-          actividad.intHorasEjecutadas = response.acumulado;
-          actividad.intHorasPendientes = response.pendiente;
-          console.log("Entro en if: ", actividad)
-
-        }
-
-        const { listaActividadesMigradas } = actividad;
-        if (!Array.isArray(listaActividadesMigradas)) continue;
-
-        for (const element of [...listaActividadesMigradas]) {
-          const idActividad = element.id;
-          const TTA_LISTA = this.actaAsesoriaGestionada?.TTA_lista ?? [];
-          const encontro = TTA_LISTA.find((x: any) => x.id === idActividad);
-
-          if (encontro) {
-            const index = actividad.listaActividadesMigradas.indexOf(element);
-            if (index > -1) actividad.listaActividadesMigradas.splice(index, 1);
-          }
-        }
-      }
-
-      // persistir cambios en Ionic Storage (clave: 'listaActividades' en minúsculas)
-      await this.storage.set('listaActividades', listaActividades);
-    } catch (err) {
-      console.error('updateListaActividades error:', err);
-    }
   }
 
   /** ------------------------------------------------------------------

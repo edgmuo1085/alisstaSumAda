@@ -4,6 +4,8 @@ import { Storage } from '@ionic/storage-angular';;
 import { AppStorageService } from 'src/app/app-storage.service';
 import { AdvisoryTopicService } from '../../services/activities/advisoryTopic/advisory-topic.service';
 import { CacheService } from '../../services/cache/cache.service';
+import { UpdateListaActividadesService } from '../../services/activities/updateListaActividades/update-lista-actividades.service';
+import { ResponseToObject } from '../../services/activities/updateActivityHours/updateActivityHours.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
 import { Router } from '@angular/router';
 
@@ -32,7 +34,9 @@ export class TasksToSendPage implements OnInit {
     private alertController: AlertController,
     private advisoryTopicService: AdvisoryTopicService,
     private net: NetworkService,
-    private router: Router
+    private router: Router,
+    private responseToObject: ResponseToObject,
+    private updateListaActividadesSv: UpdateListaActividadesService
   ) {
     this.actas = [];
   }
@@ -146,6 +150,12 @@ export class TasksToSendPage implements OnInit {
         const body = { ...f, UidActaAsesoria: +creacionActa[1] };
         await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
       }
+
+      // Actualizar lista de actividades en storage local
+      await this.updateListaActividadesSv.update(
+        this.responseToObject.responseParser(creacionActa),
+        acta
+      );
 
       response = true;
     } else {
