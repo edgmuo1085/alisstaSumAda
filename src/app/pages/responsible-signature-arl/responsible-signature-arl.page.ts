@@ -125,7 +125,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
     if (checkNetwork) {
       await this.handleNetworkAvailable(files);
     } else {
-      await this.handleNetworkUnavailable();
+      await this.handleNetworkUnavailable(files);
     }
   }
 
@@ -268,7 +268,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
    *  handleNetworkUnavailable: guarda el acta localmente sin conexión
    *  ------------------------------------------------------------------
    */
-  private async handleNetworkUnavailable() {
+  private async handleNetworkUnavailable(files: any[] = []) {
     try {
       const activitiesChange: any[] = [];
       const getInfoActaAsesoria = this.cacheService.getAllInfoToAdvisory();
@@ -290,7 +290,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
       actSelec.listaActividadesMigradas = activitiesChange;
       sessionStorage.setItem('companySelected', JSON.stringify(actSelec));
 
-      await this.cacheService.saveActasAsesoria();
+      await this.cacheService.saveActasAsesoria(files);
       this.notification(
         'Atención',
         'No hay conexión a internet. El acta se guardó con estado pendiente por enviar.\n\nCuando tengas conexión, puedes enviarla desde la opción "Actas por Enviar".'
