@@ -1,9 +1,22 @@
 ion-content {
     --padding-bottom: 8px;
+    --overflow: auto;
+}
+
+ion-list {
+    width: 100%;
 }
 
 ion-item {
     --min-height: 48px;
+    --padding-start: 8px;
+    --padding-end: 8px;
+}
+
+ion-item ion-label {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
 }
 
 ion-footer ion-button {

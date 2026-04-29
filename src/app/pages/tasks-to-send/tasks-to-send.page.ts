@@ -8,6 +8,8 @@ import { UpdateListaActividadesService } from '../../services/activities/updateL
 import { ResponseToObject } from '../../services/activities/updateActivityHours/updateActivityHours.service';
 import { ConnectionStatusEnum, NetworkService } from '../../services/network/network.service';
 import { Router } from '@angular/router';
+import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
+import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
 
 @Component({
   selector: 'app-tasks-to-send',
@@ -36,7 +38,8 @@ export class TasksToSendPage implements OnInit {
     private net: NetworkService,
     private router: Router,
     private responseToObject: ResponseToObject,
-    private updateListaActividadesSv: UpdateListaActividadesService
+    private updateListaActividadesSv: UpdateListaActividadesService,
+    private processTracker: ProcessTrackerService
   ) {
     this.actas = [];
   }
@@ -56,6 +59,7 @@ export class TasksToSendPage implements OnInit {
 
   async getAdvisoryActsWithoutSending() {
     this.listAdvisory = await this.storage.get('actasAsesoriaSinInternet');
+    console.log("Task to send: ", this.listAdvisory)
   }
 
   actaSeleccionada(event: any, advisoryAct: any) {
@@ -100,70 +104,138 @@ export class TasksToSendPage implements OnInit {
     return this.loading.present();
   }
 
+  /**
+   * Envía todas las actas seleccionadas usando un SOLO modal de ProcessTrackerService
+   * que acumula todos los pasos de todas las actas secuencialmente.
+   */
   async sendTasks(): Promise<void> {
     const checkNetwork = this.validateNetwork();
 
     if (!checkNetwork) {
       this.notification('Atención', 'Compruebe su conexión a internet.');
-
       return;
     }
 
     const totalActas = this.actas.length;
     const actasEnviadas: any[] = [];
-    await this.presentLoading();
 
-    for (let i = 0; i < this.actas.length; i++) {
+    // 🟢 Abrimos UN SOLO modal para todo el proceso
+    await this.processTracker.startProcess('Enviando actas de asesoría...');
+
+    for (let i = 0; i < totalActas; i++) {
       const a = this.actas[i];
-
-      const toast = await this.toastController.create({
-        message: `Enviando acta ${i + 1} de ${totalActas}...`,
-        duration: 2000,
-      });
-
-      toast.present();
       const acta = await this.buildActa(a);
-      const response = await this.sendTask(acta, a.files);
+      const success = await this.processSingleActa(i, totalActas, acta, a.files);
       this.cacheService.limpiarVariablesAsesoria();
 
-      if (response) {
+      if (success) {
         actasEnviadas.push(a);
       }
     }
 
-    this.loading.dismiss();
+    // ✅ Limpiar storage y navegar
     actasEnviadas.forEach(a => this.actaSeleccionada({ detail: { checked: false } }, a));
     this.listAdvisory = this.listAdvisory.filter(a => actasEnviadas.find(aa => aa === a) === undefined);
-    this.storage.set('actasAsesoriaSinInternet', this.listAdvisory);
-    this.notification('Atención', 'Los documentos seleccionados se enviaron satisfactoriamente a la web.');
+    await this.storage.set('actasAsesoriaSinInternet', this.listAdvisory);
+
+    // 🔚 Mostrar resumen final con un solo finish()
+    const enviadas = actasEnviadas.length;
+    if (enviadas === totalActas) {
+      await this.processTracker.finish(true, `Todas las actas (${totalActas}) se enviaron correctamente.`);
+    } else if (enviadas > 0) {
+      await this.processTracker.finish(true, `Se enviaron ${enviadas} de ${totalActas} actas.`);
+    } else {
+      await this.processTracker.finish(false, 'No se pudo enviar ninguna acta. Verifica tu conexión e intenta nuevamente.');
+      return;
+    }
+
     this.router.navigateByUrl('/u/home');
   }
 
-  async sendTask(acta: any, files: any[] = []): Promise<boolean> {
-    let response: boolean;
-    let creacionActa = await this.advisoryTopicService.saveActaAsesoria(acta).toPromise();
-    console.log("task-to-send: ", creacionActa);
-    creacionActa = creacionActa.split(';');
+  /**
+   * Procesa un acta individual agregando sus pasos al tracker ya abierto.
+   *
+   * @param index Índice del acta actual (0-based).
+   * @param total Total de actas a enviar.
+   * @param acta Cuerpo del acta a enviar.
+   * @param files Archivos adjuntos.
+   * @returns true si se completó exitosamente, false si falló.
+   */
+  private async processSingleActa(index: number, total: number, acta: any, files: any[]): Promise<boolean> {
+    const actaLabel = `Acta ${index + 1} de ${total}`;
 
-    if (creacionActa[0] === 'true' && creacionActa[1] !== '-1') {
-      for (const f of files) {
-        const body = { ...f, UidActaAsesoria: +creacionActa[1] };
-        await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
+    try {
+      // 1️⃣ Crear acta
+      this.processTracker.addStep(`${actaLabel}: Creando acta de asesoría...`);
+
+      let creacionActa = await this.advisoryTopicService
+        .saveActaAsesoria(acta)
+        .toPromise();
+
+      this.processTracker.completeLastStep();
+
+      creacionActa = creacionActa?.split(';') ?? [];
+
+      if (!(creacionActa[0] === 'true' && creacionActa[1] !== '-1')) {
+        this.processTracker.addStep(`❌ ${actaLabel}: No se pudo crear el acta de asesoría.`);
+        return false;
       }
 
-      // Actualizar lista de actividades en storage local
+      // 2️⃣ Subir archivos adjuntos (si existen)
+      if (files.length > 0) {
+        this.processTracker.addStep(`${actaLabel}: Subiendo archivos adjuntos...`);
+
+        for (const f of files) {
+          const body = { ...f, UidActaAsesoria: +creacionActa[1] };
+          await this.advisoryTopicService.uploadFileActaAsesoria(body).toPromise();
+        }
+
+        this.processTracker.completeLastStep();
+      }
+
+      // 3️⃣ Enviar notificación por correo
+      this.processTracker.addStep(`${actaLabel}: Enviando notificación por correo...`);
+      await this.sendEmailNotifications(acta);
+      this.processTracker.completeLastStep();
+
+      // 4️⃣ Actualizar lista de actividades
+      this.processTracker.addStep(`${actaLabel}: Actualizando lista de actividades...`);
       await this.updateListaActividadesSv.update(
         this.responseToObject.responseParser(creacionActa),
         acta
       );
+      this.processTracker.completeLastStep();
 
-      response = true;
-    } else {
-      this.notification('Error', 'Ocurrio un error y no se pudo crear el acta de asesoría');
-      response = false;
+      // ✅ Éxito para esta acta
+      this.processTracker.addStep(`✅ ${actaLabel}: Completada`);
+
+      return true;
+
+    } catch (error) {
+      console.error(`Error en ${actaLabel}:`, error);
+      const errorMsg = (error as any)?.message || 'Intente nuevamente.';
+      this.processTracker.addStep(`❌ ${actaLabel}: Error - ${errorMsg}`);
+      return false;
     }
+  }
 
-    return response;
+  /**
+   * Envía notificaciones por correo a los responsables del acta.
+   *
+   * @param acta Cuerpo del acta que contiene la lista TTA.
+   */
+  private async sendEmailNotifications(acta: any): Promise<void> {
+    const ttaList = acta?.TTA_lista;
+
+    if (ttaList && ttaList.length > 0) {
+      for (const tta of ttaList) {
+        const idActividadMigradaPorUsuario = tta.id;
+        const notifCorreoActa: CorreoNotificacionActaApp = {
+          Fk_ID_ActividadMigradaPorUsuario: idActividadMigradaPorUsuario,
+        };
+        await this.advisoryTopicService.enviarCorreoNotificacionActaApp(notifCorreoActa).toPromise();
+      }
+    }
   }
 
   async notification(titulo, notificacion) {
