@@ -68,15 +68,16 @@ export class TasksToSendPage implements OnInit {
 
   addImgandTypeToFiles(file: File): string {
 
-    console.log("File recibido en addImgandTypeToFiles: ", JSON.stringify(file));
+    const base64Data = file.Base64 || (file as any).base64 || '';
+    if (!base64Data) {
+      return "../../../assets/icon/jpg_icon.svg"
+    }
 
-    if (file.Base64.split(';')[0].includes('pdf')) {
+    if (base64Data.split(';')[0].includes('pdf')) {
       return "../../../assets/icon/pdf_icon.svg"
     } else {
       return "../../../assets/icon/jpg_icon.svg"
     }
-
-
   }
   validateFileType(type: string): string {
     return this.validateFileTypeSv.validateFileType(type) ?? 'Tipo desconocido';
