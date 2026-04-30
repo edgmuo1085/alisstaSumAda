@@ -424,7 +424,7 @@ export class ResponsibleSignatureARLPage implements OnInit {
       const objAdjuntarImg = {
         UidActividadMigradaXUSuario: documento.idActividad,
         TipoSoporte: documento.idTipoArchivo,
-        base64: documento.foto?.base64Imagen,
+        Base64: documento.foto?.base64Imagen,
       };
       files.push(objAdjuntarImg);
     }
