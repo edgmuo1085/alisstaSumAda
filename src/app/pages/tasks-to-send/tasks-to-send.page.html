@@ -57,6 +57,31 @@
                 </p>
               </ion-col>
             </ion-row>
+
+            <!-- <ion-row *ngIf="AdvisoryAct.files?.length > 0">
+              <ion-col *ngFor="let file of AdvisoryAct.files" size="12">
+                <p><strong>Archivos Adjuntos: </strong> {{file.TipoSoporte}}</p>
+              </ion-col>
+            </ion-row> -->
+
+            <ion-row *ngIf="AdvisoryAct.files?.length > 0">
+              <p>
+                <strong>Archivos Adjuntos: </strong>
+              </p>
+              <ion-col size="12">
+                <ion-list *ngFor="let file of AdvisoryAct.files" size="12" style="background: none">
+                  <ion-item lines="none">
+                    <ion-thumbnail slot="start">
+                      <img [src]="addImgandTypeToFiles(file)" alt="File" style="width: 50px; height: 50px" />
+                    </ion-thumbnail>
+                    <ion-label>
+                      <h4 style="font-weight: bolder">{{validateFileType(file.TipoSoporte)}}</h4>
+                    </ion-label>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
+
             <ion-row>
               <ion-col size="12">
                 <p><strong>Fecha de creación</strong> {{AdvisoryAct.infoSurveyQR.dateCreatedSurvey | date: 'medium' }}</p>

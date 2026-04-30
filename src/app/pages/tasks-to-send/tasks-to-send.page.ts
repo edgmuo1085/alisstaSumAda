@@ -10,6 +10,8 @@ import { ConnectionStatusEnum, NetworkService } from '../../services/network/net
 import { Router } from '@angular/router';
 import { ProcessTrackerService } from 'src/app/services/activities/advisoryTopic/process-tracker.service';
 import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
+import { ActivityForSend, File } from './task-to-send.interface';
+import { ValidateFileTypeService } from 'src/app/services/activities/validateFileType/validateFileType.service';
 
 @Component({
   selector: 'app-tasks-to-send',
@@ -17,7 +19,8 @@ import { CorreoNotificacionActaApp } from 'src/app/intarfaces/interfaces';
   styleUrls: ['./tasks-to-send.page.scss'],
 })
 export class TasksToSendPage implements OnInit {
-  listAdvisory = [];
+  listAdvisory: ActivityForSend[] = [];
+  fileLIstAdvisory: File[] = [];
 
   loading: HTMLIonLoadingElement;
 
@@ -39,7 +42,8 @@ export class TasksToSendPage implements OnInit {
     private router: Router,
     private responseToObject: ResponseToObject,
     private updateListaActividadesSv: UpdateListaActividadesService,
-    private processTracker: ProcessTrackerService
+    private processTracker: ProcessTrackerService,
+    private validateFileTypeSv: ValidateFileTypeService
   ) {
     this.actas = [];
   }
@@ -58,8 +62,24 @@ export class TasksToSendPage implements OnInit {
   }
 
   async getAdvisoryActsWithoutSending() {
-    this.listAdvisory = await this.storage.get('actasAsesoriaSinInternet');
+    this.listAdvisory = (await this.storage.get('actasAsesoriaSinInternet')) ?? [];
     console.log("Task to send: ", this.listAdvisory)
+  }
+
+  addImgandTypeToFiles(file: File): string {
+
+    console.log("File recibido en addImgandTypeToFiles: ", JSON.stringify(file));
+
+    if (file.Base64.split(';')[0].includes('pdf')) {
+      return "../../../assets/icon/pdf_icon.svg"
+    } else {
+      return "../../../assets/icon/jpg_icon.svg"
+    }
+
+
+  }
+  validateFileType(type: string): string {
+    return this.validateFileTypeSv.validateFileType(type) ?? 'Tipo desconocido';
   }
 
   actaSeleccionada(event: any, advisoryAct: any) {
