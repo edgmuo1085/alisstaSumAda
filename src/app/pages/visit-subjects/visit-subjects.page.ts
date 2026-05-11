@@ -34,7 +34,7 @@ export class VisitSubjectsPage implements OnInit {
   /**
    * Número máximo de temas seleccionados por operación.
    */
-  private readonly MAX_SUBJECTS = 4;
+  private readonly MAX_SUBJECTS = 1;
 
   private readonly MAX_HOURS_PER_DAY = 10;
 
@@ -45,7 +45,7 @@ export class VisitSubjectsPage implements OnInit {
     MAX_SUBJECTS: {
       title: 'Atención',
       mode: 'ios' as 'ios' | 'md',
-      message: 'Puede seleccionar un máximo de cuatro (4) actividades por formulario.',
+      message: 'Solo se puede seleccionar una actividad por formulario.',
       okButtonText: 'Aceptar',
     },
     MIN_ACTIVITY: {
@@ -181,6 +181,10 @@ export class VisitSubjectsPage implements OnInit {
     this.toggleIncludeSubject(subject);
   }
 
+  isSubjectCheckboxDisabled(subject: VisitSubject): boolean {
+    return this.subjectsSelected.length > 0 && !this.searchSubject(subject);
+  }
+
   /**
    * Marca para inclusión el tema proporcionado.
    *
@@ -197,6 +201,12 @@ export class VisitSubjectsPage implements OnInit {
 
     if (existe) {
       this.removeSubject(subject);
+      return;
+    }
+
+    if (this.subjectsSelected.length > 0) {
+      this.uncheckSubject(subject);
+      await this.notification('Atención', 'Solo se puede seleccionar una actividad por formulario.');
       return;
     }
 
@@ -218,6 +228,17 @@ export class VisitSubjectsPage implements OnInit {
     }
 
     await this.validateSubjectLimits();
+  }
+
+  private uncheckSubject(subject: VisitSubject): void {
+    subject.include = false;
+
+    const subjectIndex = this.subjects.findIndex(item => item === subject);
+    const includedControl = this.subjectForm.controls[subjectIndex + 'included'];
+
+    if (includedControl) {
+      includedControl.setValue(false, { emitEvent: false });
+    }
   }
 
   /**

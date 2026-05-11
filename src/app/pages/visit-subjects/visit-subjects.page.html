@@ -101,9 +101,10 @@
             </ion-input>
           </ion-item>
 
-          <ion-item class=" no-effects mt-5" lines="none">
-            <ion-label class="ion-text-right">Incluir esta actividad</ion-label>
-            <ion-checkbox slot="end" color="primary" [formControlName]="i+'included'"> </ion-checkbox>
+          <ion-item class="no-effects mt-5" lines="none">
+            <ion-label class="ion-text-right">Seleccionar esta actividad</ion-label>
+            <ion-checkbox slot="end" color="primary" [formControlName]="i+'included'" [disabled]="isSubjectCheckboxDisabled(subject)">
+            </ion-checkbox>
           </ion-item>
         </ion-list>
       </form>
@@ -123,11 +124,12 @@
         </ion-item>
 
         <ion-item class="no-effects" lines="none">
-          <ion-label class="ion-text-right">Incluir esta actividad</ion-label>
+          <ion-label class="ion-text-right">Seleccionar esta actividad</ion-label>
           <ion-checkbox
             slot="end"
             color="primary"
             [(ngModel)]="subject.include"
+            [disabled]="isSubjectCheckboxDisabled(subject)"
             (ngModelChange)="emitIncludedOnReactive(subject, i+'included')"
           >
           </ion-checkbox>
