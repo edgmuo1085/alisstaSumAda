@@ -185,6 +185,16 @@ export class VisitSubjectsPage implements OnInit {
     return this.subjectsSelected.length > 0 && !this.searchSubject(subject);
   }
 
+  async showDisabledSubjectCheckboxAlert(event: Event, subject: VisitSubject): Promise<void> {
+    if (!this.isSubjectCheckboxDisabled(subject)) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    await this.mostrarAlerta(this.ALERT_TEXTS.MAX_SUBJECTS);
+  }
+
   /**
    * Marca para inclusión el tema proporcionado.
    *
