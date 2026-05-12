@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.initializeApp();
     this.listenToAppState();
-    this.AppVersionSv.checkForUpdate();
+    this.checkAppVersion();
   }
 
   async ngOnInit() {
@@ -103,9 +103,17 @@ export class AppComponent implements OnInit, OnDestroy {
     App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         console.log('La app volvió al primer plano.');
-        this.AppVersionSv.checkForUpdate(); // Verifica actualizaciones al volver al foreground
+        this.checkAppVersion(); // Verifica actualizaciones al volver al foreground
       }
     });
+  }
+
+  private checkAppVersion(): void {
+    if (!this.AppVersionSv.isSupportedPlatform()) {
+      return;
+    }
+
+    this.AppVersionSv.checkForUpdate();
   }
 
   // async checkDarkTheme(): Promise<void> {

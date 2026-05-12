@@ -3,13 +3,27 @@ import { Injectable } from '@angular/core';
 import { Browser } from '@capacitor/browser';
 import { ModalController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
-import { environment } from '../../../environments/environment'
+import { Capacitor } from '@capacitor/core';
+import { firstValueFrom } from 'rxjs';
 import { UpdateAlertComponent } from '../../components/update-alert/update-alert.component';
+import { ApiUrlService } from '../apiUrl/api-url.service';
+
+type SupportedAppPlatform = 'android' | 'ios';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppVersionService {
+  private readonly appIdsByPlatform: Record<SupportedAppPlatform, number> = {
+    android: 3,
+    ios: 4
+  };
+
+  private readonly storeUrlsByPlatform: Record<SupportedAppPlatform, string> = {
+    android: 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share',
+    ios: 'https://apps.apple.com/co/app/alissta-sum/id1534224945'
+  };
+
   private appVersion = ""; // Versión local de la app (puedes obtenerla dinámicamente en Capacitor)
 
 
@@ -23,23 +37,49 @@ export class AppVersionService {
   constructor(
     private http: HttpClient,
     private modalCtrl: ModalController,
-    private platform: Platform
+    private platform: Platform,
+    private apiUrlSv: ApiUrlService,
   ) { }
+
+  private getSupportedPlatform(): SupportedAppPlatform | null {
+    const platform = Capacitor.getPlatform();
+
+    return platform === 'android' || platform === 'ios' ? platform : null;
+  }
+
+  isSupportedPlatform(): boolean {
+    return this.getSupportedPlatform() !== null;
+  }
+
+  getVersionUrlParam(): string | null {
+    const platform = this.getSupportedPlatform();
+
+    if (!platform) {
+      return null;
+    }
+
+    const appId = this.appIdsByPlatform[platform];
+    return this.apiUrlSv.APP_VERSION_ENVIRONMENT + appId;
+  }
+
 
   // Método asíncrono para verificar la versión
   async checkForUpdate(): Promise<void> {
-    const env = environment.production
 
-    const apiVersionUrl = env
-      ? 'https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
-      : 'https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=3'
-    //TODO: Si se requieren mas ambientes, es mejor crear un enum con las url de los web Services
+
+    const apiVersionUrl = this.getVersionUrlParam()
+
+    if (!apiVersionUrl) {
+      return;
+    }
+
+    console.log("Environment desde el servicio: ", apiVersionUrl)
 
     try {
       const appInfo = await App.getInfo(); // Obtiene la versión actual
       this.appVersion = appInfo.version;
 
-      const response: any = await this.http.get(apiVersionUrl).toPromise();
+      const response = await firstValueFrom(this.http.get<string>(apiVersionUrl));
 
       console.log('Url de entorno: ', apiVersionUrl)
 
@@ -92,19 +132,16 @@ export class AppVersionService {
 
 
   async redirectToStore(): Promise<void> {
-    const androidUrl = 'https://play.google.com/store/apps/details?id=co.positiva.alisstasum&pcampaignid=web_share';
-    const iosUrl = 'https://apps.apple.com/co/app/alissta-sum/id1534224945';
-
     try {
-      const url = this.platform.is('android') ? androidUrl : iosUrl;
+      const platform = this.getSupportedPlatform();
 
       // Asegúrate de manejar plataformas no soportadas
-      if (!url) {
+      if (!platform) {
         throw new Error('Plataforma no soportada para redirección a la tienda.');
       }
 
       // Abre el enlace en el navegador
-      await Browser.open({ url });
+      await Browser.open({ url: this.storeUrlsByPlatform[platform] });
     } catch (error) {
       // Manejo de errores
       console.error('Error al redirigir a la tienda:', error);

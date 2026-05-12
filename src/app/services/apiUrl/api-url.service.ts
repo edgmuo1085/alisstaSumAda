@@ -185,7 +185,9 @@ export class ApiUrlService {
   }
 
   public get APP_VERSION_ENVIRONMENT() {
-    return this.baseUrlSubject$.value;
+    return environment.production
+      ? "https://sempresa.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema="
+      : "https://test-positiva-webservice-empresa-pre.adacsc.co/sg-sst/Empresa/Obtener-Version-APP?intAppSistema=";
   }
 
   public get RECUPERAR_PASSWORD() {
