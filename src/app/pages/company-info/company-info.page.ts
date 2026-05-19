@@ -35,7 +35,7 @@ export class CompanyInfoPage {
     public alertController: AlertController,
     private router: Router,
     private geolocationSv: GeolocationService
-  ) {}
+  ) { }
 
   async ionViewWillEnter() {
     this.infoCompany = JSON.parse(sessionStorage.companySelected);
@@ -57,9 +57,12 @@ export class CompanyInfoPage {
 
     const infoCompany = this.cacheService.getSaveInfoCompany();
 
+    console.log("Formulario Info Copany: ", this.infoCompany)
+
     this.formInfoCompany.patchValue({
       addressCompany: this.infoCompany.direccion,
       phoneContact: this.infoCompany.telefonoContacto,
+      emailContact: this.infoCompany.correoContacto,
       Department: this.infoCompany.departamentoDescripcion,
       municipality: this.infoCompany.minicipioDescripcion,
     });
@@ -72,49 +75,50 @@ export class CompanyInfoPage {
   createFormInfoCompany() {
     this.formInfoCompany = this.formBuilder.group({
       addressCompany: ['', Validators.required],
-      phoneContact: ['', Validators.required],
+      phoneContact: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      emailContact: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       Department: ['', Validators.required],
       municipality: ['', Validators.required],
       locationCompany: ['', Validators.required],
     });
   }
 
-async getGeolocation() {
-  const location = await this.geolocationSv.getGeolocation();
+  async getGeolocation() {
+    const location = await this.geolocationSv.getGeolocation();
 
-  if (location.success && location.coords) {
-    this.coords = `${location.coords.lat},${location.coords.lng}`;
-    this.formInfoCompany.controls.locationCompany.setValue(this.coords);
-  } else {
-    // Mostrar alerta según el tipo de error
-    await this.showGeolocationError(location);
-    
-    // Limpiar validadores
-    this.formInfoCompany.controls.locationCompany.setValue('');
-    this.formInfoCompany.controls.locationCompany.clearValidators();
-    this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
-  }
-}
+    if (location.success && location.coords) {
+      this.coords = `${location.coords.lat},${location.coords.lng}`;
+      this.formInfoCompany.controls.locationCompany.setValue(this.coords);
+    } else {
+      // Mostrar alerta según el tipo de error
+      await this.showGeolocationError(location);
 
-private async showGeolocationError(location: GeolocationResult) {
-  let message = location.error || 'Error desconocido al obtener la ubicación';
-  
-  if (location.errorCode === 'PERMISSION_DENIED') {
-    message = 'Permiso de ubicación denegado. Active los permisos en la configuración de su dispositivo.';
-  } else if (location.errorCode === 'NOT_SUPPORTED') {
-    message = 'La geolocalización no está disponible en este dispositivo.';
+      // Limpiar validadores
+      this.formInfoCompany.controls.locationCompany.setValue('');
+      this.formInfoCompany.controls.locationCompany.clearValidators();
+      this.formInfoCompany.controls.locationCompany.updateValueAndValidity();
+    }
   }
 
-  const alert = await this.alertController.create({
-    header: 'Atención',
-    backdropDismiss: false,
-    mode: 'ios',
-    message: message,
-    buttons: ['ACEPTAR']
-  });
+  private async showGeolocationError(location: GeolocationResult) {
+    let message = location.error || 'Error desconocido al obtener la ubicación';
 
-  await alert.present();
-}
+    if (location.errorCode === 'PERMISSION_DENIED') {
+      message = 'Permiso de ubicación denegado. Active los permisos en la configuración de su dispositivo.';
+    } else if (location.errorCode === 'NOT_SUPPORTED') {
+      message = 'La geolocalización no está disponible en este dispositivo.';
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Atención',
+      backdropDismiss: false,
+      mode: 'ios',
+      message: message,
+      buttons: ['ACEPTAR']
+    });
+
+    await alert.present();
+  }
 
   changeDepartment(event) {
     const departmentSelected = event.detail.value;
@@ -154,7 +158,7 @@ private async showGeolocationError(location: GeolocationResult) {
       latitud: coordenadas[0],
       longitud: coordenadas[1],
       telefono: this.formInfoCompany.value.phoneContact,
-      emailContacto: this.infoCompany.emailContacto ?? null,
+      emailContacto: this.formInfoCompany.value.emailContact ?? null,
       departamento: this.formInfoCompany.value.Department,
       departamentoId: departId,
       municipio: this.formInfoCompany.value.municipality,
