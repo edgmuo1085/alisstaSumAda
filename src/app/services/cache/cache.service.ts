@@ -312,7 +312,7 @@ export class CacheService {
       IGE_DepartamentoId: this.infoCompany.departamentoId.toString(),
       IGE_DepartamentoNombre: this.infoCompany.departamento,
       IGE_Telefono: this.infoCompany.telefono,
-      IGE_Correo: '',
+      IGE_Correo: this.infoCompany.emailContacto,
       IGE_Latitud: this.infoCompany.latitud,
       IGE_Longitud: this.infoCompany.longitud,
 

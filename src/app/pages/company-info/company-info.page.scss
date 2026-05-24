@@ -3,11 +3,13 @@ ion-header {
     padding: 0px;
     background: #95a6b1;
     color: white;
+
     ion-row {
       ion-col {
         padding: 0px;
         background: #95a6b1;
       }
+
       ion-toolbar {
         padding: 0px;
       }
@@ -21,8 +23,10 @@ ion-content {
       text-align: center;
     }
   }
+
   ion-list {
     background: none;
+
     ion-item {
       --background: none;
     }
@@ -56,4 +60,17 @@ ion-list {
   text-align: left;
   padding: 0px;
   padding-top: 10px;
+}
+
+/* Borde rojo en inputs cuando el campo es inválido y fue tocado */
+ion-item.field-error {
+  --border-color: var(--ion-color-danger) !important;
+  --highlight-color-valid: var(--ion-color-danger) !important;
+  --highlight-color-invalid: var(--ion-color-danger) !important;
+  --highlight-color-focused: var(--ion-color-danger) !important;
+
+  ion-input,
+  ion-select {
+    background-color: var(--ion-color-danger-tint) !important;
+  }
 }

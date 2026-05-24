@@ -142,6 +142,11 @@
         </ion-item>
 
         <ion-item lines="none">
+          <strong><ion-label position="stacked">Correo electrónico</ion-label></strong>
+          <ion-input *ngIf="verification"> {{ verification.infoCompany.emailContacto }} </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
           <strong><ion-label position="stacked">Departamento</ion-label></strong>
           <ion-input *ngIf="verification"> {{ verification.infoCompany.departamento }} </ion-input>
         </ion-item>

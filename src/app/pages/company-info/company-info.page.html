@@ -36,13 +36,13 @@
   <ion-list lines="none">
     <form [formGroup]="formInfoCompany" *ngIf="formInfoCompany">
       <!-- Dirección de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('addressCompany')">
         <ion-label position="stacked">Dirección donde se realiza la asesoría</ion-label>
         <ion-input formControlName="addressCompany" class="bg-light mt-3 rounded pl-1 pr-1"></ion-input>
       </ion-item>
 
       <!-- Coordenadas de la ubicación de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('locationCompany')">
         <ion-label position="stacked">Ubicación donde se realiza la asesoría</ion-label>
         <ion-grid class="m-0 w-100 p-0">
           <ion-row>
@@ -57,19 +57,19 @@
       </ion-item>
 
       <!-- Teléfonos de contacto de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('phoneContact')">
         <ion-label position="stacked">Teléfonos de contacto</ion-label>
         <ion-input class="bg-light mt-3 rounded pl-1 pr-1" type="number" inputmode="numeric" formControlName="phoneContact"></ion-input>
       </ion-item>
 
       <!-- Correo electrónico de contacto de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('emailContact')">
         <ion-label position="stacked">Correo electrónico de contacto</ion-label>
         <ion-input class="bg-light mt-3 rounded pl-1 pr-1" type="email" formControlName="emailContact"></ion-input>
       </ion-item>
 
       <!-- Departamento de la dirección de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('Department')">
         <ion-label position="stacked">Departamento</ion-label>
         <ion-select
           placeholder="Departamento"
@@ -88,7 +88,7 @@
       </ion-item>
 
       <!-- Ciudad o municipio de la dirección de la empresa -->
-      <ion-item class="p-0 mt-3">
+      <ion-item class="p-0 mt-3" [class.field-error]="isInvalidField('municipality')">
         <ion-label position="stacked">Ciudad/Municipio</ion-label>
         <ion-select
           placeholder="Municipio/ciudad"

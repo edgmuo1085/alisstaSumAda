@@ -40,6 +40,19 @@ export class CompanyInfoPage {
   async ionViewWillEnter() {
     this.infoCompany = JSON.parse(sessionStorage.companySelected);
 
+    const cachedInfo = this.cacheService.getSaveInfoCompany();
+
+    if (cachedInfo && Object.keys(cachedInfo).length > 0) {
+      console.log("Entro if: ", cachedInfo)
+      this.infoCompany.direccion = cachedInfo.direccion;
+      this.infoCompany.telefonoContacto = cachedInfo.telefono;
+      this.infoCompany.correoContacto = cachedInfo.emailContacto;
+      this.infoCompany.departamentoDescripcion = cachedInfo.departamento;
+      this.infoCompany.minicipioDescripcion = cachedInfo.municipio;
+    } else {
+      this.infoCompany = JSON.parse(sessionStorage.companySelected);
+    }
+
     // 🟢 Migrado a AppStorageService
     this.departments = await this.storage.get('departamentos');
     this.cities = await this.storage.get('municipios');
@@ -57,8 +70,6 @@ export class CompanyInfoPage {
 
     const infoCompany = this.cacheService.getSaveInfoCompany();
 
-    console.log("Formulario Info Copany: ", this.infoCompany)
-
     this.formInfoCompany.patchValue({
       addressCompany: this.infoCompany.direccion,
       phoneContact: this.infoCompany.telefonoContacto,
@@ -75,7 +86,7 @@ export class CompanyInfoPage {
   createFormInfoCompany() {
     this.formInfoCompany = this.formBuilder.group({
       addressCompany: ['', Validators.required],
-      phoneContact: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      phoneContact: ['', [Validators.required, Validators.pattern(/^(\d{7}|\d{10})$/)]],
       emailContact: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       Department: ['', Validators.required],
       municipality: ['', Validators.required],
@@ -125,11 +136,56 @@ export class CompanyInfoPage {
     this.getCities = this.cities.filter(x => x.NombreDepartamento === departmentSelected);
   }
 
+  isInvalidField(fieldName: string): boolean {
+    const control = this.formInfoCompany?.get(fieldName);
+    return control ? control.invalid && control.touched : false;
+  }
+
+  private getValidationErrors(): string[] {
+    const errors: string[] = [];
+    const controls = this.formInfoCompany.controls;
+
+    if (controls.addressCompany.errors?.required) {
+      errors.push('La dirección donde se realiza la asesoría es obligatoria.');
+    }
+
+    if (controls.phoneContact.errors?.required) {
+      errors.push('El teléfono de contacto es obligatorio.');
+    } else if (controls.phoneContact.errors?.pattern) {
+      errors.push('El teléfono de contacto debe contener exactamente 7 o 10 dígitos numéricos.');
+    }
+
+    if (controls.emailContact.errors?.required) {
+      errors.push('El correo electrónico de contacto es obligatorio.');
+    } else if (controls.emailContact.errors?.pattern) {
+      errors.push('El correo electrónico de contacto no tiene un formato válido (ej: usuario@dominio.com).');
+    }
+
+    if (controls.Department.errors?.required) {
+      errors.push('Debe seleccionar un departamento.');
+    }
+
+    if (controls.municipality.errors?.required) {
+      errors.push('Debe seleccionar un municipio.');
+    }
+
+    if (controls.locationCompany.errors?.required) {
+      errors.push('La ubicación es obligatoria. Presione el ícono de GPS para obtener las coordenadas.');
+    }
+
+    return errors;
+  }
+
   async showAlertInfoCompany() {
+    const errors = this.getValidationErrors();
+    const message = errors.length > 0
+      ? errors.join('\n')
+      : 'Todos los campos son obligatorios.';
+
     const alert = await this.alertController.create({
       mode: 'ios',
-      header: 'Alerta',
-      message: 'Todos los campos son obligatorios.',
+      header: 'Campos inválidos',
+      message,
       buttons: ['ACEPTAR'],
     });
 
@@ -137,6 +193,11 @@ export class CompanyInfoPage {
   }
 
   next() {
+    // Marcar todos los campos como tocados para mostrar los bordes rojos
+    Object.keys(this.formInfoCompany.controls).forEach(key => {
+      this.formInfoCompany.controls[key].markAsTouched();
+    });
+
     if (this.formInfoCompany.invalid) {
       this.showAlertInfoCompany();
       return;
