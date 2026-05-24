@@ -114,6 +114,14 @@ export class SpecificComponent implements OnInit {
       this.minEndHour = value;
     }
 
+    // Auto-setear la hora final sumando migratedHours a la hora inicial seleccionada
+    const horasMigradas = this.cacheService.migratedHours;
+    if (horasMigradas && horasMigradas > 0 && this.date) {
+      const startMoment = moment(`${this.date}T${this.customStartDate}`);
+      const endMoment = startMoment.clone().add(horasMigradas, 'hours');
+      this.customEndDate = endMoment.format('HH:mm:00');
+    }
+
     // Validar inmediatamente si ya existe hora final
     if (this.customEndDate) {
       this.validateAndEmit();
