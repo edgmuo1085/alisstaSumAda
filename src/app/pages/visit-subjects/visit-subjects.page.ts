@@ -45,7 +45,7 @@ export class VisitSubjectsPage implements OnInit {
     MAX_SUBJECTS: {
       title: 'Atención',
       mode: 'ios' as 'ios' | 'md',
-      message: 'Solo se puede seleccionar una actividad por formulario.',
+      message: 'Solo se puede seleccionar una actividad por acta.',
       okButtonText: 'Aceptar',
     },
     MIN_ACTIVITY: {
@@ -216,7 +216,7 @@ export class VisitSubjectsPage implements OnInit {
 
     if (this.subjectsSelected.length > 0) {
       this.uncheckSubject(subject);
-      await this.notification('Atención', 'Solo se puede seleccionar una actividad por formulario.');
+      await this.notification('Atención', 'Solo se puede seleccionar una actividad por acta.');
       return;
     }
 
