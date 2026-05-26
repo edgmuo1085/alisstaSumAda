@@ -6,29 +6,27 @@
           <strong><label class="d-block">Fecha de asesoría del proyecto (Mes/año) </label></strong>
         </div>
         <div class="mt-3">
-
           <ion-datetime-button datetime="perProject"></ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime
-              id="perProject"
-              placeholder="Seleccione (MES - AÑO)"
-              display-format="MMM YYYY"
-              monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-              color="primary"
-              [min]="currentYear"
-              cancelText="CANCELAR"
-              (ionChange)="dateSelectec($event)"
-              doneText="ACEPTAR"
-              class="ionDateTimeStart"
-              [max]="currentYear"
-              cancelText="Cancelar"
-              [value]="date"
-              presentation="month-year"
-            ></ion-datetime>
+                id="perProject"
+                placeholder="Seleccione (MES - AÑO)"
+                display-format="MMM YYYY"
+                monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+                color="primary"
+                [min]="minMonth"
+                cancelText="CANCELAR"
+                (ionChange)="dateSelectec($event)"
+                doneText="ACEPTAR"
+                class="ionDateTimeStart"
+                [max]="maxMonth"
+                cancelText="Cancelar"
+                [value]="date"
+                presentation="month-year"
+              ></ion-datetime>
             </ng-template>
           </ion-modal>
-        
         </div>
       </div>
     </ion-item>

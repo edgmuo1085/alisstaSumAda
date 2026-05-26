@@ -50,6 +50,7 @@ export class SpecificComponent implements OnInit {
   disabledBtnDateStart = false;
   date: string; // Fecha de hoy en formato YYYY-MM-DD
   maxDate: string = moment().format('YYYY-MM-DD'); // Fecha máxima seleccionable (hoy)
+  minDate: string = moment().subtract(1, 'month').format('YYYY-MM-DD'); // Fecha mínima seleccionable (1 mes atrás)
 
   constructor(
     private cacheService: CacheService,

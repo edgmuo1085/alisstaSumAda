@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import * as moment from 'moment';
 import { CacheService } from 'src/app/services/cache/cache.service';
 
 /**
@@ -28,10 +29,12 @@ export class PerProjectComponent implements OnInit {
    */
   dateSelectedProject: Date = new Date();
   currentYear: any = new Date().getFullYear();
+  maxMonth: string = moment().format('YYYY-MM'); // Mes actual (ej: 2026-05)
+  minMonth: string = moment().subtract(1, 'month').format('YYYY-MM'); // Mes anterior (ej: 2026-04)
 
   rangeYear: any;
 
-  constructor(private cacheService: CacheService) {}
+  constructor(private cacheService: CacheService) { }
 
   ngOnInit() {
     const infoVisitType = this.cacheService.getSaveTypeAdvice();
