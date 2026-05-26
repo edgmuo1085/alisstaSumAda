@@ -49,6 +49,7 @@ export class SpecificComponent implements OnInit {
   showStartTodaySpecificAdvice = false;
   disabledBtnDateStart = false;
   date: string; // Fecha de hoy en formato YYYY-MM-DD
+  maxDate: string = moment().format('YYYY-MM-DD'); // Fecha máxima seleccionable (hoy)
 
   constructor(
     private cacheService: CacheService,
@@ -77,30 +78,35 @@ export class SpecificComponent implements OnInit {
 
   initFormDateSpecific() {
     this.formDateSpecific = this.formBuilder.group({
-      startTodaySecific: [{ value: '', disabled: false }, Validators.required],
+      startTodaySecific: ['', Validators.required],
       startHour: [{ value: '', disabled: true }, Validators.required],
       endHour: [{ value: '', disabled: true }, Validators.required],
     });
   }
 
   startTodaySpecific() {
-    // REFACTOR: Esta notificación no tiene efecto sobre la asignación de la fecha. El usuario es
-    // advertido sobre un escenario que no puede ser modificado pero no tiene opción una vez que ha
-    // marcado el botón de asignación de fecha
-    this.notification('Está seguro de iniciar la actividad en este momento, recuerde que esta fecha no puede modificarse.');
-
     this.setVisitDate(moment().startOf('day').format('YYYY-MM-DD'));
 
     this.showDateButton = true;
 
     this.formDateSpecific.get('startHour')?.enable();
     this.formDateSpecific.get('endHour')?.enable();
-
-    this.formDateSpecific.get('startTodaySecific')?.disable();
   }
 
-  changeHourStar(event) {
-    let value = event.detail.value;
+  /**
+   * Maneja el cambio de fecha desde el ion-datetime.
+   */
+  onDateChange(event: CustomEvent) {
+    const value = event.detail.value as string;
+    if (value) {
+      const newDate = moment(value).format('YYYY-MM-DD');
+      console.log("Fecha seleccionada: ", newDate);
+      this.setVisitDate(newDate);
+    }
+  }
+
+  changeHourStar(event: CustomEvent) {
+    let value = event.detail.value as string;
     if (!value) value = new Date().toISOString();
 
     const normalized = this.normalizeHour(value);
@@ -130,8 +136,8 @@ export class SpecificComponent implements OnInit {
     }
   }
 
-  changeHourEnd(event) {
-    let value = event.detail.value;
+  changeHourEnd(event: CustomEvent) {
+    let value = event.detail.value as string;
     if (!value) value = new Date().toISOString();
 
     this.customEndDate = this.normalizeHour(value);
@@ -167,7 +173,7 @@ export class SpecificComponent implements OnInit {
    */
   private setVisitDate(date: string): void {
     this.date = date;
-    this.formDateSpecific.controls.startTodaySecific.setValue(this.date);
+    this.formDateSpecific.controls.startTodaySecific.setValue(date);
     this.disabledBtnDateStart = true;
     this.showStartTodaySpecificAdvice = true;
     this.dateStartSpecific.emit(this.date);

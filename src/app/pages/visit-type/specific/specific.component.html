@@ -7,8 +7,18 @@
         <strong><label class="d-block">Fecha de asesoría específica</label></strong>
       </ion-item>
 
-      <div *ngIf="showDateButton" class="ion-margin-bottom">
-        <ion-datetime-button disabled datetime="startTodaySecific"></ion-datetime-button>
+      <ion-button
+        expand="block"
+        color="primary"
+        [disabled]="disabledBtnDateStart"
+        (click)="startTodaySpecific()"
+        datetime="startTodaySecific"
+      >
+        INICIAR ASESORIA ESPECIFICA
+      </ion-button>
+
+      <div *ngIf="showDateButton" class="ion-margin-bottom mt-4">
+        <ion-datetime-button datetime="startTodaySecific"></ion-datetime-button>
       </div>
 
       <ion-modal [keepContentsMounted]="true">
@@ -18,26 +28,20 @@
             placeholder="DD MMMM YYYY"
             presentation="date"
             display-format="DD MMM YYYY"
-            monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+            locale="es-CO"
             color="primary"
             formControlName="startTodaySecific"
             mode="ios"
             class="ionDateTimeStart"
+            [showDefaultButtons]="true"
+            doneText="Aceptar"
             cancelText="Cancelar"
+            [max]="maxDate"
+            (ionChange)="onDateChange($event)"
           >
           </ion-datetime>
         </ng-template>
       </ion-modal>
-
-      <ion-button
-        expand="block"
-        color="primary"
-        [disabled]="disabledBtnDateStart"
-        (click)="startTodaySpecific()"
-        datetime="startTodaySecific"
-      >
-        INICIAR HOY ASESORIA ESPECIFICA
-      </ion-button>
 
       <!-- Hora Inicio -->
       <ion-item *ngIf="showDateButton">
