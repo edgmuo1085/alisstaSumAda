@@ -8,7 +8,7 @@ import { App } from '@capacitor/app';
 })
 export class PhotoServiceService {
   photos: any[] = []; // ✅ MANTENER este array
-  
+
   // ✅ NUEVAS VARIABLES para control de estado
   private isTakingPhoto = false;
   private photoPromise: Promise<any> | null = null;
@@ -55,13 +55,13 @@ export class PhotoServiceService {
       if (this.isRecoverableCameraError(error) && this.retryCount < this.MAX_RETRIES) {
         this.retryCount++;
         console.log(`🔄 Reintento ${this.retryCount}/${this.MAX_RETRIES} después de error de cámara`);
-        
+
         // Pequeña pausa antes del reintento
         await this.delay(1000);
-        
+
         return await this._takePhotoWithRetry();
       }
-      
+
       // Si no es recuperable o se agotaron los reintentos, lanzar error
       throw error;
     }
@@ -74,40 +74,50 @@ export class PhotoServiceService {
     try {
       console.log('📸 1. Iniciando servicio de cámara...');
 
-      // 1. Verificar y solicitar permisos
+      // 1. Detectar plataforma
+      const deviceInfo = await Device.getInfo();
+      const isWeb = deviceInfo.platform === 'web';
+      console.log(`🌐 Plataforma detectada: ${deviceInfo.platform}${isWeb ? ' (web)' : ' (móvil)'}`);
+
+      // 2. Verificar y solicitar permisos (solo en móvil)
       const permissionsGranted = await this.checkAndRequestPermissions();
-      
+
       if (!permissionsGranted) {
         throw new Error('PERMISSIONS_DENIED: No se concedieron todos los permisos necesarios');
       }
 
       console.log('✅ 2. Todos los permisos concedidos, tomando foto...');
 
-      // 2. Configurar listener para cuando la app vuelva al primer plano
-      const appResumePromise = new Promise<void>((resolve) => {
-        const handler = App.addListener('appStateChange', (state) => {
-          if (state.isActive) {
-            console.log('🔄 App volvió al primer plano después de la cámara');
-            handler.remove();
-            resolve();
-          }
+      // 3. Configurar listener solo para dispositivos móviles
+      //    (cuando la app vuelve de la cámara nativa al primer plano)
+      let appResumePromise: Promise<void> | null = null;
+      if (!isWeb) {
+        appResumePromise = new Promise<void>((resolve) => {
+          const handler = App.addListener('appStateChange', (state) => {
+            if (state.isActive) {
+              console.log('🔄 App volvió al primer plano después de la cámara');
+              handler.remove();
+              resolve();
+            }
+          });
         });
-      });
+      }
 
-      // 3. Tomar la foto
+      // 4. Tomar la foto o seleccionar imagen según la plataforma:
+      //    - En web: usa CameraSource.Photos (abre selector de archivos)
+      //    - En móvil: usa CameraSource.Camera (abre la cámara nativa)
       const photoPromise = Camera.getPhoto({
         resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera,
+        source: isWeb ? CameraSource.Photos : CameraSource.Camera,
         quality: 80,
         allowEditing: false,
         saveToGallery: false
       });
 
-      // 4. Esperar tanto la foto como el resumen de la app
-      const [capturedPhoto] = await Promise.all([
-        photoPromise,
-        appResumePromise
-      ]);
+      // 5. Esperar la foto (y el resumen de la app solo si es móvil)
+      const capturedPhoto = isWeb
+        ? await photoPromise
+        : (await Promise.all([photoPromise, appResumePromise!]))[0];
 
       if (!capturedPhoto.dataUrl) {
         throw new Error('NO_PHOTO_DATA');
@@ -135,7 +145,7 @@ export class PhotoServiceService {
 
     } catch (error) {
       console.error('❌ ERROR en _takePhoto:', JSON.stringify(error, null, 2));
-      
+
       // Manejo mejorado de errores con mensajes específicos
       const userFriendlyError = this.getUserFriendlyErrorMessage(error);
       throw new Error(userFriendlyError);
@@ -148,7 +158,7 @@ export class PhotoServiceService {
   private isRecoverableCameraError(error: any): boolean {
     const errorMessage = error.message?.toLowerCase() || '';
     const errorString = JSON.stringify(error).toLowerCase();
-    
+
     // Errores que pueden solucionarse con un reintento
     const recoverableErrors = [
       'permission',
@@ -161,9 +171,9 @@ export class PhotoServiceService {
       'unknown error',
       'error desconocido'
     ];
-    
-    return recoverableErrors.some(recoverableError => 
-      errorMessage.includes(recoverableError) || 
+
+    return recoverableErrors.some(recoverableError =>
+      errorMessage.includes(recoverableError) ||
       errorString.includes(recoverableError)
     );
   }
@@ -173,7 +183,7 @@ export class PhotoServiceService {
    */
   private getUserFriendlyErrorMessage(error: any): string {
     const errorMessage = error.message?.toLowerCase() || '';
-    
+
     if (errorMessage.includes('permissions_denied') || errorMessage.includes('permission')) {
       return 'Se necesitan permisos de cámara. Por favor, habilítalos en Configuración > Aplicaciones > Alissta SUM > Permisos.';
     } else if (errorMessage.includes('no_photo_data')) {
@@ -193,50 +203,35 @@ export class PhotoServiceService {
   private async checkAndRequestPermissions(): Promise<boolean> {
     try {
       console.log('🔐 Verificando permisos...');
-      
-      const permResult = await Camera.checkPermissions();
-      console.log('📋 Permisos actuales:', JSON.stringify(permResult, null, 2));
 
       const deviceInfo = await Device.getInfo();
       console.log('📱 Información del dispositivo:', JSON.stringify(deviceInfo, null, 2));
-      
-      const isAndroid13Plus = deviceInfo.platform === 'android' && 
-                             this.isAndroid13OrHigher(deviceInfo.osVersion);
-      
-      console.log(`🤖 ¿Android 13+? ${isAndroid13Plus} (versión: ${deviceInfo.osVersion})`);
 
-      const permissionsToRequest: CameraPermissionType[] = ['camera'];
-      if (isAndroid13Plus) {
-        permissionsToRequest.push('photos');
+      // 🌐 Si es web (navegador), no solicitar permisos de Capacitor.
+      // El navegador maneja los permisos nativamente al intentar abrir la cámara.
+      if (deviceInfo.platform === 'web') {
+        console.log('🌐 Plataforma web detectada - permisos gestionados por el navegador');
+        return true;
       }
 
+      // 📷 Solo solicitar permiso de cámara, NO de galería ('photos')
+      const permissionsToRequest: CameraPermissionType[] = ['camera'];
+
       console.log('🔄 Solicitando permisos:', JSON.stringify(permissionsToRequest, null, 2));
-      
-      const newPerms = await Camera.requestPermissions({ 
-        permissions: permissionsToRequest 
+
+      const newPerms = await Camera.requestPermissions({
+        permissions: permissionsToRequest
       });
 
       console.log('📋 Nuevos permisos:', JSON.stringify(newPerms, null, 2));
 
       const allGranted = permissionsToRequest.every(perm => newPerms[perm] === 'granted');
       console.log(`✅ ¿Todos los permisos concedidos? ${allGranted}`);
-      
+
       return allGranted;
 
     } catch (error) {
       console.error('❌ Error en checkAndRequestPermissions:', JSON.stringify(error, null, 2));
-      return false;
-    }
-  }
-
-  /**
-   * ✅ MÉTODO DETECCIÓN ANDROID (sin cambios)
-   */
-  private isAndroid13OrHigher(version: string): boolean {
-    try {
-      const majorVersion = parseInt(version.split('.')[0]);
-      return !isNaN(majorVersion) && majorVersion >= 13;
-    } catch {
       return false;
     }
   }
@@ -255,7 +250,7 @@ export class PhotoServiceService {
     try {
       const idFotoAEliminar = photoSelected.idFoto;
       const index = this.photos.findIndex(x => x.idFoto === idFotoAEliminar);
-      
+
       if (index > -1) {
         this.photos.splice(index, 1);
         console.log('🗑️ Foto eliminada:', JSON.stringify(idFotoAEliminar, null, 2));
