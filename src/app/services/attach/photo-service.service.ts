@@ -7,19 +7,18 @@ import { App } from '@capacitor/app';
   providedIn: 'root',
 })
 export class PhotoServiceService {
-  photos: any[] = []; // ✅ MANTENER este array
+  photos: any[] = [];
 
-  // ✅ NUEVAS VARIABLES para control de estado
   private isTakingPhoto = false;
   private photoPromise: Promise<any> | null = null;
   private retryCount = 0;
   private readonly MAX_RETRIES = 2;
+  private readonly PHOTO_TIMEOUT_MS = 90000; // 90 segundos de timeout total
 
   /**
-   * ✅ MÉTODO MEJORADO: Tomar foto con manejo de ciclo de vida
+   * Tomar foto con manejo de ciclo de vida
    */
   public async addNewToGallery(): Promise<any> {
-    // Evitar múltiples llamadas simultáneas
     if (this.isTakingPhoto) {
       throw new Error('Ya hay una operación de cámara en curso');
     }
@@ -29,14 +28,14 @@ export class PhotoServiceService {
     }
 
     this.isTakingPhoto = true;
-    this.photoPromise = this._takePhotoWithRetry(); // Método mejorado con reintentos
+    this.photoPromise = this._takePhotoWithRetry();
 
     try {
       const result = await this.photoPromise;
-      this.retryCount = 0; // Reset contador en éxito
+      this.retryCount = 0;
       return result;
     } catch (error) {
-      this.retryCount = 0; // Reset contador en error final
+      this.retryCount = 0;
       throw error;
     } finally {
       this.isTakingPhoto = false;
@@ -45,41 +44,38 @@ export class PhotoServiceService {
   }
 
   /**
-   * ✅ MÉTODO MEJORADO: Lógica con reintentos automáticos
+   * Lógica con reintentos automáticos
    */
   private async _takePhotoWithRetry(): Promise<any> {
     try {
       return await this._takePhoto();
     } catch (error) {
-      // Verificar si es un error recuperable y tenemos reintentos disponibles
       if (this.isRecoverableCameraError(error) && this.retryCount < this.MAX_RETRIES) {
         this.retryCount++;
         console.log(`🔄 Reintento ${this.retryCount}/${this.MAX_RETRIES} después de error de cámara`);
 
-        // Pequeña pausa antes del reintento
         await this.delay(1000);
 
         return await this._takePhotoWithRetry();
       }
 
-      // Si no es recuperable o se agotaron los reintentos, lanzar error
       throw error;
     }
   }
 
   /**
-   * ✅ MÉTODO PRIVADO: Lógica real de tomar foto
+   * Lógica real de tomar foto
    */
   private async _takePhoto(): Promise<any> {
     try {
       console.log('📸 1. Iniciando servicio de cámara...');
 
-      // 1. Detectar plataforma
       const deviceInfo = await Device.getInfo();
       const isWeb = deviceInfo.platform === 'web';
+      const isIOS = deviceInfo.platform === 'ios';
       console.log(`🌐 Plataforma detectada: ${deviceInfo.platform}${isWeb ? ' (web)' : ' (móvil)'}`);
 
-      // 2. Verificar y solicitar permisos (solo en móvil)
+      // 1. Verificar y solicitar permisos (solo en móvil)
       const permissionsGranted = await this.checkAndRequestPermissions();
 
       if (!permissionsGranted) {
@@ -88,24 +84,7 @@ export class PhotoServiceService {
 
       console.log('✅ 2. Todos los permisos concedidos, tomando foto...');
 
-      // 3. Configurar listener solo para dispositivos móviles
-      //    (cuando la app vuelve de la cámara nativa al primer plano)
-      let appResumePromise: Promise<void> | null = null;
-      if (!isWeb) {
-        appResumePromise = new Promise<void>((resolve) => {
-          const handler = App.addListener('appStateChange', (state) => {
-            if (state.isActive) {
-              console.log('🔄 App volvió al primer plano después de la cámara');
-              handler.remove();
-              resolve();
-            }
-          });
-        });
-      }
-
-      // 4. Tomar la foto o seleccionar imagen según la plataforma:
-      //    - En web: usa CameraSource.Photos (abre selector de archivos)
-      //    - En móvil: usa CameraSource.Camera (abre la cámara nativa)
+      // 2. Tomar la foto
       const photoPromise = Camera.getPhoto({
         resultType: CameraResultType.DataUrl,
         source: isWeb ? CameraSource.Photos : CameraSource.Camera,
@@ -114,21 +93,54 @@ export class PhotoServiceService {
         saveToGallery: false
       });
 
-      // 5. Esperar la foto (y el resumen de la app solo si es móvil)
-      const capturedPhoto = isWeb
-        ? await photoPromise
-        : (await Promise.all([photoPromise, appResumePromise!]))[0];
+      // 3. Timeout global para la operación completa
+      const timeoutPromise = this.delay(this.PHOTO_TIMEOUT_MS).then(() => {
+        throw new Error('TIMEOUT: La operación de cámara tardó demasiado');
+      });
 
-      if (!capturedPhoto.dataUrl) {
+      // 4. En iOS: la cámara se abre como un modal IN-APP (no cambia el estado de la app)
+      //    Por lo tanto appStateChange NO se dispara cuando se cierra la cámara.
+      //    Solo esperamos la foto directamente con un timeout de seguridad.
+      //    En Android: algunos dispositivos también abren la cámara como modal.
+      let capturedPhoto: any;
+
+      if (isWeb) {
+        // Web: solo esperar la foto
+        capturedPhoto = await Promise.race([photoPromise, timeoutPromise]);
+      } else if (isIOS) {
+        // iOS: ¡NO esperar appResumePromise! La cámara en iOS es modal in-app.
+        // Solo esperar la foto con timeout, para evitar que se cuelgue para siempre.
+        console.log('🍎 iOS detectado - NO se usará appStateChange (cámara modal in-app)');
+        capturedPhoto = await Promise.race([photoPromise, timeoutPromise]);
+      } else {
+        // Android: esperar foto + appResumePromise por si la cámara se abre como actividad separada
+        console.log('🤖 Android detectado - usando appStateChange como respaldo');
+        const appResumePromise = new Promise<void>((resolve) => {
+          const handler = App.addListener('appStateChange', (state) => {
+            if (state.isActive) {
+              console.log('🔄 App volvió al primer plano después de la cámara');
+              handler.remove();
+              resolve();
+            }
+          });
+        });
+
+        // Competencia entre: foto + resume vs timeout
+        capturedPhoto = await Promise.race([
+          Promise.all([photoPromise, appResumePromise]).then(results => results[0]),
+          timeoutPromise
+        ]);
+      }
+
+      if (!capturedPhoto || !capturedPhoto.dataUrl) {
         throw new Error('NO_PHOTO_DATA');
       }
 
-      // 5. Pequeña pausa para asegurar estabilidad
       await this.delay(500);
 
       const photoId = `photo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-      console.log('✅ 3. Foto tomada exitosamente, ID:', JSON.stringify(photoId, null, 2));
+      console.log('✅ 3. Foto tomada exitosamente, ID:', photoId);
 
       const photoData = {
         format: capturedPhoto.format,
@@ -138,28 +150,25 @@ export class PhotoServiceService {
         timestamp: new Date().toISOString()
       };
 
-      // ✅ OPCIONAL: Agregar automáticamente al array de fotos
       this.photos.push(photoData);
 
       return photoData;
 
     } catch (error) {
-      console.error('❌ ERROR en _takePhoto:', JSON.stringify(error, null, 2));
+      console.error('❌ ERROR en _takePhoto:', error);
 
-      // Manejo mejorado de errores con mensajes específicos
       const userFriendlyError = this.getUserFriendlyErrorMessage(error);
       throw new Error(userFriendlyError);
     }
   }
 
   /**
-   * ✅ DETECTAR ERRORES RECUPERABLES (especialmente para Xiaomi)
+   * Detectar errores recuperables para reintento
    */
   private isRecoverableCameraError(error: any): boolean {
     const errorMessage = error.message?.toLowerCase() || '';
     const errorString = JSON.stringify(error).toLowerCase();
 
-    // Errores que pueden solucionarse con un reintento
     const recoverableErrors = [
       'permission',
       'camera',
@@ -169,7 +178,8 @@ export class PhotoServiceService {
       'no_photo_data',
       'cancelada',
       'unknown error',
-      'error desconocido'
+      'error desconocido',
+      'timeout'
     ];
 
     return recoverableErrors.some(recoverableError =>
@@ -179,7 +189,7 @@ export class PhotoServiceService {
   }
 
   /**
-   * ✅ MENSAJES DE ERROR AMIGABLES PARA EL USUARIO
+   * Mensajes de error amigables
    */
   private getUserFriendlyErrorMessage(error: any): string {
     const errorMessage = error.message?.toLowerCase() || '';
@@ -188,6 +198,8 @@ export class PhotoServiceService {
       return 'Se necesitan permisos de cámara. Por favor, habilítalos en Configuración > Aplicaciones > Alissta SUM > Permisos.';
     } else if (errorMessage.includes('no_photo_data')) {
       return 'No se pudo obtener la foto correctamente. Intenta nuevamente.';
+    } else if (errorMessage.includes('timeout')) {
+      return 'La cámara no respondió a tiempo. Por favor, intenta nuevamente.';
     } else if (errorMessage.includes('user cancelled') || errorMessage.includes('app canceled') || errorMessage.includes('cancelada')) {
       return 'Captura de foto cancelada.';
     } else if (this.retryCount >= this.MAX_RETRIES) {
@@ -198,7 +210,7 @@ export class PhotoServiceService {
   }
 
   /**
-   * ✅ MÉTODO DE PERMISOS (sin cambios)
+   * Verificación y solicitud de permisos
    */
   private async checkAndRequestPermissions(): Promise<boolean> {
     try {
@@ -207,14 +219,11 @@ export class PhotoServiceService {
       const deviceInfo = await Device.getInfo();
       console.log('📱 Información del dispositivo:', JSON.stringify(deviceInfo, null, 2));
 
-      // 🌐 Si es web (navegador), no solicitar permisos de Capacitor.
-      // El navegador maneja los permisos nativamente al intentar abrir la cámara.
       if (deviceInfo.platform === 'web') {
         console.log('🌐 Plataforma web detectada - permisos gestionados por el navegador');
         return true;
       }
 
-      // 📷 Solo solicitar permiso de cámara, NO de galería ('photos')
       const permissionsToRequest: CameraPermissionType[] = ['camera'];
 
       console.log('🔄 Solicitando permisos:', JSON.stringify(permissionsToRequest, null, 2));
@@ -231,20 +240,20 @@ export class PhotoServiceService {
       return allGranted;
 
     } catch (error) {
-      console.error('❌ Error en checkAndRequestPermissions:', JSON.stringify(error, null, 2));
+      console.error('❌ Error en checkAndRequestPermissions:', error);
       return false;
     }
   }
 
   /**
-   * ✅ DELAY HELPER
+   * Delay helper
    */
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
-   * ✅ ELIMINAR FOTO (usa el array photos)
+   * Eliminar foto del array
    */
   deletePhoto(photoSelected: any) {
     try {
@@ -253,25 +262,25 @@ export class PhotoServiceService {
 
       if (index > -1) {
         this.photos.splice(index, 1);
-        console.log('🗑️ Foto eliminada:', JSON.stringify(idFotoAEliminar, null, 2));
+        console.log('🗑️ Foto eliminada:', idFotoAEliminar);
         return true;
       }
       return false;
     } catch (error) {
-      console.error('Error eliminando foto:', JSON.stringify(error, null, 2));
+      console.error('Error eliminando foto:', error);
       return false;
     }
   }
 
   /**
-   * ✅ OBTENER FOTOS (usa el array photos)
+   * Obtener fotos
    */
   getPhotos(): any[] {
     return this.photos;
   }
 
   /**
-   * ✅ LIMPIAR FOTOS (usa el array photos)
+   * Limpiar fotos
    */
   clearPhotos(): void {
     this.photos = [];
@@ -279,12 +288,22 @@ export class PhotoServiceService {
   }
 
   /**
-   * ✅ AGREGAR FOTO EXISTENTE (usa el array photos)
+   * Agregar foto existente
    */
   addExistingPhoto(photoData: any): void {
     if (photoData && photoData.idFoto) {
       this.photos.push(photoData);
-      console.log('📁 Foto existente agregada:', JSON.stringify(photoData.idFoto, null, 2));
+      console.log('📁 Foto existente agregada:', photoData.idFoto);
     }
+  }
+
+  /**
+   * Reset forzado de estado (por si algo queda bloqueado)
+   */
+  forceReset(): void {
+    this.isTakingPhoto = false;
+    this.photoPromise = null;
+    this.retryCount = 0;
+    console.log('🔄 Estado del servicio de fotos restablecido forzosamente');
   }
 }

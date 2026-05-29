@@ -128,12 +128,21 @@ export class UploaderPage implements OnInit {
     }
   }
 
+  /**
+   * @deprecated Usar {@link tomarFoto} en su lugar.
+   * Este método queda solo como respaldo. No se usa desde el template.
+   */
   async addPhotoToGallery() {
     this.accionARealizar = 'foto';
     this.disableButtons = true;
-    this.foto = await this.photoService.addNewToGallery();
-    this.fotosTomadas.push(this.foto);
-    this.disableButtons = false;
+    try {
+      this.foto = await this.photoService.addNewToGallery();
+      this.fotosTomadas.push(this.foto);
+    } catch (err) {
+      console.error('❌ Error en addPhotoToGallery:', err);
+    } finally {
+      this.disableButtons = false;
+    }
   }
 
   abrirExploradorArchivos() {
@@ -353,21 +362,27 @@ export class UploaderPage implements OnInit {
       // ✅ Adjuntar y guardar automáticamente
       await this.attachPhotoAndSave(foto);
 
-    } catch (err) {
-      console.error('❌ Error al tomar foto:', JSON.stringify(err, null, 2));
+    } catch (err: any) {
+      console.error('❌ Error al tomar foto:', err);
+
+      // Seguridad: forzar reset del servicio por si isTakingPhoto quedó en true
+      this.photoService.forceReset();
 
       // Mostrar error específico al usuario (excepto cancelaciones)
-      if (err.message.includes('cancelada')) {
+      if (err && typeof err.message === 'string' && err.message.includes('cancelada')) {
         // No mostrar alerta si el usuario canceló
         console.log('Usuario canceló la toma de foto');
       } else {
-        this.notification('Error', err.message);
+        const errorMsg = (err && err.message) ? err.message : 'Error al tomar la foto';
+        this.notification('Error', errorMsg);
       }
+
 
     } finally {
       this.disableButtons = false;
     }
   }
+
 
   async notification(titulo: string, notificacion: string) {
     const alert = await this.alertController.create({
